@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DALFactory</name>
+    </assembly>
+    <members>
+        <member name="T:DALFactory.AbstractDALFactory">
+            <summary>
+            数据访问层抽象工厂类
+            </summary>
+        </member>
+        <member name="M:DALFactory.AbstractDALFactory.BuildOperatorService">
+            <summary>
+            操作员数据访问操作类的生产方法
+            </summary>
+            <returns>操作员数据访问操作类实例</returns>
+        </member>
+        <member name="M:DALFactory.AbstractDALFactory.BuildRightsGroupService">
+            <summary>
+            权限组数据访问操作类的生产方法
+            </summary>
+            <returns>权限组数据访问操作类实例</returns>
+        </member>
+        <member name="M:DALFactory.AbstractDALFactory.BuildRightsRelationService">
+            <summary>
+            权限关系数据访问操作类的生产方法
+            </summary>
+            <returns>权限关系数据访问操作类实例</returns>
+        </member>
+        <member name="M:DALFactory.AbstractDALFactory.Instance">
+            <summary>
+            创建数据访问层抽象工厂类实例
+            </summary>
+            <returns>数据访问层抽象工厂类实例</returns>
+        </member>
+        <member name="T:DALFactory.DALFactory">
+            <summary>
+            数据访问层工厂类
+            </summary>
+        </member>
+        <member name="M:DALFactory.DALFactory.BuildOperatorService">
+            <summary>
+            操作员数据访问操作类的生产方法
+            </summary>
+            <returns>操作员数据访问操作类实例</returns>
+        </member>
+        <member name="M:DALFactory.DALFactory.BuildRightsGroupService">
+            <summary>
+            权限组数据访问操作类的生产方法
+            </summary>
+            <returns>权限组数据访问操作类实例</returns>
+        </member>
+        <member name="M:DALFactory.DALFactory.BuildRightsRelationService">
+            <summary>
+            权限关系数据访问操作类的生产方法
+            </summary>
+            <returns>权限关系数据访问操作类实例</returns>
+        </member>
+    </members>
+</doc>

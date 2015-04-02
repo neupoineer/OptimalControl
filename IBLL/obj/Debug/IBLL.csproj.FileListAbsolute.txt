@@ -1,0 +1,61 @@
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\bin\Debug\CMCSharpSDKIBLL.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\bin\Debug\CMCSharpSDKIBLL.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\bin\Debug\CMCSharpSDKIBLL.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\bin\Debug\CMCSharpSDKModel.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\bin\Debug\CMCSharpSDKModel.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\bin\Debug\CMCSharpSDKModel.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\obj\Debug\CMCSharpSDKIBLL.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\IBLL\obj\Debug\CMCSharpSDKIBLL.pdb
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\bin\Debug\CMCSharpSDKIBLL.dll
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\bin\Debug\CMCSharpSDKIBLL.pdb
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\bin\Debug\CMCSharpSDKModel.dll
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\bin\Debug\CMCSharpSDKModel.pdb
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\bin\Debug\CMCSharpSDKModel.xml
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\obj\Debug\ResolveAssemblyReference.cache
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\obj\Debug\CMCSharpSDKIBLL.dll
+E:\My Documents\Desktop\CMCSharpSDK\IBLL\obj\Debug\CMCSharpSDKIBLL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\obj\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\IBLL\obj\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\bin\Debug\IBLL.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\obj\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\IBLL\obj\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\bin\Debug\IBLL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\obj\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\IBLL\obj\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\bin\Debug\IBLL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\obj\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\IBLL\obj\Debug\IBLL.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\bin\Debug\IBLL.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\bin\Debug\IBLL.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\bin\Debug\IBLL.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\bin\Debug\Model.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\bin\Debug\Model.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\bin\Debug\Model.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\obj\Debug\IBLL.csprojResolveAssemblyReference.cache
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\obj\Debug\IBLL.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\IBLL\obj\Debug\IBLL.pdb

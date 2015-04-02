@@ -1,0 +1,40 @@
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\DBUtility\bin\Debug\CMCSharpSDKDBUtility.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\DBUtility\bin\Debug\CMCSharpSDKDBUtility.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\DBUtility\bin\Debug\CMCSharpSDKDBUtility.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\DBUtility\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\DBUtility\obj\Debug\CMCSharpSDKDBUtility.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\DBUtility\obj\Debug\CMCSharpSDKDBUtility.pdb
+E:\My Documents\Desktop\CMCSharpSDK\DBUtility\bin\Debug\CMCSharpSDKDBUtility.dll
+E:\My Documents\Desktop\CMCSharpSDK\DBUtility\bin\Debug\CMCSharpSDKDBUtility.pdb
+E:\My Documents\Desktop\CMCSharpSDK\DBUtility\obj\Debug\ResolveAssemblyReference.cache
+E:\My Documents\Desktop\CMCSharpSDK\DBUtility\obj\Debug\CMCSharpSDKDBUtility.dll
+E:\My Documents\Desktop\CMCSharpSDK\DBUtility\obj\Debug\CMCSharpSDKDBUtility.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\DBUtility\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\DBUtility\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\DBUtility\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\DBUtility\obj\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\DBUtility\obj\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\DBUtility\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\DBUtility\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\DBUtility\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\DBUtility\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\DBUtility\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\DBUtility\obj\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\DBUtility\obj\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\DBUtility\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\DBUtility\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\DBUtility\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\DBUtility\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\DBUtility\obj\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\DBUtility\obj\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\DBUtility\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\DBUtility\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\DBUtility\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\DBUtility\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\DBUtility\obj\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\DBUtility\obj\Debug\DBUtility.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\DBUtility\bin\Debug\DBUtility.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\DBUtility\bin\Debug\DBUtility.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\DBUtility\bin\Debug\DBUtility.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\DBUtility\obj\Debug\DBUtility.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\DBUtility\obj\Debug\DBUtility.pdb

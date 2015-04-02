@@ -1,0 +1,167 @@
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKBLL.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKBLL.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKBLL.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDALFactory.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKIBLL.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKIDAL.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKModel.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDAL.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDBUtility.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKIBLL.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKIBLL.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKModel.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKModel.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDALFactory.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDALFactory.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDAL.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDAL.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDBUtility.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKDBUtility.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKIDAL.pdb
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\bin\Debug\CMCSharpSDKIDAL.xml
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\obj\Debug\CMCSharpSDKBLL.dll
+C:\Documents and Settings\Administrator.KLZS\桌面\《浅谈C# WinForm中实现基于角色的权限菜单》源码\文章《浅谈C# WinForm中实现基于角色的权限菜单》源码\BLL\obj\Debug\CMCSharpSDKBLL.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKBLL.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKBLL.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDALFactory.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKIBLL.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKIDAL.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKModel.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDAL.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDBUtility.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDALFactory.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDALFactory.xml
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKIBLL.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKIBLL.xml
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKIDAL.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKIDAL.xml
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKModel.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKModel.xml
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDAL.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDAL.xml
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDBUtility.pdb
+E:\My Documents\Desktop\CMCSharpSDK\BLL\bin\Debug\CMCSharpSDKDBUtility.xml
+E:\My Documents\Desktop\CMCSharpSDK\BLL\obj\Debug\ResolveAssemblyReference.cache
+E:\My Documents\Desktop\CMCSharpSDK\BLL\obj\Debug\CMCSharpSDKBLL.dll
+E:\My Documents\Desktop\CMCSharpSDK\BLL\obj\Debug\CMCSharpSDKBLL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\BLL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DALFactory.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\IDAL.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DAL.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DALFactory.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DALFactory.xml
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\IBLL.xml
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\IDAL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\IDAL.xml
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DAL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DAL.xml
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\obj\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\obj\Debug\BLL.pdb
+E:\Projects\01-负荷监测\Software\SignalReceiver\SignalReceiver-20131104\BLL\bin\Debug\BLL.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\BLL.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\BLL.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DALFactory.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\IDAL.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DAL.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DALFactory.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DALFactory.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\IBLL.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\IDAL.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\IDAL.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DAL.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DAL.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\obj\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\ParameterTool\ParameterTool-20131110\BLL\obj\Debug\BLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\BLL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\BLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DALFactory.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\IDAL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DAL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DALFactory.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DALFactory.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\IBLL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\IDAL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\IDAL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DAL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DAL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\obj\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringToolWithLimit-20131110\BLL\obj\Debug\BLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\BLL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\BLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DALFactory.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\IBLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\IDAL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\Model.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DAL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DBUtility.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DALFactory.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DALFactory.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\IBLL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\IBLL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\IDAL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\IDAL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\Model.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\Model.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DAL.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DAL.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DBUtility.pdb
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\bin\Debug\DBUtility.xml
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\obj\Debug\ResolveAssemblyReference.cache
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\obj\Debug\BLL.dll
+E:\Projects\01-负荷监测\Software\MonitoringTool\MonitoringTool-20131110\BLL\obj\Debug\BLL.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\BLL.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\BLL.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\BLL.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DALFactory.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\IBLL.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\IDAL.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\Model.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DAL.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DBUtility.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DALFactory.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DALFactory.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\IBLL.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\IBLL.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\IDAL.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\IDAL.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\Model.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\Model.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DAL.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DAL.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DBUtility.pdb
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\bin\Debug\DBUtility.xml
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\obj\Debug\BLL.dll
+E:\Projects\03-半自磨优化\Software\ControlPlatform\BLL\obj\Debug\BLL.pdb
