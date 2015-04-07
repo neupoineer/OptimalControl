@@ -1,4 +1,6 @@
-﻿namespace OptimalControl.Forms
+﻿using Common;
+
+namespace OptimalControl.Forms
 {
     partial class frmEditParameter
     {
@@ -38,7 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tb_para_name = new System.Windows.Forms.TextBox();
-            this.ntb_para_address = new OptimalControl.Common.NumbericTextbox();
+            this.ntb_para_address = new NumbericTextbox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -181,7 +183,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
-        private Common.NumbericTextbox ntb_para_address;
+        private NumbericTextbox ntb_para_address;
         private System.Windows.Forms.TextBox tb_para_name;
         private System.Windows.Forms.TextBox tb_para_ratio;
         private System.Windows.Forms.ComboBox cb_para_device;

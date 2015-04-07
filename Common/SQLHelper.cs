@@ -13,13 +13,13 @@
 // ***********************************************************************
 
 using System;
-using System.Data;
-using System.Windows.Forms;
 using System.Collections;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
-namespace OptimalControl.Common
+namespace Common
 {
     /// <summary>
     /// 数据库的通用访问代码

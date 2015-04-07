@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BGRIMM")]
 [assembly: AssemblyProduct("ControlPlatform")]
-[assembly: AssemblyCopyright("版权所有 (C) BGRIMM 2014")]
+[assembly: AssemblyCopyright("版权所有 (C) BGRIMM 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -2,7 +2,7 @@
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
-using OptimalControl.Common;
+using Common;
 
 namespace OptimalControl.Forms
 {

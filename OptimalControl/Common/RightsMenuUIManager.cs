@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Model.Rights;
+using Model;
 using OptimalControl.Forms;
 
 namespace OptimalControl.Common

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Model
+namespace Common.Control
 {
     /// <summary>
     /// 变量实体类

@@ -1,4 +1,4 @@
-﻿using OptimalControl.Common;
+﻿using Common;
 
 namespace OptimalControl.Forms
 {
@@ -58,7 +58,7 @@ namespace OptimalControl.Forms
             this.label_Curve_Status = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.tb_TimerInterval = new OptimalControl.Common.NumbericTextbox();
+            this.tb_TimerInterval = new NumbericTextbox();
             this.label16 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl.SuspendLayout();

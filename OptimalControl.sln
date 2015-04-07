@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlPlatform", "OptimalControl\OptimalControl.csproj", "{BE0A9A66-53F3-4C85-8C89-B28C26E49FB8}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalControl", "OptimalControl\OptimalControl.csproj", "{BE0A9A66-53F3-4C85-8C89-B28C26E49FB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{0D8FEDC1-E7EB-4E69-8D63-CEDDE7674DFC}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDAL", "IDAL\IDAL.csproj", "{A983137D-7C98-433E-B1BC-D40A6E6597DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{29B87E5D-7FDC-497F-B99F-BAFE000E684B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{49761B2D-E13E-48CE-ADF3-449608948AD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpertSystem", "ExpertSystem\ExpertSystem.csproj", "{CFA17E14-343E-4C99-8AEC-08EF1D5E274F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,14 @@ Global
 		{29B87E5D-7FDC-497F-B99F-BAFE000E684B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29B87E5D-7FDC-497F-B99F-BAFE000E684B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29B87E5D-7FDC-497F-B99F-BAFE000E684B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49761B2D-E13E-48CE-ADF3-449608948AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49761B2D-E13E-48CE-ADF3-449608948AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49761B2D-E13E-48CE-ADF3-449608948AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49761B2D-E13E-48CE-ADF3-449608948AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA17E14-343E-4C99-8AEC-08EF1D5E274F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA17E14-343E-4C99-8AEC-08EF1D5E274F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA17E14-343E-4C99-8AEC-08EF1D5E274F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA17E14-343E-4C99-8AEC-08EF1D5E274F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

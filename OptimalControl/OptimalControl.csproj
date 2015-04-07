@@ -96,15 +96,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\DoubleBufferListView .cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Common\EmailManager.cs" />
     <Compile Include="Common\GlobalExceptionManager.cs" />
     <Compile Include="Common\MessageFilter.cs" />
     <Compile Include="Common\RightsMenuDataManager.cs" />
     <Compile Include="Common\RightsMenuUIManager.cs" />
-    <Compile Include="Common\ConfigAppSettings.cs" />
     <Compile Include="Forms\frmEditDevice.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,9 +173,6 @@
     <Compile Include="Forms\frmSendFeedbackEMail.designer.cs">
       <DependentUpon>frmSendFeedbackEMail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\NumbericTextbox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\frmDevicesManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,7 +193,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\SQLHelper.cs" />
     <EmbeddedResource Include="Forms\frmEditDevice.resx">
       <DependentUpon>frmEditDevice.cs</DependentUpon>
     </EmbeddedResource>
@@ -316,6 +308,14 @@
     <ProjectReference Include="..\BLLFactory\BLLFactory.csproj">
       <Project>{9EE1285C-A0C6-4215-A57F-C346609956FC}</Project>
       <Name>BLLFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{49761b2d-e13e-48ce-adf3-449608948ad2}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExpertSystem\ExpertSystem.csproj">
+      <Project>{cfa17e14-343e-4c99-8aec-08ef1d5e274f}</Project>
+      <Name>ExpertSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\IBLL\IBLL.csproj">
       <Project>{F5342C35-1005-4E33-83AC-604E782A53B3}</Project>

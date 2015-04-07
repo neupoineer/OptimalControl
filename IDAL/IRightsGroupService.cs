@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Model.Rights;
 
 namespace IDAL
 {
@@ -14,7 +13,7 @@ namespace IDAL
         /// 获取所有权限组信息
         /// </summary>
         /// <returns>权限组实体集合</returns>
-        Dictionary<string, RightsGroup> GetAllRightsGroupInfo();
+        Dictionary<string, Model.RightsGroup> GetAllRightsGroupInfo();
 
         /// <summary>
         /// 根据权限组名称校验权限组是否已经存在
@@ -28,7 +27,7 @@ namespace IDAL
         /// </summary>
         /// <param name="addRightsGroup">要添加的权限组实体</param>
         /// <returns>True:成功/False:失败</returns>
-        bool AddRightsGroup(RightsGroup addRightsGroup);
+        bool AddRightsGroup(Model.RightsGroup addRightsGroup);
 
         /// <summary>
         /// 删除权限组
@@ -42,6 +41,6 @@ namespace IDAL
         /// </summary>
         /// <param name="currentRightsGroup">要修改的权限组实体</param>
         /// <returns>True:成功/False:失败</returns>
-        bool ModifyRightsGroup(RightsGroup currentRightsGroup);
+        bool ModifyRightsGroup(Model.RightsGroup currentRightsGroup);
     }
 }

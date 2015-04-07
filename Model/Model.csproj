@@ -58,19 +58,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Control\Postfix\Operand.cs" />
-    <Compile Include="Control\Postfix\OperandType.cs" />
-    <Compile Include="Control\Postfix\Operators.cs" />
-    <Compile Include="Control\Postfix\OperatorsType.cs" />
-    <Compile Include="Control\Postfix\RPN.cs" />
     <Compile Include="ModelBase.cs" />
-    <Compile Include="Rights\ModelCommonEnum.cs" />
-    <Compile Include="Rights\Operator.cs" />
+    <Compile Include="ModelCommonEnum.cs" />
+    <Compile Include="Operator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rights\Rights.cs" />
-    <Compile Include="Rights\RightsGroup.cs" />
-    <Compile Include="Rights\RightsRelation.cs" />
-    <Compile Include="Control\Variable.cs" />
+    <Compile Include="Rights.cs" />
+    <Compile Include="RightsGroup.cs" />
+    <Compile Include="RightsRelation.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

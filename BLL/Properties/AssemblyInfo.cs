@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过下列属性集
 // 控制。更改这些属性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("CMCSharpSDKBLL")]
-[assembly: AssemblyDescription("CMCSharpSDKBLL")]
+[assembly: AssemblyTitle("BLL")]
+[assembly: AssemblyDescription("BLL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("GroundHog(R) Studio")]
-[assembly: AssemblyProduct("CMCSharpSDKBLL")]
-[assembly: AssemblyCopyright("Copyright(C) 2008 GroundHog(R)")]
-[assembly: AssemblyTrademark("GroundHog(R)")]
+[assembly: AssemblyCompany("BGRIMM")]
+[assembly: AssemblyProduct("BLL")]
+[assembly: AssemblyCopyright("Copyright(C) 2015 BGRIMM")]
+[assembly: AssemblyTrademark("BGRIMM")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 使此程序集中的类型

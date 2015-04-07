@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Model.Control.Postfix;
 
-namespace Model.Control.Postfix
+namespace ExpertSystem
 {
     /// <summary>
     /// Reverse Polish Notation

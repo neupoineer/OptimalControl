@@ -3,7 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
-using OptimalControl.Common;
+using Common;
 using ZedGraph;
 
 namespace OptimalControl.Forms

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
-using Model.Rights;
 
 namespace DAL
 {
@@ -19,7 +18,7 @@ namespace DAL
         /// </summary>
         /// <param name="rightsRelation">权限关系实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool AddRightsRelation(RightsRelation rightsRelation)
+        public bool AddRightsRelation(Model.RightsRelation rightsRelation)
         {
             // 拼接 SQL 命令
             string sqlTxt = string.Format(
@@ -106,7 +105,7 @@ namespace DAL
         /// </summary>
         /// <param name="rightsRelation">权限关系实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool ModifyRightsRelation(RightsRelation rightsRelation)
+        public bool ModifyRightsRelation(Model.RightsRelation rightsRelation)
         {
             // 拼接 SQL 命令
             string sqlTxt = string.Format(
@@ -133,12 +132,12 @@ namespace DAL
         /// 获取所有的权限关系集合
         /// </summary>
         /// <returns>权限关系集合</returns>
-        public List<RightsRelation> GetAllRightsRelation()
+        public List<Model.RightsRelation> GetAllRightsRelation()
         {
             //创建数据集
             DataSet dsRightsRelation = new DataSet("RightsRelation");
             //创建客户集合
-            List<RightsRelation> rightsRelationList = new List<RightsRelation>();
+            List<Model.RightsRelation> rightsRelationList = new List<Model.RightsRelation>();
             //创建查询客户信息的 SQL
             string sqlTxt = "Select R.Id, R.OperatorId, O.OperatorName, R.RightsGroupId, " +
                 "G.GroupName As [RightsGroupName] From RightsRelation As R Join Operator As O " +
@@ -150,7 +149,7 @@ namespace DAL
             //将数据集转换成实体集合
             foreach (DataRow row in dsRightsRelation.Tables["RightsRelation"].Rows)
             {
-                RightsRelation tmpRightsRelation = new RightsRelation();
+                Model.RightsRelation tmpRightsRelation = new Model.RightsRelation();
                 tmpRightsRelation.Id = Convert.ToInt32(row["Id"]);
                 tmpRightsRelation.OperatorId = Convert.ToInt32(row["OperatorId"]);
                 tmpRightsRelation.OperatorName = Convert.ToString(row["OperatorName"]);
@@ -169,12 +168,12 @@ namespace DAL
         /// </summary>
         /// <param name="id">操作员 ID</param>
         /// <returns>权限关系集合</returns>
-        public List<RightsRelation> GetRightsRelationByOperatorId(int id)
+        public List<Model.RightsRelation> GetRightsRelationByOperatorId(int id)
         {
             //创建数据集
             DataSet dsRightsRelation = new DataSet("RightsRelation");
             //创建客户集合
-            List<RightsRelation> rightsRelationList = new List<RightsRelation>();
+            List<Model.RightsRelation> rightsRelationList = new List<Model.RightsRelation>();
             //创建查询客户信息的 SQL
             string sqlTxt = string.Format("Select R.Id, R.OperatorId, O.OperatorName, R.RightsGroupId, " +
                 "G.GroupName As [RightsGroupName] From RightsRelation As R Join Operator As O " +
@@ -187,7 +186,7 @@ namespace DAL
             //将数据集转换成实体集合
             foreach (DataRow row in dsRightsRelation.Tables["RightsRelation"].Rows)
             {
-                RightsRelation tmpRightsRelation = new RightsRelation();
+                Model.RightsRelation tmpRightsRelation = new Model.RightsRelation();
                 tmpRightsRelation.Id = Convert.ToInt32(row["Id"]);
                 tmpRightsRelation.OperatorId = Convert.ToInt32(row["OperatorId"]);
                 tmpRightsRelation.OperatorName = Convert.ToString(row["OperatorName"]);

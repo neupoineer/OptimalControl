@@ -4,8 +4,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
-using Model;
-using Model.Control.Postfix;
+using ExpertSystem;
 using OptimalControl.Forms;
 
 namespace OptimalControl

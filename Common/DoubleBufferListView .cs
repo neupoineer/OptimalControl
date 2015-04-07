@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace OptimalControl.Common
+namespace Common
 {
     public partial class DoubleBufferListView : ListView
     {

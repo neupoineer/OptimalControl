@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Model.Rights
+namespace Model
 {
     /// <summary>
     /// 操作员实体类

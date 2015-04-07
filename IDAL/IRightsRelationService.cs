@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Model.Rights;
 
 namespace IDAL
 {
@@ -15,7 +14,7 @@ namespace IDAL
         /// </summary>
         /// <param name="rightsRelation">权限关系实体</param>
         /// <returns>True:成功/False:失败</returns>
-        bool AddRightsRelation(RightsRelation rightsRelation);
+        bool AddRightsRelation(Model.RightsRelation rightsRelation);
 
         /// <summary>
         /// 根据权限关系 ID 删除权限关系
@@ -36,20 +35,20 @@ namespace IDAL
         /// </summary>
         /// <param name="rightsRelation">权限关系实体</param>
         /// <returns>True:成功/False:失败</returns>
-        bool ModifyRightsRelation(RightsRelation rightsRelation);
+        bool ModifyRightsRelation(Model.RightsRelation rightsRelation);
 
         /// <summary>
         /// 获取所有的权限关系集合
         /// </summary>
         /// <returns>权限关系集合</returns>
-        List<RightsRelation> GetAllRightsRelation();
+        List<Model.RightsRelation> GetAllRightsRelation();
 
         /// <summary>
         /// 根据操作员 ID 获取对应的所有权限关系
         /// </summary>
         /// <param name="id">操作员 ID</param>
         /// <returns>权限关系集合</returns>
-        List<RightsRelation> GetRightsRelationByOperatorId(int id);
+        List<Model.RightsRelation> GetRightsRelationByOperatorId(int id);
 
         /// <summary>
         /// 根据权限组 ID 获取与此权限组相关的权限关系数量

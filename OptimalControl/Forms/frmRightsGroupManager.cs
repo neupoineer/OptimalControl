@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Model.Rights;
 using OptimalControl.Common;
 
 namespace OptimalControl.Forms
@@ -15,15 +14,15 @@ namespace OptimalControl.Forms
         /// <summary>
         /// 当前所有操作员信息集合
         /// </summary>
-        Dictionary<string, Operator> _operatorCollection = null;
+        Dictionary<string, Model.Operator> _operatorCollection = null;
         /// <summary>
         /// 当前所有权限分组信息集合
         /// </summary>
-        Dictionary<string, RightsGroup> _rightsGroupCollection = null;
+        Dictionary<string, Model.RightsGroup> _rightsGroupCollection = null;
         /// <summary>
         /// 当前所有权限关系信息集合
         /// </summary>
-        List<RightsRelation> _rightsRelationList = null;
+        List<Model.RightsRelation> _rightsRelationList = null;
         /// <summary>
         /// 权限菜单界面管理类对象
         /// </summary>
@@ -63,7 +62,7 @@ namespace OptimalControl.Forms
         private int GetRightsGroupIdByRightsGroupName(string rightsGroupName)
         {
             int id = 0;
-            foreach (RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
+            foreach (Model.RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
             {
                 if (tmpRightsGroup.ModelName == rightsGroupName)
                 {
@@ -81,7 +80,7 @@ namespace OptimalControl.Forms
         private int GetOperatorIdByOperatorName(string operatorName)
         {
             int id = 0;
-            foreach (Operator tmpOperator in _operatorCollection.Values)
+            foreach (Model.Operator tmpOperator in _operatorCollection.Values)
             {
                 if (tmpOperator.ModelName == operatorName)
                 {
@@ -131,12 +130,12 @@ namespace OptimalControl.Forms
                 _rightsGroupCollection = rightsGroupManager.GetAllRightsGroupInfo();
 
                 // 遍历取得的权限组集合
-                foreach (RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
+                foreach (Model.RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
                 {
                     // 如果当前权限组的权限集合为空则创建新的空白权限
-                    if (!(tmpRightsGroup.GroupRightsCollection is Dictionary<string, Rights>))
+                    if (!(tmpRightsGroup.GroupRightsCollection is Dictionary<string, Model.Rights>))
                     {
-                        tmpRightsGroup.GroupRightsCollection = new Dictionary<string, Rights>();
+                        tmpRightsGroup.GroupRightsCollection = new Dictionary<string, Model.Rights>();
                         tmpRightsGroup.GroupRightsCollection =
                             _rmdManager.ReadMenuRightsItem(tmpRightsGroup.GroupRightsCollection);
                     }
@@ -332,7 +331,7 @@ namespace OptimalControl.Forms
             try
             {
                 // 遍历当前权限关系列表
-                foreach (RightsRelation rootRightsRelation in _rightsRelationList)
+                foreach (Model.RightsRelation rootRightsRelation in _rightsRelationList)
                 {
                     // 创建根节点
                     TreeNode rootTreeNode = null;
@@ -359,7 +358,7 @@ namespace OptimalControl.Forms
                     }
 
                     // 遍历添加子节点
-                    foreach (RightsRelation tmpRightsRelation in _rightsRelationList)
+                    foreach (Model.RightsRelation tmpRightsRelation in _rightsRelationList)
                     {
                         if (tmpRightsRelation.OperatorId == Convert.ToInt32(rootRightsRelation.OperatorId))
                         {
@@ -428,7 +427,7 @@ namespace OptimalControl.Forms
             {
                 IBLL.IRightsRelationManager rightsRelationManager = bllFactory.BuildRightsRelationManager();
                 // 调用实例方法
-                foreach (RightsRelation tmpRightsRelation in _rightsRelationList)
+                foreach (Model.RightsRelation tmpRightsRelation in _rightsRelationList)
                 {
                     if (!rightsRelationManager.ModifyRightsRelation(tmpRightsRelation))
                     {
@@ -462,12 +461,12 @@ namespace OptimalControl.Forms
             {
                 IBLL.IRightsGroupManager rightsGroupManager = bllFactory.BuildRightsGroupManager();
                 // 调用实例方法
-                foreach (RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
+                foreach (Model.RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
                 {
                     // 如果当前权限组的权限集合为空则创建新的空白权限
-                    if (!(tmpRightsGroup.GroupRightsCollection is Dictionary<string, Rights>))
+                    if (!(tmpRightsGroup.GroupRightsCollection is Dictionary<string, Model.Rights>))
                     {
-                        tmpRightsGroup.GroupRightsCollection = new Dictionary<string, Rights>();
+                        tmpRightsGroup.GroupRightsCollection = new Dictionary<string, Model.Rights>();
                         tmpRightsGroup.GroupRightsCollection =
                             _rmdManager.ReadMenuRightsItem(tmpRightsGroup.GroupRightsCollection);
                     }
@@ -503,20 +502,20 @@ namespace OptimalControl.Forms
             try
             {
                 // 将所有操作员权限状态置为隐藏状态
-                foreach (Operator tmpOperator in _operatorCollection.Values)
-                    foreach (Rights tmpRights in tmpOperator.RightsCollection.Values)
+                foreach (Model.Operator tmpOperator in _operatorCollection.Values)
+                    foreach (Model.Rights tmpRights in tmpOperator.RightsCollection.Values)
                         tmpRights.RightsState = false;
 
                 // 遍历权限关系实体列表
-                foreach (RightsRelation tmpRightsRelation in _rightsRelationList)
+                foreach (Model.RightsRelation tmpRightsRelation in _rightsRelationList)
                     // 遍历操作员实体集合
-                    foreach (Operator tmpOperator in _operatorCollection.Values)
+                    foreach (Model.Operator tmpOperator in _operatorCollection.Values)
                         // 如果操作员名称与权限关系中相同
                         if (tmpOperator.ModelName == tmpRightsRelation.OperatorName)
                             // 遍历权限组实体权限集合
-                            foreach (Rights tmpGroupRights in _rightsGroupCollection[tmpRightsRelation.RightsGroupName].GroupRightsCollection.Values)
+                            foreach (Model.Rights tmpGroupRights in _rightsGroupCollection[tmpRightsRelation.RightsGroupName].GroupRightsCollection.Values)
                                 // 遍历操作员权限集合
-                                foreach (Rights tmpRights in tmpOperator.RightsCollection.Values)
+                                foreach (Model.Rights tmpRights in tmpOperator.RightsCollection.Values)
                                     // 如果权限名称相同
                                     if (tmpRights.ModelName == tmpGroupRights.ModelName)
                                         // 如果组权限为显示状态则将组权限赋予给操作员权限
@@ -527,7 +526,7 @@ namespace OptimalControl.Forms
                 IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
 
                 // 遍历保存操作员权限
-                foreach (Operator tmpOperator in _operatorCollection.Values)
+                foreach (Model.Operator tmpOperator in _operatorCollection.Values)
                 {
                     if (!operatorManager.ModifyOperator(tmpOperator))
                     {
@@ -588,7 +587,7 @@ namespace OptimalControl.Forms
                 // 标识是否存在此权限组
                 bool isExistGroup = false;
                 // 校验指定权限组名称是否存在
-                foreach (RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
+                foreach (Model.RightsGroup tmpRightsGroup in _rightsGroupCollection.Values)
                 {
                     if (tmpRightsGroup.ModelName == groupName)
                     {
@@ -700,11 +699,11 @@ namespace OptimalControl.Forms
                     IBLL.IRightsGroupManager rightsGroupManager = bllFactory.BuildRightsGroupManager();
                     // 如果当前权限组权限集合为空则创建新的权限结构
                     if (!(_rightsGroupCollection[_currentEditGroupName].GroupRightsCollection is
-                        Dictionary<string, Rights>))
+                        Dictionary<string, Model.Rights>))
                     {
                         // 创建新的权限结构
                         _rightsGroupCollection[_currentEditGroupName].GroupRightsCollection =
-                            new Dictionary<string, Rights>();
+                            new Dictionary<string, Model.Rights>();
                         // 读取空白权限
                         _rightsGroupCollection[_currentEditGroupName].GroupRightsCollection =
                             _rmdManager.ReadMenuRightsItem(_rightsGroupCollection[_currentEditGroupName].GroupRightsCollection);
@@ -768,9 +767,9 @@ namespace OptimalControl.Forms
                         string groupName = dgvGroupList.SelectedCells[0].OwningRow.Cells["ModelName"].Value.ToString();
 
                         // 如果当前权限组的权限集合为空则创建新的空白权限
-                        if (!(_rightsGroupCollection[groupName].GroupRightsCollection is Dictionary<string, Rights>))
+                        if (!(_rightsGroupCollection[groupName].GroupRightsCollection is Dictionary<string, Model.Rights>))
                         {
-                            _rightsGroupCollection[groupName].GroupRightsCollection = new Dictionary<string, Rights>();
+                            _rightsGroupCollection[groupName].GroupRightsCollection = new Dictionary<string, Model.Rights>();
                             _rightsGroupCollection[groupName].GroupRightsCollection =
                                 _rmdManager.ReadMenuRightsItem(_rightsGroupCollection[groupName].GroupRightsCollection);
                         }
@@ -869,11 +868,11 @@ namespace OptimalControl.Forms
                     _rightsViewIsChecked = false;
 
                     if (!(_operatorCollection[e.Node.Text].RightsCollection is 
-                        Dictionary<string, Rights>))
+                        Dictionary<string, Model.Rights>))
                     {
                         // 为当前选择的操作员创建新的空权限数据
                         _operatorCollection[e.Node.Text].RightsCollection =
-                            new Dictionary<string, Rights>();
+                            new Dictionary<string, Model.Rights>();
                         _operatorCollection[e.Node.Text].RightsCollection =
                             _rmdManager.ReadMenuRightsItem(_operatorCollection[e.Node.Text].RightsCollection);
                     }
@@ -896,11 +895,11 @@ namespace OptimalControl.Forms
                     _rightsViewIsChecked = true;
 
                     if (!(_rightsGroupCollection[e.Node.Text].GroupRightsCollection is 
-                        Dictionary<string, Rights>))
+                        Dictionary<string, Model.Rights>))
                     {
                         // 为当前选择的权限组创建新的空权限数据
                         _rightsGroupCollection[e.Node.Text].GroupRightsCollection =
-                            new Dictionary<string, Rights>();
+                            new Dictionary<string, Model.Rights>();
                         _rightsGroupCollection[e.Node.Text].GroupRightsCollection =
                             _rmdManager.ReadMenuRightsItem(_rightsGroupCollection[e.Node.Text].GroupRightsCollection);
                     }
@@ -992,9 +991,9 @@ namespace OptimalControl.Forms
             {
                 BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
                 IBLL.IRightsGroupManager rightsGroupManager = bllFactory.BuildRightsGroupManager();
-                RightsGroup addRightsGroup = new RightsGroup();
+                Model.RightsGroup addRightsGroup = new Model.RightsGroup();
                 addRightsGroup.ModelName = "<- 未命名 ->";
-                addRightsGroup.GroupRightsCollection = new Dictionary<string, Rights>();
+                addRightsGroup.GroupRightsCollection = new Dictionary<string, Model.Rights>();
                 addRightsGroup.GroupRightsCollection = _rmdManager.ReadMenuRightsItem(addRightsGroup.GroupRightsCollection);
 
                 if (rightsGroupManager.CheckRightsGroupExist(addRightsGroup.ModelName))

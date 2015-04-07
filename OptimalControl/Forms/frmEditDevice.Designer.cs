@@ -1,4 +1,6 @@
-﻿namespace OptimalControl.Forms
+﻿using Common;
+
+namespace OptimalControl.Forms
 {
     partial class frmEditDevice
     {
@@ -38,7 +40,7 @@
             this.tb_device_ip = new System.Windows.Forms.TextBox();
             this.cb_device_sync = new System.Windows.Forms.CheckBox();
             this.cb_device_state = new System.Windows.Forms.CheckBox();
-            this.ntb_device_port = new OptimalControl.Common.NumbericTextbox();
+            this.ntb_device_port = new NumbericTextbox();
             this.tb_device_name = new System.Windows.Forms.TextBox();
             this.nud_device_unitid = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
@@ -223,7 +225,7 @@
         private System.Windows.Forms.TextBox tb_device_ip;
         private System.Windows.Forms.CheckBox cb_device_sync;
         private System.Windows.Forms.CheckBox cb_device_state;
-        private Common.NumbericTextbox ntb_device_port;
+        private NumbericTextbox ntb_device_port;
         private System.Windows.Forms.TextBox tb_device_name;
         private System.Windows.Forms.NumericUpDown nud_device_unitid;
     }

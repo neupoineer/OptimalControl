@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Model.Rights;
 
 namespace OptimalControl.Forms
 {
@@ -12,7 +11,7 @@ namespace OptimalControl.Forms
     {
         #region Private Members
         frmMain _frmMain = null;
-        Operator _currentOperator = null;
+        Model.Operator _currentOperator = null;
         bool isPass = false;
         // 创建一个背景窗体
         Form frmBackground = new Form();
@@ -24,7 +23,7 @@ namespace OptimalControl.Forms
         /// </summary>
         /// <param name="frmMain">主窗体</param>
         /// <param name="currentOperator">当前登录操作员实体</param>
-        public frmLockScreen(frmMain frmMain, Operator currentOperator)
+        public frmLockScreen(frmMain frmMain, Model.Operator currentOperator)
         {
             // 设置窗体同步
             frmBackground.TopLevel = false;

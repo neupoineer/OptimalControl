@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Model.Rights;
 
 namespace OptimalControl.Forms
 {
@@ -47,7 +46,7 @@ namespace OptimalControl.Forms
                 // 创建操作员管理类实例
                 IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
                 // 调用实例方法　
-                Dictionary<string, Operator> operatorCollection = operatorManager.GetAllOperatorInfo();
+                Dictionary<string, Model.Operator> operatorCollection = operatorManager.GetAllOperatorInfo();
 
                 // 如果包含操作员信息
                 if (operatorCollection.Count > 0)
@@ -69,7 +68,7 @@ namespace OptimalControl.Forms
                 // 创建权限管理类实例
                 IBLL.IRightsGroupManager rightsGroupManager = bllFactory.BuildRightsGroupManager();
                 // 调用实例方法
-                Dictionary<string, RightsGroup> rightsGroupCollection = rightsGroupManager.GetAllRightsGroupInfo();
+                Dictionary<string, Model.RightsGroup> rightsGroupCollection = rightsGroupManager.GetAllRightsGroupInfo();
 
                 // 如果包含权限组信息
                 if (rightsGroupCollection.Count > 0)
@@ -127,12 +126,12 @@ namespace OptimalControl.Forms
                 // 创建权限关系管理类实例
                 IBLL.IRightsRelationManager rightsRelationManager = bllFactory.BuildRightsRelationManager();
                 // 调用实例方法
-                List<RightsRelation> rightsRelationList =
+                List<Model.RightsRelation> rightsRelationList =
                     rightsRelationManager.GetRightsRelationByOperatorId(
                     Convert.ToInt32(cboOperatorName.SelectedValue));
 
                 // 校验当前选择的关系是否已存在
-                foreach (RightsRelation tmpRightsRelation in rightsRelationList)
+                foreach (Model.RightsRelation tmpRightsRelation in rightsRelationList)
                 {
                     if (tmpRightsRelation.RightsGroupId ==
                         Convert.ToInt32(cboGroupName.SelectedValue))
@@ -149,7 +148,7 @@ namespace OptimalControl.Forms
                 }
 
                 // 执行添加操作
-                RightsRelation rightsRelation = new RightsRelation();
+                Model.RightsRelation rightsRelation = new Model.RightsRelation();
                 rightsRelation.OperatorId = Convert.ToInt32(cboOperatorName.SelectedValue);
                 rightsRelation.RightsGroupId = Convert.ToInt32(cboGroupName.SelectedValue);
                 if (!rightsRelationManager.AddRightsRelation(rightsRelation))

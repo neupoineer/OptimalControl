@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace OptimalControl.Common
+namespace Common
 {
     /// <summary>    
     /// 对exe.Config文件中的appSettings段进行读写配置操作    

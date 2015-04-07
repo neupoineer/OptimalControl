@@ -1,4 +1,4 @@
-namespace Model.Rights
+namespace Model
 {
     /// <summary>
     /// 当前数据操作类型

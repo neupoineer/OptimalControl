@@ -1,4 +1,6 @@
-﻿namespace OptimalControl.Forms
+﻿using Common;
+
+namespace OptimalControl.Forms
 {
     partial class frmEditCurve
     {
@@ -54,7 +56,7 @@
             this.tb_curve_ymax = new System.Windows.Forms.TextBox();
             this.tb_curve_symbolsize = new System.Windows.Forms.TextBox();
             this.tb_curve_size = new System.Windows.Forms.TextBox();
-            this.ntb_curve_address = new OptimalControl.Common.NumbericTextbox();
+            this.ntb_curve_address = new NumbericTextbox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -355,7 +357,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
-        private Common.NumbericTextbox ntb_curve_address;
+        private NumbericTextbox ntb_curve_address;
         private System.Windows.Forms.ComboBox cb_curve_device;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;

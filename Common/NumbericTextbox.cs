@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
-namespace OptimalControl.Common
+namespace Common
 {
     public class NumbericTextbox : TextBox
     {

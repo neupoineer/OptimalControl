@@ -1,4 +1,6 @@
-﻿namespace OptimalControl.Forms
+﻿using Common;
+
+namespace OptimalControl.Forms
 {
     partial class frmMain
     {
@@ -74,7 +76,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainerH1_2H2_1V1_2V2 = new System.Windows.Forms.SplitContainer();
-            this.listview_parainfo = new OptimalControl.Common.DoubleBufferListView();
+            this.listview_parainfo = new DoubleBufferListView();
             this.splitContainerH1_2H2_1V1_2V2_2V3 = new System.Windows.Forms.SplitContainer();
             this.zgc_realtime = new ZedGraph.ZedGraphControl();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -1028,7 +1030,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1_2V2;
-        private Common.DoubleBufferListView listview_parainfo;
+        private DoubleBufferListView listview_parainfo;
         private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1_2V2_2V3;
         private ZedGraph.ZedGraphControl zgc_realtime;
         private System.Windows.Forms.GroupBox groupBox4;
