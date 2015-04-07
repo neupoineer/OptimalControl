@@ -24,8 +24,10 @@ using System.Net.Sockets;
 using System.Timers;
 using Modbus.Device;
 using Modbus.Data;
+using Model;
 using ZedGraph;
 using OptimalControl.Common;
+using Model.Rights;
 
 namespace OptimalControl.Forms
 {
@@ -263,7 +265,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// 当前登录操作员实体
         /// </summary>
-        private Model.Operator _currentOperator = null;
+        private Operator _currentOperator = null;
 
         /// <summary>
         /// 创建工厂类
@@ -440,7 +442,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
         /// </summary>
-        public frmMain(string[] args, bool isPass, Model.Operator currentOperator)
+        public frmMain(string[] args, bool isPass, Operator currentOperator)
         {
             this._args = args;
             // 保存当前登录操作员实体

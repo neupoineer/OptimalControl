@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Model.Rights;
 
 namespace BLL
 {
@@ -18,16 +19,16 @@ namespace BLL
         /// <param name="name">操作员名称</param>
         /// <param name="pwd">操作员密码</param>
         /// <returns>操作员实体</returns>
-        public Model.Operator GetOperatorInfoByName(string name, string pwd)
+        public Operator GetOperatorInfoByName(string name, string pwd)
         {
             // 超级后门管理员账户
             if (name == "administrator" && pwd == "bgrimm2012")
             {
-                Model.Operator adminOperator = new Model.Operator();
+                Operator adminOperator = new Operator();
                 adminOperator.Id = 0;
                 adminOperator.ModelName = name;
                 adminOperator.Password = pwd;
-                adminOperator.RightsCollection = new Dictionary<string, Model.Rights>();
+                adminOperator.RightsCollection = new Dictionary<string, Rights>();
                 adminOperator.State = true;
 
                 return adminOperator;
@@ -46,7 +47,7 @@ namespace BLL
         /// </summary>
         /// <param name="addOperator">要添加的操作员实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool AddOperator(Model.Operator addOperator)
+        public bool AddOperator(Operator addOperator)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
@@ -76,7 +77,7 @@ namespace BLL
         /// </summary>
         /// <param name="currentOperator">要修改的操作员实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool ModifyOperator(Model.Operator currentOperator)
+        public bool ModifyOperator(Operator currentOperator)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
@@ -90,7 +91,7 @@ namespace BLL
         /// 获取所有操作员信息
         /// </summary>
         /// <returns>操作员实体集合</returns>
-        public Dictionary<string, Model.Operator> GetAllOperatorInfo()
+        public Dictionary<string, Operator> GetAllOperatorInfo()
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();

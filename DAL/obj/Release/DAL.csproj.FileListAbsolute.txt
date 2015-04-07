@@ -67,3 +67,14 @@ E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalContr
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl-20150401\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl-20150401\DAL\obj\Release\DAL.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl-20150401\DAL\obj\Release\DAL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\DAL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\DAL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\DBUtility.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\IDAL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\Model.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\DBUtility.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\IDAL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\bin\Release\Model.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\obj\Release\DAL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\obj\Release\DAL.pdb

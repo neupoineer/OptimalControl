@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
+using Model;
+using Model.Control.Postfix;
 using OptimalControl.Forms;
 
 namespace OptimalControl
@@ -43,6 +46,16 @@ namespace OptimalControl
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             if (instance == null)
             {
+                string tmpExp = "23+34*45/(5+6+7)>0&!1>2";//"1.0+3/2-tan(45)/(1+1)";
+                RPN rpn = new RPN();
+                if (rpn.Parse(tmpExp))
+                {
+                    MessageBox.Show(string.Format("{0} :\r\n {1} :\r\n {2}", 
+                        rpn.Evaluate().ToString(), 
+                        tmpExp,
+                        rpn.RPNExpression));
+                }
+
                 frmLogin frmLogin = new frmLogin();
                 frmLogin.ShowInTaskbar = false;
                 frmLogin.StartPosition = FormStartPosition.CenterScreen;

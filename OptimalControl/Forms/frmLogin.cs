@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Model.Rights;
 
 namespace OptimalControl.Forms
 {
@@ -22,7 +23,7 @@ namespace OptimalControl.Forms
 
         // 保存登录身份是否合法验证结果
         internal bool isPass = false;
-        internal Model.Operator currentOperator;
+        internal Operator currentOperator;
 
         #region Private Methods
         /// <summary>

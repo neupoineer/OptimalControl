@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Model.Rights;
 
 namespace BLL
 {
@@ -15,7 +16,7 @@ namespace BLL
         /// 获取所有权限组信息
         /// </summary>
         /// <returns>权限组实体集合</returns>
-        public Dictionary<string, Model.RightsGroup> GetAllRightsGroupInfo()
+        public Dictionary<string, RightsGroup> GetAllRightsGroupInfo()
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
@@ -30,7 +31,7 @@ namespace BLL
         /// </summary>
         /// <param name="addRightsGroup">要添加的权限组实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool AddRightsGroup(Model.RightsGroup addRightsGroup)
+        public bool AddRightsGroup(RightsGroup addRightsGroup)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
@@ -60,7 +61,7 @@ namespace BLL
         /// </summary>
         /// <param name="currentRightsGroup">要修改的权限组实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool ModifyRightsGroup(Model.RightsGroup currentRightsGroup)
+        public bool ModifyRightsGroup(RightsGroup currentRightsGroup)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();

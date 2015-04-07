@@ -21,3 +21,8 @@ E:\Projects\03-半自磨优化\Software\ControlPlatform-20141024\Model\bin\Relea
 E:\Projects\03-半自磨优化\Software\ControlPlatform-20141024\Model\bin\Release\Model.pdb
 E:\Projects\03-半自磨优化\Software\ControlPlatform-20141024\Model\obj\Release\Model.dll
 E:\Projects\03-半自磨优化\Software\ControlPlatform-20141024\Model\obj\Release\Model.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Model\bin\Release\Model.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Model\bin\Release\Model.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Model\obj\Release\Model.csprojResolveAssemblyReference.cache
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Model\obj\Release\Model.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Model\obj\Release\Model.pdb

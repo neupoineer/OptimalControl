@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using OptimalControl.Common;
+using Model.Rights;
 
 namespace OptimalControl.Forms
 {
@@ -15,7 +16,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// 当前登录操作员实体
         /// </summary>
-        Model.Operator _currentOperator = null;
+        Operator _currentOperator = null;
         /// <summary>
         /// 主界面被管理的菜单对象
         /// </summary>
@@ -149,7 +150,7 @@ namespace OptimalControl.Forms
         /// <param name="currentOperator">当前登录操作员实体</param>
         /// <param name="msMain">被管理的主菜单对象</param>
         /// <param name="isModify">是否显示为修改密码界面</param>
-        public frmOperatorManager(Model.Operator currentOperator, MenuStrip msMain, bool isModify)
+        public frmOperatorManager(Operator currentOperator, MenuStrip msMain, bool isModify)
         {
             // 构建设计器控件
             InitializeComponent();
@@ -199,10 +200,10 @@ namespace OptimalControl.Forms
                             return;
 
                         // 创建新的操作员实体
-                        Model.Operator addOperator = new Model.Operator();
+                        Operator addOperator = new Operator();
                         addOperator.ModelName = this.txtOperatorName.Text.Trim();
                         addOperator.Password = this.txtOperatorPwd.Text.Trim();
-                        addOperator.RightsCollection = new Dictionary<string, Model.Rights>();
+                        addOperator.RightsCollection = new Dictionary<string, Rights>();
                         // 创建权限菜单管理类实例
                         RightsMenuDataManager rmManager = new RightsMenuDataManager();
                         // 创建权限列表结构

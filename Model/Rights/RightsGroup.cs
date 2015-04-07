@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Model
+namespace Model.Rights
 {
     /// <summary>
     /// 权限组实体类

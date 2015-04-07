@@ -40,3 +40,10 @@ E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalContr
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl-20150401\IBLL\obj\Release\IBLL.csprojResolveAssemblyReference.cache
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl-20150401\IBLL\obj\Release\IBLL.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl-20150401\IBLL\obj\Release\IBLL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\IBLL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\IBLL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\Model.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\Model.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\obj\Release\IBLL.csprojResolveAssemblyReference.cache
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\obj\Release\IBLL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\obj\Release\IBLL.pdb

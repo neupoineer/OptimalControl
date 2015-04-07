@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Model.Rights;
 
 namespace OptimalControl.Common
 {
@@ -37,10 +38,10 @@ namespace OptimalControl.Common
         /// </summary>
         /// <param name="rightCollection">要保存到的菜单根项权限集合</param>
         /// <param name="tsmiRootLevel">当前菜单权限相对根项</param>
-        private Model.Rights GetMenuRightsChildrenItem(Dictionary<string, Model.Rights> rightCollection, ToolStripMenuItem tsmiRootLevel)
+        private Rights GetMenuRightsChildrenItem(Dictionary<string, Rights> rightCollection, ToolStripMenuItem tsmiRootLevel)
         {
             // 显示下级菜单项元素 Text
-            Model.Rights secondRights = null;
+            Rights secondRights = null;
 
             // 使用 ToolStripItem 基类遍历获取下级菜单项
             foreach (ToolStripItem tsmiNextLevel in tsmiRootLevel.DropDownItems)
@@ -48,7 +49,7 @@ namespace OptimalControl.Common
                 // ID 号累加
                 _rightsId++;
                 // 显示下级菜单项元素 Text
-                secondRights = new Model.Rights();
+                secondRights = new Rights();
                 secondRights.Id = _rightsId;
                 secondRights.ModelName = tsmiNextLevel.Name;
                 secondRights.RightsState = false;
@@ -79,12 +80,12 @@ namespace OptimalControl.Common
         /// </summary>
         /// <param name="rightCollection">权限集合</param>
         /// <param name="tsmiRootLevel">当前菜单权限相对根项</param>
-        private void LoadMenuRightsChildrenItem(Dictionary<string, Model.Rights> rightCollection, ToolStripMenuItem tsmiRootLevel)
+        private void LoadMenuRightsChildrenItem(Dictionary<string, Rights> rightCollection, ToolStripMenuItem tsmiRootLevel)
         {
             // 使用 ToolStripItem 基类遍历获取下级菜单项
             foreach (ToolStripItem tsmiNextLevel in tsmiRootLevel.DropDownItems)
             {
-                foreach (Model.Rights tmpRights in rightCollection.Values)
+                foreach (Rights tmpRights in rightCollection.Values)
                 {
                     // 如果是菜单项而不是其它菜单项类型
                     if (tsmiNextLevel is ToolStripMenuItem)
@@ -124,7 +125,7 @@ namespace OptimalControl.Common
         /// </summary>
         /// <param name="rightCollection">要保存到的目标权限集合</param>
         /// <returns>权限集合</returns>
-        internal Dictionary<string, Model.Rights> ReadMenuRightsItem(Dictionary<string, Model.Rights> rightCollection)
+        internal Dictionary<string, Rights> ReadMenuRightsItem(Dictionary<string, Rights> rightCollection)
         {
             if (!(this.MsMain is MenuStrip))
                 throw new Exception("未指定被管理的菜单对象！请使用本方法的另一重载指定菜单对象！");
@@ -138,7 +139,7 @@ namespace OptimalControl.Common
         /// <param name="msCurrentMenu">当前被管理的菜单对象</param>
         /// <param name="rightCollection">要保存到的目标权限集合</param>
         /// <returns>权限集合</returns>
-        internal Dictionary<string, Model.Rights> ReadMenuRightsItem(MenuStrip msCurrentMenu, Dictionary<string, Model.Rights> rightCollection)
+        internal Dictionary<string, Rights> ReadMenuRightsItem(MenuStrip msCurrentMenu, Dictionary<string, Rights> rightCollection)
         {
             // 遍历获取菜单根项
             foreach (ToolStripMenuItem tsmiRootLevel in msCurrentMenu.Items)
@@ -148,7 +149,7 @@ namespace OptimalControl.Common
                     // ID 号累加
                     _rightsId++;
                     // 显示菜单根项元素 Text
-                    Model.Rights rootRights = new Model.Rights();
+                    Rights rootRights = new Rights();
                     rootRights.Id = _rightsId;
                     rootRights.ModelName = tsmiRootLevel.Name;
                     rootRights.RightsCaption = tsmiRootLevel.Text;
@@ -157,7 +158,7 @@ namespace OptimalControl.Common
 
                     // 如果未添加此权限则添加此权限到菜单根项的权限集合
                     bool isExist = false;
-                    foreach (Model.Rights tmpRights in rightCollection.Values)
+                    foreach (Rights tmpRights in rightCollection.Values)
                     {
                         if (tmpRights.ModelName == rootRights.ModelName)
                             isExist = true;
@@ -177,7 +178,7 @@ namespace OptimalControl.Common
         /// </summary>
         /// <param name="rightCollection">要保存到的目标权限集合</param>
         /// <returns>权限集合</returns>
-        internal void LoadMenuRightsItem(Dictionary<string, Model.Rights> rightCollection)
+        internal void LoadMenuRightsItem(Dictionary<string, Rights> rightCollection)
         {
             if (!(this.MsMain is MenuStrip))
                 throw new Exception("未指定被管理的菜单对象！请使用本方法的另一重载指定菜单对象！");
@@ -190,9 +191,9 @@ namespace OptimalControl.Common
         /// </summary>
         /// <param name="msCurrentMenu">当前被管理的菜单对象</param>
         /// <param name="rightCollection">权限集合</param>
-        internal void LoadMenuRightsItem(MenuStrip msCurrentMenu, Dictionary<string, Model.Rights> rightCollection)
+        internal void LoadMenuRightsItem(MenuStrip msCurrentMenu, Dictionary<string, Rights> rightCollection)
         {
-            foreach (Model.Rights tmpRights in rightCollection.Values)
+            foreach (Rights tmpRights in rightCollection.Values)
             {
                 // 遍历获取菜单根项
                 foreach (ToolStripMenuItem tsmiRootLevel in msCurrentMenu.Items)

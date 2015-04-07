@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Model.Rights;
 using OptimalControl.Forms;
 
 namespace OptimalControl.Common
@@ -69,7 +70,7 @@ namespace OptimalControl.Common
         /// <param name="currentChildTreeNode">当前子节点</param>
         /// <param name="rightsCollection">所有权限集合</param>
         /// <returns>加载了所有次级子节点的当前子节点</returns>
-        private TreeNode LoadAllChildTreeNode(TreeNode currentChildTreeNode, Dictionary<string, Model.Rights> rightsCollection)
+        private TreeNode LoadAllChildTreeNode(TreeNode currentChildTreeNode, Dictionary<string, Rights> rightsCollection)
         {
             // 如果是菜单分隔则设置突出显示
             if (currentChildTreeNode.Text == "━━━━")
@@ -78,7 +79,7 @@ namespace OptimalControl.Common
                 currentChildTreeNode.ToolTipText = "<-- 菜单分隔 -->";
             }
             // 遍历同父权限项集合
-            foreach (Model.Rights tmpRights in rightsCollection.Values)
+            foreach (Rights tmpRights in rightsCollection.Values)
             {
                 // 如果当前父级权限项的权限名称与当前节点相同
                 if (tmpRights.ParentLevelRightsName == currentChildTreeNode.Tag.ToString())
@@ -88,9 +89,9 @@ namespace OptimalControl.Common
                     newChildTreeNode.Tag = tmpRights.ModelName;
                     newChildTreeNode.Checked = tmpRights.RightsState;
                     // 创建同父权限项集合
-                    List<Model.Rights> sameNessParentRightsList = new List<Model.Rights>();
+                    List<Rights> sameNessParentRightsList = new List<Rights>();
                     // 获取所有与当前权限项具有相同父权限项的权限项
-                    foreach (Model.Rights sameNessParentRights in rightsCollection.Values)
+                    foreach (Rights sameNessParentRights in rightsCollection.Values)
                     {
                         if (sameNessParentRights.ParentLevelRightsName == tmpRights.ParentLevelRightsName)
                             sameNessParentRightsList.Add(sameNessParentRights);
@@ -110,7 +111,7 @@ namespace OptimalControl.Common
         /// 将操作员集合数据绑定显示到数据视图
         /// </summary>
         /// <param name="operatorCollection">操作员集合</param>
-        internal void BindOperatorInfoToDataGridView(Dictionary<string, Model.Operator> operatorCollection)
+        internal void BindOperatorInfoToDataGridView(Dictionary<string, Operator> operatorCollection)
         {
             try
             {
@@ -167,7 +168,7 @@ namespace OptimalControl.Common
         /// 将权限集合数据绑定显示到数据视图
         /// </summary>
         /// <param name="rightsCollection">权限集合</param>
-        internal void BindDataToDataGridView(Dictionary<string, Model.Rights> rightsCollection)
+        internal void BindDataToDataGridView(Dictionary<string, Rights> rightsCollection)
         {
             try
             {
@@ -255,14 +256,14 @@ namespace OptimalControl.Common
         /// 将数据绑定加载到树形视图
         /// </summary>
         /// <param name="rightsCollection">权限集合</param>
-        internal void BindDataToTreeView(Dictionary<string, Model.Rights> rightsCollection)
+        internal void BindDataToTreeView(Dictionary<string, Rights> rightsCollection)
         {
             // 禁用树视图的重绘
             _tvRightsView.BeginUpdate();
             // 清除原有节点
             _tvRightsView.Nodes.Clear();
             // 遍历权限集合以加载数据
-            foreach (Model.Rights tmpRights in rightsCollection.Values)
+            foreach (Rights tmpRights in rightsCollection.Values)
             {
                 // 定义权限根项
                 TreeNode rootTreeNode = null;
@@ -339,12 +340,12 @@ namespace OptimalControl.Common
             {
                 RightsManagerUI.OperatorCollection = operatorManager.GetAllOperatorInfo();
                 // 检查所有操作员的权限列表
-                foreach (Model.Operator tmpOperator in RightsManagerUI.OperatorCollection.Values)
+                foreach (Operator tmpOperator in RightsManagerUI.OperatorCollection.Values)
                 {
                     // 如果权限为空就创建一个新的空权限集合
-                    if (!(tmpOperator.RightsCollection is Dictionary<string, Model.Rights>))
+                    if (!(tmpOperator.RightsCollection is Dictionary<string, Rights>))
                     {
-                        tmpOperator.RightsCollection = new Dictionary<string, Model.Rights>();
+                        tmpOperator.RightsCollection = new Dictionary<string, Rights>();
                         // 创建权限管理类实例
                         RightsMenuDataManager rmdManager = new RightsMenuDataManager();
                         // 创建权限集合空结构
@@ -358,7 +359,7 @@ namespace OptimalControl.Common
                     // 将操作员集合数据绑定显示到数据视图
                     BindOperatorInfoToDataGridView(RightsManagerUI.OperatorCollection);
                     // 重新指定当前登录操作员对象
-                    foreach (Model.Operator tmpOperator in RightsManagerUI.OperatorCollection.Values)
+                    foreach (Operator tmpOperator in RightsManagerUI.OperatorCollection.Values)
                     {
                         if (tmpOperator.ModelName == RightsManagerUI.CurrentOperator.ModelName)
                         {
