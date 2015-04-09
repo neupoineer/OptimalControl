@@ -22,6 +22,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Net.Sockets;
 using System.Timers;
+using ExpertSystem;
 using Modbus.Device;
 using Modbus.Data;
 using Utility;
@@ -179,12 +180,17 @@ namespace OptimalControl.Forms
         private string _sqlGetHistoryData3 =
             "EXEC ('SELECT [Time] AS ''时间'',' + @sql2 + ' 	FROM (SELECT * FROM [@DataTable] WHERE [Time] &gt;= ''@StartTime'' AND [Time] &lt; ''@EndTime'') AS a PIVOT (MAX([Value]) FOR [ParameterName] IN (' + @sql1 + ')) b GROUP BY [Time] ORDER BY [Time]');";
 
+        private string _sqlGetParameters =
+            "SELECT * FROM @ParametersTable WHERE DeviceID = @DeviceID";
+
         /// <summary>
         /// The data table name
         /// </summary>
         private string _dataTable = "Data";
 
         private string _curvesTable = "Curves";
+
+        private string _parametersTable = "Parameters";
 
         /// <summary>
         /// The DCS name displayed in list
@@ -494,10 +500,6 @@ namespace OptimalControl.Forms
                 string SQLGetDevices = ConfigAppSettings.GetSettingString("SQLGetDevices", "SELECT * FROM @DevicesTable");
                 string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Devices");
 
-                string SQLGetParameters = ConfigAppSettings.GetSettingString("SQLGetParameters",
-                    "SELECT * FROM @ParametersTable WHERE DeviceID = @DeviceID");
-                string ParametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameters");
-
                 _sqlSaveData[0] = ConfigAppSettings.GetSettingString("SQLSaveData0", ",");
                 _sqlSaveData[1] = ConfigAppSettings.GetSettingString("SQLSaveData1",
                     "INSERT INTO @DataTable (Time, ParameterName, Value, DeviceID) VALUES ");
@@ -512,10 +514,15 @@ namespace OptimalControl.Forms
                     "DECLARE @sql2 varchar(8000); SELECT @sql2 = ISNULL(@sql2 + ''',MAX([' , '') + [Name] +']) AS ''' + [Name]  FROM [@CurvesTable] GROUP BY [Name]; SET @sql2 = 'MAX([' + @sql2 + '''';");
                 _sqlGetHistoryData3 = ConfigAppSettings.GetSettingString("SQLGetHistoryData3",
                     "EXEC ('SELECT [Time] AS ''时间'',' + @sql2 + ' 	FROM (SELECT * FROM [@DataTable] WHERE [Time] &gt;= ''@StartTime'' AND [Time] &lt; ''@EndTime'') AS a PIVOT (MAX([Value]) FOR [ParameterName] IN (' + @sql1 + ')) b GROUP BY [Time] ORDER BY [Time]');");
-                
+
+                _sqlGetParameters = ConfigAppSettings.GetSettingString("SQLGetParameters",
+                    "SELECT * FROM @ParametersTable WHERE DeviceID = @DeviceID");
+
                 _dataTable = ConfigAppSettings.GetSettingString("DataTable", "Data");
 
                 _curvesTable = ConfigAppSettings.GetSettingString("CurvesTable", "Curves");
+
+                _parametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameters");
 
                 _dcsName = ConfigAppSettings.GetSettingString("DCSName", "磨机工况信息");
 
@@ -526,49 +533,53 @@ namespace OptimalControl.Forms
 
                 for (int deviceID = 0; deviceID < deviceDataTable.Rows.Count; deviceID++)
                 {
-                    _devices[deviceID] = new Device();
-                    _devices[deviceID].Id = Convert.ToInt32(deviceDataTable.Rows[deviceID][0]);
-                    _devices[deviceID].Name = Convert.ToString(deviceDataTable.Rows[deviceID][1]);
-                    _devices[deviceID].State = Convert.ToBoolean(deviceDataTable.Rows[deviceID][2]);
-                    _devices[deviceID].SyncState = Convert.ToBoolean(deviceDataTable.Rows[deviceID][3]);
-                    _devices[deviceID].ModbusTcpDevice = new ModbusTcpDevice
+                    _devices[deviceID] = new Device
                     {
-                        IpAddress = Convert.ToString(deviceDataTable.Rows[deviceID][4]),
-                        PortName = Convert.ToInt32(deviceDataTable.Rows[deviceID][5]),
-                        UnitId = Convert.ToByte(deviceDataTable.Rows[deviceID][6]),
-                        TcpClient = new TcpClient()
+                        Id = Convert.ToInt32(deviceDataTable.Rows[deviceID][0]),
+                        Name = Convert.ToString(deviceDataTable.Rows[deviceID][1]),
+                        State = Convert.ToBoolean(deviceDataTable.Rows[deviceID][2]),
+                        SyncState = Convert.ToBoolean(deviceDataTable.Rows[deviceID][3]),
+                        ModbusTcpDevice = new ModbusTcpDevice
+                        {
+                            IpAddress = Convert.ToString(deviceDataTable.Rows[deviceID][4]),
+                            PortName = Convert.ToInt32(deviceDataTable.Rows[deviceID][5]),
+                            UnitId = Convert.ToByte(deviceDataTable.Rows[deviceID][6]),
+                            TcpClient = new TcpClient()
+                        },
+                        ModbusTcpMasterCreated = false,
+                        ModbusTcpMasterUpdated = false
                     };
-                    _devices[deviceID].ModbusTcpMasterCreated = false;
-                    _devices[deviceID].ModbusTcpMasterUpdated = false;
 
                     DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                        GetParametersCommand(SQLGetParameters, ParametersTable,
+                        GetParametersCommand(_sqlGetParameters, _parametersTable,
                             Convert.ToString(deviceDataTable.Rows[deviceID][0])));
                     _devices[deviceID].Variables = new Variable[parameterDataTable.Rows.Count];
                     for (int index = 0; index < parameterDataTable.Rows.Count; index++)
                     {
-                        _devices[deviceID].Variables[index] = new Variable();
-                        _devices[deviceID].Variables[index].Id = Convert.ToInt32(parameterDataTable.Rows[index][0]);
-                        _devices[deviceID].Variables[index].Name = Convert.ToString(parameterDataTable.Rows[index][1]);
-                        _devices[deviceID].Variables[index].Address = Convert.ToUInt16(parameterDataTable.Rows[index][2]);
-                        _devices[deviceID].Variables[index].Ratio = Convert.ToDouble(parameterDataTable.Rows[index][3]);
-                        _devices[deviceID].Variables[index].DeviceID = Convert.ToUInt32(parameterDataTable.Rows[index][4]);
-                        _devices[deviceID].Variables[index].Value = 0;
+                        _devices[deviceID].Variables[index] = new Variable
+                        {
+                            Id = Convert.ToInt32(parameterDataTable.Rows[index][0]),
+                            Name = Convert.ToString(parameterDataTable.Rows[index][1]),
+                            Address = Convert.ToUInt16(parameterDataTable.Rows[index][2]),
+                            Ratio = Convert.ToDouble(parameterDataTable.Rows[index][3]),
+                            DeviceID = Convert.ToUInt32(parameterDataTable.Rows[index][4]),
+                        };
                     }
                 }
 
                 DataTable modbusRTUParaDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                    GetParametersCommand(SQLGetParameters, ParametersTable,
+                    GetParametersCommand(_sqlGetParameters, _parametersTable,
                         0.ToString(CultureInfo.InvariantCulture)));
                 _modbusRtuParameters = new Variable[modbusRTUParaDataTable.Rows.Count];
                 for (int index = 0; index < modbusRTUParaDataTable.Rows.Count; index++)
                 {
-                    _modbusRtuParameters[index] = new Variable();
-                    _modbusRtuParameters[index].Name = Convert.ToString(modbusRTUParaDataTable.Rows[index][1]);
-                    _modbusRtuParameters[index].Address = Convert.ToUInt16(modbusRTUParaDataTable.Rows[index][2]);
-                    _modbusRtuParameters[index].Ratio = Convert.ToDouble(modbusRTUParaDataTable.Rows[index][3]);
-                    _modbusRtuParameters[index].DeviceID = Convert.ToUInt32(modbusRTUParaDataTable.Rows[index][4]);
-                    _modbusRtuParameters[index].Value = 0;
+                    _modbusRtuParameters[index] = new Variable
+                    {
+                        Name = Convert.ToString(modbusRTUParaDataTable.Rows[index][1]),
+                        Address = Convert.ToUInt16(modbusRTUParaDataTable.Rows[index][2]),
+                        Ratio = Convert.ToDouble(modbusRTUParaDataTable.Rows[index][3]),
+                        DeviceID = Convert.ToUInt32(modbusRTUParaDataTable.Rows[index][4]),
+                    };
                 }
 
                 string tempString = ConfigAppSettings.GetValue("LogoffMenulist").Trim();
@@ -716,6 +727,23 @@ namespace OptimalControl.Forms
             string sql = sqlCmd;
             sql = sql.Replace("@ParametersTable", table);
             sql = sql.Replace("@DeviceID", deviceID);
+            return sql;
+        }
+
+        /// <summary>
+        /// Gets the parameters command.
+        /// </summary>
+        /// <param name="sqlCmd">The SQL command.</param>
+        /// <param name="table">The table.</param>
+        /// <returns>
+        /// Command
+        /// </returns>
+        private string GetParametersCommand(string sqlCmd, string table)
+        {
+            string sql = sqlCmd;
+            sql = sql.Replace("@ParametersTable", table);
+            sql = sql.Replace("@DeviceID", "1");
+            sql = sql.Replace("DeviceID", "1");
             return sql;
         }
 
@@ -2126,6 +2154,18 @@ namespace OptimalControl.Forms
             }
         }
         #endregion
+
+        private void tsbtn_rule_edit_Click(object sender, EventArgs e)
+        {
+            ExpertSystem.Rule rule = new ExpertSystem.Rule();
+            DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+                GetParametersCommand(_sqlGetParameters, _parametersTable));
+            frmRuleEditor editParameterForm = new frmRuleEditor(DataOperateMode.Edit, rule, parameterDataTable);
+            if (editParameterForm.ShowDialog() == DialogResult.OK)
+            {
+                
+            }
+        }
 
     }
 }

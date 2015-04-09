@@ -32,8 +32,8 @@ namespace OptimalControl.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.statusStrip_main = new System.Windows.Forms.StatusStrip();
             this.status_Label = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip_main = new System.Windows.Forms.ToolStrip();
@@ -72,6 +72,20 @@ namespace OptimalControl.Forms
             this.splitContainerH1_2H2 = new System.Windows.Forms.SplitContainer();
             this.splitContainerH1_2H2_1V1 = new System.Windows.Forms.SplitContainer();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage_optimal_control = new System.Windows.Forms.TabPage();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tsbtn_rule_add = new System.Windows.Forms.ToolStripButton();
+            this.tsbtn_rule_edit = new System.Windows.Forms.ToolStripButton();
+            this.tsbtn_rule_delete = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbtn_rule_update = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbtn_para_devices = new System.Windows.Forms.ToolStripButton();
+            this.dgv_oc_log = new System.Windows.Forms.DataGridView();
+            this.dgv_oc_rules = new System.Windows.Forms.DataGridView();
             this.tabPage_realtime_data = new System.Windows.Forms.TabPage();
             this.splitContainerH1_2H2_1V1_2V2 = new System.Windows.Forms.SplitContainer();
             this.listview_parainfo = new Utility.DoubleBufferListView();
@@ -100,20 +114,6 @@ namespace OptimalControl.Forms
             this.label4 = new System.Windows.Forms.Label();
             this.dgv_data = new System.Windows.Forms.DataGridView();
             this.splitContainerH1 = new System.Windows.Forms.SplitContainer();
-            this.tabPage_optimal_control = new System.Windows.Forms.TabPage();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.dgv_oc_log = new System.Windows.Forms.DataGridView();
-            this.dgv_oc_rules = new System.Windows.Forms.DataGridView();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tsbtn_para_add = new System.Windows.Forms.ToolStripButton();
-            this.tsbtn_para_edit = new System.Windows.Forms.ToolStripButton();
-            this.tsbtn_para_delete = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbtn_para_update = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbtn_para_devices = new System.Windows.Forms.ToolStripButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.statusStrip_main.SuspendLayout();
             this.toolStrip_main.SuspendLayout();
             this.msMain.SuspendLayout();
@@ -125,6 +125,18 @@ namespace OptimalControl.Forms
             this.splitContainerH1_2H2_1V1.Panel2.SuspendLayout();
             this.splitContainerH1_2H2_1V1.SuspendLayout();
             this.tabControl.SuspendLayout();
+            this.tabPage_optimal_control.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_log)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).BeginInit();
             this.tabPage_realtime_data.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1_2H2_1V1_2V2)).BeginInit();
             this.splitContainerH1_2H2_1V1_2V2.Panel1.SuspendLayout();
@@ -149,18 +161,6 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).BeginInit();
             this.splitContainerH1.Panel2.SuspendLayout();
             this.splitContainerH1.SuspendLayout();
-            this.tabPage_optimal_control.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_log)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).BeginInit();
-            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip_main
@@ -546,6 +546,156 @@ namespace OptimalControl.Forms
             this.tabControl.Size = new System.Drawing.Size(977, 581);
             this.tabControl.TabIndex = 0;
             // 
+            // tabPage_optimal_control
+            // 
+            this.tabPage_optimal_control.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage_optimal_control.Controls.Add(this.splitContainer2);
+            this.tabPage_optimal_control.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_optimal_control.Name = "tabPage_optimal_control";
+            this.tabPage_optimal_control.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_optimal_control.Size = new System.Drawing.Size(969, 555);
+            this.tabPage_optimal_control.TabIndex = 3;
+            this.tabPage_optimal_control.Text = "优化控制";
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.dgv_oc_rules);
+            this.splitContainer2.Size = new System.Drawing.Size(963, 549);
+            this.splitContainer2.SplitterDistance = 354;
+            this.splitContainer2.TabIndex = 2;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.groupBox1);
+            this.splitContainer3.Panel1.Controls.Add(this.toolStrip1);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.dgv_oc_log);
+            this.splitContainer3.Size = new System.Drawing.Size(963, 354);
+            this.splitContainer3.SplitterDistance = 332;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 52);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(332, 302);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(30, 30);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbtn_rule_add,
+            this.tsbtn_rule_edit,
+            this.tsbtn_rule_delete,
+            this.toolStripButton1,
+            this.tsbtn_rule_update,
+            this.toolStripSeparator6,
+            this.tsbtn_para_devices});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(332, 52);
+            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // tsbtn_rule_add
+            // 
+            this.tsbtn_rule_add.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_add.Image")));
+            this.tsbtn_rule_add.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtn_rule_add.Name = "tsbtn_rule_add";
+            this.tsbtn_rule_add.Size = new System.Drawing.Size(59, 49);
+            this.tsbtn_rule_add.Text = "增加变量";
+            this.tsbtn_rule_add.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.tsbtn_rule_add.ToolTipText = "增加变量";
+            // 
+            // tsbtn_rule_edit
+            // 
+            this.tsbtn_rule_edit.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_edit.Image")));
+            this.tsbtn_rule_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtn_rule_edit.Name = "tsbtn_rule_edit";
+            this.tsbtn_rule_edit.Size = new System.Drawing.Size(59, 49);
+            this.tsbtn_rule_edit.Text = "编辑变量";
+            this.tsbtn_rule_edit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.tsbtn_rule_edit.Click += new System.EventHandler(this.tsbtn_rule_edit_Click);
+            // 
+            // tsbtn_rule_delete
+            // 
+            this.tsbtn_rule_delete.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_delete.Image")));
+            this.tsbtn_rule_delete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtn_rule_delete.Name = "tsbtn_rule_delete";
+            this.tsbtn_rule_delete.Size = new System.Drawing.Size(59, 49);
+            this.tsbtn_rule_delete.Text = "删除变量";
+            this.tsbtn_rule_delete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(6, 52);
+            // 
+            // tsbtn_rule_update
+            // 
+            this.tsbtn_rule_update.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_update.Image")));
+            this.tsbtn_rule_update.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtn_rule_update.Name = "tsbtn_rule_update";
+            this.tsbtn_rule_update.Size = new System.Drawing.Size(59, 49);
+            this.tsbtn_rule_update.Text = "刷新列表";
+            this.tsbtn_rule_update.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 52);
+            // 
+            // tsbtn_para_devices
+            // 
+            this.tsbtn_para_devices.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_para_devices.Image")));
+            this.tsbtn_para_devices.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtn_para_devices.Name = "tsbtn_para_devices";
+            this.tsbtn_para_devices.Size = new System.Drawing.Size(59, 49);
+            this.tsbtn_para_devices.Text = "管理设备";
+            this.tsbtn_para_devices.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // dgv_oc_log
+            // 
+            this.dgv_oc_log.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_oc_log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_oc_log.Location = new System.Drawing.Point(0, 0);
+            this.dgv_oc_log.Name = "dgv_oc_log";
+            this.dgv_oc_log.RowTemplate.Height = 23;
+            this.dgv_oc_log.Size = new System.Drawing.Size(627, 354);
+            this.dgv_oc_log.TabIndex = 0;
+            // 
+            // dgv_oc_rules
+            // 
+            this.dgv_oc_rules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_oc_rules.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_oc_rules.Location = new System.Drawing.Point(0, 0);
+            this.dgv_oc_rules.Name = "dgv_oc_rules";
+            this.dgv_oc_rules.RowTemplate.Height = 23;
+            this.dgv_oc_rules.Size = new System.Drawing.Size(963, 191);
+            this.dgv_oc_rules.TabIndex = 0;
+            // 
             // tabPage_realtime_data
             // 
             this.tabPage_realtime_data.Controls.Add(this.splitContainerH1_2H2_1V1_2V2);
@@ -611,7 +761,7 @@ namespace OptimalControl.Forms
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2.Controls.Add(this.groupBox4);
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2MinSize = 200;
             this.splitContainerH1_2H2_1V1_2V2_2V3.Size = new System.Drawing.Size(707, 549);
-            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 503;
+            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 506;
             this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1_2V2_2V3.TabIndex = 0;
             // 
@@ -633,7 +783,7 @@ namespace OptimalControl.Forms
             this.zgc_realtime.ScrollMinX = 0D;
             this.zgc_realtime.ScrollMinY = 0D;
             this.zgc_realtime.ScrollMinY2 = 0D;
-            this.zgc_realtime.Size = new System.Drawing.Size(503, 549);
+            this.zgc_realtime.Size = new System.Drawing.Size(506, 549);
             this.zgc_realtime.TabIndex = 12;
             this.zgc_realtime.TabStop = false;
             // 
@@ -644,7 +794,7 @@ namespace OptimalControl.Forms
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(203, 549);
+            this.groupBox4.Size = new System.Drawing.Size(200, 549);
             this.groupBox4.TabIndex = 14;
             this.groupBox4.TabStop = false;
             // 
@@ -892,16 +1042,16 @@ namespace OptimalControl.Forms
             // 
             this.dgv_data.AllowUserToAddRows = false;
             this.dgv_data.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            this.dgv_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_data.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            this.dgv_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_data.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgv_data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_data.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_data.Location = new System.Drawing.Point(0, 0);
@@ -929,155 +1079,6 @@ namespace OptimalControl.Forms
             this.splitContainerH1.SplitterDistance = 25;
             this.splitContainerH1.SplitterWidth = 1;
             this.splitContainerH1.TabIndex = 42;
-            // 
-            // tabPage_optimal_control
-            // 
-            this.tabPage_optimal_control.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage_optimal_control.Controls.Add(this.splitContainer2);
-            this.tabPage_optimal_control.Location = new System.Drawing.Point(4, 22);
-            this.tabPage_optimal_control.Name = "tabPage_optimal_control";
-            this.tabPage_optimal_control.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_optimal_control.Size = new System.Drawing.Size(969, 555);
-            this.tabPage_optimal_control.TabIndex = 3;
-            this.tabPage_optimal_control.Text = "优化控制";
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.dgv_oc_rules);
-            this.splitContainer2.Size = new System.Drawing.Size(963, 549);
-            this.splitContainer2.SplitterDistance = 354;
-            this.splitContainer2.TabIndex = 2;
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.groupBox1);
-            this.splitContainer3.Panel1.Controls.Add(this.toolStrip1);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.dgv_oc_log);
-            this.splitContainer3.Size = new System.Drawing.Size(963, 354);
-            this.splitContainer3.SplitterDistance = 332;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // dgv_oc_log
-            // 
-            this.dgv_oc_log.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_oc_log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_oc_log.Location = new System.Drawing.Point(0, 0);
-            this.dgv_oc_log.Name = "dgv_oc_log";
-            this.dgv_oc_log.RowTemplate.Height = 23;
-            this.dgv_oc_log.Size = new System.Drawing.Size(627, 354);
-            this.dgv_oc_log.TabIndex = 0;
-            // 
-            // dgv_oc_rules
-            // 
-            this.dgv_oc_rules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_oc_rules.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_oc_rules.Location = new System.Drawing.Point(0, 0);
-            this.dgv_oc_rules.Name = "dgv_oc_rules";
-            this.dgv_oc_rules.RowTemplate.Height = 23;
-            this.dgv_oc_rules.Size = new System.Drawing.Size(963, 191);
-            this.dgv_oc_rules.TabIndex = 0;
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(30, 30);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbtn_para_add,
-            this.tsbtn_para_edit,
-            this.tsbtn_para_delete,
-            this.toolStripButton1,
-            this.tsbtn_para_update,
-            this.toolStripSeparator6,
-            this.tsbtn_para_devices});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(332, 52);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // tsbtn_para_add
-            // 
-            this.tsbtn_para_add.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_para_add.Image")));
-            this.tsbtn_para_add.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtn_para_add.Name = "tsbtn_para_add";
-            this.tsbtn_para_add.Size = new System.Drawing.Size(59, 49);
-            this.tsbtn_para_add.Text = "增加变量";
-            this.tsbtn_para_add.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.tsbtn_para_add.ToolTipText = "增加变量";
-            // 
-            // tsbtn_para_edit
-            // 
-            this.tsbtn_para_edit.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_para_edit.Image")));
-            this.tsbtn_para_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtn_para_edit.Name = "tsbtn_para_edit";
-            this.tsbtn_para_edit.Size = new System.Drawing.Size(59, 49);
-            this.tsbtn_para_edit.Text = "编辑变量";
-            this.tsbtn_para_edit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            // 
-            // tsbtn_para_delete
-            // 
-            this.tsbtn_para_delete.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_para_delete.Image")));
-            this.tsbtn_para_delete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtn_para_delete.Name = "tsbtn_para_delete";
-            this.tsbtn_para_delete.Size = new System.Drawing.Size(59, 49);
-            this.tsbtn_para_delete.Text = "删除变量";
-            this.tsbtn_para_delete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(6, 52);
-            // 
-            // tsbtn_para_update
-            // 
-            this.tsbtn_para_update.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_para_update.Image")));
-            this.tsbtn_para_update.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtn_para_update.Name = "tsbtn_para_update";
-            this.tsbtn_para_update.Size = new System.Drawing.Size(59, 49);
-            this.tsbtn_para_update.Text = "刷新列表";
-            this.tsbtn_para_update.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 52);
-            // 
-            // tsbtn_para_devices
-            // 
-            this.tsbtn_para_devices.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_para_devices.Image")));
-            this.tsbtn_para_devices.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtn_para_devices.Name = "tsbtn_para_devices";
-            this.tsbtn_para_devices.Size = new System.Drawing.Size(59, 49);
-            this.tsbtn_para_devices.Text = "管理设备";
-            this.tsbtn_para_devices.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(0, 52);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(332, 302);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
             // 
             // frmMain
             // 
@@ -1111,6 +1112,20 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1_2H2_1V1)).EndInit();
             this.splitContainerH1_2H2_1V1.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
+            this.tabPage_optimal_control.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel1.PerformLayout();
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_log)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).EndInit();
             this.tabPage_realtime_data.ResumeLayout(false);
             this.splitContainerH1_2H2_1V1_2V2.Panel1.ResumeLayout(false);
             this.splitContainerH1_2H2_1V1_2V2.Panel2.ResumeLayout(false);
@@ -1138,20 +1153,6 @@ namespace OptimalControl.Forms
             this.splitContainerH1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).EndInit();
             this.splitContainerH1.ResumeLayout(false);
-            this.tabPage_optimal_control.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel1.PerformLayout();
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_log)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).EndInit();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1231,11 +1232,11 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.DataGridView dgv_oc_log;
         private System.Windows.Forms.DataGridView dgv_oc_rules;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbtn_para_add;
-        private System.Windows.Forms.ToolStripButton tsbtn_para_edit;
-        private System.Windows.Forms.ToolStripButton tsbtn_para_delete;
+        private System.Windows.Forms.ToolStripButton tsbtn_rule_add;
+        private System.Windows.Forms.ToolStripButton tsbtn_rule_edit;
+        private System.Windows.Forms.ToolStripButton tsbtn_rule_delete;
         private System.Windows.Forms.ToolStripSeparator toolStripButton1;
-        private System.Windows.Forms.ToolStripButton tsbtn_para_update;
+        private System.Windows.Forms.ToolStripButton tsbtn_rule_update;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton tsbtn_para_devices;
         private System.Windows.Forms.GroupBox groupBox1;

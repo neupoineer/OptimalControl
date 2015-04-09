@@ -11,8 +11,8 @@ namespace OptimalControl.Forms
 {
     public partial class frmConfig : Form
     {
-        DataTable DeviceDataTable = new DataTable();
-        DataTable ParameterDataTable = new DataTable();
+        DataTable _deviceDataTable = new DataTable();
+        DataTable _parameterDataTable = new DataTable();
 
         private string SQLGetDevices = ConfigAppSettings.GetSettingString("SQLGetDevices", "SELECT * FROM @DevicesTable");
         private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Devices");
@@ -62,9 +62,9 @@ namespace OptimalControl.Forms
 
         private void UpdateCurves()
         {
-            DeviceDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+            _deviceDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
                 GetDevicesCommand(SQLGetDevices, DevicesTable));
-            ParameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+            _parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
                 GetParametersCommand(SQLGetParameters, ParametersTable));
             DataTable curvesDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
                 GetCurvesCommand(SQLGetCurves, CurvesTable));
@@ -253,8 +253,8 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Insert, curve, DeviceDataTable,
-                ParameterDataTable);
+            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Insert, curve, _deviceDataTable,
+                _parameterDataTable);
             if (addCurveForm.ShowDialog() == DialogResult.OK)
             {
                 label_Curve_Status.Text = string.Format("插入 {0} 行数据",
@@ -267,8 +267,8 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Edit, curve, DeviceDataTable,
-                ParameterDataTable);
+            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Edit, curve, _deviceDataTable,
+                _parameterDataTable);
             if (addCurveForm.ShowDialog() == DialogResult.OK)
             {
                 label_Curve_Status.Text = string.Format("编辑 {0} 行数据",
@@ -281,8 +281,8 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Delete, curve, DeviceDataTable,
-                ParameterDataTable);
+            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Delete, curve, _deviceDataTable,
+                _parameterDataTable);
             if (addCurveForm.ShowDialog() == DialogResult.OK)
             {
                 label_Curve_Status.Text = string.Format("删除 {0} 行数据",

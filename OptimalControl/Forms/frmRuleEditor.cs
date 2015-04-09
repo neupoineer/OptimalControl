@@ -11,43 +11,51 @@ namespace OptimalControl.Forms
     public partial class frmRuleEditor : Form
     {
         private readonly DataOperateMode _mode;
-        private Device _device;
+        private ExpertSystem.Rule _rule;
+        private readonly DataTable _parameterDataTable;
         public int Result { get; private set; }
 
-        public frmRuleEditor(DataOperateMode mode, Device device)
+        public frmRuleEditor(DataOperateMode mode, ExpertSystem.Rule rule, DataTable parameterDataTable)
         {
             _mode = mode;
-            _device = device;
+            _rule = rule;
+            _parameterDataTable = parameterDataTable.Copy();
             InitializeComponent();
         }
 
-        private void LoadUI(Device device, string formText, bool editable)
+        private void LoadUI(ExpertSystem.Rule rule, DataTable parameterDataTable, string formText, bool editable)
         {
+            cb_parameter.Items.Clear();
+            for (int index = 0; index < parameterDataTable.Rows.Count; index++)
+            {
+                cb_parameter.Items.Add(Convert.ToString(parameterDataTable.Rows[index][1]));
+            }
+
+            cb_operator.Items.Clear();
+            cb_operator.Items.AddRange(new object[]
+            {"(", "tan", ")", "atan", "!", "*", "/", "%", "+", "-", "<", ">", "=", "&", "|"});
+
             Text = formText;
-            tb_device_name.Text = device.Name;
-            tb_device_name.Enabled = editable;
-            //nud_device_unitid.Value = device.ModbusTcpDevice.UnitId;
-            //nud_device_unitid.Enabled = editable;
-            cb_device_state.Checked = device.State;
-            cb_device_state.Enabled = editable;
-            tb_device_ip.Text = device.ModbusTcpDevice.IpAddress;
-            tb_device_ip.Enabled = editable;
-            ntb_device_port.Text = device.ModbusTcpDevice.PortName.ToString(CultureInfo.InvariantCulture);
-            ntb_device_port.Enabled = editable;
-            //cb_device_sync.Checked = device.SyncState;
-            //cb_device_sync.Enabled = editable;
+            tb_rule_name.Text = rule.Name;
+            tb_rule_name.Enabled = editable;
+            cb_rule_enabled.Checked = rule.Enabled;
+            cb_rule_enabled.Enabled = editable;
+            tb_rule_expression.Text = rule.Expression;
+            tb_rule_expression.Enabled = editable;
+            ntb_rule_operation.Text = rule.Operatioin;
+            ntb_rule_operation.Enabled = editable;
         }
 
         private string GetSQLCommand(string sqlName)
         {
             string sql = ConfigAppSettings.GetSettingString(sqlName, "");
             sql = sql.Replace("@DevicesTable", ConfigAppSettings.GetSettingString("DevicesTable", "Devices"));
-            sql = sql.Replace("@Id", _device.Id.ToString(CultureInfo.InvariantCulture));
-            sql = sql.Replace("@Name", tb_device_name.Text.Trim());
-            sql = sql.Replace("@State", cb_device_state.Checked.ToString());
+            //sql = sql.Replace("@Id", _device.Id.ToString(CultureInfo.InvariantCulture));
+            sql = sql.Replace("@Name", tb_rule_name.Text.Trim());
+            sql = sql.Replace("@State", cb_rule_enabled.Checked.ToString());
             //sql = sql.Replace("@SyncState", cb_device_sync.Checked.ToString());
-            sql = sql.Replace("@IP", tb_device_ip.Text);
-            sql = sql.Replace("@Port", ntb_device_port.Text);
+            sql = sql.Replace("@IP", tb_rule_expression.Text);
+            sql = sql.Replace("@Port", ntb_rule_operation.Text);
             //sql = sql.Replace("@UnitID", nud_device_unitid.Text);
             return sql;
         }
@@ -59,10 +67,10 @@ namespace OptimalControl.Forms
                 case DataOperateMode.Insert:
                     break;
                 case DataOperateMode.Edit:
-                    LoadUI(_device, "编辑设备", true);
+                    LoadUI(_rule, _parameterDataTable, "编辑设备", true);
                     break;
                 case DataOperateMode.Delete:
-                    LoadUI(_device, "删除设备", false);
+                    LoadUI(_rule, _parameterDataTable, "删除设备", false);
                     break;
                 default:
                     break;
@@ -74,17 +82,17 @@ namespace OptimalControl.Forms
             try
             {
                 IPAddress ip;
-                if (!IPAddress.TryParse(tb_device_ip.Text.Trim(), out ip))
+                if (!IPAddress.TryParse(tb_rule_expression.Text.Trim(), out ip))
                 {
                     MessageBox.Show("IP地址格式错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (tb_device_name.Text.Length < 1)
+                if (tb_rule_name.Text.Length < 1)
                 {
                     MessageBox.Show("请输入设备名！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (Convert.ToInt32(ntb_device_port.Text)>65535)
+                if (Convert.ToInt32(ntb_rule_operation.Text)>65535)
                 {
                     MessageBox.Show("端口号错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -104,16 +112,16 @@ namespace OptimalControl.Forms
                         sql = GetSQLCommand("SQLEditDevices");
                         break;
                     case DataOperateMode.Delete:
-                        if (
-                            MessageBox.Show(
-                                string.Format("确认删除设备'{0}'？\r\n\r\n设备所对应的变量也将全部被删除。", _device.Name),
-                                "数据删除警告",
-                                MessageBoxButtons.OKCancel,
-                                MessageBoxIcon.Warning)
-                            == DialogResult.OK)
-                        {
-                            sql = GetSQLCommand("SQLDeleteDevices");
-                        }
+                        //if (
+                        //    MessageBox.Show(
+                        //        string.Format("确认删除设备'{0}'？\r\n\r\n设备所对应的变量也将全部被删除。", _device.Name),
+                        //        "数据删除警告",
+                        //        MessageBoxButtons.OKCancel,
+                        //        MessageBoxIcon.Warning)
+                        //    == DialogResult.OK)
+                        //{
+                        //    sql = GetSQLCommand("SQLDeleteDevices");
+                        //}
                         break;
                     default:
                         break;

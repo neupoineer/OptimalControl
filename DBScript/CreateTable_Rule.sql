@@ -20,7 +20,7 @@ Create Table Rules
 	[Expression] Nvarchar(1000) Not Null,
 
 	-- 动作
-	[Action] Nvarchar(1000) Not Null,
+	[Operation] Nvarchar(1000) Not Null,
 
 	-- 控制周期
 	[Period] int,
