@@ -3,7 +3,8 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
-using Common;
+using Utility;
+using Utility.Control;
 using ZedGraph;
 
 namespace OptimalControl.Forms
@@ -140,7 +141,7 @@ namespace OptimalControl.Forms
                 {
                     Id = Convert.ToInt32(dataGridView_Curve.Rows[selectRowIndex].Cells[0].Value),
                     Name = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[1].Value),
-                    DeviceID = Convert.ToInt32(dataGridView_Curve.Rows[selectRowIndex].Cells[2].Value),
+                    DeviceId = Convert.ToInt32(dataGridView_Curve.Rows[selectRowIndex].Cells[2].Value),
                     Address = Convert.ToUInt16(dataGridView_Curve.Rows[selectRowIndex].Cells[3].Value),
                     LineColour = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[4].Value) != ""
                         ? Color.FromName(Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[4].Value))
@@ -252,7 +253,7 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmEditCurve addCurveForm = new frmEditCurve(DataOperateMode.Insert, curve, DeviceDataTable,
+            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Insert, curve, DeviceDataTable,
                 ParameterDataTable);
             if (addCurveForm.ShowDialog() == DialogResult.OK)
             {
@@ -266,7 +267,7 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmEditCurve addCurveForm = new frmEditCurve(DataOperateMode.Edit, curve, DeviceDataTable,
+            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Edit, curve, DeviceDataTable,
                 ParameterDataTable);
             if (addCurveForm.ShowDialog() == DialogResult.OK)
             {
@@ -280,7 +281,7 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmEditCurve addCurveForm = new frmEditCurve(DataOperateMode.Delete, curve, DeviceDataTable,
+            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Delete, curve, DeviceDataTable,
                 ParameterDataTable);
             if (addCurveForm.ShowDialog() == DialogResult.OK)
             {

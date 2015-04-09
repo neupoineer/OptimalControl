@@ -2,7 +2,8 @@
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
-using Common;
+using Utility;
+using Utility.Modbus;
 
 namespace OptimalControl.Forms
 {
@@ -95,11 +96,11 @@ namespace OptimalControl.Forms
                     Name = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells[1].Value),
                     State = Convert.ToBoolean(dataGridView_devices.Rows[selectRowIndex].Cells[2].Value),
                     SyncState = Convert.ToBoolean(dataGridView_devices.Rows[selectRowIndex].Cells[3].Value),
-                    ModbusTcpDevice =
+                    ModbusTcpDevice = new ModbusTcpDevice()
                     {
-                        IPAddress = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells[4].Value),
+                        IpAddress = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells[4].Value),
                         PortName = Convert.ToInt32(dataGridView_devices.Rows[selectRowIndex].Cells[5].Value),
-                        UnitID = Convert.ToByte(dataGridView_devices.Rows[selectRowIndex].Cells[6].Value)
+                        UnitId = Convert.ToByte(dataGridView_devices.Rows[selectRowIndex].Cells[6].Value)
                     }
                 };
                 return device;
@@ -111,7 +112,7 @@ namespace OptimalControl.Forms
         {
             Device device = GetSelectedDevice();
             if (device.Name == "") return;
-            frmEditDevice addDeviceForm = new frmEditDevice(DataOperateMode.Insert, device);
+            frmDeviceEditor addDeviceForm = new frmDeviceEditor(DataOperateMode.Insert, device);
             if (addDeviceForm.ShowDialog() == DialogResult.OK)
             {
                 tssl_device_manager.Text = string.Format("插入 {0} 行数据",
@@ -124,7 +125,7 @@ namespace OptimalControl.Forms
         {
             Device device = GetSelectedDevice();
             if (device.Name == "") return;
-            frmEditDevice addDeviceForm = new frmEditDevice(DataOperateMode.Edit, device);
+            frmDeviceEditor addDeviceForm = new frmDeviceEditor(DataOperateMode.Edit, device);
             if (addDeviceForm.ShowDialog() == DialogResult.OK)
             {
                 tssl_device_manager.Text = string.Format("编辑 {0} 行数据",
@@ -138,7 +139,7 @@ namespace OptimalControl.Forms
         {
             Device device = GetSelectedDevice();
             if (device.Name == "") return;
-            frmEditDevice addDeviceForm = new frmEditDevice(DataOperateMode.Delete, device);
+            frmDeviceEditor addDeviceForm = new frmDeviceEditor(DataOperateMode.Delete, device);
             if (addDeviceForm.ShowDialog() == DialogResult.OK)
             {
                 tssl_device_manager.Text = string.Format("删除 {0} 行数据",

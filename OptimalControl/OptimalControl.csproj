@@ -101,11 +101,11 @@
     <Compile Include="Common\MessageFilter.cs" />
     <Compile Include="Common\RightsMenuDataManager.cs" />
     <Compile Include="Common\RightsMenuUIManager.cs" />
-    <Compile Include="Forms\frmEditDevice.cs">
+    <Compile Include="Forms\frmDeviceEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmEditDevice.Designer.cs">
-      <DependentUpon>frmEditDevice.cs</DependentUpon>
+    <Compile Include="Forms\frmDeviceEditor.Designer.cs">
+      <DependentUpon>frmDeviceEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmParametersManager.cs">
       <SubType>Form</SubType>
@@ -179,22 +179,34 @@
     <Compile Include="Forms\frmDevicesManager.Designer.cs">
       <DependentUpon>frmDevicesManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmEditParameter.cs">
+    <Compile Include="Forms\frmParameterEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmEditParameter.Designer.cs">
-      <DependentUpon>frmEditParameter.cs</DependentUpon>
+    <Compile Include="Forms\frmParameterEditor.Designer.cs">
+      <DependentUpon>frmParameterEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmEditCurve.cs">
+    <Compile Include="Forms\frmCurveEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmEditCurve.Designer.cs">
-      <DependentUpon>frmEditCurve.cs</DependentUpon>
+    <Compile Include="Forms\frmCurveEditor.Designer.cs">
+      <DependentUpon>frmCurveEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmRuleEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRuleEditor.Designer.cs">
+      <DependentUpon>frmRuleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmRulesManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRulesManager.Designer.cs">
+      <DependentUpon>frmRulesManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\frmEditDevice.resx">
-      <DependentUpon>frmEditDevice.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmDeviceEditor.resx">
+      <DependentUpon>frmDeviceEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmParametersManager.resx">
       <DependentUpon>frmParametersManager.cs</DependentUpon>
@@ -233,11 +245,17 @@
     <EmbeddedResource Include="Forms\frmDevicesManager.resx">
       <DependentUpon>frmDevicesManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmEditParameter.resx">
-      <DependentUpon>frmEditParameter.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmParameterEditor.resx">
+      <DependentUpon>frmParameterEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmEditCurve.resx">
-      <DependentUpon>frmEditCurve.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmCurveEditor.resx">
+      <DependentUpon>frmCurveEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRuleEditor.resx">
+      <DependentUpon>frmRuleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRulesManager.resx">
+      <DependentUpon>frmRulesManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -309,10 +327,6 @@
       <Project>{9EE1285C-A0C6-4215-A57F-C346609956FC}</Project>
       <Name>BLLFactory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{49761b2d-e13e-48ce-adf3-449608948ad2}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ExpertSystem\ExpertSystem.csproj">
       <Project>{cfa17e14-343e-4c99-8aec-08ef1d5e274f}</Project>
       <Name>ExpertSystem</Name>
@@ -324,6 +338,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{29B87E5D-7FDC-497F-B99F-BAFE000E684B}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{49761b2d-e13e-48ce-adf3-449608948ad2}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

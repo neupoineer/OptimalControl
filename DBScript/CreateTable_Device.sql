@@ -32,28 +32,3 @@ Create Table [Devices]
 	[UnitID] tinyint Not Null
 )
 Go
-
--- 判断是否存在 表（Parameters），如果存在，则删除表 Parameters
-if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Parameters'))
-	Drop Table [Parameters]
-Go 
-
--- 创建 表（Parameters）
-Create Table [Parameters]
-(
-	-- 主键列，自动增长 标识种子为 1 
-	[Id] int identity(1,1) Constraint [PK_ParameterId] Primary Key,
-
-	-- 参数名
-	[Name] Nvarchar(50) Not Null,
-
-	-- 参数地址
-	[Address] int Not Null,
-
-	-- 参数比例
-	[Ratio] real Not Null,
-
-	-- 设备ID
-	[DeviceID] int Not Null
-)
-Go

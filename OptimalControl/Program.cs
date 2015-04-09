@@ -45,7 +45,7 @@ namespace OptimalControl
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             if (instance == null)
             {
-                string tmpExp = "23+34*45/(5+6+7)>0&!1>2";//"1.0+3/2-tan(45)/(1+1)";
+                string tmpExp = "2.3+3.4*4.5/(5+6+7)>0&!1>2";//"1.0+3/2-tan(45)/(1+1)";
                 RPN rpn = new RPN();
                 if (rpn.Parse(tmpExp))
                 {
