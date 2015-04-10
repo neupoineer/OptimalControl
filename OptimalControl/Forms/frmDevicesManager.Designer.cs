@@ -194,7 +194,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "设备管理";
-            this.Load += new System.EventHandler(this.frmDevicesManager_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.frmDevicesManager_KeyPress);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();

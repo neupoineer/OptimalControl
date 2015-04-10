@@ -267,12 +267,12 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Edit, curve, _deviceDataTable,
+            frmCurveEditor editCurveForm = new frmCurveEditor(DataOperateMode.Edit, curve, _deviceDataTable,
                 _parameterDataTable);
-            if (addCurveForm.ShowDialog() == DialogResult.OK)
+            if (editCurveForm.ShowDialog() == DialogResult.OK)
             {
                 label_Curve_Status.Text = string.Format("编辑 {0} 行数据",
-                    addCurveForm.Result.ToString(CultureInfo.InvariantCulture));
+                    editCurveForm.Result.ToString(CultureInfo.InvariantCulture));
                 UpdateCurves();
             }
         }
@@ -281,12 +281,12 @@ namespace OptimalControl.Forms
         {
             Curve curve = GetSelectedCurve();
             if (curve.Name == "") return;
-            frmCurveEditor addCurveForm = new frmCurveEditor(DataOperateMode.Delete, curve, _deviceDataTable,
+            frmCurveEditor deleteCurveForm = new frmCurveEditor(DataOperateMode.Delete, curve, _deviceDataTable,
                 _parameterDataTable);
-            if (addCurveForm.ShowDialog() == DialogResult.OK)
+            if (deleteCurveForm.ShowDialog() == DialogResult.OK)
             {
                 label_Curve_Status.Text = string.Format("删除 {0} 行数据",
-                    addCurveForm.Result.ToString(CultureInfo.InvariantCulture));
+                    deleteCurveForm.Result.ToString(CultureInfo.InvariantCulture));
                 UpdateCurves();
             }
         }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using Utility;
@@ -23,7 +25,7 @@ namespace OptimalControl.Forms
             InitializeComponent();
         }
 
-        private void LoadUI(ExpertSystem.Rule rule, DataTable parameterDataTable, string formText, bool editable)
+        private void LoadUI(ExpertSystem.Rule rule, DataTable parameterDataTable, string formText, DataOperateMode mode)
         {
             cb_parameter.Items.Clear();
             for (int index = 0; index < parameterDataTable.Rows.Count; index++)
@@ -33,30 +35,45 @@ namespace OptimalControl.Forms
 
             cb_operator.Items.Clear();
             cb_operator.Items.AddRange(new object[]
-            {"(", "tan", ")", "atan", "!", "*", "/", "%", "+", "-", "<", ">", "=", "&", "|"});
+            {
+                "(", ")", "*", "/", "%", "+", "-", "<", "<=", ">", ">=", "=", "<>", "!", "&", "|", "tan", "atan"
+            });
 
             Text = formText;
-            tb_rule_name.Text = rule.Name;
-            tb_rule_name.Enabled = editable;
-            cb_rule_enabled.Checked = rule.Enabled;
-            cb_rule_enabled.Enabled = editable;
-            tb_rule_expression.Text = rule.Expression;
-            tb_rule_expression.Enabled = editable;
-            ntb_rule_operation.Text = rule.Operatioin;
-            ntb_rule_operation.Enabled = editable;
+            if (mode != DataOperateMode.Insert)
+            {
+                tb_rule_name.Text = rule.Name;
+                tb_rule_name.Enabled = (mode != DataOperateMode.Delete);
+                cb_rule_enabled.Checked = rule.Enabled;
+                cb_rule_enabled.Enabled = (mode != DataOperateMode.Delete);
+                tb_rule_expression.Text = rule.Expression;
+                tb_rule_expression.Enabled = (mode != DataOperateMode.Delete);
+                tb_rule_operation.Text = rule.Operatioin;
+                tb_rule_operation.Enabled = (mode != DataOperateMode.Delete);
+                ntb_rule_period.Text = rule.Period.ToString(CultureInfo.InvariantCulture);
+                ntb_rule_period.Enabled = (mode != DataOperateMode.Delete);
+                splitContainer3.Panel2Collapsed = (mode == DataOperateMode.Delete);
+                this.ClientSize =
+                    new Size((mode == DataOperateMode.Delete) ? (this.ClientSize.Width - 250) : this.ClientSize.Width,
+                        this.ClientSize.Height);
+                //90,210
+                btn_ok.Location = new Point((mode == DataOperateMode.Delete) ? 90 : btn_ok.Location.X, btn_ok.Location.Y);
+                btn_cancel.Location = new Point((mode == DataOperateMode.Delete) ? 210 : btn_cancel.Location.X,
+                    btn_cancel.Location.Y);
+            }
         }
 
         private string GetSQLCommand(string sqlName)
         {
+            //Name,Expression,Operation,Period,Enabled
             string sql = ConfigAppSettings.GetSettingString(sqlName, "");
-            sql = sql.Replace("@DevicesTable", ConfigAppSettings.GetSettingString("DevicesTable", "Devices"));
-            //sql = sql.Replace("@Id", _device.Id.ToString(CultureInfo.InvariantCulture));
+            sql = sql.Replace("@RulesTable", ConfigAppSettings.GetSettingString("RulesTable", "Rules"));
+            sql = sql.Replace("@Id", _rule.Id.ToString(CultureInfo.InvariantCulture));
             sql = sql.Replace("@Name", tb_rule_name.Text.Trim());
-            sql = sql.Replace("@State", cb_rule_enabled.Checked.ToString());
-            //sql = sql.Replace("@SyncState", cb_device_sync.Checked.ToString());
-            sql = sql.Replace("@IP", tb_rule_expression.Text);
-            sql = sql.Replace("@Port", ntb_rule_operation.Text);
-            //sql = sql.Replace("@UnitID", nud_device_unitid.Text);
+            sql = sql.Replace("@Expression", tb_rule_expression.Text.Trim());
+            sql = sql.Replace("@Operation", tb_rule_operation.Text.Trim());
+            sql = sql.Replace("@Period", ntb_rule_period.Text.Trim());
+            sql = sql.Replace("@Enabled", cb_rule_enabled.Checked.ToString());
             return sql;
         }
 
@@ -65,12 +82,13 @@ namespace OptimalControl.Forms
             switch (_mode)
             {
                 case DataOperateMode.Insert:
+                    LoadUI(_rule, _parameterDataTable, "添加规则", DataOperateMode.Insert);
                     break;
                 case DataOperateMode.Edit:
-                    LoadUI(_rule, _parameterDataTable, "编辑设备", true);
+                    LoadUI(_rule, _parameterDataTable, "编辑规则", DataOperateMode.Edit);
                     break;
                 case DataOperateMode.Delete:
-                    LoadUI(_rule, _parameterDataTable, "删除设备", false);
+                    LoadUI(_rule, _parameterDataTable, "删除规则", DataOperateMode.Delete);
                     break;
                 default:
                     break;
@@ -81,47 +99,41 @@ namespace OptimalControl.Forms
         {
             try
             {
-                IPAddress ip;
-                if (!IPAddress.TryParse(tb_rule_expression.Text.Trim(), out ip))
-                {
-                    MessageBox.Show("IP地址格式错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
                 if (tb_rule_name.Text.Length < 1)
                 {
-                    MessageBox.Show("请输入设备名！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("请输入规则名称！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (Convert.ToInt32(ntb_rule_operation.Text)>65535)
+                if (tb_rule_expression.Text.Length < 1)
                 {
-                    MessageBox.Show("端口号错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("请输入控制规则！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                //if (Convert.ToInt32(nud_device_unitid.Text) > 247)
-                //{
-                //    MessageBox.Show("从站号错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    return;
-                //}
+                if (tb_rule_operation.Text.Length < 1)
+                {
+                    MessageBox.Show("请输入执行动作！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 string sql = "";
                 switch (_mode)
                 {
                     case DataOperateMode.Insert:
-                        sql = GetSQLCommand("SQLInsertDevices");
+                        sql = GetSQLCommand("SQLInsertRules");
                         break;
                     case DataOperateMode.Edit:
-                        sql = GetSQLCommand("SQLEditDevices");
+                        sql = GetSQLCommand("SQLEditRules");
                         break;
                     case DataOperateMode.Delete:
-                        //if (
-                        //    MessageBox.Show(
-                        //        string.Format("确认删除设备'{0}'？\r\n\r\n设备所对应的变量也将全部被删除。", _device.Name),
-                        //        "数据删除警告",
-                        //        MessageBoxButtons.OKCancel,
-                        //        MessageBoxIcon.Warning)
-                        //    == DialogResult.OK)
-                        //{
-                        //    sql = GetSQLCommand("SQLDeleteDevices");
-                        //}
+                        if (
+                            MessageBox.Show(
+                                string.Format("确认删除规则'{0}'？", _rule.Name),
+                                "数据删除警告",
+                                MessageBoxButtons.OKCancel,
+                                MessageBoxIcon.Warning)
+                            == DialogResult.OK)
+                        {
+                            sql = GetSQLCommand("SQLDeleteRules");
+                        }
                         break;
                     default:
                         break;
@@ -148,5 +160,129 @@ namespace OptimalControl.Forms
             this.Dispose();
         }
 
+        private void btn_add_parameter_Click(object sender, EventArgs e)
+        {
+            if (!tb_rule_expression.ReadOnly)
+            {
+                if (cb_parameter.Text.Length > 0)
+                {
+                    tb_rule_expression.Text += string.Format("[{0}]",cb_parameter.Text);
+                }
+            }
+            else if (!tb_rule_operation.ReadOnly)
+            {
+                if (cb_parameter.Text.Length > 0)
+                {
+                    tb_rule_operation.Text += string.Format("[{0}]",cb_parameter.Text);
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "请先双击控制规则或执行动作输入框！",
+                    "警告",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btn_add_operator_Click(object sender, EventArgs e)
+        {
+            if (!tb_rule_expression.ReadOnly)
+            {
+                if (cb_operator.Text.Length > 0)
+                {
+                    tb_rule_expression.Text += cb_operator.Text;
+                }
+            }
+            else if (!tb_rule_operation.ReadOnly)
+            {
+                if (cb_operator.Text.Length > 0)
+                {
+                    tb_rule_operation.Text += cb_operator.Text;
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "请先双击控制规则或执行动作输入框！",
+                    "警告",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btn_add_value_Click(object sender, EventArgs e)
+        {
+            if (!tb_rule_expression.ReadOnly)
+            {
+                if (tb_value.Text.Length > 0)
+                {
+                    tb_rule_expression.Text += tb_value.Text;
+                }
+            }
+            else if (!tb_rule_operation.ReadOnly)
+            {
+                if (tb_value.Text.Length > 0)
+                {
+                    tb_rule_operation.Text += tb_value.Text;
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "请先双击控制规则或执行动作输入框！",
+                    "警告",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void tb_rule_operation_DoubleClick(object sender, EventArgs e)
+        {
+            tb_rule_operation.ReadOnly = !tb_rule_operation.ReadOnly;
+            if (!tb_rule_operation.ReadOnly)
+            {
+                if (!tb_rule_expression.ReadOnly)
+                    tb_rule_expression.ReadOnly = !tb_rule_expression.ReadOnly;
+            }
+        }
+
+        private void tb_rule_expression_DoubleClick(object sender, EventArgs e)
+        {
+            tb_rule_expression.ReadOnly = !tb_rule_expression.ReadOnly;
+            if (!tb_rule_expression.ReadOnly)
+            {
+                if (!tb_rule_operation.ReadOnly)
+                    tb_rule_operation.ReadOnly = !tb_rule_operation.ReadOnly;
+            }
+        }
+
+        private void tb_rule_expression_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled =
+                !(Char.IsNumber(e.KeyChar)
+                  || (new Char[] { '(', ')', '*', '/', '%', '+', '-', '<', '>', '=', '!', '&', '|', '.' }).Contains(e.KeyChar)
+                  || e.KeyChar == (char) Keys.Back
+                  || e.KeyChar == (char) Keys.Delete);
+        }
+
+        private void tb_value_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled =
+                !(Char.IsNumber(e.KeyChar)
+                  || (new Char[] {'.'}).Contains(e.KeyChar)
+                  || e.KeyChar == (char) Keys.Back
+                  || e.KeyChar == (char) Keys.Delete);
+        }
+
+        private void tb_rule_operation_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled =
+                !(Char.IsNumber(e.KeyChar)
+                  || (new Char[] { '(', ')', '*', '/', '%', '+', '-', '<', '>', '=', '!', '&', '|', '.' }).Contains(e.KeyChar)
+                  || e.KeyChar == (char) Keys.Back
+                  || e.KeyChar == (char) Keys.Delete);
+        }
     }
 }

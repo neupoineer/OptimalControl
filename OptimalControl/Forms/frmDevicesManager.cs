@@ -166,10 +166,5 @@ namespace OptimalControl.Forms
                 this.Dispose();
             }
         }
-
-        private void frmDevicesManager_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

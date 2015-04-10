@@ -26,6 +26,6 @@ Create Table Rules
 	[Period] int,
 	
 	-- Ê¹ÄÜ
-	[Enabled] bit Not Null,
+	[State] bit Not Null,
 )
 Go

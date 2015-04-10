@@ -172,7 +172,7 @@ namespace OptimalControl.Forms
                     ControlPeriod =  Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells[8].Value) != ""
                     ? Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells[8].Value)
                     : -1,
-                    OperateDelay =  Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells[5].Value) != ""
+                    OperateDelay =  Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells[9].Value) != ""
                     ? Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells[9].Value)
                     : -1,
                     DeviceID = Convert.ToUInt32(dataGridView_parameters.Rows[selectRowIndex].Cells[10].Value),

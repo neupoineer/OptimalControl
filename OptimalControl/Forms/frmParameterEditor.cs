@@ -147,7 +147,32 @@ namespace OptimalControl.Forms
                 double ratio;
                 if (!double.TryParse(tb_para_ratio.Text.Trim(), out ratio))
                 {
-                    MessageBox.Show("计算比例错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("放大倍数错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (
+                    ((tb_para_uulimit.Text != "")
+                     && (tb_para_upperlimit.Text != "")
+                     && ((Convert.ToDouble(tb_para_uulimit.Text) < Convert.ToDouble(tb_para_upperlimit.Text))))
+                    || ((tb_para_upperlimit.Text != "")
+                        && (tb_para_lowerlimit.Text != "")
+                        && ((Convert.ToDouble(tb_para_upperlimit.Text) < Convert.ToDouble(tb_para_lowerlimit.Text))))
+                    || ((tb_para_lowerlimit.Text != "")
+                        && (tb_para_ullimit.Text != "")
+                        && ((Convert.ToDouble(tb_para_lowerlimit.Text) < Convert.ToDouble(tb_para_ullimit.Text))))
+                    || ((tb_para_uulimit.Text != "")
+                        && (tb_para_lowerlimit.Text != "")
+                        && ((Convert.ToDouble(tb_para_uulimit.Text) < Convert.ToDouble(tb_para_lowerlimit.Text))))
+                    || ((tb_para_uulimit.Text != "")
+                        && (tb_para_ullimit.Text != "")
+                        && ((Convert.ToDouble(tb_para_uulimit.Text) < Convert.ToDouble(tb_para_ullimit.Text))))
+                    || ((tb_para_upperlimit.Text != "")
+                        && (tb_para_ullimit.Text != "")
+                        && ((Convert.ToDouble(tb_para_upperlimit.Text) < Convert.ToDouble(tb_para_ullimit.Text))))
+                    )
+
+                {
+                    MessageBox.Show("变量上下限设置错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 

@@ -35,6 +35,7 @@ namespace OptimalControl.Forms
 {
 
     #region 结构体
+
     public enum GraphPaneType
     {
         Normal = 0,
@@ -99,7 +100,7 @@ namespace OptimalControl.Forms
         private bool _realTimerFlag = false;
 
         private bool _updateGraphFlag = false;
-        
+
         /// <summary>
         /// The MessageFilter
         /// </summary>
@@ -183,6 +184,8 @@ namespace OptimalControl.Forms
         private string _sqlGetParameters =
             "SELECT * FROM @ParametersTable WHERE DeviceID = @DeviceID";
 
+        private string _sqlGetRules = "SELECT * FROM @RulesTable";
+
         /// <summary>
         /// The data table name
         /// </summary>
@@ -192,6 +195,7 @@ namespace OptimalControl.Forms
 
         private string _parametersTable = "Parameters";
 
+        private string _rulesTable = "Rules";
         /// <summary>
         /// The DCS name displayed in list
         /// </summary>
@@ -518,11 +522,15 @@ namespace OptimalControl.Forms
                 _sqlGetParameters = ConfigAppSettings.GetSettingString("SQLGetParameters",
                     "SELECT * FROM @ParametersTable WHERE DeviceID = @DeviceID");
 
+                _sqlGetRules = ConfigAppSettings.GetSettingString("SQLGetRules", "SELECT * FROM @RulesTable");
+
                 _dataTable = ConfigAppSettings.GetSettingString("DataTable", "Data");
 
                 _curvesTable = ConfigAppSettings.GetSettingString("CurvesTable", "Curves");
 
                 _parametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameters");
+
+                _rulesTable = ConfigAppSettings.GetSettingString("RulesTable", "Rules");
 
                 _dcsName = ConfigAppSettings.GetSettingString("DCSName", "磨机工况信息");
 
@@ -561,8 +569,29 @@ namespace OptimalControl.Forms
                             Id = Convert.ToInt32(parameterDataTable.Rows[index][0]),
                             Name = Convert.ToString(parameterDataTable.Rows[index][1]),
                             Address = Convert.ToUInt16(parameterDataTable.Rows[index][2]),
-                            Ratio = Convert.ToDouble(parameterDataTable.Rows[index][3]),
-                            DeviceID = Convert.ToUInt32(parameterDataTable.Rows[index][4]),
+                            Ratio = Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][3]), 2),
+                            Limit = new Variable.VariableLimit()
+                            {
+                                UpperLimit = Convert.ToString(parameterDataTable.Rows[index][4]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][4]), 2)
+                                    : -1,
+                                LowerLimit = Convert.ToString(parameterDataTable.Rows[index][5]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][5]), 2)
+                                    : -1,
+                                UltimateUpperLimit = Convert.ToString(parameterDataTable.Rows[index][6]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][6]), 2)
+                                    : -1,
+                                UltimateLowerLimit = Convert.ToString(parameterDataTable.Rows[index][7]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][7]), 2)
+                                    : -1,
+                            },
+                            ControlPeriod = Convert.ToString(parameterDataTable.Rows[index][8]) != ""
+                                ? Convert.ToInt32(parameterDataTable.Rows[index][8])
+                                : -1,
+                            OperateDelay = Convert.ToString(parameterDataTable.Rows[index][9]) != ""
+                                ? Convert.ToInt32(parameterDataTable.Rows[index][9])
+                                : -1,
+                            DeviceID = Convert.ToUInt32(parameterDataTable.Rows[index][10]),
                         };
                     }
                 }
@@ -577,8 +606,29 @@ namespace OptimalControl.Forms
                     {
                         Name = Convert.ToString(modbusRTUParaDataTable.Rows[index][1]),
                         Address = Convert.ToUInt16(modbusRTUParaDataTable.Rows[index][2]),
-                        Ratio = Convert.ToDouble(modbusRTUParaDataTable.Rows[index][3]),
-                        DeviceID = Convert.ToUInt32(modbusRTUParaDataTable.Rows[index][4]),
+                        Ratio = Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][3]), 2),
+                        Limit = new Variable.VariableLimit()
+                        {
+                            UpperLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][4]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][4]), 2)
+                                : -1,
+                            LowerLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][5]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][5]), 2)
+                                : -1,
+                            UltimateUpperLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][6]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][6]), 2)
+                                : -1,
+                            UltimateLowerLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][7]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][7]), 2)
+                                : -1,
+                        },
+                        ControlPeriod = Convert.ToString(modbusRTUParaDataTable.Rows[index][8]) != ""
+                            ? Convert.ToInt32(modbusRTUParaDataTable.Rows[index][8])
+                            : -1,
+                        OperateDelay = Convert.ToString(modbusRTUParaDataTable.Rows[index][9]) != ""
+                            ? Convert.ToInt32(modbusRTUParaDataTable.Rows[index][9])
+                            : -1,
+                        DeviceID = Convert.ToUInt32(modbusRTUParaDataTable.Rows[index][10]),
                     };
                 }
 
@@ -604,7 +654,8 @@ namespace OptimalControl.Forms
 
                 _modbusRtuDevice.UnitId = ConfigAppSettings.GetSettingByte("ModbusRTUDeviceID", 1);
 
-                _masterPaneGraphRealtime.Title.Text = ConfigAppSettings.GetSettingString("MasterTitle", "My MasterPane Title");
+                _masterPaneGraphRealtime.Title.Text = ConfigAppSettings.GetSettingString("MasterTitle",
+                    "My MasterPane Title");
                 _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigAppSettings.GetSettingSingle("MasterTitleSize", 12);
 
                 tempString = ConfigAppSettings.GetValue("CurveList").Trim();
@@ -691,6 +742,7 @@ namespace OptimalControl.Forms
                         }
                     }
                 }
+                UpdateRules();
             }
             catch (Exception ex)
             {
@@ -801,7 +853,8 @@ namespace OptimalControl.Forms
         /// <returns>
         /// Command
         /// </returns>
-        private string GetHistoryDataCommand(string sqlCmd, string dataTable, string curveTable, DateTime statrTime, DateTime endTime)
+        private string GetHistoryDataCommand(string sqlCmd, string dataTable, string curveTable, DateTime statrTime,
+            DateTime endTime)
         {
             string sql = sqlCmd;
             sql = sql.Replace("@DataTable", dataTable)
@@ -823,7 +876,8 @@ namespace OptimalControl.Forms
         /// <returns>
         /// Command
         /// </returns>
-        private string GetHistoryDataCommand(string sqlCmd, string datatable, string parameterName, int deviceID, DateTime statrTime, DateTime endTime)
+        private string GetHistoryDataCommand(string sqlCmd, string datatable, string parameterName, int deviceID,
+            DateTime statrTime, DateTime endTime)
         {
             string sql = sqlCmd;
             sql = sql.Replace("@DataTable", datatable)
@@ -831,6 +885,21 @@ namespace OptimalControl.Forms
                 .Replace("@DeviceID", deviceID.ToString(CultureInfo.InvariantCulture))
                 .Replace("@StartTime", statrTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
                 .Replace("@EndTime", endTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            return sql;
+        }
+
+        /// <summary>
+        /// Gets the rules command.
+        /// </summary>
+        /// <param name="sqlCmd">The SQL command.</param>
+        /// <param name="table">The table.</param>
+        /// <returns>
+        /// Command
+        /// </returns>
+        private string GetRulesCommand(string sqlCmd, string table)
+        {
+            string sql = sqlCmd;
+            sql = sql.Replace("@RulesTable", table);
             return sql;
         }
 
@@ -1036,7 +1105,7 @@ namespace OptimalControl.Forms
                         register =
                             device.ModbusTcpDevice.ModbusTcpMaster.ReadHoldingRegisters(
                                 device.ModbusTcpDevice.UnitId,
-                                (ushort)(device.Variables[paraIndex].Address - 1), 2);
+                                (ushort) (device.Variables[paraIndex].Address - 1), 2);
                         device.ModbusTcpMasterUpdated = true;
                     }
                     catch (Exception)
@@ -1070,7 +1139,7 @@ namespace OptimalControl.Forms
                         byteString[2*j + 1] = tempByte[1];
                     }
                     float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
-                    device.Variables[paraIndex].Value = value * device.Variables[paraIndex].Ratio;
+                    device.Variables[paraIndex].Value = value*device.Variables[paraIndex].Ratio;
                 }
             }
             catch (Exception ex)
@@ -1244,7 +1313,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// 刷新曲线.
         /// </summary>
-        private void UpdateGraph(ref MasterPane masterPane,ref ZedGraphControl zgc, Curve[] curves)
+        private void UpdateGraph(ref MasterPane masterPane, ref ZedGraphControl zgc, Curve[] curves)
         {
             if (InvokeRequired)
             {
@@ -1259,7 +1328,7 @@ namespace OptimalControl.Forms
                 {
                     if (index == 0)
                     {
-                        masterPane.Add(CreatGraphPane(curves[index],GraphPaneType.First));
+                        masterPane.Add(CreatGraphPane(curves[index], GraphPaneType.First));
                     }
                     else if (index == _curveCount - 1)
                     {
@@ -1324,10 +1393,11 @@ namespace OptimalControl.Forms
         /// <returns>
         /// The Graph Pane
         /// </returns>
-        private GraphPane CreatGraphPane(Curve curve , GraphPaneType graphPaneType)
+        private GraphPane CreatGraphPane(Curve curve, GraphPaneType graphPaneType)
         {
             // Create a new graph with topLeft at (40,40) and size 600x400
-            GraphPane graphPane = new GraphPane(new Rectangle(10, 10, 600, 400), curve.Name, curve.XAxisTitle, curve.YAxisTitle)
+            GraphPane graphPane = new GraphPane(new Rectangle(10, 10, 600, 400), curve.Name, curve.XAxisTitle,
+                curve.YAxisTitle)
             {
                 Fill = new Fill(Color.White, Color.LightCyan, 45.0F),
                 BaseDimension = 6.0F
@@ -1381,7 +1451,8 @@ namespace OptimalControl.Forms
                     {
                         graphPane.YAxis.Scale.Max = curve.YAxisMax;
                     }
-                    LineItem tmpCurve = graphPane.AddCurve(curve.Name, curve.DataList, curve.LineColour, curve.CurveSymbolType);
+                    LineItem tmpCurve = graphPane.AddCurve(curve.Name, curve.DataList, curve.LineColour,
+                        curve.CurveSymbolType);
                     tmpCurve.Symbol.Fill = new Fill(curve.LineColour);
                     tmpCurve.Symbol.Size = curve.SymbolSize;
                     tmpCurve.Line.IsVisible = curve.LineType;
@@ -1396,6 +1467,55 @@ namespace OptimalControl.Forms
             return graphPane;
         }
 
+        private void UpdateRules()
+        {
+            DataTable ruleDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+                GetRulesCommand(_sqlGetRules, _rulesTable));
+            UpdateRulesGrid(ruleDataTable, "1=1");
+            status_Label.Text = string.Format("查询到 {0} 行数据", ruleDataTable.Rows.Count);
+        }
+
+        private void UpdateRulesGrid(DataTable dataTable, string filter)
+        {
+            DataRow[] data = dataTable.Select(filter);
+            DataTable table = dataTable.Clone();
+            foreach (DataRow row in data)
+            {
+                table.Rows.Add(row.ItemArray);
+            }
+
+            dgv_oc_rules.DataSource = table;
+            foreach (DataGridViewColumn column in dgv_oc_rules.Columns)
+            {
+                switch (column.HeaderText) //更改列名
+                {
+                    case "Id":
+                        column.HeaderText = "序号";
+                        break;
+                    case "Name":
+                        column.HeaderText = "名称";
+                        break;
+                    case "Expression":
+                        column.HeaderText = "控制规则";
+                        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                        break;
+                    case "Operation":
+                        column.HeaderText = "执行动作";
+                        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                        break;
+                    case "Period":
+                        column.HeaderText = "控制周期";
+                        break;
+                    case "State":
+                        column.HeaderText = "启用";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+
         /// <summary>
         /// Loads the history data.
         /// </summary>
@@ -1404,7 +1524,8 @@ namespace OptimalControl.Forms
         /// <returns></returns>
         private DataTable LoadHistoryData(DateTime startTime, DateTime endTime)
         {
-            string sql = GetHistoryDataCommand(_sqlGetHistoryData1 + _sqlGetHistoryData2 + _sqlGetHistoryData3, _dataTable,
+            string sql = GetHistoryDataCommand(_sqlGetHistoryData1 + _sqlGetHistoryData2 + _sqlGetHistoryData3,
+                _dataTable,
                 _curvesTable, startTime, endTime);
             DataTable dataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction, sql);
             return dataTable;
@@ -1418,7 +1539,7 @@ namespace OptimalControl.Forms
         private Curve[] LoadHistoryCurves(DataTable dataTable)
         {
             Curve[] curves = new Curve[_curveCount];
-            
+
             for (int index = 0; index < _curveCount; index++)
             {
                 curves[index] = _curves[index];
@@ -1439,6 +1560,29 @@ namespace OptimalControl.Forms
             return curves;
         }
 
+        private ExpertSystem.Rule GetSelectedRule()
+        {
+            if (dgv_oc_rules.CurrentRow != null)
+            {
+                int selectRowIndex = dgv_oc_rules.CurrentRow.Index;
+                ExpertSystem.Rule rule = new ExpertSystem.Rule
+                {
+                    Id = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[0].Value),
+                    Name = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[1].Value),
+                    Expression = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[2].Value),
+                    Operatioin = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[3].Value),
+                    Period = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value) != ""
+                        ? Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value)
+                        : -1,
+                    Enabled = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells[5].Value),
+                };
+                return rule;
+            }
+            return new ExpertSystem.Rule();
+        }
+
+
+
         #endregion
 
         #region 控件响应
@@ -1448,7 +1592,8 @@ namespace OptimalControl.Forms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void TimerRealtimeElapsed(object sender, EventArgs e)
+        private
+            void TimerRealtimeElapsed(object sender, EventArgs e)
         {
             if (!_realTimerFlag) return;
             try
@@ -1525,7 +1670,7 @@ namespace OptimalControl.Forms
                     }
                 }
                 if (_updateGraphFlag)
-                    UpdateGraph(ref _masterPaneGraphRealtime,ref zgc_realtime, _curves);
+                    UpdateGraph(ref _masterPaneGraphRealtime, ref zgc_realtime, _curves);
 
                 if (_myFilter.isActive)
                 {
@@ -1797,8 +1942,8 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_curve_search_Click(object sender, EventArgs e)
         {
-            DateTime startTime = dtp_curve_start.Value;    //查询起始时间
-            DateTime endTime = dtp_curve_end.Value;    //查询截止时间
+            DateTime startTime = dtp_curve_start.Value; //查询起始时间
+            DateTime endTime = dtp_curve_end.Value; //查询截止时间
             if (endTime > startTime)
             {
                 _hisoryCurves = new Curve[_curveCount];
@@ -1808,9 +1953,9 @@ namespace OptimalControl.Forms
                 _hisoryCurves = LoadHistoryCurves(dataTable);
                 UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                                                  startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                                  endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                                                  dataTable.Rows.Count);
+                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
+                    dataTable.Rows.Count);
             }
         }
 
@@ -1821,8 +1966,8 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_curve_prev_Click(object sender, EventArgs e)
         {
-            DateTime endTime = dtp_curve_start.Value;    //查询截止时间
-            DateTime startTime = dtp_curve_start.Value - (dtp_curve_end.Value - dtp_curve_start.Value);    //查询起始时间
+            DateTime endTime = dtp_curve_start.Value; //查询截止时间
+            DateTime startTime = dtp_curve_start.Value - (dtp_curve_end.Value - dtp_curve_start.Value); //查询起始时间
             if (endTime > startTime)
             {
                 _hisoryCurves = new Curve[_curveCount];
@@ -1834,9 +1979,9 @@ namespace OptimalControl.Forms
                 dtp_curve_start.Value = startTime;
                 dtp_curve_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                                  startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                  endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                                  dataTable.Rows.Count);
+                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
+                    dataTable.Rows.Count);
             }
         }
 
@@ -1847,8 +1992,8 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_curve_next_Click(object sender, EventArgs e)
         {
-            DateTime startTime = dtp_curve_end.Value;    //查询起始时间
-            DateTime endTime = dtp_curve_end.Value + (dtp_curve_end.Value - dtp_curve_start.Value);    //查询截止时间
+            DateTime startTime = dtp_curve_end.Value; //查询起始时间
+            DateTime endTime = dtp_curve_end.Value + (dtp_curve_end.Value - dtp_curve_start.Value); //查询截止时间
             if (endTime > startTime)
             {
                 _hisoryCurves = new Curve[_curveCount];
@@ -1860,9 +2005,9 @@ namespace OptimalControl.Forms
                 dtp_curve_start.Value = startTime;
                 dtp_curve_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                                  startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                  endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                                  dataTable.Rows.Count);
+                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
+                    dataTable.Rows.Count);
             }
         }
 
@@ -1873,17 +2018,17 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_data_search_Click(object sender, EventArgs e)
         {
-            DateTime startTime = dtp_data_start.Value;    //查询起始时间
-            DateTime endTime = dtp_data_end.Value;    //查询截止时间
+            DateTime startTime = dtp_data_start.Value; //查询起始时间
+            DateTime endTime = dtp_data_end.Value; //查询截止时间
             if (endTime > startTime)
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
                 dgv_data.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                                                  startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                                  endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                                                  dataTable.Rows.Count);
+                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
+                    dataTable.Rows.Count);
             }
         }
 
@@ -1894,8 +2039,8 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_data_prev_Click(object sender, EventArgs e)
         {
-            DateTime endTime = dtp_data_start.Value;    //查询截止时间
-            DateTime startTime = dtp_data_start.Value - (dtp_data_end.Value - dtp_data_start.Value);    //查询起始时间
+            DateTime endTime = dtp_data_start.Value; //查询截止时间
+            DateTime startTime = dtp_data_start.Value - (dtp_data_end.Value - dtp_data_start.Value); //查询起始时间
             if (endTime > startTime)
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
@@ -1904,9 +2049,9 @@ namespace OptimalControl.Forms
                 dtp_data_start.Value = startTime;
                 dtp_data_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                                  startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                  endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                                  dataTable.Rows.Count);
+                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
+                    dataTable.Rows.Count);
             }
         }
 
@@ -1917,8 +2062,8 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_data_next_Click(object sender, EventArgs e)
         {
-            DateTime startTime = dtp_data_end.Value;    //查询起始时间
-            DateTime endTime = dtp_data_end.Value + (dtp_data_end.Value - dtp_data_start.Value);    //查询截止时间
+            DateTime startTime = dtp_data_end.Value; //查询起始时间
+            DateTime endTime = dtp_data_end.Value + (dtp_data_end.Value - dtp_data_start.Value); //查询截止时间
             if (endTime > startTime)
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
@@ -1927,9 +2072,9 @@ namespace OptimalControl.Forms
                 dtp_data_start.Value = startTime;
                 dtp_data_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                                  startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                  endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                                  dataTable.Rows.Count);
+                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
+                    dataTable.Rows.Count);
             }
         }
 
@@ -2153,18 +2298,75 @@ namespace OptimalControl.Forms
                 }
             }
         }
-        #endregion
+
+        private void tsbtn_rule_add_Click(object sender, EventArgs e)
+        {
+            ExpertSystem.Rule rule = GetSelectedRule();
+            DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+                GetParametersCommand(_sqlGetParameters, _parametersTable));
+            if (rule.Name == "") return;
+            frmRuleEditor addRuleForm = new frmRuleEditor(DataOperateMode.Insert, rule, parameterDataTable);
+            if (addRuleForm.ShowDialog() == DialogResult.OK)
+            {
+                status_Label.Text = string.Format("插入 {0} 行数据",
+                    addRuleForm.Result.ToString(CultureInfo.InvariantCulture));
+                UpdateRules();
+            }
+        }
 
         private void tsbtn_rule_edit_Click(object sender, EventArgs e)
         {
-            ExpertSystem.Rule rule = new ExpertSystem.Rule();
+            ExpertSystem.Rule rule = GetSelectedRule();
             DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
                 GetParametersCommand(_sqlGetParameters, _parametersTable));
             frmRuleEditor editParameterForm = new frmRuleEditor(DataOperateMode.Edit, rule, parameterDataTable);
             if (editParameterForm.ShowDialog() == DialogResult.OK)
             {
-                
+                status_Label.Text = string.Format("编辑 {0} 行数据",
+                    editParameterForm.Result.ToString(CultureInfo.InvariantCulture));
+                UpdateRules();
             }
+        }
+
+        private void tsbtn_rule_delete_Click(object sender, EventArgs e)
+        {
+            ExpertSystem.Rule rule = GetSelectedRule();
+            DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+                GetParametersCommand(_sqlGetParameters, _parametersTable));
+            frmRuleEditor deleteParameterForm = new frmRuleEditor(DataOperateMode.Delete, rule, parameterDataTable);
+            if (deleteParameterForm.ShowDialog() == DialogResult.OK)
+            {
+                status_Label.Text = string.Format("删除 {0} 行数据",
+                    deleteParameterForm.Result.ToString(CultureInfo.InvariantCulture));
+                UpdateRules();
+            }
+        }
+
+        private void tsbtn_rule_update_Click(object sender, EventArgs e)
+        {
+            UpdateRules();
+        }
+
+        private void tsbtn_rule_paras_Click(object sender, EventArgs e)
+        {
+            frmParametersManager parametersForm = new frmParametersManager();
+            parametersForm.ShowDialog();
+        }
+
+        private void dgv_oc_rules_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tsbtn_rule_edit_Click(sender, e);
+        }
+        #endregion
+
+        private void tsbtn_oc_enabled_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tsbtn_oc_disabled_Click(object sender, EventArgs e)
+        {
+
         }
 
     }
