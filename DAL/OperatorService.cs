@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Configuration;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using IDAL;
+using Model;
 
 namespace DAL
 {
     /// <summary>
     /// 操作员数据访问操作类
     /// </summary>
-    public class OperatorService : IDAL.IOperatorService
+    public class OperatorService : IOperatorService
     {
 
         #region IOperatorService 成员
@@ -23,13 +24,13 @@ namespace DAL
         /// <param name="name">操作员名称</param>
         /// <param name="pwd">操作员密码</param>
         /// <returns>操作员实体</returns>
-        public Model.Operator GetOperatorInfoByName(string name, string pwd)
+        public Operator GetOperatorInfoByName(string name, string pwd)
         {
             //SQL命令
             string sqltxt = string.Format("Select Id, OperatorName, Password, RightsList, State From Operator Where OperatorName = '{0}' And Password = '{1}'", name, pwd);
 
             //创建操作员实体
-            Model.Operator tmpOperator = new Model.Operator();
+            Operator tmpOperator = new Operator();
 
             // 转换数据库存储的 二进制数据为 Byte[] 数组 以便进而转换为操作员权限集合
             // 从配置文件读取连接字符串
@@ -50,7 +51,7 @@ namespace DAL
                     {
                         //将数据集转换成实体集合
                         tmpOperator.Id = Convert.ToInt32(myReader["Id"]);
-                        tmpOperator.ModelName = Convert.ToString(myReader["OperatorName"]);
+                        tmpOperator.Name = Convert.ToString(myReader["OperatorName"]);
                         tmpOperator.Password = Convert.ToString(myReader["Password"]);
                         tmpOperator.State = Convert.ToBoolean(myReader["State"]);
 
@@ -59,9 +60,9 @@ namespace DAL
                         // 将流反序列化为权限集合对象
                         BinaryFormatter bf = new BinaryFormatter();
                         if (!bytes.IsNull)
-                            tmpOperator.RightsCollection = (bf.Deserialize(bytes.Stream) as Dictionary<string, Model.Rights>);
+                            tmpOperator.RightsCollection = (bf.Deserialize(bytes.Stream) as Dictionary<string, Rights>);
                         //else
-                        //    throw new Exception(string.Format("操作员 [{0}] 没有任何权限，禁止登录！", tmpOperator.ModelName));
+                        //    throw new Exception(string.Format("操作员 [{0}] 没有任何权限，禁止登录！", tmpOperator.Name));
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -71,7 +72,7 @@ namespace DAL
                 
             // 如果操作员已经被禁用
             if (!tmpOperator.State)
-                throw new Exception(string.Format("操作员 [{0}] 已被禁用，请与管理员联系！", tmpOperator.ModelName));
+                throw new Exception(string.Format("操作员 [{0}] 已被禁用，请与管理员联系！", tmpOperator.Name));
             // 返回结果
             return tmpOperator;
         }
@@ -81,7 +82,7 @@ namespace DAL
         /// </summary>
         /// <param name="addOperator">要添加的操作员实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool AddOperator(Model.Operator addOperator)
+        public bool AddOperator(Operator addOperator)
         {
             // 验证密码长度
             if (addOperator.Password.Trim().Length < 6)
@@ -106,7 +107,7 @@ namespace DAL
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
                 SqlParameter prm1 = new SqlParameter("@OperatorName", SqlDbType.NVarChar, 50);
-                prm1.Value = addOperator.ModelName;
+                prm1.Value = addOperator.Name;
                 SqlParameter prm2 = new SqlParameter("@Password", SqlDbType.NVarChar, 50);
                 prm2.Value = addOperator.Password;
                 SqlParameter prm3 = new SqlParameter("@RightsList", SqlDbType.VarBinary, rigthsByteArray.Length,
@@ -150,7 +151,7 @@ namespace DAL
         /// </summary>
         /// <param name="currentOperator">要修改的操作员实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool ModifyOperator(Model.Operator currentOperator)
+        public bool ModifyOperator(Operator currentOperator)
         {
             // 验证密码长度
             if (currentOperator.Password.Trim().Length < 6)
@@ -175,7 +176,7 @@ namespace DAL
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
                 SqlParameter prm1 = new SqlParameter("@OperatorName", SqlDbType.NVarChar, 50);
-                prm1.Value = currentOperator.ModelName;
+                prm1.Value = currentOperator.Name;
                 SqlParameter prm2 = new SqlParameter("@Password", SqlDbType.NVarChar, 50);
                 prm2.Value = currentOperator.Password;
                 SqlParameter prm3 = new SqlParameter("@RightsList", SqlDbType.VarBinary, rigthsByteArray.Length, 
@@ -199,14 +200,14 @@ namespace DAL
         /// 获取所有操作员信息
         /// </summary>
         /// <returns>操作员实体集合</returns>
-        public Dictionary<string, Model.Operator> GetAllOperatorInfo()
+        public Dictionary<string, Operator> GetAllOperatorInfo()
         {
             //SQL命令
             string sqltxt = "Select Id, OperatorName, Password, RightsList, State From Operator";
             //创建操作员实体集合
-            Dictionary<string, Model.Operator> operatorCollection = new Dictionary<string, Model.Operator>();
+            Dictionary<string, Operator> operatorCollection = new Dictionary<string, Operator>();
             //定义操作员实体
-            Model.Operator tmpOperator = null;
+            Operator tmpOperator = null;
 
             // 转换数据库存储的 二进制数据为 Byte[] 数组 以便进而转换为操作员权限集合
             // 从配置文件读取连接字符串
@@ -223,10 +224,10 @@ namespace DAL
                     while (myReader.Read())
                     {
                         // 创建操作员实体
-                        tmpOperator = new Model.Operator();
+                        tmpOperator = new Operator();
                         //将数据集转换成实体集合
                         tmpOperator.Id = Convert.ToInt32(myReader["Id"]);
-                        tmpOperator.ModelName = Convert.ToString(myReader["OperatorName"]);
+                        tmpOperator.Name = Convert.ToString(myReader["OperatorName"]);
                         tmpOperator.Password = Convert.ToString(myReader["Password"]);
                         tmpOperator.State = Convert.ToBoolean(myReader["State"]);
 
@@ -235,10 +236,10 @@ namespace DAL
                         // 将流反序列化为权限集合对象
                         BinaryFormatter bf = new BinaryFormatter();
                         if (!bytes.IsNull)
-                            tmpOperator.RightsCollection = (bf.Deserialize(bytes.Stream) as Dictionary<string, Model.Rights>);
+                            tmpOperator.RightsCollection = (bf.Deserialize(bytes.Stream) as Dictionary<string, Rights>);
 
                         // 添加到操作员实体集合
-                        operatorCollection.Add(tmpOperator.ModelName, tmpOperator);
+                        operatorCollection.Add(tmpOperator.Name, tmpOperator);
                     }
                 }
             }

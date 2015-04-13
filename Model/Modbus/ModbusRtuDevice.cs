@@ -1,6 +1,6 @@
 ﻿using System.IO.Ports;
 
-namespace Utility.Modbus
+namespace Model.Modbus
 {
     /// <summary>
     /// Modbus RTU Device

@@ -1,6 +1,6 @@
-﻿using Utility.Control;
+﻿using Model.Control;
 
-namespace Utility.Modbus
+namespace Model.Modbus
 {
     /// <summary>
     /// Device

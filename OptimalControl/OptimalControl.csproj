@@ -197,12 +197,6 @@
     <Compile Include="Forms\frmRuleEditor.Designer.cs">
       <DependentUpon>frmRuleEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmRulesManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmRulesManager.Designer.cs">
-      <DependentUpon>frmRulesManager.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\frmDeviceEditor.resx">
@@ -253,9 +247,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmRuleEditor.resx">
       <DependentUpon>frmRuleEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmRulesManager.resx">
-      <DependentUpon>frmRulesManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

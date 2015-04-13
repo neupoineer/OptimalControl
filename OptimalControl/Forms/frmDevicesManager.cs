@@ -2,8 +2,8 @@
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
+using Model.Modbus;
 using Utility;
-using Utility.Modbus;
 
 namespace OptimalControl.Forms
 {
@@ -20,7 +20,7 @@ namespace OptimalControl.Forms
     public partial class frmDevicesManager : Form
     {
         private string SQLGetDevices = ConfigAppSettings.GetSettingString("SQLGetDevices", "SELECT * FROM @DevicesTable");
-        private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Devices");
+        private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Device");
 
         public frmDevicesManager()
         {

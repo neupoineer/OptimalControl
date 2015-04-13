@@ -78,6 +78,50 @@ namespace OptimalControl.Forms
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.textBox20 = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.textBox18 = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.textBox17 = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.textBox16 = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgv_oc_rules = new System.Windows.Forms.DataGridView();
             this.toolStrip_oc = new System.Windows.Forms.ToolStrip();
@@ -91,6 +135,8 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_update = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtn_rule_paras = new System.Windows.Forms.ToolStripButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dgv_oc_logs = new System.Windows.Forms.DataGridView();
             this.tabPage_realtime_data = new System.Windows.Forms.TabPage();
             this.splitContainerH1_2H2_1V1_2V2 = new System.Windows.Forms.SplitContainer();
             this.listview_parainfo = new Utility.DoubleBufferListView();
@@ -119,8 +165,6 @@ namespace OptimalControl.Forms
             this.label4 = new System.Windows.Forms.Label();
             this.dgv_data = new System.Windows.Forms.DataGridView();
             this.splitContainerH1 = new System.Windows.Forms.SplitContainer();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dgv_oc_logs = new System.Windows.Forms.DataGridView();
             this.statusStrip_main.SuspendLayout();
             this.toolStrip_main.SuspendLayout();
             this.msMain.SuspendLayout();
@@ -141,9 +185,16 @@ namespace OptimalControl.Forms
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).BeginInit();
             this.toolStrip_oc.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_logs)).BeginInit();
             this.tabPage_realtime_data.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1_2H2_1V1_2V2)).BeginInit();
             this.splitContainerH1_2H2_1V1_2V2.Panel1.SuspendLayout();
@@ -168,8 +219,6 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).BeginInit();
             this.splitContainerH1.Panel2.SuspendLayout();
             this.splitContainerH1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_logs)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip_main
@@ -204,7 +253,7 @@ namespace OptimalControl.Forms
             this.btn_config,
             this.btn_info,
             this.btn_quit});
-            this.toolStrip_main.Location = new System.Drawing.Point(0, 31);
+            this.toolStrip_main.Location = new System.Drawing.Point(0, 32);
             this.toolStrip_main.Name = "toolStrip_main";
             this.toolStrip_main.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStrip_main.Size = new System.Drawing.Size(1008, 44);
@@ -316,7 +365,7 @@ namespace OptimalControl.Forms
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
             this.msMain.Padding = new System.Windows.Forms.Padding(3, 7, 1, 6);
-            this.msMain.Size = new System.Drawing.Size(1008, 31);
+            this.msMain.Size = new System.Drawing.Size(1008, 32);
             this.msMain.TabIndex = 41;
             // 
             // menu_file
@@ -329,7 +378,7 @@ namespace OptimalControl.Forms
             this.menu_file_quit});
             this.menu_file.Name = "menu_file";
             this.menu_file.ShortcutKeyDisplayString = "";
-            this.menu_file.Size = new System.Drawing.Size(68, 18);
+            this.menu_file.Size = new System.Drawing.Size(68, 19);
             this.menu_file.Text = "文件(&F)";
             // 
             // menu_file_login
@@ -380,7 +429,7 @@ namespace OptimalControl.Forms
             this.menu_control_stop,
             this.menu_control_clear});
             this.menu_control.Name = "menu_control";
-            this.menu_control.Size = new System.Drawing.Size(68, 18);
+            this.menu_control.Size = new System.Drawing.Size(68, 19);
             this.menu_control.Text = "波形(&G)";
             // 
             // menu_control_run
@@ -422,7 +471,7 @@ namespace OptimalControl.Forms
             this.menu_config_devices,
             this.menu_config_parameters});
             this.menu_config.Name = "menu_config";
-            this.menu_config.Size = new System.Drawing.Size(68, 18);
+            this.menu_config.Size = new System.Drawing.Size(68, 19);
             this.menu_config.Text = "设置(&O)";
             // 
             // menu_config_config
@@ -485,7 +534,7 @@ namespace OptimalControl.Forms
             this.menu_help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_help_about});
             this.menu_help.Name = "menu_help";
-            this.menu_help.Size = new System.Drawing.Size(68, 18);
+            this.menu_help.Size = new System.Drawing.Size(68, 19);
             this.menu_help.Text = "帮助(&H)";
             // 
             // menu_help_about
@@ -520,8 +569,8 @@ namespace OptimalControl.Forms
             // 
             this.splitContainerH1_2H2.Panel1.Controls.Add(this.splitContainerH1_2H2_1V1);
             this.splitContainerH1_2H2.Panel2MinSize = 0;
-            this.splitContainerH1_2H2.Size = new System.Drawing.Size(1008, 619);
-            this.splitContainerH1_2H2.SplitterDistance = 600;
+            this.splitContainerH1_2H2.Size = new System.Drawing.Size(1008, 608);
+            this.splitContainerH1_2H2.SplitterDistance = 582;
             this.splitContainerH1_2H2.SplitterWidth = 1;
             this.splitContainerH1_2H2.TabIndex = 0;
             // 
@@ -537,7 +586,7 @@ namespace OptimalControl.Forms
             // splitContainerH1_2H2_1V1.Panel2
             // 
             this.splitContainerH1_2H2_1V1.Panel2.Controls.Add(this.tabControl);
-            this.splitContainerH1_2H2_1V1.Size = new System.Drawing.Size(1008, 600);
+            this.splitContainerH1_2H2_1V1.Size = new System.Drawing.Size(1008, 582);
             this.splitContainerH1_2H2_1V1.SplitterDistance = 30;
             this.splitContainerH1_2H2_1V1.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1.TabIndex = 44;
@@ -552,7 +601,7 @@ namespace OptimalControl.Forms
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(977, 600);
+            this.tabControl.Size = new System.Drawing.Size(977, 582);
             this.tabControl.TabIndex = 0;
             // 
             // tabPage_optimal_control
@@ -562,13 +611,14 @@ namespace OptimalControl.Forms
             this.tabPage_optimal_control.Location = new System.Drawing.Point(4, 22);
             this.tabPage_optimal_control.Name = "tabPage_optimal_control";
             this.tabPage_optimal_control.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_optimal_control.Size = new System.Drawing.Size(969, 574);
+            this.tabPage_optimal_control.Size = new System.Drawing.Size(969, 556);
             this.tabPage_optimal_control.TabIndex = 3;
             this.tabPage_optimal_control.Text = "优化控制";
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(3, 3);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -581,14 +631,15 @@ namespace OptimalControl.Forms
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer2.Size = new System.Drawing.Size(963, 568);
-            this.splitContainer2.SplitterDistance = 365;
+            this.splitContainer2.Size = new System.Drawing.Size(963, 550);
+            this.splitContainer2.SplitterDistance = 390;
             this.splitContainer2.TabIndex = 2;
             // 
             // splitContainer3
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 38);
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 45);
             this.splitContainer3.Name = "splitContainer3";
             // 
             // splitContainer3.Panel1
@@ -598,19 +649,433 @@ namespace OptimalControl.Forms
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer3.Size = new System.Drawing.Size(963, 327);
+            this.splitContainer3.Size = new System.Drawing.Size(963, 345);
             this.splitContainer3.SplitterDistance = 343;
             this.splitContainer3.TabIndex = 0;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupBox8);
+            this.groupBox1.Controls.Add(this.groupBox7);
+            this.groupBox1.Controls.Add(this.groupBox6);
+            this.groupBox1.Controls.Add(this.groupBox5);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(343, 327);
+            this.groupBox1.Size = new System.Drawing.Size(343, 345);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "磨矿过程变量";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.textBox20);
+            this.groupBox8.Controls.Add(this.label24);
+            this.groupBox8.Controls.Add(this.textBox19);
+            this.groupBox8.Controls.Add(this.label23);
+            this.groupBox8.Controls.Add(this.textBox18);
+            this.groupBox8.Controls.Add(this.label22);
+            this.groupBox8.Controls.Add(this.textBox17);
+            this.groupBox8.Controls.Add(this.label21);
+            this.groupBox8.Controls.Add(this.textBox16);
+            this.groupBox8.Controls.Add(this.label20);
+            this.groupBox8.Controls.Add(this.textBox15);
+            this.groupBox8.Controls.Add(this.label19);
+            this.groupBox8.Controls.Add(this.textBox14);
+            this.groupBox8.Controls.Add(this.label18);
+            this.groupBox8.Controls.Add(this.textBox13);
+            this.groupBox8.Controls.Add(this.label17);
+            this.groupBox8.Controls.Add(this.textBox10);
+            this.groupBox8.Controls.Add(this.label14);
+            this.groupBox8.Controls.Add(this.textBox11);
+            this.groupBox8.Controls.Add(this.label15);
+            this.groupBox8.Controls.Add(this.textBox12);
+            this.groupBox8.Controls.Add(this.label16);
+            this.groupBox8.Location = new System.Drawing.Point(181, 20);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(145, 316);
+            this.groupBox8.TabIndex = 8;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "检测变量";
+            // 
+            // textBox20
+            // 
+            this.textBox20.Location = new System.Drawing.Point(65, 289);
+            this.textBox20.Name = "textBox20";
+            this.textBox20.ReadOnly = true;
+            this.textBox20.Size = new System.Drawing.Size(60, 21);
+            this.textBox20.TabIndex = 21;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(7, 292);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(53, 12);
+            this.label24.TabIndex = 20;
+            this.label24.Text = "溢流浓度";
+            // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(65, 262);
+            this.textBox19.Name = "textBox19";
+            this.textBox19.ReadOnly = true;
+            this.textBox19.Size = new System.Drawing.Size(60, 21);
+            this.textBox19.TabIndex = 19;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(7, 265);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(53, 12);
+            this.label23.TabIndex = 18;
+            this.label23.Text = "溢流粒度";
+            // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(65, 235);
+            this.textBox18.Name = "textBox18";
+            this.textBox18.ReadOnly = true;
+            this.textBox18.Size = new System.Drawing.Size(60, 21);
+            this.textBox18.TabIndex = 17;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(7, 238);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(53, 12);
+            this.label22.TabIndex = 16;
+            this.label22.Text = "溢流流量";
+            // 
+            // textBox17
+            // 
+            this.textBox17.Location = new System.Drawing.Point(65, 208);
+            this.textBox17.Name = "textBox17";
+            this.textBox17.ReadOnly = true;
+            this.textBox17.Size = new System.Drawing.Size(60, 21);
+            this.textBox17.TabIndex = 15;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(7, 211);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(53, 12);
+            this.label21.TabIndex = 14;
+            this.label21.Text = "泵池液位";
+            // 
+            // textBox16
+            // 
+            this.textBox16.Location = new System.Drawing.Point(65, 181);
+            this.textBox16.Name = "textBox16";
+            this.textBox16.ReadOnly = true;
+            this.textBox16.Size = new System.Drawing.Size(60, 21);
+            this.textBox16.TabIndex = 13;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(7, 184);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(53, 12);
+            this.label20.TabIndex = 12;
+            this.label20.Text = "磨音检测";
+            // 
+            // textBox15
+            // 
+            this.textBox15.Location = new System.Drawing.Point(65, 154);
+            this.textBox15.Name = "textBox15";
+            this.textBox15.ReadOnly = true;
+            this.textBox15.Size = new System.Drawing.Size(60, 21);
+            this.textBox15.TabIndex = 11;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(7, 157);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 12);
+            this.label19.TabIndex = 10;
+            this.label19.Text = "顽石产生";
+            // 
+            // textBox14
+            // 
+            this.textBox14.Location = new System.Drawing.Point(65, 126);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.ReadOnly = true;
+            this.textBox14.Size = new System.Drawing.Size(60, 21);
+            this.textBox14.TabIndex = 9;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(7, 129);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(53, 12);
+            this.label18.TabIndex = 8;
+            this.label18.Text = "循环负荷";
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(65, 99);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.ReadOnly = true;
+            this.textBox13.Size = new System.Drawing.Size(60, 21);
+            this.textBox13.TabIndex = 7;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(7, 102);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(53, 12);
+            this.label17.TabIndex = 6;
+            this.label17.Text = "破碎启停";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(65, 72);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.ReadOnly = true;
+            this.textBox10.Size = new System.Drawing.Size(60, 21);
+            this.textBox10.TabIndex = 5;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(7, 75);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(53, 12);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "轴承压力";
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(65, 45);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.ReadOnly = true;
+            this.textBox11.Size = new System.Drawing.Size(60, 21);
+            this.textBox11.TabIndex = 3;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 48);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(53, 12);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "磨机负荷";
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(65, 18);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.ReadOnly = true;
+            this.textBox12.Size = new System.Drawing.Size(60, 21);
+            this.textBox12.TabIndex = 1;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(7, 21);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 12);
+            this.label16.TabIndex = 0;
+            this.label16.Text = "磨机功率";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.textBox7);
+            this.groupBox7.Controls.Add(this.label11);
+            this.groupBox7.Controls.Add(this.textBox8);
+            this.groupBox7.Controls.Add(this.label12);
+            this.groupBox7.Controls.Add(this.textBox9);
+            this.groupBox7.Controls.Add(this.label13);
+            this.groupBox7.Location = new System.Drawing.Point(18, 236);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(145, 100);
+            this.groupBox7.TabIndex = 7;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "补加水量(t/h)";
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(65, 72);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(60, 21);
+            this.textBox7.TabIndex = 5;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(7, 75);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 4;
+            this.label11.Text = "优化设定";
+            // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(65, 45);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(60, 21);
+            this.textBox8.TabIndex = 3;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 48);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 12);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "期望设定";
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(65, 18);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.ReadOnly = true;
+            this.textBox9.Size = new System.Drawing.Size(60, 21);
+            this.textBox9.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(7, 21);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 12);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "实际值";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.textBox4);
+            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.textBox5);
+            this.groupBox6.Controls.Add(this.label9);
+            this.groupBox6.Controls.Add(this.textBox6);
+            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Location = new System.Drawing.Point(18, 129);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(145, 100);
+            this.groupBox6.TabIndex = 6;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "给水量(t/h)";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(65, 72);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(60, 21);
+            this.textBox4.TabIndex = 5;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 75);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "优化设定";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(65, 45);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(60, 21);
+            this.textBox5.TabIndex = 3;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 48);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "比例系数";
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(65, 18);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.ReadOnly = true;
+            this.textBox6.Size = new System.Drawing.Size(60, 21);
+            this.textBox6.TabIndex = 1;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 21);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(41, 12);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "实际值";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.textBox3);
+            this.groupBox5.Controls.Add(this.label7);
+            this.groupBox5.Controls.Add(this.textBox2);
+            this.groupBox5.Controls.Add(this.label6);
+            this.groupBox5.Controls.Add(this.textBox1);
+            this.groupBox5.Controls.Add(this.label5);
+            this.groupBox5.Location = new System.Drawing.Point(18, 20);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(145, 100);
+            this.groupBox5.TabIndex = 0;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "给矿量(t/h)";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(65, 72);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(60, 21);
+            this.textBox3.TabIndex = 5;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(7, 75);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 12);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "优化设定";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(65, 45);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(60, 21);
+            this.textBox2.TabIndex = 3;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 48);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "期望设定";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(65, 18);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(60, 21);
+            this.textBox1.TabIndex = 1;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 21);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "实际值";
             // 
             // groupBox2
             // 
@@ -618,7 +1083,7 @@ namespace OptimalControl.Forms
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(616, 327);
+            this.groupBox2.Size = new System.Drawing.Size(616, 345);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "专家规则列表";
@@ -655,7 +1120,7 @@ namespace OptimalControl.Forms
             this.dgv_oc_rules.RowTemplate.Height = 23;
             this.dgv_oc_rules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_oc_rules.ShowEditingIcon = false;
-            this.dgv_oc_rules.Size = new System.Drawing.Size(610, 307);
+            this.dgv_oc_rules.Size = new System.Drawing.Size(610, 325);
             this.dgv_oc_rules.TabIndex = 1;
             this.dgv_oc_rules.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_oc_rules_CellDoubleClick);
             // 
@@ -676,7 +1141,7 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_paras});
             this.toolStrip_oc.Location = new System.Drawing.Point(0, 0);
             this.toolStrip_oc.Name = "toolStrip_oc";
-            this.toolStrip_oc.Size = new System.Drawing.Size(963, 38);
+            this.toolStrip_oc.Size = new System.Drawing.Size(963, 45);
             this.toolStrip_oc.TabIndex = 4;
             this.toolStrip_oc.Text = "toolStrip1";
             // 
@@ -685,7 +1150,7 @@ namespace OptimalControl.Forms
             this.tsbtn_oc_enabled.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_oc_enabled.Image")));
             this.tsbtn_oc_enabled.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_oc_enabled.Name = "tsbtn_oc_enabled";
-            this.tsbtn_oc_enabled.Size = new System.Drawing.Size(60, 35);
+            this.tsbtn_oc_enabled.Size = new System.Drawing.Size(60, 42);
             this.tsbtn_oc_enabled.Text = "运行";
             this.tsbtn_oc_enabled.Click += new System.EventHandler(this.tsbtn_oc_enabled_Click);
             // 
@@ -694,21 +1159,21 @@ namespace OptimalControl.Forms
             this.tsbtn_oc_disabled.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_oc_disabled.Image")));
             this.tsbtn_oc_disabled.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_oc_disabled.Name = "tsbtn_oc_disabled";
-            this.tsbtn_oc_disabled.Size = new System.Drawing.Size(60, 35);
+            this.tsbtn_oc_disabled.Size = new System.Drawing.Size(60, 42);
             this.tsbtn_oc_disabled.Text = "停止";
             this.tsbtn_oc_disabled.Click += new System.EventHandler(this.tsbtn_oc_disabled_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 45);
             // 
             // tsbtn_rule_add
             // 
             this.tsbtn_rule_add.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_add.Image")));
             this.tsbtn_rule_add.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_add.Name = "tsbtn_rule_add";
-            this.tsbtn_rule_add.Size = new System.Drawing.Size(84, 35);
+            this.tsbtn_rule_add.Size = new System.Drawing.Size(84, 42);
             this.tsbtn_rule_add.Text = "增加规则";
             this.tsbtn_rule_add.ToolTipText = "增加规则";
             this.tsbtn_rule_add.Click += new System.EventHandler(this.tsbtn_rule_add_Click);
@@ -718,7 +1183,7 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_edit.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_edit.Image")));
             this.tsbtn_rule_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_edit.Name = "tsbtn_rule_edit";
-            this.tsbtn_rule_edit.Size = new System.Drawing.Size(84, 35);
+            this.tsbtn_rule_edit.Size = new System.Drawing.Size(84, 42);
             this.tsbtn_rule_edit.Text = "编辑规则";
             this.tsbtn_rule_edit.Click += new System.EventHandler(this.tsbtn_rule_edit_Click);
             // 
@@ -727,37 +1192,58 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_delete.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_delete.Image")));
             this.tsbtn_rule_delete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_delete.Name = "tsbtn_rule_delete";
-            this.tsbtn_rule_delete.Size = new System.Drawing.Size(84, 35);
+            this.tsbtn_rule_delete.Size = new System.Drawing.Size(84, 42);
             this.tsbtn_rule_delete.Text = "删除规则";
             this.tsbtn_rule_delete.Click += new System.EventHandler(this.tsbtn_rule_delete_Click);
             // 
             // toolStripButton1
             // 
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(6, 38);
+            this.toolStripButton1.Size = new System.Drawing.Size(6, 45);
             // 
             // tsbtn_rule_update
             // 
             this.tsbtn_rule_update.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_update.Image")));
             this.tsbtn_rule_update.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_update.Name = "tsbtn_rule_update";
-            this.tsbtn_rule_update.Size = new System.Drawing.Size(84, 35);
+            this.tsbtn_rule_update.Size = new System.Drawing.Size(84, 42);
             this.tsbtn_rule_update.Text = "刷新列表";
             this.tsbtn_rule_update.Click += new System.EventHandler(this.tsbtn_rule_update_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 45);
             // 
             // tsbtn_rule_paras
             // 
             this.tsbtn_rule_paras.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_paras.Image")));
             this.tsbtn_rule_paras.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_paras.Name = "tsbtn_rule_paras";
-            this.tsbtn_rule_paras.Size = new System.Drawing.Size(84, 35);
+            this.tsbtn_rule_paras.Size = new System.Drawing.Size(84, 42);
             this.tsbtn_rule_paras.Text = "管理变量";
             this.tsbtn_rule_paras.Click += new System.EventHandler(this.tsbtn_rule_paras_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.dgv_oc_logs);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(963, 156);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "日志记录";
+            // 
+            // dgv_oc_logs
+            // 
+            this.dgv_oc_logs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_oc_logs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_oc_logs.Location = new System.Drawing.Point(3, 17);
+            this.dgv_oc_logs.Name = "dgv_oc_logs";
+            this.dgv_oc_logs.RowTemplate.Height = 23;
+            this.dgv_oc_logs.Size = new System.Drawing.Size(957, 136);
+            this.dgv_oc_logs.TabIndex = 1;
             // 
             // tabPage_realtime_data
             // 
@@ -765,7 +1251,7 @@ namespace OptimalControl.Forms
             this.tabPage_realtime_data.Location = new System.Drawing.Point(4, 22);
             this.tabPage_realtime_data.Name = "tabPage_realtime_data";
             this.tabPage_realtime_data.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_realtime_data.Size = new System.Drawing.Size(969, 574);
+            this.tabPage_realtime_data.Size = new System.Drawing.Size(969, 557);
             this.tabPage_realtime_data.TabIndex = 0;
             this.tabPage_realtime_data.Text = "实时数据";
             this.tabPage_realtime_data.UseVisualStyleBackColor = true;
@@ -786,7 +1272,7 @@ namespace OptimalControl.Forms
             // 
             this.splitContainerH1_2H2_1V1_2V2.Panel2.AllowDrop = true;
             this.splitContainerH1_2H2_1V1_2V2.Panel2.Controls.Add(this.splitContainerH1_2H2_1V1_2V2_2V3);
-            this.splitContainerH1_2H2_1V1_2V2.Size = new System.Drawing.Size(963, 568);
+            this.splitContainerH1_2H2_1V1_2V2.Size = new System.Drawing.Size(963, 551);
             this.splitContainerH1_2H2_1V1_2V2.SplitterDistance = 255;
             this.splitContainerH1_2H2_1V1_2V2.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1_2V2.TabIndex = 14;
@@ -802,7 +1288,7 @@ namespace OptimalControl.Forms
             this.listview_parainfo.Location = new System.Drawing.Point(0, 0);
             this.listview_parainfo.MultiSelect = false;
             this.listview_parainfo.Name = "listview_parainfo";
-            this.listview_parainfo.Size = new System.Drawing.Size(255, 568);
+            this.listview_parainfo.Size = new System.Drawing.Size(255, 551);
             this.listview_parainfo.TabIndex = 2;
             this.listview_parainfo.UseCompatibleStateImageBehavior = false;
             this.listview_parainfo.View = System.Windows.Forms.View.Details;
@@ -823,8 +1309,8 @@ namespace OptimalControl.Forms
             // 
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2.Controls.Add(this.groupBox4);
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2MinSize = 200;
-            this.splitContainerH1_2H2_1V1_2V2_2V3.Size = new System.Drawing.Size(707, 568);
-            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 503;
+            this.splitContainerH1_2H2_1V1_2V2_2V3.Size = new System.Drawing.Size(707, 551);
+            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 506;
             this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1_2V2_2V3.TabIndex = 0;
             // 
@@ -846,7 +1332,7 @@ namespace OptimalControl.Forms
             this.zgc_realtime.ScrollMinX = 0D;
             this.zgc_realtime.ScrollMinY = 0D;
             this.zgc_realtime.ScrollMinY2 = 0D;
-            this.zgc_realtime.Size = new System.Drawing.Size(503, 568);
+            this.zgc_realtime.Size = new System.Drawing.Size(506, 551);
             this.zgc_realtime.TabIndex = 12;
             this.zgc_realtime.TabStop = false;
             // 
@@ -857,7 +1343,7 @@ namespace OptimalControl.Forms
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(203, 568);
+            this.groupBox4.Size = new System.Drawing.Size(200, 551);
             this.groupBox4.TabIndex = 14;
             this.groupBox4.TabStop = false;
             // 
@@ -877,7 +1363,7 @@ namespace OptimalControl.Forms
             this.tabPage_history_curve.Location = new System.Drawing.Point(4, 22);
             this.tabPage_history_curve.Name = "tabPage_history_curve";
             this.tabPage_history_curve.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_history_curve.Size = new System.Drawing.Size(969, 555);
+            this.tabPage_history_curve.Size = new System.Drawing.Size(969, 557);
             this.tabPage_history_curve.TabIndex = 1;
             this.tabPage_history_curve.Text = "历史曲线";
             this.tabPage_history_curve.UseVisualStyleBackColor = true;
@@ -903,7 +1389,7 @@ namespace OptimalControl.Forms
             // splitContainer_child.Panel2
             // 
             this.splitContainer_child.Panel2.Controls.Add(this.zgc_history);
-            this.splitContainer_child.Size = new System.Drawing.Size(963, 549);
+            this.splitContainer_child.Size = new System.Drawing.Size(963, 551);
             this.splitContainer_child.SplitterDistance = 36;
             this.splitContainer_child.SplitterWidth = 1;
             this.splitContainer_child.TabIndex = 19;
@@ -993,7 +1479,7 @@ namespace OptimalControl.Forms
             this.zgc_history.ScrollMinX = 0D;
             this.zgc_history.ScrollMinY = 0D;
             this.zgc_history.ScrollMinY2 = 0D;
-            this.zgc_history.Size = new System.Drawing.Size(963, 512);
+            this.zgc_history.Size = new System.Drawing.Size(963, 514);
             this.zgc_history.TabIndex = 15;
             this.zgc_history.TabStop = false;
             // 
@@ -1003,7 +1489,7 @@ namespace OptimalControl.Forms
             this.tabPage_history_data.Location = new System.Drawing.Point(4, 22);
             this.tabPage_history_data.Name = "tabPage_history_data";
             this.tabPage_history_data.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_history_data.Size = new System.Drawing.Size(969, 555);
+            this.tabPage_history_data.Size = new System.Drawing.Size(969, 557);
             this.tabPage_history_data.TabIndex = 2;
             this.tabPage_history_data.Text = "历史数据";
             this.tabPage_history_data.UseVisualStyleBackColor = true;
@@ -1029,7 +1515,7 @@ namespace OptimalControl.Forms
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgv_data);
-            this.splitContainer1.Size = new System.Drawing.Size(963, 549);
+            this.splitContainer1.Size = new System.Drawing.Size(963, 551);
             this.splitContainer1.SplitterDistance = 36;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 20;
@@ -1121,7 +1607,7 @@ namespace OptimalControl.Forms
             this.dgv_data.Name = "dgv_data";
             this.dgv_data.ReadOnly = true;
             this.dgv_data.RowTemplate.Height = 23;
-            this.dgv_data.Size = new System.Drawing.Size(963, 512);
+            this.dgv_data.Size = new System.Drawing.Size(963, 514);
             this.dgv_data.TabIndex = 0;
             this.dgv_data.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_data_CellFormatting);
             // 
@@ -1130,7 +1616,7 @@ namespace OptimalControl.Forms
             this.splitContainerH1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainerH1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainerH1.IsSplitterFixed = true;
-            this.splitContainerH1.Location = new System.Drawing.Point(0, 75);
+            this.splitContainerH1.Location = new System.Drawing.Point(0, 76);
             this.splitContainerH1.Name = "splitContainerH1";
             this.splitContainerH1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.splitContainerH1.Panel1MinSize = 0;
@@ -1138,31 +1624,10 @@ namespace OptimalControl.Forms
             // splitContainerH1.Panel2
             // 
             this.splitContainerH1.Panel2.Controls.Add(this.splitContainerH1_2H2);
-            this.splitContainerH1.Size = new System.Drawing.Size(1008, 635);
-            this.splitContainerH1.SplitterDistance = 15;
+            this.splitContainerH1.Size = new System.Drawing.Size(1008, 634);
+            this.splitContainerH1.SplitterDistance = 25;
             this.splitContainerH1.SplitterWidth = 1;
             this.splitContainerH1.TabIndex = 42;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.dgv_oc_logs);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(963, 199);
-            this.groupBox3.TabIndex = 0;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "日志记录";
-            // 
-            // dgv_oc_logs
-            // 
-            this.dgv_oc_logs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_oc_logs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_oc_logs.Location = new System.Drawing.Point(3, 17);
-            this.dgv_oc_logs.Name = "dgv_oc_logs";
-            this.dgv_oc_logs.RowTemplate.Height = 23;
-            this.dgv_oc_logs.Size = new System.Drawing.Size(957, 179);
-            this.dgv_oc_logs.TabIndex = 1;
             // 
             // frmMain
             // 
@@ -1176,6 +1641,7 @@ namespace OptimalControl.Forms
             this.Controls.Add(this.statusStrip_main);
             this.Controls.Add(this.msMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(1024, 768);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "半自磨优化系统";
@@ -1205,10 +1671,21 @@ namespace OptimalControl.Forms
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).EndInit();
             this.toolStrip_oc.ResumeLayout(false);
             this.toolStrip_oc.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_logs)).EndInit();
             this.tabPage_realtime_data.ResumeLayout(false);
             this.splitContainerH1_2H2_1V1_2V2.Panel1.ResumeLayout(false);
             this.splitContainerH1_2H2_1V1_2V2.Panel2.ResumeLayout(false);
@@ -1236,8 +1713,6 @@ namespace OptimalControl.Forms
             this.splitContainerH1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).EndInit();
             this.splitContainerH1.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_logs)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1330,6 +1805,50 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridView dgv_oc_logs;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBox16;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox textBox15;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox textBox20;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox textBox19;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox textBox18;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox textBox17;
+        private System.Windows.Forms.Label label21;
     }
 }
 

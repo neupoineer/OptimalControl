@@ -53,7 +53,7 @@ namespace ExpertSystem
         private List<string> m_Operators = new List<string>
             (new string[]
             {
-                "(", "tan", ")", "atan", "!", "*", "/", "%", "+", "-", "<", ">", "=", "&", "|", ",", "@"
+                "(", "tan", ")", "atan", "!", "*", "/", "%", "+", "-", "<", ">", "=", "&", "|", ",", "$"
             });
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace ExpertSystem
 
             curPos = FindOperator(exp, "");
 
-            exp += "@"; //结束操作符
+            exp += "$"; //结束操作符
             while (true)
             {
                 curPos = FindOperator(exp, "");
@@ -210,7 +210,7 @@ namespace ExpertSystem
                 }
 
                 //若当前运算符为结束运算符，则停止循环
-                if (curOpt == "@")
+                if (curOpt == "$")
                 {
                     break;
                 }

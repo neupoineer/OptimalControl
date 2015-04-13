@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using Modbus.Device;
 
-namespace Utility.Modbus
+namespace Model.Modbus
 {
     /// <summary>
     /// Modbus TCP Device

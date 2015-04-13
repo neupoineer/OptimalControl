@@ -2,8 +2,8 @@
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
+using Model.Control;
 using Utility;
-using Utility.Control;
 
 namespace OptimalControl.Forms
 {

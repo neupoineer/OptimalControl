@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Utility;
-using Utility.Control;
+using Model.Control;
 using ZedGraph;
 
 namespace OptimalControl.Forms
@@ -15,14 +15,14 @@ namespace OptimalControl.Forms
         DataTable _parameterDataTable = new DataTable();
 
         private string SQLGetDevices = ConfigAppSettings.GetSettingString("SQLGetDevices", "SELECT * FROM @DevicesTable");
-        private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Devices");
+        private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Device");
 
         private string SQLGetParameters = ConfigAppSettings.GetSettingString("SQLGetParameters",
             "SELECT * FROM @ParametersTable WHERE DeviceID = @DeviceID");
-        string ParametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameters");
+        string ParametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameter");
 
         private string SQLGetCurves = ConfigAppSettings.GetSettingString("SQLGetCurves", "SELECT * FROM @CurvesTable");
-        private string CurvesTable = ConfigAppSettings.GetSettingString("CurvesTable", "Curves");
+        private string CurvesTable = ConfigAppSettings.GetSettingString("CurvesTable", "Curve");
 
 
         #region ¹¹Ôìº¯Êý
@@ -143,7 +143,7 @@ namespace OptimalControl.Forms
                     Name = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[1].Value),
                     DeviceId = Convert.ToInt32(dataGridView_Curve.Rows[selectRowIndex].Cells[2].Value),
                     Address = Convert.ToUInt16(dataGridView_Curve.Rows[selectRowIndex].Cells[3].Value),
-                    LineColour = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[4].Value) != ""
+                    LineColor = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[4].Value) != ""
                         ? Color.FromName(Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[4].Value))
                         : new Color(),
                     LineType = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[5].Value) == "" ||
@@ -154,10 +154,10 @@ namespace OptimalControl.Forms
                     SymbolSize = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[8].Value) != ""
                         ? Convert.ToSingle(dataGridView_Curve.Rows[selectRowIndex].Cells[8].Value)
                         : -1,
-                    XAxisTitle = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[9].Value),
-                    YAxisTitle = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[10].Value),
-                    YAxisMax = Convert.ToDouble(dataGridView_Curve.Rows[selectRowIndex].Cells[11].Value),
-                    YAxisMin = Convert.ToDouble(dataGridView_Curve.Rows[selectRowIndex].Cells[12].Value)
+                    XTitle = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[9].Value),
+                    YTitle = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[10].Value),
+                    YMax = Convert.ToDouble(dataGridView_Curve.Rows[selectRowIndex].Cells[11].Value),
+                    YMin = Convert.ToDouble(dataGridView_Curve.Rows[selectRowIndex].Cells[12].Value)
                 };
 
                 if (Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[7].Value) != "")
@@ -165,31 +165,31 @@ namespace OptimalControl.Forms
                     switch (Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells[7].Value))
                     {
                         case "Diamond":
-                            curve.CurveSymbolType = SymbolType.Diamond;
+                            curve.SymbolType = SymbolType.Diamond;
                             break;
                         case "Circle":
-                            curve.CurveSymbolType = SymbolType.Circle;
+                            curve.SymbolType = SymbolType.Circle;
                             break;
                         case "Square":
-                            curve.CurveSymbolType = SymbolType.Square;
+                            curve.SymbolType = SymbolType.Square;
                             break;
                         case "Star":
-                            curve.CurveSymbolType = SymbolType.Star;
+                            curve.SymbolType = SymbolType.Star;
                             break;
                         case "Triangle":
-                            curve.CurveSymbolType = SymbolType.Triangle;
+                            curve.SymbolType = SymbolType.Triangle;
                             break;
                         case "Plus":
-                            curve.CurveSymbolType = SymbolType.Plus;
+                            curve.SymbolType = SymbolType.Plus;
                             break;
                         case "None":
-                            curve.CurveSymbolType = SymbolType.None;
+                            curve.SymbolType = SymbolType.None;
                             break;
                     }
                 }
                 else
                 {
-                    curve.CurveSymbolType = SymbolType.Default;
+                    curve.SymbolType = SymbolType.Default;
                 }
                 return curve;
             }

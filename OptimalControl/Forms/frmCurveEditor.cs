@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
 using Utility;
-using Utility.Control;
+using Model.Control;
 using ZedGraph;
 
 namespace OptimalControl.Forms
@@ -95,9 +95,9 @@ namespace OptimalControl.Forms
                 //cb_curve_device.Enabled = (mode != DataOperateMode.Delete);
                 ntb_curve_address.Text = curve.Address.ToString(CultureInfo.InvariantCulture);
                 ntb_curve_address.Enabled = (mode != DataOperateMode.Delete);
-                if (curve.LineColour != new Color())
+                if (curve.LineColor != new Color())
                 {
-                    cb_curve_color.SelectedIndex = colorList.IndexOf(curve.LineColour.Name) + 1;
+                    cb_curve_color.SelectedIndex = colorList.IndexOf(curve.LineColor.Name) + 1;
                     //cb_curve_color.Text = curve.LineColour.ToString();
                 }
                 cb_curve_color.Enabled = (mode != DataOperateMode.Delete);
@@ -111,9 +111,9 @@ namespace OptimalControl.Forms
                 }
                 tb_curve_size.Enabled = (mode != DataOperateMode.Delete);
 
-                if (curve.CurveSymbolType != SymbolType.Default)
+                if (curve.SymbolType != SymbolType.Default)
                 {
-                    cb_curve_symbol.Text = curve.CurveSymbolType.ToString();
+                    cb_curve_symbol.Text = curve.SymbolType.ToString();
                 }
                 cb_curve_symbol.Enabled = (mode != DataOperateMode.Delete);
 
@@ -123,14 +123,14 @@ namespace OptimalControl.Forms
                 }
                 tb_curve_symbolsize.Enabled = (mode != DataOperateMode.Delete);
 
-                tb_curve_xtitle.Text = curve.XAxisTitle;
+                tb_curve_xtitle.Text = curve.XTitle;
                 tb_curve_xtitle.Enabled = (mode != DataOperateMode.Delete);
-                tb_curve_ytitle.Text = curve.YAxisTitle;
+                tb_curve_ytitle.Text = curve.YTitle;
                 tb_curve_ytitle.Enabled = (mode != DataOperateMode.Delete);
 
-                tb_curve_ymax.Text = curve.YAxisMax.ToString(CultureInfo.InvariantCulture);
+                tb_curve_ymax.Text = curve.YMax.ToString(CultureInfo.InvariantCulture);
                 tb_curve_ymax.Enabled = (mode != DataOperateMode.Delete);
-                tb_curve_ymin.Text = curve.YAxisMin.ToString(CultureInfo.InvariantCulture);
+                tb_curve_ymin.Text = curve.YMin.ToString(CultureInfo.InvariantCulture);
                 tb_curve_ymin.Enabled = (mode != DataOperateMode.Delete);
             }
         }
@@ -272,8 +272,8 @@ namespace OptimalControl.Forms
         private void cb_curve_name_SelectedIndexChanged(object sender, EventArgs e)
         {
             cb_curve_device.Text = string.Format("{0} {1}",
-                _devicesDataTable.Rows[Convert.ToInt32(_parameterDataTable.Rows[cb_curve_name.SelectedIndex][4])][0],
-                _devicesDataTable.Rows[Convert.ToInt32(_parameterDataTable.Rows[cb_curve_name.SelectedIndex][4])][1]);
+                _devicesDataTable.Rows[Convert.ToInt32(_parameterDataTable.Rows[cb_curve_name.SelectedIndex][10])][0],
+                _devicesDataTable.Rows[Convert.ToInt32(_parameterDataTable.Rows[cb_curve_name.SelectedIndex][10])][1]);
             ntb_curve_address.Text = _parameterDataTable.Rows[cb_curve_name.SelectedIndex][2].ToString();
             tb_curve_xtitle.Text = "时间/(秒)";
             tb_curve_ytitle.Text = cb_curve_name.Text;

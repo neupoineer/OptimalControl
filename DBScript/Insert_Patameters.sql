@@ -1,8 +1,8 @@
-INSERT INTO [OptimalControl].[dbo].[Parameters]
-           ([Name]
-           ,[Address]
-           ,[Ratio]
-           ,[DeviceID])
+-- 选择 OptimalControl 数据库
+Use OptimalControl
+Go
+
+INSERT INTO [Parameter]([Name] ,[Address] ,[Ratio],[DeviceID])
      VALUES
 			('半自磨给矿量设定值','101','1','0'),
 			('半自磨原矿量','103','1','0'),

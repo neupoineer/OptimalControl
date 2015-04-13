@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using IBLL;
+using Model;
 using OptimalControl.Common;
 
 namespace OptimalControl.Forms
@@ -37,20 +39,20 @@ namespace OptimalControl.Forms
         /// 权限菜单数据管理类对象
         /// </summary>
         RightsMenuDataManager _rmdManager = null;
-        Model.Operator _currentOperator = null;
+        Operator _currentOperator = null;
         /// <summary>
         /// 保存当前登录的操作员对象
         /// </summary>
-        internal Model.Operator CurrentOperator
+        internal Operator CurrentOperator
         {
             get { return _currentOperator; }
             set { _currentOperator = value; }
         }
-        Dictionary<string, Model.Operator> _operatorCollection = null;
+        Dictionary<string, Operator> _operatorCollection = null;
         /// <summary>
         /// 当前加载的所有操作员实体集合
         /// </summary>
-        internal Dictionary<string, Model.Operator> OperatorCollection
+        internal Dictionary<string, Operator> OperatorCollection
         {
             get { return _operatorCollection; }
             set { _operatorCollection = value; }
@@ -85,7 +87,7 @@ namespace OptimalControl.Forms
         /// <param name="msMain">主界面待管理的菜单对象</param>
         /// <param name="frmMain">主界面对象</param>
         /// <param name="currentOperator">当前登录操作员对象</param>
-        public frmRightsManager(MenuStrip msMain, frmMain frmMain, Model.Operator currentOperator)
+        public frmRightsManager(MenuStrip msMain, frmMain frmMain, Operator currentOperator)
         {
             // 构建设计器控件
             InitializeComponent();
@@ -169,9 +171,9 @@ namespace OptimalControl.Forms
                 if (dgvOperatorList.SelectedCells.Count > 0)
                 {
                     // 保存当前选中行的操作员名称
-                    string operatorName = _dgvOldSelectedRow.Cells["ModelName"].Value.ToString().Trim();
+                    string operatorName = _dgvOldSelectedRow.Cells["Name"].Value.ToString().Trim();
                     // 指定当前编辑的操作员对象
-                    Model.Operator editOperator = _operatorCollection[operatorName];
+                    Operator editOperator = _operatorCollection[operatorName];
 
                     // 将数据绑定加载到树形视图
                     _rmuManager.BindDataToTreeView(editOperator.RightsCollection);
@@ -208,10 +210,10 @@ namespace OptimalControl.Forms
                     // 创建业务逻辑层工厂类实例
                     BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
                     // 调用工厂类实例方法创建操作员管理类实例
-                    IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
+                    IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
 
                     // 保存所有操作员权限信息
-                    foreach (Model.Operator tmpOperator in _operatorCollection.Values)
+                    foreach (Operator tmpOperator in _operatorCollection.Values)
                     {
                         // 保存当前操作员所做的修改
                         operatorManager.ModifyOperator(tmpOperator);
@@ -296,12 +298,12 @@ namespace OptimalControl.Forms
             if (dgvOperatorList.SelectedCells.Count > 0)
             {
                 // 保存当前选中行的操作员名称
-                string operatorName = dgvOperatorList.Rows[dgvOperatorList.SelectedCells[0].RowIndex].Cells["ModelName"].Value.ToString().Trim();
+                string operatorName = dgvOperatorList.Rows[dgvOperatorList.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString().Trim();
                 // 指定当前编辑的操作员对象
-                Model.Operator editOperator = _operatorCollection[operatorName];
+                Operator editOperator = _operatorCollection[operatorName];
 
                 // 找到当前编辑的权限项
-                Model.Rights currentEditRights = editOperator.RightsCollection[dgvRightsList.Rows[e.RowIndex].Cells["ModelName"].Value.ToString().Trim()];
+                Rights currentEditRights = editOperator.RightsCollection[dgvRightsList.Rows[e.RowIndex].Cells["Name"].Value.ToString().Trim()];
                 // 保存当前修改的权限标题和权限状态到权限集合
                 currentEditRights.RightsCaption = Convert.ToString(dgvRightsList.Rows[e.RowIndex].Cells["RightsCaption"].Value);
                 currentEditRights.RightsState = Convert.ToBoolean(dgvRightsList.Rows[e.RowIndex].Cells["RightsState"].Value);
@@ -322,7 +324,7 @@ namespace OptimalControl.Forms
             if (dgvOperatorList.SelectedCells.Count > 0)
             {
                 // 找到当前编辑的操作员项
-                Model.Operator currentEidtOperator = _operatorCollection[dgvOperatorList.Rows[e.RowIndex].Cells["ModelName"].Value.ToString().Trim()];
+                Operator currentEidtOperator = _operatorCollection[dgvOperatorList.Rows[e.RowIndex].Cells["Name"].Value.ToString().Trim()];
                 // 保存当前修改的操作员密码和状态到操作员集合
                 currentEidtOperator.Password = Convert.ToString(dgvOperatorList.Rows[e.RowIndex].Cells["Password"].Value);
                 currentEidtOperator.State = Convert.ToBoolean(dgvOperatorList.Rows[e.RowIndex].Cells["State"].Value);
@@ -343,14 +345,14 @@ namespace OptimalControl.Forms
                 for (int i = 0; i < dgvRightsList.SelectedCells.Count; i++)
                 {
                     // 且仅在选中[内部名称]和[父级权限]单元格时才执行操作
-                    if (dgvRightsList.SelectedCells[i].OwningColumn.Name == "ModelName"
+                    if (dgvRightsList.SelectedCells[i].OwningColumn.Name == "Name"
                         || dgvRightsList.SelectedCells[i].OwningColumn.Name == "ParentLevelRightsName")
                     {
                         // 同时选中与选中单元格内容相同的所有[内部名称]和[父级权限]单元格
                         foreach (DataGridViewRow dgvRow in this.dgvRightsList.Rows)
                         {
-                            if (dgvRow.Cells["ModelName"].Value == dgvRightsList.SelectedCells[i].Value)
-                                dgvRow.Cells["ModelName"].Selected = true;
+                            if (dgvRow.Cells["Name"].Value == dgvRightsList.SelectedCells[i].Value)
+                                dgvRow.Cells["Name"].Selected = true;
                             else if (dgvRow.Cells["ParentLevelRightsName"].Value == dgvRightsList.SelectedCells[i].Value)
                                 dgvRow.Cells["ParentLevelRightsName"].Selected = true;
                         }
@@ -372,9 +374,9 @@ namespace OptimalControl.Forms
                 // 保存当前选中的行
                 _dgvOldSelectedRow = dgvOperatorList.Rows[dgvOperatorList.SelectedCells[0].RowIndex];
                 // 保存当前选中行的操作员名称
-                string operatorName = _dgvOldSelectedRow.Cells["ModelName"].Value.ToString().Trim();
+                string operatorName = _dgvOldSelectedRow.Cells["Name"].Value.ToString().Trim();
                 // 指定当前编辑的操作员对象
-                Model.Operator editOperator = _operatorCollection[operatorName];
+                Operator editOperator = _operatorCollection[operatorName];
 
                 // 将数据绑定显示到数据视图
                 _rmuManager.BindDataToDataGridView(editOperator.RightsCollection);
@@ -419,7 +421,7 @@ namespace OptimalControl.Forms
                 if (dgvOperatorList.SelectedCells.Count > 0)
                 {
                     // 保存当前选中行的操作员名称
-                    string operatorName = dgvOperatorList.Rows[dgvOperatorList.SelectedCells[0].RowIndex].Cells["ModelName"].Value.ToString().Trim();
+                    string operatorName = dgvOperatorList.Rows[dgvOperatorList.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString().Trim();
                     // 将数据绑定显示到数据视图
                     _rmuManager.BindDataToDataGridView(_operatorCollection[operatorName].RightsCollection);
                 }
@@ -443,8 +445,8 @@ namespace OptimalControl.Forms
             // 同步数据视图对应项选择
             foreach (DataGridViewRow dgvRow in this.dgvRightsList.Rows)
             {
-                if (dgvRow.Cells["ModelName"].Value.ToString().Trim() == e.Node.Tag.ToString().Trim())
-                    dgvRow.Cells["ModelName"].Selected = true;
+                if (dgvRow.Cells["Name"].Value.ToString().Trim() == e.Node.Tag.ToString().Trim())
+                    dgvRow.Cells["Name"].Selected = true;
             }
         }
 
@@ -456,7 +458,7 @@ namespace OptimalControl.Forms
         private void tvRightsView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             // 保存当前选中行的操作员名称
-            string operatorName = dgvOperatorList.Rows[dgvOperatorList.SelectedCells[0].RowIndex].Cells["ModelName"].Value.ToString().Trim();
+            string operatorName = dgvOperatorList.Rows[dgvOperatorList.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString().Trim();
             // 同步修改权限集合
             _operatorCollection[operatorName].RightsCollection[e.Node.Tag.ToString()].RightsCaption = e.Label;
             // 将数据绑定显示到数据视图
@@ -511,7 +513,7 @@ namespace OptimalControl.Forms
                     // 获取当前要删除的操作员 ID
                     int operatorId = Convert.ToInt32(dgvOperatorList.SelectedCells[0].OwningRow.Cells["Id"].Value);
                     // 获取当前要删除的操作员名称
-                    string operatorName = Convert.ToString(dgvOperatorList.SelectedCells[0].OwningRow.Cells["ModelName"].Value);
+                    string operatorName = Convert.ToString(dgvOperatorList.SelectedCells[0].OwningRow.Cells["Name"].Value);
 
                     DialogResult result;
                     result = MessageBox.Show(
@@ -528,7 +530,7 @@ namespace OptimalControl.Forms
                     BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
 
                     // 删除权限关系信息
-                    IBLL.IRightsRelationManager rightsRelationManager = bllFactory.BuildRightsRelationManager();
+                    IRightsRelationManager rightsRelationManager = bllFactory.BuildRightsRelationManager();
                     if (rightsRelationManager.GetRightsRelationByOperatorId(operatorId).Count > 0)
                     {
                         if (!rightsRelationManager.DeleteRightsRelationByOperatorId(operatorId))
@@ -543,7 +545,7 @@ namespace OptimalControl.Forms
                     }
 
                     // 删除操作员信息
-                    IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
+                    IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
                     if (!operatorManager.DeleteOperatorByID(operatorId))
                     {
                         MessageBox.Show(

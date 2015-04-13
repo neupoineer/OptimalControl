@@ -1,13 +1,14 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
+using IBLL;
+using IDAL;
+using Model;
 
 namespace BLL
 {
     /// <summary>
     /// 权限组数据访问操作类
     /// </summary>
-    public class RightsGroupManager : IBLL.IRightsGroupManager
+    public class RightsGroupManager : IRightsGroupManager
     {
         #region IRightsGroupManager 成员
 
@@ -15,12 +16,12 @@ namespace BLL
         /// 获取所有权限组信息
         /// </summary>
         /// <returns>权限组实体集合</returns>
-        public Dictionary<string, Model.RightsGroup> GetAllRightsGroupInfo()
+        public Dictionary<string, RightsGroup> GetAllRightsGroupInfo()
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
+            IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
             //调用实例方法
             return rightsGroupService.GetAllRightsGroupInfo();
         }
@@ -30,12 +31,12 @@ namespace BLL
         /// </summary>
         /// <param name="addRightsGroup">要添加的权限组实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool AddRightsGroup(Model.RightsGroup addRightsGroup)
+        public bool AddRightsGroup(RightsGroup addRightsGroup)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
+            IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
             //调用实例方法
             return rightsGroupService.AddRightsGroup(addRightsGroup);
         }
@@ -50,7 +51,7 @@ namespace BLL
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
+            IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
             //调用实例方法
             return rightsGroupService.DeleteRightsGroupByID(id);
         }
@@ -60,12 +61,12 @@ namespace BLL
         /// </summary>
         /// <param name="currentRightsGroup">要修改的权限组实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool ModifyRightsGroup(Model.RightsGroup currentRightsGroup)
+        public bool ModifyRightsGroup(RightsGroup currentRightsGroup)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
+            IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
             //调用实例方法
             return rightsGroupService.ModifyRightsGroup(currentRightsGroup);
         }
@@ -80,7 +81,7 @@ namespace BLL
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
+            IRightsGroupService rightsGroupService = absDALFactory.BuildRightsGroupService();
             //调用实例方法
             return rightsGroupService.CheckRightsGroupExist(rightsGroupName);
         }

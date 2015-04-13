@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
+using Model;
 
 namespace IDAL
 {
@@ -15,20 +14,20 @@ namespace IDAL
         /// <param name="name">操作员名称</param>
         /// <param name="pwd">操作员密码</param>
         /// <returns>操作员实体</returns>
-        Model.Operator GetOperatorInfoByName(string name, string pwd);
+        Operator GetOperatorInfoByName(string name, string pwd);
 
         /// <summary>
         /// 获取所有操作员信息
         /// </summary>
         /// <returns>操作员实体集合</returns>
-        Dictionary<string, Model.Operator> GetAllOperatorInfo();
+        Dictionary<string, Operator> GetAllOperatorInfo();
 
         /// <summary>
         /// 添加操作员
         /// </summary>
         /// <param name="addOperator">要添加的操作员实体</param>
         /// <returns>True:成功/False:失败</returns>
-        bool AddOperator(Model.Operator addOperator);
+        bool AddOperator(Operator addOperator);
 
         /// <summary>
         /// 删除操作员
@@ -42,7 +41,7 @@ namespace IDAL
         /// </summary>
         /// <param name="currentOperator">要修改的操作员实体</param>
         /// <returns>True:成功/False:失败</returns>
-        bool ModifyOperator(Model.Operator currentOperator);
+        bool ModifyOperator(Operator currentOperator);
 
         /// <summary>
         /// 根据操作员名称校验操作员是否存在

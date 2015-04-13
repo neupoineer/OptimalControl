@@ -12,7 +12,7 @@ namespace Model
     {
         #region Private Members
         int _id;
-        string _modelName; 
+        string _name; 
         #endregion
 
         #region Public Properties
@@ -27,10 +27,10 @@ namespace Model
         /// <summary>
         /// 实体模型名称
         /// </summary>
-        public string ModelName
+        public string Name
         {
-            get { return _modelName; }
-            set { _modelName = value; }
+            get { return _name; }
+            set { _name = value; }
         } 
         #endregion
 
@@ -44,11 +44,11 @@ namespace Model
         /// 带参构造
         /// </summary>
         /// <param name="id">实体模型 ID</param>
-        /// <param name="modelName">实体模型名称</param>
-        public ModelBase(int id, string modelName)
+        /// <param name="Name">实体模型名称</param>
+        public ModelBase(int id, string name)
         {
             this.Id = id;
-            this.ModelName = modelName;
+            this.Name = name;
         } 
         #endregion
     }

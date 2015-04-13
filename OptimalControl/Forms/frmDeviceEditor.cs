@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Net;
 using System.Windows.Forms;
 using Utility;
-using Utility.Modbus;
+using Model.Modbus;
 
 namespace OptimalControl.Forms
 {

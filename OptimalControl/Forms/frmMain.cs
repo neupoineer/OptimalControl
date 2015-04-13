@@ -13,9 +13,11 @@
 // ***********************************************************************
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
@@ -23,13 +25,16 @@ using System.IO.Ports;
 using System.Net.Sockets;
 using System.Timers;
 using ExpertSystem;
+using IBLL;
 using Modbus.Device;
 using Modbus.Data;
+using Model.Control;
+using Model.Modbus;
+using Model;
 using Utility;
-using Utility.Control;
-using Utility.Modbus;
 using ZedGraph;
 using OptimalControl.Common;
+using Rule = Model.Control.Rule;
 
 namespace OptimalControl.Forms
 {
@@ -62,7 +67,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// 当前登录操作员实体
         /// </summary>
-        private Model.Operator _currentOperator = null;
+        private Operator _currentOperator = null;
 
         /// <summary>
         /// 创建工厂类
@@ -100,6 +105,8 @@ namespace OptimalControl.Forms
         private bool _realTimerFlag = false;
 
         private bool _updateGraphFlag = false;
+
+        private bool _execteRulesFlag = false;
 
         /// <summary>
         /// The MessageFilter
@@ -191,9 +198,9 @@ namespace OptimalControl.Forms
         /// </summary>
         private string _dataTable = "Data";
 
-        private string _curvesTable = "Curves";
+        private string _curvesTable = "Curve";
 
-        private string _parametersTable = "Parameters";
+        private string _parametersTable = "Parameter";
 
         private string _rulesTable = "Rules";
         /// <summary>
@@ -240,6 +247,13 @@ namespace OptimalControl.Forms
         /// </summary>
         private int _dataListLength = 720;
 
+        private DataTable _ruleDataTable;
+        private DataTable _parameterDataTable;
+
+        List<Rule> _rules = new List<Rule>();
+
+        private int _defaultControlPeriod = 30;
+
         #endregion
 
         #region 构造函数
@@ -247,7 +261,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
         /// </summary>
-        public frmMain(string[] args, bool isPass, Model.Operator currentOperator)
+        public frmMain(string[] args, bool isPass, Operator currentOperator)
         {
             this._args = args;
             // 保存当前登录操作员实体
@@ -308,7 +322,7 @@ namespace OptimalControl.Forms
                 {
                     //创建工厂类实例
                     _bllFactory = new BLLFactory.BLLFactory();
-                    WriteLogFile(_logFile, "Login", string.Format("{0} Login!", _currentOperator.ModelName));
+                    WriteLogFile(_logFile, "Login", string.Format("{0} Login!", _currentOperator.Name));
 
                     // 加载权限菜单
                     RightsMenuDataManager rmManager = new RightsMenuDataManager();
@@ -502,7 +516,7 @@ namespace OptimalControl.Forms
             try
             {
                 string SQLGetDevices = ConfigAppSettings.GetSettingString("SQLGetDevices", "SELECT * FROM @DevicesTable");
-                string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Devices");
+                string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Device");
 
                 _sqlSaveData[0] = ConfigAppSettings.GetSettingString("SQLSaveData0", ",");
                 _sqlSaveData[1] = ConfigAppSettings.GetSettingString("SQLSaveData1",
@@ -526,9 +540,9 @@ namespace OptimalControl.Forms
 
                 _dataTable = ConfigAppSettings.GetSettingString("DataTable", "Data");
 
-                _curvesTable = ConfigAppSettings.GetSettingString("CurvesTable", "Curves");
+                _curvesTable = ConfigAppSettings.GetSettingString("CurvesTable", "Curve");
 
-                _parametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameters");
+                _parametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameter");
 
                 _rulesTable = ConfigAppSettings.GetSettingString("RulesTable", "Rules");
 
@@ -538,6 +552,10 @@ namespace OptimalControl.Forms
                     GetDevicesCommand(SQLGetDevices, DevicesTable));
 
                 _devices = new Device[deviceDataTable.Rows.Count];
+
+                _parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+                    GetParametersCommand(_sqlGetParameters, _parametersTable));
+
 
                 for (int deviceID = 0; deviceID < deviceDataTable.Rows.Count; deviceID++)
                 {
@@ -558,77 +576,74 @@ namespace OptimalControl.Forms
                         ModbusTcpMasterUpdated = false
                     };
 
-                    DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                        GetParametersCommand(_sqlGetParameters, _parametersTable,
-                            Convert.ToString(deviceDataTable.Rows[deviceID][0])));
-                    _devices[deviceID].Variables = new Variable[parameterDataTable.Rows.Count];
-                    for (int index = 0; index < parameterDataTable.Rows.Count; index++)
+                    DataRow[] parameterDataTable = _parameterDataTable.Select(string.Format("DeviceID='{0}'",
+                        Convert.ToString(deviceDataTable.Rows[deviceID][0])));
+                    
+                    _devices[deviceID].Variables = new Variable[parameterDataTable.Length];
+                    for (int index = 0; index < parameterDataTable.Length; index++)
                     {
                         _devices[deviceID].Variables[index] = new Variable
                         {
-                            Id = Convert.ToInt32(parameterDataTable.Rows[index][0]),
-                            Name = Convert.ToString(parameterDataTable.Rows[index][1]),
-                            Address = Convert.ToUInt16(parameterDataTable.Rows[index][2]),
-                            Ratio = Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][3]), 2),
+                            Id = Convert.ToInt32(parameterDataTable[index][0]),
+                            Name = Convert.ToString(parameterDataTable[index][1]),
+                            Address = Convert.ToUInt16(parameterDataTable[index][2]),
+                            Ratio = Math.Round(Convert.ToDouble(parameterDataTable[index][3]), 2),
                             Limit = new Variable.VariableLimit()
                             {
-                                UpperLimit = Convert.ToString(parameterDataTable.Rows[index][4]) != ""
-                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][4]), 2)
+                                UpperLimit = Convert.ToString(parameterDataTable[index][4]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable[index][4]), 2)
                                     : -1,
-                                LowerLimit = Convert.ToString(parameterDataTable.Rows[index][5]) != ""
-                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][5]), 2)
+                                LowerLimit = Convert.ToString(parameterDataTable[index][5]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable[index][5]), 2)
                                     : -1,
-                                UltimateUpperLimit = Convert.ToString(parameterDataTable.Rows[index][6]) != ""
-                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][6]), 2)
+                                UltimateUpperLimit = Convert.ToString(parameterDataTable[index][6]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable[index][6]), 2)
                                     : -1,
-                                UltimateLowerLimit = Convert.ToString(parameterDataTable.Rows[index][7]) != ""
-                                    ? Math.Round(Convert.ToDouble(parameterDataTable.Rows[index][7]), 2)
+                                UltimateLowerLimit = Convert.ToString(parameterDataTable[index][7]) != ""
+                                    ? Math.Round(Convert.ToDouble(parameterDataTable[index][7]), 2)
                                     : -1,
                             },
-                            ControlPeriod = Convert.ToString(parameterDataTable.Rows[index][8]) != ""
-                                ? Convert.ToInt32(parameterDataTable.Rows[index][8])
+                            ControlPeriod = Convert.ToString(parameterDataTable[index][8]) != ""
+                                ? Convert.ToInt32(parameterDataTable[index][8])
                                 : -1,
-                            OperateDelay = Convert.ToString(parameterDataTable.Rows[index][9]) != ""
-                                ? Convert.ToInt32(parameterDataTable.Rows[index][9])
+                            OperateDelay = Convert.ToString(parameterDataTable[index][9]) != ""
+                                ? Convert.ToInt32(parameterDataTable[index][9])
                                 : -1,
-                            DeviceID = Convert.ToUInt32(parameterDataTable.Rows[index][10]),
+                            DeviceID = Convert.ToUInt32(parameterDataTable[index][10]),
                         };
                     }
                 }
-
-                DataTable modbusRTUParaDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                    GetParametersCommand(_sqlGetParameters, _parametersTable,
-                        0.ToString(CultureInfo.InvariantCulture)));
-                _modbusRtuParameters = new Variable[modbusRTUParaDataTable.Rows.Count];
-                for (int index = 0; index < modbusRTUParaDataTable.Rows.Count; index++)
+                DataRow[] modbusRtuParaDataTable = _parameterDataTable.Select(string.Format("DeviceID='{0}'",0));
+                _modbusRtuParameters = new Variable[modbusRtuParaDataTable.Length];
+                for (int index = 0; index < modbusRtuParaDataTable.Length; index++)
                 {
                     _modbusRtuParameters[index] = new Variable
                     {
-                        Name = Convert.ToString(modbusRTUParaDataTable.Rows[index][1]),
-                        Address = Convert.ToUInt16(modbusRTUParaDataTable.Rows[index][2]),
-                        Ratio = Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][3]), 2),
+                        Name = Convert.ToString(modbusRtuParaDataTable[index][1]),
+                        Address = Convert.ToUInt16(modbusRtuParaDataTable[index][2]),
+                        Ratio = Math.Round(Convert.ToDouble(modbusRtuParaDataTable[index][3]), 2),
                         Limit = new Variable.VariableLimit()
                         {
-                            UpperLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][4]) != ""
-                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][4]), 2)
+                            UpperLimit = Convert.ToString(modbusRtuParaDataTable[index][4]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRtuParaDataTable[index][4]), 2)
                                 : -1,
-                            LowerLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][5]) != ""
-                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][5]), 2)
+                            LowerLimit = Convert.ToString(modbusRtuParaDataTable[index][5]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRtuParaDataTable[index][5]), 2)
                                 : -1,
-                            UltimateUpperLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][6]) != ""
-                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][6]), 2)
+                            UltimateUpperLimit = Convert.ToString(modbusRtuParaDataTable[index][6]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRtuParaDataTable[index][6]), 2)
                                 : -1,
-                            UltimateLowerLimit = Convert.ToString(modbusRTUParaDataTable.Rows[index][7]) != ""
-                                ? Math.Round(Convert.ToDouble(modbusRTUParaDataTable.Rows[index][7]), 2)
+                            UltimateLowerLimit = Convert.ToString(modbusRtuParaDataTable[index][7]) != ""
+                                ? Math.Round(Convert.ToDouble(modbusRtuParaDataTable[index][7]), 2)
                                 : -1,
                         },
-                        ControlPeriod = Convert.ToString(modbusRTUParaDataTable.Rows[index][8]) != ""
-                            ? Convert.ToInt32(modbusRTUParaDataTable.Rows[index][8])
+                        ControlPeriod = Convert.ToString(modbusRtuParaDataTable[index][8]) != ""
+                            ? Convert.ToInt32(modbusRtuParaDataTable[index][8])
                             : -1,
-                        OperateDelay = Convert.ToString(modbusRTUParaDataTable.Rows[index][9]) != ""
-                            ? Convert.ToInt32(modbusRTUParaDataTable.Rows[index][9])
+                        OperateDelay = Convert.ToString(modbusRtuParaDataTable[index][9]) != ""
+                            ? Convert.ToInt32(modbusRtuParaDataTable[index][9])
                             : -1,
-                        DeviceID = Convert.ToUInt32(modbusRTUParaDataTable.Rows[index][10]),
+                        DeviceID = Convert.ToUInt32(modbusRtuParaDataTable[index][10]),
                     };
                 }
 
@@ -697,7 +712,7 @@ namespace OptimalControl.Forms
                         DataList = new PointPairList(),
                         DeviceId = Convert.ToInt32(curvesDataTable.Rows[index][2]),
                         Address = Convert.ToUInt16(curvesDataTable.Rows[index][3]),
-                        LineColour = string.IsNullOrEmpty(Convert.ToString(curvesDataTable.Rows[index][4]))
+                        LineColor = string.IsNullOrEmpty(Convert.ToString(curvesDataTable.Rows[index][4]))
                             ? _rotator.NextColor
                             : Color.FromName(Convert.ToString(curvesDataTable.Rows[index][4])),
                         LineType = string.IsNullOrEmpty(Convert.ToString(curvesDataTable.Rows[index][5])) ||
@@ -705,39 +720,39 @@ namespace OptimalControl.Forms
                         LineWidth = string.IsNullOrEmpty(Convert.ToString(curvesDataTable.Rows[index][6]))
                             ? 2
                             : Convert.ToSingle(curvesDataTable.Rows[index][6]),
-                        CurveSymbolType = _rotator.NextSymbol,
+                        SymbolType = _rotator.NextSymbol,
                         SymbolSize = string.IsNullOrEmpty(Convert.ToString(curvesDataTable.Rows[index][8]))
                             ? 4
                             : Convert.ToSingle(curvesDataTable.Rows[index][8]),
-                        XAxisTitle = Convert.ToString(curvesDataTable.Rows[index][9]),
-                        YAxisTitle = Convert.ToString(curvesDataTable.Rows[index][10]),
-                        YAxisMax = Convert.ToDouble(curvesDataTable.Rows[index][11]),
-                        YAxisMin = Convert.ToDouble(curvesDataTable.Rows[index][12])
+                        XTitle = Convert.ToString(curvesDataTable.Rows[index][9]),
+                        YTitle = Convert.ToString(curvesDataTable.Rows[index][10]),
+                        YMax = Convert.ToDouble(curvesDataTable.Rows[index][11]),
+                        YMin = Convert.ToDouble(curvesDataTable.Rows[index][12])
                     };
                     if (!(string.IsNullOrEmpty(Convert.ToString(curvesDataTable.Rows[index][7]))))
                     {
                         switch (Convert.ToString(curvesDataTable.Rows[index][7]))
                         {
                             case "Diamond":
-                                _curves[index].CurveSymbolType = SymbolType.Diamond;
+                                _curves[index].SymbolType = SymbolType.Diamond;
                                 break;
                             case "Circle":
-                                _curves[index].CurveSymbolType = SymbolType.Circle;
+                                _curves[index].SymbolType = SymbolType.Circle;
                                 break;
                             case "Square":
-                                _curves[index].CurveSymbolType = SymbolType.Square;
+                                _curves[index].SymbolType = SymbolType.Square;
                                 break;
                             case "Star":
-                                _curves[index].CurveSymbolType = SymbolType.Star;
+                                _curves[index].SymbolType = SymbolType.Star;
                                 break;
                             case "Triangle":
-                                _curves[index].CurveSymbolType = SymbolType.Triangle;
+                                _curves[index].SymbolType = SymbolType.Triangle;
                                 break;
                             case "Plus":
-                                _curves[index].CurveSymbolType = SymbolType.Plus;
+                                _curves[index].SymbolType = SymbolType.Plus;
                                 break;
                             case "None":
-                                _curves[index].CurveSymbolType = SymbolType.None;
+                                _curves[index].SymbolType = SymbolType.None;
                                 break;
                         }
                     }
@@ -1396,8 +1411,8 @@ namespace OptimalControl.Forms
         private GraphPane CreatGraphPane(Curve curve, GraphPaneType graphPaneType)
         {
             // Create a new graph with topLeft at (40,40) and size 600x400
-            GraphPane graphPane = new GraphPane(new Rectangle(10, 10, 600, 400), curve.Name, curve.XAxisTitle,
-                curve.YAxisTitle)
+            GraphPane graphPane = new GraphPane(new Rectangle(10, 10, 600, 400), curve.Name, curve.XTitle,
+                curve.YTitle)
             {
                 Fill = new Fill(Color.White, Color.LightCyan, 45.0F),
                 BaseDimension = 6.0F
@@ -1446,14 +1461,14 @@ namespace OptimalControl.Forms
                     graphPane.Y2Axis.MinSpace = 20;
 
                     graphPane.YAxis.MajorGrid.IsVisible = true;
-                    graphPane.YAxis.Scale.Min = curve.YAxisMin;
-                    if (curve.YAxisMax > curve.YAxisMin)
+                    graphPane.YAxis.Scale.Min = curve.YMin;
+                    if (curve.YMax > curve.YMin)
                     {
-                        graphPane.YAxis.Scale.Max = curve.YAxisMax;
+                        graphPane.YAxis.Scale.Max = curve.YMax;
                     }
-                    LineItem tmpCurve = graphPane.AddCurve(curve.Name, curve.DataList, curve.LineColour,
-                        curve.CurveSymbolType);
-                    tmpCurve.Symbol.Fill = new Fill(curve.LineColour);
+                    LineItem tmpCurve = graphPane.AddCurve(curve.Name, curve.DataList, curve.LineColor,
+                        curve.SymbolType);
+                    tmpCurve.Symbol.Fill = new Fill(curve.LineColor);
                     tmpCurve.Symbol.Size = curve.SymbolSize;
                     tmpCurve.Line.IsVisible = curve.LineType;
                     tmpCurve.Line.Width = curve.LineWidth;
@@ -1469,10 +1484,10 @@ namespace OptimalControl.Forms
 
         private void UpdateRules()
         {
-            DataTable ruleDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+            _ruleDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
                 GetRulesCommand(_sqlGetRules, _rulesTable));
-            UpdateRulesGrid(ruleDataTable, "1=1");
-            status_Label.Text = string.Format("查询到 {0} 行数据", ruleDataTable.Rows.Count);
+            UpdateRulesGrid(_ruleDataTable, "1=1");
+            status_Label.Text = string.Format("查询到 {0} 行数据", _ruleDataTable.Rows.Count);
         }
 
         private void UpdateRulesGrid(DataTable dataTable, string filter)
@@ -1560,17 +1575,17 @@ namespace OptimalControl.Forms
             return curves;
         }
 
-        private ExpertSystem.Rule GetSelectedRule()
+        private Rule GetSelectedRule()
         {
             if (dgv_oc_rules.CurrentRow != null)
             {
                 int selectRowIndex = dgv_oc_rules.CurrentRow.Index;
-                ExpertSystem.Rule rule = new ExpertSystem.Rule
+                Rule rule = new Rule
                 {
                     Id = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[0].Value),
                     Name = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[1].Value),
                     Expression = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[2].Value),
-                    Operatioin = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[3].Value),
+                    Operation = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[3].Value),
                     Period = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value) != ""
                         ? Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value)
                         : -1,
@@ -1578,7 +1593,7 @@ namespace OptimalControl.Forms
                 };
                 return rule;
             }
-            return new ExpertSystem.Rule();
+            return new Rule();
         }
 
 
@@ -1669,6 +1684,12 @@ namespace OptimalControl.Forms
                         }
                     }
                 }
+
+                if (_execteRulesFlag)
+                {
+                    ExecteRules(_rules);
+                }
+
                 if (_updateGraphFlag)
                     UpdateGraph(ref _masterPaneGraphRealtime, ref zgc_realtime, _curves);
 
@@ -1825,7 +1846,7 @@ namespace OptimalControl.Forms
                         status_Label.Text = "运行中...";
                         _isRunning = true;
                         WriteLogFile(_logFile, "Start",
-                            string.Format("Software started by {0}!", _currentOperator.ModelName));
+                            string.Format("Software started by {0}!", _currentOperator.Name));
                     }
                 }
                 catch (Exception ex)
@@ -1867,7 +1888,7 @@ namespace OptimalControl.Forms
             //listview_parainfo.Items.Clear();
             status_Label.Text = "停止.";
             _isRunning = false;
-            WriteLogFile(_logFile, "Stop", string.Format("Software stoped by {0}!", _currentOperator.ModelName));
+            WriteLogFile(_logFile, "Stop", string.Format("Software stoped by {0}!", _currentOperator.Name));
         }
 
         /// <summary>
@@ -2092,7 +2113,7 @@ namespace OptimalControl.Forms
                 if (frmLogin.isPass)
                 {
                     _currentOperator = frmLogin.currentOperator;
-                    WriteLogFile(_logFile, "Login", string.Format("{0} Login!", _currentOperator.ModelName));
+                    WriteLogFile(_logFile, "Login", string.Format("{0} Login!", _currentOperator.Name));
 
                     // 加载权限菜单
                     RightsMenuDataManager rmManager = new RightsMenuDataManager();
@@ -2123,7 +2144,7 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_file_logoff_Click(object sender, EventArgs e)
         {
-            WriteLogFile(_logFile, "Logoff", string.Format("{0} Logoff!", _currentOperator.ModelName));
+            WriteLogFile(_logFile, "Logoff", string.Format("{0} Logoff!", _currentOperator.Name));
             _currentOperator = null;
             LoadMenuRightsItem(msMain, _logoffMenuList);
             SynchroButton();
@@ -2208,8 +2229,8 @@ namespace OptimalControl.Forms
 
             try
             {
-                IBLL.IOperatorManager operatorManager = _bllFactory.BuildOperatorManager();
-                _currentOperator = operatorManager.GetOperatorInfoByName(_currentOperator.ModelName,
+                IOperatorManager operatorManager = _bllFactory.BuildOperatorManager();
+                _currentOperator = operatorManager.GetOperatorInfoByName(_currentOperator.Name,
                     _currentOperator.Password);
                 // 加载权限菜单
                 RightsMenuDataManager rmManager = new RightsMenuDataManager();
@@ -2301,11 +2322,9 @@ namespace OptimalControl.Forms
 
         private void tsbtn_rule_add_Click(object sender, EventArgs e)
         {
-            ExpertSystem.Rule rule = GetSelectedRule();
-            DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                GetParametersCommand(_sqlGetParameters, _parametersTable));
+            Rule rule = GetSelectedRule();
             if (rule.Name == "") return;
-            frmRuleEditor addRuleForm = new frmRuleEditor(DataOperateMode.Insert, rule, parameterDataTable);
+            frmRuleEditor addRuleForm = new frmRuleEditor(DataOperateMode.Insert, rule, _parameterDataTable);
             if (addRuleForm.ShowDialog() == DialogResult.OK)
             {
                 status_Label.Text = string.Format("插入 {0} 行数据",
@@ -2316,10 +2335,8 @@ namespace OptimalControl.Forms
 
         private void tsbtn_rule_edit_Click(object sender, EventArgs e)
         {
-            ExpertSystem.Rule rule = GetSelectedRule();
-            DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                GetParametersCommand(_sqlGetParameters, _parametersTable));
-            frmRuleEditor editParameterForm = new frmRuleEditor(DataOperateMode.Edit, rule, parameterDataTable);
+            Rule rule = GetSelectedRule();
+            frmRuleEditor editParameterForm = new frmRuleEditor(DataOperateMode.Edit, rule, _parameterDataTable);
             if (editParameterForm.ShowDialog() == DialogResult.OK)
             {
                 status_Label.Text = string.Format("编辑 {0} 行数据",
@@ -2330,10 +2347,8 @@ namespace OptimalControl.Forms
 
         private void tsbtn_rule_delete_Click(object sender, EventArgs e)
         {
-            ExpertSystem.Rule rule = GetSelectedRule();
-            DataTable parameterDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                GetParametersCommand(_sqlGetParameters, _parametersTable));
-            frmRuleEditor deleteParameterForm = new frmRuleEditor(DataOperateMode.Delete, rule, parameterDataTable);
+            Rule rule = GetSelectedRule();
+            frmRuleEditor deleteParameterForm = new frmRuleEditor(DataOperateMode.Delete, rule, _parameterDataTable);
             if (deleteParameterForm.ShowDialog() == DialogResult.OK)
             {
                 status_Label.Text = string.Format("删除 {0} 行数据",
@@ -2361,7 +2376,176 @@ namespace OptimalControl.Forms
 
         private void tsbtn_oc_enabled_Click(object sender, EventArgs e)
         {
+            DataRow[] data = _ruleDataTable.Select("State='True'");
+            if (data.Length > 0)
+            {
+                _rules.Clear();
+                foreach (DataRow row in data)
+                {
+                    _rules.Add(new Rule()
+                    {
+                        Id = Convert.ToInt32(row["Id"]),
+                        Name = row["Name"].ToString(),
+                        Expression = row["Expression"].ToString(),
+                        Operation = row["Operation"].ToString(),
+                        Period = Convert.ToInt32(row["Period"]),
+                        Enabled = Convert.ToBoolean(row["State"]),
+                        DelayTime =
+                            (Convert.ToInt32(row["Period"]) > 0 ? Convert.ToInt32(row["Period"]) : _defaultControlPeriod),
+                    });
+                }
+                _execteRulesFlag = true;
+            }
 
+        }
+
+        /// <summary>
+        /// Exectes the rules.
+        /// </summary>
+        private void ExecteRules(List<Rule> rules)
+        {
+            foreach (Rule rule in rules)
+            {
+                rule.DelayTime -= _realTimerInterval/1000;
+                if (rule.DelayTime > 0)
+                {
+                    continue;
+                }
+                string expString = rule.Expression;
+                StringBuilder expStringBuilder = new StringBuilder();
+                foreach (string s in expString.Trim(new char[] {'[', ']'}).Split(new char[] {'[', ']'}))
+                {
+                    if (s.StartsWith("@"))
+                    {
+                        double value = GetValueByName(s.TrimStart('@'));
+                        if (value < 0)
+                        {
+                            expStringBuilder.Clear(); //计算错误
+                            break;
+                        }
+                        expStringBuilder.Append(value);
+                    }
+                    else
+                    {
+                        expStringBuilder.Append(s);
+                    }
+                }
+                if (expStringBuilder.Length == 0) break;
+                RPN rpn = new RPN();
+                if (rpn.Parse(expStringBuilder.ToString()))
+                {
+                    bool isTure;
+                    bool.TryParse(rpn.Evaluate().ToString(), out isTure);
+                    if (isTure)
+                    {
+                        string opString = rule.Operation;
+                        StringBuilder opStringBuilder = new StringBuilder();
+                        string[] op = opString.Trim(new char[] {'[', ']'}).Split(new char[] {'[', ']'});
+                        if (op.Length > 2 && op[0].StartsWith("@") && op[1].StartsWith("="))
+                        {
+                            op[1] = op[1].TrimStart('=');
+                            for (int index = 1; index < op.Length; index++)
+                            {
+                                if (op[index].StartsWith("@"))
+                                {
+                                    double value = GetValueByName(op[index].TrimStart('@'));
+                                    if (value < 0)
+                                    {
+                                        opStringBuilder.Clear(); //计算错误
+                                        break;
+                                    }
+                                    opStringBuilder.Append(value);
+                                }
+                                else
+                                {
+                                    opStringBuilder.Append(op[index]);
+                                }
+                            }
+                            if (opStringBuilder.Length == 0) break;
+                            rpn = new RPN();
+                            if (rpn.Parse(opStringBuilder.ToString()))
+                            {
+                                foreach (Variable parameter in _modbusRtuParameters)
+                                {
+                                    if (parameter.Name == op[0].TrimStart('@'))
+                                    {
+                                        double result = Convert.ToDouble(rpn.Evaluate())/parameter.Ratio;
+                                        if (((result < parameter.Limit.UltimateUpperLimit) ||
+                                             (parameter.Limit.UltimateUpperLimit <= 0)) &&
+                                            ((result > parameter.Limit.UltimateLowerLimit) ||
+                                             (parameter.Limit.UltimateLowerLimit <= 0)))
+                                        {
+                                            if (_modbusRtuSlaveCreated)
+                                            {
+                                                byte[] tempByte =
+                                                    BitConverter.GetBytes(Convert.ToSingle(result));
+                                                _modbusRtuSlave.DataStore.HoldingRegisters[parameter.Address] =
+                                                    Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
+                                                _modbusRtuSlave.DataStore.HoldingRegisters[parameter.Address + 1] =
+                                                    Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
+                                                ModbusRTUGetValue();
+                                            }
+                                            MessageBox.Show(string.Format("{0} :\r\n {1} :\r\n {2}", expString, opString,
+                                                result));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                rule.DelayTime = rule.Period > 0 ? rule.Period : _defaultControlPeriod;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the variable by name.
+        /// </summary>
+        /// <param name="variableName">Name of the variable.</param>
+        /// <returns>
+        /// value(-1 for error)
+        /// </returns>
+        private double GetValueByName(string variableName)
+        {
+            try
+            {
+                DataRow[] dataRows = _parameterDataTable.Select(string.Format("Name='{0}'", variableName));
+                if (dataRows.Length > 0)
+                {
+                    string deviceindex = dataRows[0]["DeviceID"].ToString();
+                    if (deviceindex == "0")
+                    {
+                        foreach (Variable parameter in _modbusRtuParameters)
+                        {
+                            if (parameter.Name == variableName)
+                            {
+                                return parameter.Value;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Device device in _devices)
+                        {
+                            if (device.Id.ToString(CultureInfo.InvariantCulture) == deviceindex)
+                            {
+                                foreach (Variable variable in device.Variables)
+                                {
+                                    if (variable.Name == variableName)
+                                    {
+                                        return variable.Value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "GetValueByName", ex.Message);
+            }
+            return -1;
         }
 
         private void tsbtn_oc_disabled_Click(object sender, EventArgs e)

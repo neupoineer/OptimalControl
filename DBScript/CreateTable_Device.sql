@@ -2,13 +2,13 @@
 Use OptimalControl
 Go
 
--- 判断是否存在 表（Devices），如果存在，则删除表 Devices
-if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Devices'))
-	Drop Table [Devices]
+-- 判断是否存在 表（Device），如果存在，则删除表 Device
+if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Device'))
+	Drop Table [Device]
 Go 
 
--- 创建 表（Devices）
-Create Table [Devices]
+-- 创建 表（Device）
+Create Table [Device]
 (
 	-- 主键列，自动增长 标识种子为 1 
 	[Id] int identity(1,1) Constraint [PK_DeviceId] Primary Key,

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using IBLL;
 using Model;
 using OptimalControl.Forms;
 
@@ -86,7 +87,7 @@ namespace OptimalControl.Common
                 {
                     // 为当前节点创建新的子节点
                     TreeNode newChildTreeNode = new TreeNode(tmpRights.RightsCaption);
-                    newChildTreeNode.Tag = tmpRights.ModelName;
+                    newChildTreeNode.Tag = tmpRights.Name;
                     newChildTreeNode.Checked = tmpRights.RightsState;
                     // 创建同父权限项集合
                     List<Rights> sameNessParentRightsList = new List<Rights>();
@@ -127,10 +128,10 @@ namespace OptimalControl.Common
                     this._dgvOperatorList.Columns["Id"].ToolTipText = "[只读列]";
                     this._dgvOperatorList.Columns["Id"].DisplayIndex = 0;
                     this._dgvOperatorList.Columns["Id"].ReadOnly = true;
-                    this._dgvOperatorList.Columns["ModelName"].HeaderText = "操作员名称";
-                    this._dgvOperatorList.Columns["ModelName"].ToolTipText = "[只读列]";
-                    this._dgvOperatorList.Columns["ModelName"].DisplayIndex = 1;
-                    this._dgvOperatorList.Columns["ModelName"].ReadOnly = true;
+                    this._dgvOperatorList.Columns["Name"].HeaderText = "操作员名称";
+                    this._dgvOperatorList.Columns["Name"].ToolTipText = "[只读列]";
+                    this._dgvOperatorList.Columns["Name"].DisplayIndex = 1;
+                    this._dgvOperatorList.Columns["Name"].ReadOnly = true;
                     this._dgvOperatorList.Columns["Password"].HeaderText = "密码";
                     this._dgvOperatorList.Columns["Password"].DisplayIndex = 2;
                     this._dgvOperatorList.Columns["State"].HeaderText = "状态";
@@ -190,11 +191,11 @@ namespace OptimalControl.Common
                 this._dgvRightsList.Columns["Id"].DisplayIndex = 0;
                 this._dgvRightsList.Columns["RightsCaption"].HeaderText = "权限标题";
                 this._dgvRightsList.Columns["RightsCaption"].DisplayIndex = 1;
-                this._dgvRightsList.Columns["ModelName"].HeaderText = "内部名称";
-                this._dgvRightsList.Columns["ModelName"].ToolTipText = "[只读列]";
-                this._dgvRightsList.Columns["ModelName"].ReadOnly = true;
-                this._dgvRightsList.Columns["ModelName"].Visible = false;
-                this._dgvRightsList.Columns["ModelName"].DisplayIndex = 2;
+                this._dgvRightsList.Columns["Name"].HeaderText = "内部名称";
+                this._dgvRightsList.Columns["Name"].ToolTipText = "[只读列]";
+                this._dgvRightsList.Columns["Name"].ReadOnly = true;
+                this._dgvRightsList.Columns["Name"].Visible = false;
+                this._dgvRightsList.Columns["Name"].DisplayIndex = 2;
                 this._dgvRightsList.Columns["RightsState"].HeaderText = "权限状态";
                 this._dgvRightsList.Columns["RightsState"].DisplayIndex = 3;
                 this._dgvRightsList.Columns["ParentLevelRightsName"].HeaderText = "父级权限";
@@ -271,7 +272,7 @@ namespace OptimalControl.Common
                 if (tmpRights.ParentLevelRightsName == _msMain.Name)
                 {
                     rootTreeNode = new TreeNode(tmpRights.RightsCaption);
-                    rootTreeNode.Tag = tmpRights.ModelName;
+                    rootTreeNode.Tag = tmpRights.Name;
                     rootTreeNode.Checked = tmpRights.RightsState;
                     _tvRightsView.Nodes.Add(rootTreeNode);
                 }
@@ -280,7 +281,7 @@ namespace OptimalControl.Common
                 {
                     // 创建权限子项
                     TreeNode childTreeNode = new TreeNode(tmpRights.RightsCaption);
-                    childTreeNode.Tag = tmpRights.ModelName;
+                    childTreeNode.Tag = tmpRights.Name;
                     childTreeNode.Checked = tmpRights.RightsState;
                     // 将子项添加到对应的父项中
                     foreach (TreeNode tmpTreeNode in _tvRightsView.Nodes)
@@ -312,7 +313,7 @@ namespace OptimalControl.Common
             if (_dgvOperatorList.SelectedCells.Count > 0)
             {
                 // 保存当前选中行的操作员名称
-                string operatorName = _dgvOperatorList.Rows[_dgvOperatorList.SelectedCells[0].RowIndex].Cells["ModelName"].Value.ToString().Trim();
+                string operatorName = _dgvOperatorList.Rows[_dgvOperatorList.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString().Trim();
                 // 同步权限状态
                 RightsManagerUI.OperatorCollection[operatorName].RightsCollection[currentTreeNode.Tag.ToString()].RightsState = currentTreeNode.Checked;
 
@@ -333,7 +334,7 @@ namespace OptimalControl.Common
         internal void LoadOperatorList()
         {
             BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
-            IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
+            IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
 
             // 加载操作员列表
             try
@@ -361,9 +362,9 @@ namespace OptimalControl.Common
                     // 重新指定当前登录操作员对象
                     foreach (Operator tmpOperator in RightsManagerUI.OperatorCollection.Values)
                     {
-                        if (tmpOperator.ModelName == RightsManagerUI.CurrentOperator.ModelName)
+                        if (tmpOperator.Name == RightsManagerUI.CurrentOperator.Name)
                         {
-                            RightsManagerUI.CurrentOperator = RightsManagerUI.OperatorCollection[RightsManagerUI.CurrentOperator.ModelName];
+                            RightsManagerUI.CurrentOperator = RightsManagerUI.OperatorCollection[RightsManagerUI.CurrentOperator.Name];
                             // 将数据绑定显示到数据视图
                             BindDataToDataGridView(RightsManagerUI.CurrentOperator.RightsCollection);
                             // 将数据绑定加载到树形视图
@@ -372,7 +373,7 @@ namespace OptimalControl.Common
                             // 在操作员列表中选中当前操作员
                             foreach (DataGridViewRow dgvRow in _dgvOperatorList.Rows)
                             {
-                                if (dgvRow.Cells["ModelName"].Value.ToString().Trim() == RightsManagerUI.CurrentOperator.ModelName)
+                                if (dgvRow.Cells["Name"].Value.ToString().Trim() == RightsManagerUI.CurrentOperator.Name)
                                 {
                                     dgvRow.Selected = true;
                                     break;

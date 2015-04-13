@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Modbus">
-      <HintPath>..\Resource\dll\Modbus.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -44,21 +41,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="ZedGraph">
-      <HintPath>..\Resource\dll\ZedGraph.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigAppSettings.cs" />
-    <Compile Include="Control\ModelBase.cs" />
-    <Compile Include="Control\Variable.cs" />
-    <Compile Include="Control\Curve.cs" />
     <Compile Include="DoubleBufferListView .cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Modbus\Device.cs" />
-    <Compile Include="Modbus\ModbusRtuDevice.cs" />
-    <Compile Include="Modbus\ModbusTcpDevice.cs" />
     <Compile Include="NumbericTextbox.cs">
       <SubType>Component</SubType>
     </Compile>

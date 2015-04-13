@@ -2,13 +2,13 @@
 Use OptimalControl
 Go
 
--- 判断是否存在 曲线信息表（Curves），如果存在，则删除表 Curves
-if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Curves'))
-	Drop Table Curves
+-- 判断是否存在 曲线信息表（Curve），如果存在，则删除表 Curve
+if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Curve'))
+	Drop Table Curve
 Go 
 
--- 创建 曲线信息表（Curves）
-Create Table Curves
+-- 创建 曲线信息表（Curve）
+Create Table Curve
 (
 	-- 主键列，自动增长 标识种子为 1 
 	[Id] int identity(1,1) Constraint [PK_CurveId] Primary Key,

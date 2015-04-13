@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using IBLL;
+using Model;
 using OptimalControl.Common;
 
 namespace OptimalControl.Forms
@@ -15,7 +17,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// 当前登录操作员实体
         /// </summary>
-        Model.Operator _currentOperator = null;
+        Operator _currentOperator = null;
         /// <summary>
         /// 主界面被管理的菜单对象
         /// </summary>
@@ -112,7 +114,7 @@ namespace OptimalControl.Forms
                 // 创建工厂类实例
                 BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
                 // 创建业务逻辑管理类实例
-                IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
+                IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
 
                 // 校验操作员是否已存在
                 if (operatorManager.CheckOperatorExist(this.txtOperatorName.Text.Trim()))
@@ -149,7 +151,7 @@ namespace OptimalControl.Forms
         /// <param name="currentOperator">当前登录操作员实体</param>
         /// <param name="msMain">被管理的主菜单对象</param>
         /// <param name="isModify">是否显示为修改密码界面</param>
-        public frmOperatorManager(Model.Operator currentOperator, MenuStrip msMain, bool isModify)
+        public frmOperatorManager(Operator currentOperator, MenuStrip msMain, bool isModify)
         {
             // 构建设计器控件
             InitializeComponent();
@@ -163,7 +165,7 @@ namespace OptimalControl.Forms
             // 如果要求显示为修改密码界面
             if (_isModify)
             {
-                this.Text = string.Format("修改操作员 [{0}] 的密码", _currentOperator.ModelName);
+                this.Text = string.Format("修改操作员 [{0}] 的密码", _currentOperator.Name);
                 this.chkOperatorState.Visible = false;
                 this.btnSubmit.Text = "保存";
 
@@ -184,7 +186,7 @@ namespace OptimalControl.Forms
             // 创建工厂类实例
             BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
             // 创建业务逻辑管理类实例
-            IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
+            IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
 
             // 如果不要求显示为修改密码界面
             if (!_isModify)
@@ -199,10 +201,10 @@ namespace OptimalControl.Forms
                             return;
 
                         // 创建新的操作员实体
-                        Model.Operator addOperator = new Model.Operator();
-                        addOperator.ModelName = this.txtOperatorName.Text.Trim();
+                        Operator addOperator = new Operator();
+                        addOperator.Name = this.txtOperatorName.Text.Trim();
                         addOperator.Password = this.txtOperatorPwd.Text.Trim();
-                        addOperator.RightsCollection = new Dictionary<string, Model.Rights>();
+                        addOperator.RightsCollection = new Dictionary<string, Rights>();
                         // 创建权限菜单管理类实例
                         RightsMenuDataManager rmManager = new RightsMenuDataManager();
                         // 创建权限列表结构
@@ -217,7 +219,7 @@ namespace OptimalControl.Forms
                             Point showLocation = new Point(
                                 this.txtOperatorName.Location.X + this.txtOperatorName.Width,
                                 this.txtOperatorName.Location.Y);
-                            this.toolTip.Show(string.Format("未能将用户 [{0}] 添加到本系统！", addOperator.ModelName), this, showLocation, 5000);
+                            this.toolTip.Show(string.Format("未能将用户 [{0}] 添加到本系统！", addOperator.Name), this, showLocation, 5000);
                         }
                         else
                         {
@@ -225,7 +227,7 @@ namespace OptimalControl.Forms
                                 MessageBox.Show(
                                     string.Format(
                                     "用户 [{0}] 已经添加但未激活。\r\n\r\n您可以手动激或为其赋予权限。",
-                                    addOperator.ModelName),
+                                    addOperator.Name),
                                     "添加成功",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Information);
@@ -233,7 +235,7 @@ namespace OptimalControl.Forms
                                 MessageBox.Show(
                                     string.Format(
                                     "用户 [{0}] 已经添加并已激活。\r\n\r\n请为其赋予适当的系统权限。",
-                                    addOperator.ModelName),
+                                    addOperator.Name),
                                     "添加成功",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Information);
@@ -270,7 +272,7 @@ namespace OptimalControl.Forms
                             MessageBox.Show(
                                     string.Format(
                                     "用户 [{0}] 的密码修改成功！",
-                                    _currentOperator.ModelName),
+                                    _currentOperator.Name),
                                     "修改成功",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Information);
@@ -281,7 +283,7 @@ namespace OptimalControl.Forms
                             MessageBox.Show(
                                     string.Format(
                                     "未能修改用户 [{0}] 的密码！",
-                                    _currentOperator.ModelName),
+                                    _currentOperator.Name),
                                     "修改失败",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);

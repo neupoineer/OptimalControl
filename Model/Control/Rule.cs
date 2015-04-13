@@ -1,42 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ExpertSystem
+﻿namespace Model.Control
 {
-    public class Rule
+    public class Rule : ModelBase
     {
         #region Private Members
 
-        private int _id;
-        private string _name;
         private string _expression;
-        private string _operatioin;
+        private string _operation;
         private int _period;
         private bool _enabled;
-
+        private int _delayTime;
         #endregion
 
         #region Public Properties
-
-        /// <summary>
-        /// 实体模型 ID
-        /// </summary>
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-
-        /// <summary>
-        /// 实体模型名称
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
 
         public string Expression
         {
@@ -44,10 +19,10 @@ namespace ExpertSystem
             set { _expression = value; }
         }
 
-        public string Operatioin
+        public string Operation
         {
-            get { return _operatioin; }
-            set { _operatioin = value; }
+            get { return _operation; }
+            set { _operation = value; }
         }
 
         public int Period
@@ -62,6 +37,12 @@ namespace ExpertSystem
             set { _enabled = value; }
         }
 
+        public int DelayTime
+        {
+            get { return _delayTime; }
+            set { _delayTime = value; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -71,7 +52,6 @@ namespace ExpertSystem
         /// </summary>
         public Rule()
         {
-
         }
 
         /// <summary>
@@ -83,14 +63,16 @@ namespace ExpertSystem
         /// <param name="operatioin">The operatioin.</param>
         /// <param name="period">The period.</param>
         /// <param name="enabled">if set to <c>true</c> [enabled].</param>
-        public Rule(int id, string name, string expression, string operatioin, int period, bool enabled)
+        /// <param name="delayTime">The delay time.</param>
+        public Rule(int id, string name, string expression, string operatioin, int period, bool enabled, int delayTime)
         {
             Id = id;
             Name = name;
             Expression = expression;
-            Operatioin = operatioin;
+            Operation = operatioin;
             Period = period;
             Enabled = enabled;
+            DelayTime = delayTime;
         }
 
         #endregion

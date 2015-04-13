@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Model
 {
@@ -27,7 +26,7 @@ namespace Model
 
         #region Public Methods
         /// <summary>
-        /// 无参构造(基类属性赋值说明：Id - 权限组 ID / ModelName - 权限组名称)
+        /// 无参构造(基类属性赋值说明：Id - 权限组 ID / Name - 权限组名称)
         /// </summary>
         public RightsGroup() { }
         /// <summary>

@@ -101,7 +101,7 @@ namespace Model.Control.Postfix
                 case "&": return isBinaryOperator ? OperatorsType.AND : OperatorsType.ERR;
                 case "|": return isBinaryOperator ? OperatorsType.OR : OperatorsType.ERR;
                 case ",": return isBinaryOperator ? OperatorsType.CA : OperatorsType.ERR;
-                case "@": return isBinaryOperator ? OperatorsType.END : OperatorsType.ERR;
+                case "$": return isBinaryOperator ? OperatorsType.END : OperatorsType.ERR;
                 default: return OperatorsType.ERR;
             }
         }
@@ -130,7 +130,7 @@ namespace Model.Control.Postfix
                 case "&": return OperatorsType.AND;
                 case "|": return OperatorsType.OR;
                 case ",": return OperatorsType.CA;
-                case "@": return OperatorsType.END;
+                case "$": return OperatorsType.END;
                 case "tan": return OperatorsType.TAN;
                 case "atan": return OperatorsType.ATAN;
                 default: return OperatorsType.ERR;

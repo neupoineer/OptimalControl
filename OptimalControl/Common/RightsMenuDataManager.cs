@@ -51,16 +51,16 @@ namespace OptimalControl.Common
                 // 显示下级菜单项元素 Text
                 secondRights = new Rights();
                 secondRights.Id = _rightsId;
-                secondRights.ModelName = tsmiNextLevel.Name;
+                secondRights.Name = tsmiNextLevel.Name;
                 secondRights.RightsState = false;
-                secondRights.ParentLevelRightsName = rightCollection[tsmiRootLevel.Name].ModelName;
+                secondRights.ParentLevelRightsName = rightCollection[tsmiRootLevel.Name].Name;
 
                 // 如果是菜单项而不是其它菜单项类型
                 if (tsmiNextLevel is ToolStripMenuItem)
                 {
                     secondRights.RightsCaption = tsmiNextLevel.Text;
                     // 添加当前项到集合
-                    rightCollection.Add(secondRights.ModelName, secondRights);
+                    rightCollection.Add(secondRights.Name, secondRights);
                     // 使用递归添加所有次级子项到集合
                     GetMenuRightsChildrenItem(rightCollection, tsmiNextLevel as ToolStripMenuItem);
                 }
@@ -91,7 +91,7 @@ namespace OptimalControl.Common
                     if (tsmiNextLevel is ToolStripMenuItem)
                     {
                         // 如果内部名称相同
-                        if (tsmiNextLevel.Name == tmpRights.ModelName)
+                        if (tsmiNextLevel.Name == tmpRights.Name)
                         {
                             // 设置名称和显隐状态
                             tsmiNextLevel.Text = tmpRights.RightsCaption;
@@ -107,7 +107,7 @@ namespace OptimalControl.Common
                     else if (tsmiNextLevel is ToolStripSeparator)
                     {
                         // 如果内部名称相同
-                        if (tsmiNextLevel.Name == tmpRights.ModelName)
+                        if (tsmiNextLevel.Name == tmpRights.Name)
                         {
                             // 设置显隐状态
                             tsmiNextLevel.Visible = tmpRights.RightsState;
@@ -151,7 +151,7 @@ namespace OptimalControl.Common
                     // 显示菜单根项元素 Text
                     Rights rootRights = new Rights();
                     rootRights.Id = _rightsId;
-                    rootRights.ModelName = tsmiRootLevel.Name;
+                    rootRights.Name = tsmiRootLevel.Name;
                     rootRights.RightsCaption = tsmiRootLevel.Text;
                     rootRights.RightsState = false;
                     rootRights.ParentLevelRightsName = msCurrentMenu.Name;
@@ -160,11 +160,11 @@ namespace OptimalControl.Common
                     bool isExist = false;
                     foreach (Rights tmpRights in rightCollection.Values)
                     {
-                        if (tmpRights.ModelName == rootRights.ModelName)
+                        if (tmpRights.Name == rootRights.Name)
                             isExist = true;
                     }
                     if (!isExist)
-                        rightCollection.Add(rootRights.ModelName, rootRights);
+                        rightCollection.Add(rootRights.Name, rootRights);
 
                     // 使用递归添加所有子项
                     GetMenuRightsChildrenItem(rightCollection, tsmiRootLevel);
@@ -201,7 +201,7 @@ namespace OptimalControl.Common
                     if (tsmiRootLevel is ToolStripMenuItem)
                     {
                         // 如果内部名称相同
-                        if (tsmiRootLevel.Name == tmpRights.ModelName)
+                        if (tsmiRootLevel.Name == tmpRights.Name)
                         {
                             // 设置名称和显隐状态
                             tsmiRootLevel.Text = tmpRights.RightsCaption;

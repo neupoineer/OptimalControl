@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using IBLL;
+using Model;
 
 namespace OptimalControl.Forms
 {
@@ -22,7 +24,7 @@ namespace OptimalControl.Forms
 
         // 保存登录身份是否合法验证结果
         internal bool isPass = false;
-        internal Model.Operator currentOperator;
+        internal Operator currentOperator;
 
         #region Private Methods
         /// <summary>
@@ -124,7 +126,7 @@ namespace OptimalControl.Forms
                     // 创建业务逻辑层工厂类实例
                     BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
                     // 调用工厂类实例方法创建业务逻辑管理类实例
-                    IBLL.IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
+                    IOperatorManager operatorManager = bllFactory.BuildOperatorManager();
                     // 获取当前登录操作员实体
                     currentOperator = operatorManager.GetOperatorInfoByName(
                         this.txtLoginName.Text.Trim(),
@@ -132,7 +134,7 @@ namespace OptimalControl.Forms
 
                     // 授权验证
                     if (currentOperator.RightsCollection == null)
-                        throw new Exception(string.Format("操作员 [{0}] 无有效权限，禁止登录！", currentOperator.ModelName));
+                        throw new Exception(string.Format("操作员 [{0}] 无有效权限，禁止登录！", currentOperator.Name));
 
                     if (currentOperator != null)
                         if (this.txtUserPwd.Text.Trim() == currentOperator.Password)

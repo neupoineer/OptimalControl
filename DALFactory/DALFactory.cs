@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using IDAL;
 using DAL;
-using Model;
+using IDAL;
 
 namespace DALFactory
 {
@@ -16,27 +15,27 @@ namespace DALFactory
         /// 操作员数据访问操作类的生产方法
         /// </summary>
         /// <returns>操作员数据访问操作类实例</returns>
-        public override IDAL.IOperatorService BuildOperatorService()
+        public override IOperatorService BuildOperatorService()
         {
-            return new DAL.OperatorService();
+            return new OperatorService();
         }
 
         /// <summary>
         /// 权限组数据访问操作类的生产方法
         /// </summary>
         /// <returns>权限组数据访问操作类实例</returns>
-        public override IDAL.IRightsGroupService BuildRightsGroupService()
+        public override IRightsGroupService BuildRightsGroupService()
         {
-            return new DAL.RightsGroupService();
+            return new RightsGroupService();
         }
 
         /// <summary>
         /// 权限关系数据访问操作类的生产方法
         /// </summary>
         /// <returns>权限关系数据访问操作类实例</returns>
-        public override IDAL.IRightsRelationService BuildRightsRelationService()
+        public override IRightsRelationService BuildRightsRelationService()
         {
-            return new DAL.RightsRelationService();
+            return new RightsRelationService();
         }
     }
 }

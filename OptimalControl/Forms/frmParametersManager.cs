@@ -2,8 +2,8 @@
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
+using Model.Control;
 using Utility;
-using Utility.Control;
 
 namespace OptimalControl.Forms
 {
@@ -13,11 +13,11 @@ namespace OptimalControl.Forms
         DataTable _deviceDataTable = new DataTable();
 
         private string SQLGetDevices = ConfigAppSettings.GetSettingString("SQLGetDevices", "SELECT * FROM @DevicesTable");
-        private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Devices");
+        private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Device");
 
         private string SQLGetParameters = ConfigAppSettings.GetSettingString("SQLGetParameters",
                     "SELECT * FROM @ParametersTable WHERE DeviceID = @DeviceID");
-        private string ParametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameters");
+        private string ParametersTable = ConfigAppSettings.GetSettingString("ParametersTable", "Parameter");
 
         public frmParametersManager()
         {

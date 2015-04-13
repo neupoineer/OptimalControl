@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using IDAL;
-using Model;
 
 namespace DALFactory
 {
@@ -17,17 +16,17 @@ namespace DALFactory
         /// 操作员数据访问操作类的生产方法
         /// </summary>
         /// <returns>操作员数据访问操作类实例</returns>
-        public abstract IDAL.IOperatorService BuildOperatorService();
+        public abstract IOperatorService BuildOperatorService();
         /// <summary>
         /// 权限组数据访问操作类的生产方法
         /// </summary>
         /// <returns>权限组数据访问操作类实例</returns>
-        public abstract IDAL.IRightsGroupService BuildRightsGroupService();
+        public abstract IRightsGroupService BuildRightsGroupService();
         /// <summary>
         /// 权限关系数据访问操作类的生产方法
         /// </summary>
         /// <returns>权限关系数据访问操作类实例</returns>
-        public abstract IDAL.IRightsRelationService BuildRightsRelationService();
+        public abstract IRightsRelationService BuildRightsRelationService();
         #endregion
 
         #region Static Methods

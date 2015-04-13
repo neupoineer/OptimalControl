@@ -53,11 +53,24 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Modbus">
+      <HintPath>..\Resource\dll\Modbus.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph">
+      <HintPath>..\Resource\dll\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\Curve.cs" />
+    <Compile Include="Control\Rule.cs" />
+    <Compile Include="Control\Variable.cs" />
+    <Compile Include="Modbus\Device.cs" />
+    <Compile Include="Modbus\ModbusRtuDevice.cs" />
+    <Compile Include="Modbus\ModbusTcpDevice.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ModelCommonEnum.cs" />
     <Compile Include="Operator.cs" />

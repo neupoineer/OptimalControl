@@ -6,18 +6,18 @@ using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using Utility;
-using Utility.Modbus;
+using Rule = Model.Control.Rule;
 
 namespace OptimalControl.Forms
 {
     public partial class frmRuleEditor : Form
     {
         private readonly DataOperateMode _mode;
-        private ExpertSystem.Rule _rule;
+        private Rule _rule;
         private readonly DataTable _parameterDataTable;
         public int Result { get; private set; }
 
-        public frmRuleEditor(DataOperateMode mode, ExpertSystem.Rule rule, DataTable parameterDataTable)
+        public frmRuleEditor(DataOperateMode mode, Rule rule, DataTable parameterDataTable)
         {
             _mode = mode;
             _rule = rule;
@@ -25,12 +25,12 @@ namespace OptimalControl.Forms
             InitializeComponent();
         }
 
-        private void LoadUI(ExpertSystem.Rule rule, DataTable parameterDataTable, string formText, DataOperateMode mode)
+        private void LoadUI(Rule rule, DataTable parameterDataTable, string formText, DataOperateMode mode)
         {
             cb_parameter.Items.Clear();
             for (int index = 0; index < parameterDataTable.Rows.Count; index++)
             {
-                cb_parameter.Items.Add(Convert.ToString(parameterDataTable.Rows[index][1]));
+                cb_parameter.Items.Add(string.Format("{0}", Convert.ToString(parameterDataTable.Rows[index][1])));
             }
 
             cb_operator.Items.Clear();
@@ -48,7 +48,7 @@ namespace OptimalControl.Forms
                 cb_rule_enabled.Enabled = (mode != DataOperateMode.Delete);
                 tb_rule_expression.Text = rule.Expression;
                 tb_rule_expression.Enabled = (mode != DataOperateMode.Delete);
-                tb_rule_operation.Text = rule.Operatioin;
+                tb_rule_operation.Text = rule.Operation;
                 tb_rule_operation.Enabled = (mode != DataOperateMode.Delete);
                 ntb_rule_period.Text = rule.Period.ToString(CultureInfo.InvariantCulture);
                 ntb_rule_period.Enabled = (mode != DataOperateMode.Delete);
@@ -166,14 +166,14 @@ namespace OptimalControl.Forms
             {
                 if (cb_parameter.Text.Length > 0)
                 {
-                    tb_rule_expression.Text += string.Format("[{0}]",cb_parameter.Text);
+                    tb_rule_expression.Text += string.Format("[@{0}]",cb_parameter.Text);
                 }
             }
             else if (!tb_rule_operation.ReadOnly)
             {
                 if (cb_parameter.Text.Length > 0)
                 {
-                    tb_rule_operation.Text += string.Format("[{0}]",cb_parameter.Text);
+                    tb_rule_operation.Text += string.Format("[@{0}]",cb_parameter.Text);
                 }
             }
             else

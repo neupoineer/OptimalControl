@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utility.Control
+namespace Model.Control
 {
     /// <summary>
     /// 变量实体类
@@ -158,7 +158,7 @@ namespace Utility.Control
         #region Public Methods
 
         /// <summary>
-        /// 无参构造(基类属性赋值说明：Id - 权限 ID / ModelName - 权限名称)
+        /// 无参构造(基类属性赋值说明：Id - 权限 ID / Name - 权限名称)
         /// </summary>
         public Variable()
         {

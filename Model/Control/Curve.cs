@@ -1,25 +1,25 @@
 ﻿using System.Drawing;
 using ZedGraph;
 
-namespace Utility.Control
+namespace Model.Control
 {
     /// <summary>
     /// The Curve property
     /// </summary>
-    public class Curve:ModelBase
+    public class Curve : ModelBase
     {
         private PointPairList _dataList;
         private int _deviceId;
         private ushort _address;
-        private Color _lineColour;
+        private Color _lineColor;
         private bool _lineType;
         private float _lineWidth;
-        private SymbolType _curveSymbolType;
+        private SymbolType _symbolType;
         private float _symbolSize;
-        private string _xAxisTitle;
-        private string _yAxisTitle;
-        private double _yAxisMax;
-        private double _yAxisMin;
+        private string _xTitle;
+        private string _yTitle;
+        private double _yMax;
+        private double _yMin;
 
         /// <summary>
         /// The curve list
@@ -51,10 +51,10 @@ namespace Utility.Control
         /// <summary>
         /// The curve line colour
         /// </summary>
-        public Color LineColour
+        public Color LineColor
         {
-            get { return _lineColour; }
-            set { _lineColour = value; }
+            get { return _lineColor; }
+            set { _lineColor = value; }
         }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace Utility.Control
         /// <summary>
         /// The curve symbol type
         /// </summary>
-        public SymbolType CurveSymbolType
+        public SymbolType SymbolType
         {
-            get { return _curveSymbolType; }
-            set { _curveSymbolType = value; }
+            get { return _symbolType; }
+            set { _symbolType = value; }
         }
 
         /// <summary>
@@ -96,58 +96,60 @@ namespace Utility.Control
         /// <summary>
         /// The x axis title
         /// </summary>
-        public string XAxisTitle
+        public string XTitle
         {
-            get { return _xAxisTitle; }
-            set { _xAxisTitle = value; }
+            get { return _xTitle; }
+            set { _xTitle = value; }
         }
 
         /// <summary>
         /// The y axis title
         /// </summary>
-        public string YAxisTitle
+        public string YTitle
         {
-            get { return _yAxisTitle; }
-            set { _yAxisTitle = value; }
+            get { return _yTitle; }
+            set { _yTitle = value; }
         }
 
         /// <summary>
         /// The pane Y axis max
         /// </summary>
-        public double YAxisMax
+        public double YMax
         {
-            get { return _yAxisMax; }
-            set { _yAxisMax = value; }
+            get { return _yMax; }
+            set { _yMax = value; }
         }
 
         /// <summary>
         /// The pane Y axis min
         /// </summary>
-        public double YAxisMin
+        public double YMin
         {
-            get { return _yAxisMin; }
-            set { _yAxisMin = value; }
+            get { return _yMin; }
+            set { _yMin = value; }
         }
 
         public Curve()
         {
-            
+
         }
 
-        public Curve(PointPairList dataList, int deviceId, ushort address, Color lineColour, bool lineType, float lineWidth, SymbolType curveSymbolType, float symbolSize, string xAxisTitle, string yAxisTitle, double yAxisMax, double yAxisMin)
+        public Curve(PointPairList dataList, int deviceId, ushort address, Color lineColour, bool lineType,
+            float lineWidth, SymbolType curveSymbolType, float symbolSize, string xAxisTitle, string yAxisTitle,
+            double yAxisMax, double yAxisMin)
         {
             DataList = dataList;
             DeviceId = deviceId;
             Address = address;
-            LineColour = lineColour;
+            LineColor = lineColour;
             LineType = lineType;
             LineWidth = lineWidth;
-            CurveSymbolType = curveSymbolType;
+            SymbolType = curveSymbolType;
             SymbolSize = symbolSize;
-            XAxisTitle = xAxisTitle;
-            YAxisTitle = yAxisTitle;
-            YAxisMax = yAxisMax;
-            YAxisMin = yAxisMin;
+            XTitle = xAxisTitle;
+            YTitle = yAxisTitle;
+            YMax = yAxisMax;
+            YMin = yAxisMin;
         }
     }
 

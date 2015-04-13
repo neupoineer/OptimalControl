@@ -77,7 +77,6 @@ E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalContr
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\obj\Release\OptimalControl.Forms.frmParameterEditor.resources
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\obj\Release\OptimalControl.Forms.frmCurveEditor.resources
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\obj\Release\OptimalControl.Forms.frmRuleEditor.resources
-E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\obj\Release\OptimalControl.Forms.frmRulesManager.resources
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\obj\Release\OptimalControl.Properties.Resources.resources
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\obj\Release\OptimalControl.csproj.GenerateResource.Cache
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\obj\Release\OptimalControl.exe

@@ -1,13 +1,14 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
+using IBLL;
+using IDAL;
+using Model;
 
 namespace BLL
 {
     /// <summary>
     /// 权限关系数据访问操作类
     /// </summary>
-    public class RightsRelationManager : IBLL.IRightsRelationManager
+    public class RightsRelationManager : IRightsRelationManager
     {
         #region IRightsRelationManager 成员
 
@@ -16,12 +17,12 @@ namespace BLL
         /// </summary>
         /// <param name="rightsRelation">权限关系实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool AddRightsRelation(Model.RightsRelation rightsRelation)
+        public bool AddRightsRelation(RightsRelation rightsRelation)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
+            IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
             //调用实例方法
             return rightsRelationService.AddRightsRelation(rightsRelation);
         }
@@ -36,7 +37,7 @@ namespace BLL
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
+            IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
             //调用实例方法
             return rightsRelationService.DeleteRightsRelationById(id);
         }
@@ -51,7 +52,7 @@ namespace BLL
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
+            IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
             //调用实例方法
             return rightsRelationService.DeleteRightsRelationByOperatorId(operatorId);
         }
@@ -61,12 +62,12 @@ namespace BLL
         /// </summary>
         /// <param name="rightsRelation">权限关系实体</param>
         /// <returns>True:成功/False:失败</returns>
-        public bool ModifyRightsRelation(Model.RightsRelation rightsRelation)
+        public bool ModifyRightsRelation(RightsRelation rightsRelation)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
+            IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
             //调用实例方法
             return rightsRelationService.ModifyRightsRelation(rightsRelation);
         }
@@ -75,12 +76,12 @@ namespace BLL
         /// 获取所有的权限关系集合
         /// </summary>
         /// <returns>权限关系集合</returns>
-        public List<Model.RightsRelation> GetAllRightsRelation()
+        public List<RightsRelation> GetAllRightsRelation()
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
+            IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
             //调用实例方法
             return rightsRelationService.GetAllRightsRelation();
         }
@@ -90,12 +91,12 @@ namespace BLL
         /// </summary>
         /// <param name="id">操作员 ID</param>
         /// <returns>权限关系集合</returns>
-        public List<Model.RightsRelation> GetRightsRelationByOperatorId(int id)
+        public List<RightsRelation> GetRightsRelationByOperatorId(int id)
         {
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
+            IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
             //调用实例方法
             return rightsRelationService.GetRightsRelationByOperatorId(id);
         }
@@ -110,7 +111,7 @@ namespace BLL
             //定义并实例化抽象工厂类
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
-            IDAL.IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
+            IRightsRelationService rightsRelationService = absDALFactory.BuildRightsRelationService();
             //调用实例方法
             return rightsRelationService.GetRightsRelationCountByRightsGroupId(id);
         }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Model
 {
@@ -45,7 +44,7 @@ namespace Model
 
         #region Public Methods
         /// <summary>
-        /// 无参构造(基类属性赋值说明：Id - 操作员 ID / ModelName - 操作员名称)
+        /// 无参构造(基类属性赋值说明：Id - 操作员 ID / Name - 操作员名称)
         /// </summary>
         public Operator() { }
 

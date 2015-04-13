@@ -131,3 +131,6 @@ E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalContr
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLLFactory\obj\Release\BLLFactory.csprojResolveAssemblyReference.cache
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLLFactory\obj\Release\Factory.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLLFactory\obj\Release\Factory.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLLFactory\bin\Release\ZedGraph.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLLFactory\bin\Release\Modbus.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLLFactory\bin\Release\log4net.dll
