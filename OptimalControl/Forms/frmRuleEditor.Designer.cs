@@ -52,6 +52,8 @@ namespace OptimalControl.Forms
             this.btn_add_parameter = new System.Windows.Forms.Button();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.btn_ok = new System.Windows.Forms.Button();
+            this.ntb_rule_priority = new Utility.NumbericTextbox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -80,8 +82,8 @@ namespace OptimalControl.Forms
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(630, 260);
-            this.splitContainer1.SplitterDistance = 15;
+            this.splitContainer1.Size = new System.Drawing.Size(626, 256);
+            this.splitContainer1.SplitterDistance = 25;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -102,7 +104,7 @@ namespace OptimalControl.Forms
             // 
             this.splitContainer2.Panel2.Controls.Add(this.btn_cancel);
             this.splitContainer2.Panel2.Controls.Add(this.btn_ok);
-            this.splitContainer2.Size = new System.Drawing.Size(630, 244);
+            this.splitContainer2.Size = new System.Drawing.Size(626, 230);
             this.splitContainer2.SplitterDistance = 190;
             this.splitContainer2.TabIndex = 1;
             // 
@@ -121,12 +123,14 @@ namespace OptimalControl.Forms
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer3.Size = new System.Drawing.Size(630, 190);
+            this.splitContainer3.Size = new System.Drawing.Size(626, 190);
             this.splitContainer3.SplitterDistance = 377;
             this.splitContainer3.TabIndex = 0;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ntb_rule_priority);
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.ntb_rule_period);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label4);
@@ -235,7 +239,7 @@ namespace OptimalControl.Forms
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(249, 190);
+            this.groupBox2.Size = new System.Drawing.Size(245, 190);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "编辑";
@@ -317,13 +321,29 @@ namespace OptimalControl.Forms
             this.btn_ok.UseVisualStyleBackColor = true;
             this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
             // 
+            // ntb_rule_priority
+            // 
+            this.ntb_rule_priority.Location = new System.Drawing.Point(259, 157);
+            this.ntb_rule_priority.Name = "ntb_rule_priority";
+            this.ntb_rule_priority.Size = new System.Drawing.Size(50, 21);
+            this.ntb_rule_priority.TabIndex = 20;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(212, 160);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "优先级";
+            // 
             // frmRuleEditor
             // 
             this.AcceptButton = this.btn_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
-            this.ClientSize = new System.Drawing.Size(630, 260);
+            this.ClientSize = new System.Drawing.Size(626, 256);
             this.ControlBox = false;
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -376,6 +396,8 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Button btn_ok;
         private System.Windows.Forms.TextBox tb_value;
         private NumbericTextbox tb_rule_operation;
+        private NumbericTextbox ntb_rule_priority;
+        private System.Windows.Forms.Label label5;
 
     }
 }

@@ -232,6 +232,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmRightsManager.resx">
       <DependentUpon>frmRightsManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSendFeedbackEMail.resx">
       <DependentUpon>frmSendFeedbackEMail.cs</DependentUpon>

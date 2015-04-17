@@ -26,13 +26,13 @@ namespace OptimalControl.Forms
             Text = formText;
             tb_device_name.Text = device.Name;
             tb_device_name.Enabled = editable;
-            nud_device_unitid.Value = device.ModbusTcpDevice.UnitId;
+            nud_device_unitid.Value = device.ModbusTcpDevice.UnitID;
             nud_device_unitid.Enabled = editable;
             cb_device_state.Checked = device.State;
             cb_device_state.Enabled = editable;
-            tb_device_ip.Text = device.ModbusTcpDevice.IpAddress;
+            tb_device_ip.Text = device.ModbusTcpDevice.Ip;
             tb_device_ip.Enabled = editable;
-            ntb_device_port.Text = device.ModbusTcpDevice.PortName.ToString(CultureInfo.InvariantCulture);
+            ntb_device_port.Text = device.ModbusTcpDevice.Port.ToString(CultureInfo.InvariantCulture);
             ntb_device_port.Enabled = editable;
             cb_device_sync.Checked = device.SyncState;
             cb_device_sync.Enabled = editable;

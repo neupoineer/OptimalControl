@@ -98,9 +98,9 @@ namespace OptimalControl.Forms
                     SyncState = Convert.ToBoolean(dataGridView_devices.Rows[selectRowIndex].Cells[3].Value),
                     ModbusTcpDevice = new ModbusTcpDevice()
                     {
-                        IpAddress = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells[4].Value),
-                        PortName = Convert.ToInt32(dataGridView_devices.Rows[selectRowIndex].Cells[5].Value),
-                        UnitId = Convert.ToByte(dataGridView_devices.Rows[selectRowIndex].Cells[6].Value)
+                        Ip = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells[4].Value),
+                        Port = Convert.ToInt32(dataGridView_devices.Rows[selectRowIndex].Cells[5].Value),
+                        UnitID = Convert.ToByte(dataGridView_devices.Rows[selectRowIndex].Cells[6].Value)
                     }
                 };
                 return device;

@@ -27,6 +27,8 @@ namespace DALFactory
         /// </summary>
         /// <returns>权限关系数据访问操作类实例</returns>
         public abstract IRightsRelationService BuildRightsRelationService();
+
+        public abstract ILogService BuildLogService();
         #endregion
 
         #region Static Methods

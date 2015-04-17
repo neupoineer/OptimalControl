@@ -63,6 +63,7 @@
     <Compile Include="IOperatorService.cs" />
     <Compile Include="IRightsGroupService.cs" />
     <Compile Include="IRightsRelationService.cs" />
+    <Compile Include="ILogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Control\IRuleService.cs" />
     <Compile Include="Control\IVariableService.cs" />

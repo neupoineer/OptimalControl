@@ -37,5 +37,10 @@ namespace BLLFactory
         {
             return new RightsRelationManager();
         }
+
+        public ILogManager BuildLogManager()
+        {
+            return new LogManager();
+        }
     }
 }

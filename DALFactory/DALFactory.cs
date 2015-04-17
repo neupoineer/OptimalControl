@@ -37,5 +37,10 @@ namespace DALFactory
         {
             return new RightsRelationService();
         }
+
+        public override ILogService BuildLogService()
+        {
+            return new LogService();
+        }
     }
 }

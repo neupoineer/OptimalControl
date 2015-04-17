@@ -52,6 +52,8 @@ namespace OptimalControl.Forms
                 tb_rule_operation.Enabled = (mode != DataOperateMode.Delete);
                 ntb_rule_period.Text = rule.Period.ToString(CultureInfo.InvariantCulture);
                 ntb_rule_period.Enabled = (mode != DataOperateMode.Delete);
+                ntb_rule_priority.Text = rule.Priority.ToString(CultureInfo.InvariantCulture);
+                ntb_rule_priority.Enabled = (mode != DataOperateMode.Delete);
                 splitContainer3.Panel2Collapsed = (mode == DataOperateMode.Delete);
                 this.ClientSize =
                     new Size((mode == DataOperateMode.Delete) ? (this.ClientSize.Width - 250) : this.ClientSize.Width,
@@ -74,6 +76,7 @@ namespace OptimalControl.Forms
             sql = sql.Replace("@Operation", tb_rule_operation.Text.Trim());
             sql = sql.Replace("@Period", ntb_rule_period.Text.Trim());
             sql = sql.Replace("@Enabled", cb_rule_enabled.Checked.ToString());
+            sql = sql.Replace("@Priority", ntb_rule_priority.Text.Trim());
             return sql;
         }
 
@@ -112,6 +115,11 @@ namespace OptimalControl.Forms
                 if (tb_rule_operation.Text.Length < 1)
                 {
                     MessageBox.Show("请输入执行动作！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (ntb_rule_priority.Text.Length < 1)
+                {
+                    MessageBox.Show("请输入优先级！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 string sql = "";

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel.Design;
+using Modbus.Device;
+using Model.Modbus;
 
 namespace Model.Control
 {
@@ -8,6 +11,14 @@ namespace Model.Control
     [Serializable]
     public class Variable : ModelBase
     {
+        public enum VariableState
+        {
+            正常 = 0,
+            超上限 = 1,
+            超下限 = 2,
+            超上上限 = 3,
+            超下下限 = 4,
+        }
 
         /// <summary>
         /// 变量上下限结构体
@@ -55,28 +66,38 @@ namespace Model.Control
         public double Value
         {
             get { return _value; }
-            set { _value = value; }
+            set
+            {
+                if (_ratio != 0)
+                {
+                    if (((value > _limit.UltimateLowerLimit/_ratio) || (_limit.UltimateLowerLimit <= 0))
+                        && ((value < _limit.UltimateUpperLimit/_ratio) || (_limit.UltimateUpperLimit <= 0)))
+                    {
+                        _value = value;
+                    }
+                }
+            }
         }
 
         /// <summary>
         /// Gets the real value.
         /// </summary>
         /// <value>
-        /// 变量真值=变量值*放大倍数(倍数!=0).
+        /// 变量真值=变量值*放大倍数.
         /// </value>
         public double RealValue
         {
-            get
+            get { return _value*_ratio; }
+            set
             {
-                if (_ratio != 0)
+                if (((value > _limit.UltimateLowerLimit) || (_limit.UltimateLowerLimit <= 0))
+                    && ((value < _limit.UltimateUpperLimit) || (_limit.UltimateUpperLimit <= 0)))
                 {
-                    return _value * _ratio;
+                    if (_ratio != 0)
+                    {
+                        _value = value/_ratio;
+                    }
                 }
-                else
-                {
-                    return _value;
-                }
-
             }
         }
 
@@ -165,15 +186,45 @@ namespace Model.Control
 
         }
 
+        public VariableState CheckVariableState()
+        {
+            double tmpValue = _value*_ratio;
+            if (_limit.UltimateUpperLimit > 0 && tmpValue > _limit.UltimateUpperLimit)
+            {
+                return VariableState.超上上限;
+            }
+            else if (_limit.UpperLimit > 0 && tmpValue > _limit.UpperLimit &&
+                     (tmpValue < _limit.UltimateUpperLimit || _limit.UltimateUpperLimit <= 0))
+            {
+                return VariableState.超上限;
+            }
+            else if (_limit.UltimateLowerLimit >= 0 && tmpValue < _limit.UltimateLowerLimit)
+            {
+                return VariableState.超下下限;
+            }
+            else if (_limit.LowerLimit >= 0 && tmpValue < _limit.LowerLimit &&
+                     (tmpValue > _limit.UltimateLowerLimit || _limit.UltimateLowerLimit <= 0))
+            {
+                return VariableState.超下限;
+            }
+            else
+            {
+                return VariableState.正常;
+            }
+        }
+
         /// <summary>
         /// 带参构造
         /// </summary>
         /// <param name="variableId">The variable identifier.</param>
         /// <param name="variableName">Name of the variable.</param>
         /// <param name="variableValue">The variable value.</param>
+        /// <param name="variableRatio">The variable ratio.</param>
         /// <param name="variableLimit">The variable limit.</param>
         /// <param name="variableControlPeriod">The variable control period.</param>
         /// <param name="variableOperateDelay">The variable operate delay.</param>
+        /// <param name="variableDeviceID">The variable device identifier.</param>
+        /// <param name="variableAddress">The variable address.</param>
         public Variable(
             int variableId,
             string variableName,
@@ -194,6 +245,102 @@ namespace Model.Control
             Address = variableAddress;
         }
 
+
+        /// <summary>
+        /// Gets the value from modbus TCP master.
+        /// </summary>
+        /// <param name="modbusTcpDevice">The modbus TCP device.</param>
+        /// <returns>Result</returns>
+        public bool GetValueFromModbusTcpMaster(ModbusTcpDevice modbusTcpDevice)
+        {
+            try
+            {
+                //读寄存器
+                ushort[] register = modbusTcpDevice.ModbusTcpMaster.ReadHoldingRegisters(
+                    modbusTcpDevice.UnitID,
+                    (ushort) (_address - 1), 2);
+                byte[] byteString = new byte[4];
+                for (int j = 0; j < 2; j++)
+                {
+                    byte[] tempByte = BitConverter.GetBytes(register[j]);
+                    byteString[2 * j] = tempByte[0];
+                    byteString[2 * j + 1] = tempByte[1];
+                }
+                _value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Sets the value from modbus TCP master.
+        /// </summary>
+        /// <param name="modbusTcpDevice">The modbus TCP device.</param>
+        /// <returns></returns>
+        public bool SetValueToModbusTcpMaster(ModbusTcpDevice modbusTcpDevice)
+        {
+            try
+            {
+                byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
+                modbusTcpDevice.ModbusTcpMaster.WriteMultipleRegisters(
+                    modbusTcpDevice.UnitID,
+                    (ushort) (_address - 1),
+                    new ushort[]
+                    {
+                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]),
+                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2])
+                    }
+                    );
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool GetValueFromModbusSalve(ModbusSlave modbusSlave)
+        {
+            ushort[] register = new ushort[2];
+            try
+            {
+                //读寄存器
+                register[0] = modbusSlave.DataStore.HoldingRegisters[_address];
+                register[1] = modbusSlave.DataStore.HoldingRegisters[_address + 1];
+
+                byte[] byteString = new byte[4];
+                for (int j = 0; j < 2; j++)
+                {
+                    byte[] tempByte = BitConverter.GetBytes(register[j]);
+                    byteString[2*j] = tempByte[0];
+                    byteString[2*j + 1] = tempByte[1];
+                }
+                _value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool SetValueToModbusSalve(ModbusSlave modbusSlave)
+        {
+            try
+            {
+                byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
+                modbusSlave.DataStore.HoldingRegisters[_address] = Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
+                modbusSlave.DataStore.HoldingRegisters[_address + 1] = Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         #endregion
 
 

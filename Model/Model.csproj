@@ -68,6 +68,7 @@
     <Compile Include="Control\Curve.cs" />
     <Compile Include="Control\Rule.cs" />
     <Compile Include="Control\Variable.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Modbus\Device.cs" />
     <Compile Include="Modbus\ModbusRtuDevice.cs" />
     <Compile Include="Modbus\ModbusTcpDevice.cs" />

@@ -1,4 +1,7 @@
-﻿namespace Model.Control
+﻿using System;
+using System.Text;
+
+namespace Model.Control
 {
     public class Rule : ModelBase
     {
@@ -9,6 +12,7 @@
         private int _period;
         private bool _enabled;
         private int _delayTime;
+        private int _priority;
         #endregion
 
         #region Public Properties
@@ -43,6 +47,12 @@
             set { _delayTime = value; }
         }
 
+        public int Priority
+        {
+            get { return _priority; }
+            set { _priority = value; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -64,7 +74,8 @@
         /// <param name="period">The period.</param>
         /// <param name="enabled">if set to <c>true</c> [enabled].</param>
         /// <param name="delayTime">The delay time.</param>
-        public Rule(int id, string name, string expression, string operatioin, int period, bool enabled, int delayTime)
+        /// <param name="priority">The priority.</param>
+        public Rule(int id, string name, string expression, string operatioin, int period, bool enabled, int delayTime, int priority)
         {
             Id = id;
             Name = name;
@@ -73,12 +84,10 @@
             Period = period;
             Enabled = enabled;
             DelayTime = delayTime;
+            Priority = priority;
         }
 
         #endregion
-
-
-
 
     }
 }

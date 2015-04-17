@@ -27,5 +27,8 @@ Create Table Rules
 	
 	-- 使能
 	[State] bit Not Null,
+
+	-- 优先级
+	[Priority] int Not Null,
 )
 Go

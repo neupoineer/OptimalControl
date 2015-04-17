@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILogManager.cs" />
     <Compile Include="IOperatorManager.cs" />
     <Compile Include="IRightsGroupManager.cs" />
     <Compile Include="IRightsRelationManager.cs" />
