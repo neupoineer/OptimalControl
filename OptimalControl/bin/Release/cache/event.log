@@ -1,64 +1,30 @@
-15/04/17 08:51:04 Start: Software started by admin!
-15/04/17 09:10:15 Login: admin Login!
-15/04/17 09:12:01 Login: admin Login!
-15/04/17 09:20:48 Login: admin Login!
-15/04/17 09:20:55 Start: Software started by admin!
-15/04/17 09:21:11 Stop: Software stoped by admin!
-15/04/17 09:21:13 Start: Software started by admin!
-15/04/17 09:35:17 Login: admin Login!
-15/04/17 09:35:23 Start: Software started by admin!
-15/04/17 09:37:23 Login: admin Login!
-15/04/17 09:37:32 Start: Software started by admin!
-15/04/17 10:10:08 Login: admin Login!
-15/04/17 10:10:55 Start: Software started by admin!
-15/04/17 10:16:01 Login: admin Login!
-15/04/17 10:21:25 Login: admin Login!
-15/04/17 10:21:32 Start: Software started by admin!
-15/04/17 10:24:10 LoadSettings: 未将对象引用设置到对象的实例。
-15/04/17 10:24:10 Login: admin Login!
-15/04/17 10:24:53 LoadSettings: 未将对象引用设置到对象的实例。
-15/04/17 10:24:53 Login: admin Login!
-15/04/17 10:27:15 LoadSettings: 未将对象引用设置到对象的实例。
-15/04/17 10:27:15 Login: admin Login!
-15/04/17 10:31:23 LoadSettings: 未将对象引用设置到对象的实例。
-15/04/17 10:31:23 Login: admin Login!
-15/04/17 10:32:27 Login: admin Login!
-15/04/17 10:33:23 Login: admin Login!
-15/04/17 10:34:36 LoadSettings: 未将对象引用设置到对象的实例。
-15/04/17 10:34:36 Login: admin Login!
-15/04/17 10:38:29 Login: admin Login!
-15/04/17 10:40:50 Login: admin Login!
-15/04/17 10:41:31 Start: Software started by admin!
-15/04/17 10:56:08 Login: admin Login!
-15/04/17 10:56:16 Start: Software started by admin!
-15/04/17 10:58:00 Stop: Software stoped by admin!
-15/04/17 10:58:38 Start: Software started by admin!
-15/04/17 10:58:41 Stop: Software stoped by admin!
-15/04/17 11:31:57 Login: admin Login!
-15/04/17 11:32:05 Start: Software started by admin!
-15/04/17 11:32:10 RealTimer: 参数计数不匹配。
-15/04/17 11:32:15 RealTimer: 参数计数不匹配。
-15/04/17 11:32:20 RealTimer: 参数计数不匹配。
-15/04/17 11:32:25 RealTimer: 参数计数不匹配。
-15/04/17 11:32:30 RealTimer: 参数计数不匹配。
-15/04/17 11:32:35 RealTimer: 参数计数不匹配。
-15/04/17 11:32:40 RealTimer: 参数计数不匹配。
-15/04/17 11:33:10 Login: admin Login!
-15/04/17 11:33:26 Start: Software started by admin!
-15/04/17 11:33:46 RealTimer: 参数计数不匹配。
-15/04/17 11:33:47 RealTimer: 参数计数不匹配。
-15/04/17 11:33:47 RealTimer: 参数计数不匹配。
-15/04/17 11:33:51 RealTimer: 参数计数不匹配。
-15/04/17 11:33:56 RealTimer: 参数计数不匹配。
-15/04/17 11:34:01 RealTimer: 参数计数不匹配。
-15/04/17 11:34:06 RealTimer: 参数计数不匹配。
-15/04/17 11:34:11 RealTimer: 参数计数不匹配。
-15/04/17 11:34:16 RealTimer: 参数计数不匹配。
-15/04/17 11:35:51 Login: admin Login!
-15/04/17 11:36:49 Start: Software started by admin!
-15/04/17 11:37:01 RealTimer: 参数计数不匹配。
-15/04/17 11:37:01 RealTimer: 参数计数不匹配。
-15/04/17 11:37:06 RealTimer: 参数计数不匹配。
-15/04/17 11:37:11 RealTimer: 参数计数不匹配。
-15/04/17 11:37:16 RealTimer: 参数计数不匹配。
-15/04/17 11:37:21 RealTimer: 参数计数不匹配。
+15/04/17 13:53:09 UpdateModbus: 参数计数不匹配。
+15/04/17 13:53:14 UpdateModbus: 参数计数不匹配。
+15/04/17 13:53:19 UpdateModbus: 参数计数不匹配。
+15/04/17 13:53:24 UpdateModbus: 参数计数不匹配。
+15/04/17 13:53:29 UpdateModbus: 参数计数不匹配。
+15/04/17 13:53:32 Stop: Software stoped by admin!
+15/04/17 14:02:59 Login: admin Login!
+15/04/17 14:03:05 Start: Software started by admin!
+15/04/17 14:03:10 SaveParameters: 参数计数不匹配。
+15/04/17 14:03:15 SaveParameters: 参数计数不匹配。
+15/04/17 14:03:20 SaveParameters: 参数计数不匹配。
+15/04/17 14:05:16 Login: admin Login!
+15/04/17 14:05:21 Start: Software started by admin!
+15/04/17 14:06:46 Stop: Software stoped by admin!
+15/04/17 14:11:02 Login: admin Login!
+15/04/17 14:11:07 Start: Software started by admin!
+15/04/17 16:26:53 Login: admin Login!
+15/04/17 16:27:42 Start: Software started by admin!
+15/04/17 16:33:42 Login: admin Login!
+15/04/17 16:33:50 Start: Software started by admin!
+15/04/17 16:34:46 Stop: Software stoped by admin!
+15/04/17 16:51:59 Login: admin Login!
+15/04/17 16:52:05 Start: Software started by admin!
+15/04/17 16:52:41 Stop: Software stoped by admin!
+15/04/17 17:02:44 Login: admin Login!
+15/04/17 17:03:07 Start: Software started by admin!
+15/04/17 17:37:39 Login: admin Login!
+15/04/17 17:38:32 Start: Software started by admin!
+15/04/17 17:40:19 Stop: Software stoped by admin!
+15/04/17 17:41:02 Start: Software started by admin!

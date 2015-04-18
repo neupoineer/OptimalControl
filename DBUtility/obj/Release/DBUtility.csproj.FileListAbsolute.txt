@@ -24,6 +24,5 @@ E:\Projects\03-半自磨优化\Software\ControlPlatform-20141024\DBUtility\obj\R
 E:\Projects\03-半自磨优化\Software\ControlPlatform-20141024\DBUtility\obj\Release\DBUtility.pdb
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DBUtility\bin\Release\DBUtility.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DBUtility\bin\Release\DBUtility.pdb
-E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DBUtility\obj\Release\DBUtility.csprojResolveAssemblyReference.cache
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DBUtility\obj\Release\DBUtility.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DBUtility\obj\Release\DBUtility.pdb

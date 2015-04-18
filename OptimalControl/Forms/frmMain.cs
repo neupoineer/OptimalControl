@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
@@ -98,6 +97,11 @@ namespace OptimalControl.Forms
         /// <summary>
         /// The real timer
         /// </summary>
+        private System.Timers.Timer _timerUpdateVariable = new System.Timers.Timer(10000);
+
+        /// <summary>
+        /// The real timer
+        /// </summary>
         private System.Timers.Timer _timerRealtime = new System.Timers.Timer(2000);
 
         /// <summary>
@@ -132,7 +136,10 @@ namespace OptimalControl.Forms
         /// <summary>
         /// The real timer interval
         /// </summary>
+        private int _updateVariableTimerInterval = 2000; //设置定时器间隔，默认为2000ms
+
         private int _realTimerInterval = 2000; //设置定时器间隔，默认为2000ms
+
 
         /// <summary>
         /// The modbus rtu slave thread
@@ -367,14 +374,15 @@ namespace OptimalControl.Forms
 
                 Application.AddMessageFilter(_myFilter);
 
-                _timerRealtime = new System.Timers.Timer(_realTimerInterval);
-                _timerRealtime.Elapsed += TimerRealtimeElapsed;
+                _timerUpdateVariable = new System.Timers.Timer(_updateVariableTimerInterval);
+                _timerUpdateVariable.Elapsed += TimerUpdateVariableElapsed;
 
                 _timerLogoff = new System.Timers.Timer(_logoffTime*1000);
                 _timerLogoff.Elapsed += TimerLogoffElapsed;
                 _timerLogoff.Start();
 
-
+                _timerRealtime = new System.Timers.Timer(_realTimerInterval);
+                _timerUpdateVariable.Elapsed += TimerRealtimeElapsed;
             }
             catch (Exception ex)
             {
@@ -693,9 +701,14 @@ namespace OptimalControl.Forms
                 }
                 _logoffTime = ConfigAppSettings.GetSettingInt("LogoffTime", _logoffTime);
 
+                _updateVariableTimerInterval = ConfigAppSettings.GetSettingInt("UpdateVariableTime", _updateVariableTimerInterval); //时间间隔
+
+                _timerUpdateVariable.Interval = _updateVariableTimerInterval;
+
                 _realTimerInterval = ConfigAppSettings.GetSettingInt("RealTime", _realTimerInterval); //时间间隔
 
                 _timerRealtime.Interval = _realTimerInterval;
+
 
                 _modbusRtuDevice.SerialPortObject = new SerialPort
                     (
@@ -1210,7 +1223,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// Exectes the rules.
         /// </summary>
-        private void ExecteRules(List<Rule> rules)
+        private void ExecuteRules(List<Rule> rules)
         {
             foreach (Rule rule in rules)
             {
@@ -1283,7 +1296,7 @@ namespace OptimalControl.Forms
                                         {
                                             LogTime = DateTime.Now,
                                             Type = Log.LogType.提示,
-                                            Content = string.Format("触发规则\"{0}\",执行操作\"{1}={2}\"", rule.Name, parameter.Name, result),
+                                            Content = string.Format("触发规则\"{0}\",执行操作\"{1}={2}\"", rule.Expression.Replace("@",""), parameter.Name, result),
                                             State = true,
                                         };
                                         AddLogInfo(addLog);
@@ -1294,11 +1307,11 @@ namespace OptimalControl.Forms
                         }
                     }
                 }
-                _execteRulesFlag = false;
                 _timerRuleDelay =
                     new System.Timers.Timer(rule.Period > 0 ? rule.Period * 1000 : _defaultControlPeriod * 1000);
                 _timerRuleDelay.Elapsed += TimerRuleDelayElapsed;
                 _timerRuleDelay.Start();
+                _execteRulesFlag = false;
                 break;
             }
         }
@@ -1652,10 +1665,17 @@ namespace OptimalControl.Forms
 
         private void UpdateRules()
         {
-            _ruleDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                GetRulesCommand(_sqlGetRules, _rulesTable));
-            UpdateRulesGrid(_ruleDataTable, "1=1");
-            status_Label.Text = string.Format("查询到 {0} 行数据", _ruleDataTable.Rows.Count);
+            try
+            {
+                _ruleDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
+                    GetRulesCommand(_sqlGetRules, _rulesTable));
+                UpdateRulesGrid(_ruleDataTable, "1=1");
+                status_Label.Text = string.Format("查询到 {0} 行数据", _ruleDataTable.Rows.Count);
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "UpdateRules", ex.Message);
+            }
         }
 
         private delegate void UpdateRulesGridDelegate(DataTable dataTable, string filter);
@@ -1667,48 +1687,55 @@ namespace OptimalControl.Forms
                 Invoke(new UpdateRulesGridDelegate(UpdateRulesGrid));
                 return;
             }
-
-            DataRow[] data = dataTable.Select(filter);
-            DataTable table = dataTable.Clone();
-            foreach (DataRow row in data)
+            try
             {
-                table.Rows.Add(row.ItemArray);
-            }
-
-            dgv_oc_rules.DataSource = table;
-            foreach (DataGridViewColumn column in dgv_oc_rules.Columns)
-            {
-                switch (column.HeaderText) //更改列名
+                DataRow[] data = dataTable.Select(filter);
+                DataTable table = dataTable.Clone();
+                foreach (DataRow row in data)
                 {
-                    case "Id":
-                        column.HeaderText = "序号";
-                        column.DisplayIndex = 1;
-                        break;
-                    case "Name":
-                        column.HeaderText = "名称";
-                        break;
-                    case "Expression":
-                        column.HeaderText = "控制规则";
-                        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                        break;
-                    case "Operation":
-                        column.HeaderText = "执行动作";
-                        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                        break;
-                    case "Period":
-                        column.HeaderText = "控制周期";
-                        break;
-                    case "State":
-                        column.HeaderText = "启用";
-                        break;
-                    case "Priority":
-                        column.HeaderText = "优先级";
-                        column.DisplayIndex = 0;
-                        break;
-                    default:
-                        break;
+                    table.Rows.Add(row.ItemArray);
+                }
+
+                dgv_oc_rules.DataSource = table;
+                foreach (DataGridViewColumn column in dgv_oc_rules.Columns)
+                {
+                    switch (column.HeaderText) //更改列名
+                    {
+                        case "Id":
+                            column.HeaderText = "序号";
+                            column.DisplayIndex = 1;
+                            break;
+                        case "Name":
+                            column.HeaderText = "名称";
+                            break;
+                        case "Expression":
+                            column.HeaderText = "控制规则";
+                            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                            break;
+                        case "Operation":
+                            column.HeaderText = "执行动作";
+                            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                            break;
+                        case "Period":
+                            column.HeaderText = "控制周期";
+                            break;
+                        case "State":
+                            column.HeaderText = "启用";
+                            break;
+                        case "Priority":
+                            column.HeaderText = "优先级";
+                            column.DisplayIndex = 0;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "UpdateRulesGrid", ex.Message); 
+            }
+
         }
 
 
@@ -1720,10 +1747,18 @@ namespace OptimalControl.Forms
         /// <returns></returns>
         private DataTable LoadHistoryData(DateTime startTime, DateTime endTime)
         {
-            string sql = GetHistoryDataCommand(_sqlGetHistoryData1 + _sqlGetHistoryData2 + _sqlGetHistoryData3,
-                _dataTable,
-                _curvesTable, startTime, endTime);
-            DataTable dataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction, sql);
+            DataTable dataTable = new DataTable();
+            try
+            {
+                string sql = GetHistoryDataCommand(_sqlGetHistoryData1 + _sqlGetHistoryData2 + _sqlGetHistoryData3,
+                    _dataTable,
+                    _curvesTable, startTime, endTime);
+                dataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction, sql);
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "LoadHistoryData", ex.Message);
+            }
             return dataTable;
         }
 
@@ -1735,45 +1770,58 @@ namespace OptimalControl.Forms
         private Curve[] LoadHistoryCurves(DataTable dataTable)
         {
             Curve[] curves = new Curve[_curveCount];
-
-            for (int index = 0; index < _curveCount; index++)
+            try
             {
-                curves[index] = _curves[index];
-                curves[index].DataList.Clear();
-                for (int j = 1; j < dataTable.Columns.Count; j++)
+                for (int index = 0; index < _curveCount; index++)
                 {
-                    if (dataTable.Columns[j].ColumnName.Equals(curves[index].Name))
+                    curves[index] = _curves[index];
+                    curves[index].DataList.Clear();
+                    for (int j = 1; j < dataTable.Columns.Count; j++)
                     {
-                        for (int i = 0; i < dataTable.Rows.Count; i++)
+                        if (dataTable.Columns[j].ColumnName.Equals(curves[index].Name))
                         {
-                            curves[index].DataList.Add(new XDate(DateTime.Parse(dataTable.Rows[i][0].ToString())),
-                                Convert.ToDouble(dataTable.Rows[i][j]));
+                            for (int i = 0; i < dataTable.Rows.Count; i++)
+                            {
+                                curves[index].DataList.Add(new XDate(DateTime.Parse(dataTable.Rows[i][0].ToString())),
+                                    Convert.ToDouble(dataTable.Rows[i][j]));
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "LoadHistoryCurves", ex.Message);
             }
             return curves;
         }
 
         private Rule GetSelectedRule()
         {
-            if (dgv_oc_rules.CurrentRow != null)
+            try
             {
-                int selectRowIndex = dgv_oc_rules.CurrentRow.Index;
-                Rule rule = new Rule
+                if (dgv_oc_rules.CurrentRow != null)
                 {
-                    Id = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[0].Value),
-                    Name = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[1].Value),
-                    Expression = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[2].Value),
-                    Operation = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[3].Value),
-                    Period = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value) != ""
-                        ? Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value)
-                        : -1,
-                    Enabled = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells[5].Value),
-                    Priority = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[6].Value),
-                };
-                return rule;
+                    int selectRowIndex = dgv_oc_rules.CurrentRow.Index;
+                    Rule rule = new Rule
+                    {
+                        Id = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[0].Value),
+                        Name = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[1].Value),
+                        Expression = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[2].Value),
+                        Operation = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[3].Value),
+                        Period = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value) != ""
+                            ? Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[4].Value)
+                            : -1,
+                        Enabled = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells[5].Value),
+                        Priority = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells[6].Value),
+                    };
+                    return rule;
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "GetSelectedRule", ex.Message);
             }
             return new Rule();
         }
@@ -1787,38 +1835,45 @@ namespace OptimalControl.Forms
                 Invoke(new UpdateOcTextBoxDelegate(UpdateOcTextBox));
                 return;
             }
-            for (int i = 0; i < _displayedParaVariableId.Length; i++)
+            try
             {
-                if (_displayedParaDeviceId[i] == 0)
+                for (int i = 0; i < _displayedParaVariableId.Length; i++)
                 {
-                    foreach (Variable parameter in _modbusRtuParameters)
+                    if (_displayedParaDeviceId[i] == 0)
                     {
-                        if (parameter.Id == _displayedParaVariableId[i])
+                        foreach (Variable parameter in _modbusRtuParameters)
                         {
-                            Control[] controls = this.Controls.Find(string.Format("tb_oc_{0}", i + 1), true);
-                            if (controls.Length > 0)
-                                controls[0].Text = parameter.RealValue.ToString(CultureInfo.InvariantCulture);
+                            if (parameter.Id == _displayedParaVariableId[i])
+                            {
+                                Control[] controls = this.Controls.Find(string.Format("tb_oc_{0}", i + 1), true);
+                                if (controls.Length > 0)
+                                    controls[0].Text = parameter.RealValue.ToString(CultureInfo.InvariantCulture);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    foreach (Device device in _devices)
+                    else
                     {
-                        if (device.Id == _displayedParaDeviceId[i])
+                        foreach (Device device in _devices)
                         {
-                            foreach (Variable variable in device.Variables)
+                            if (device.Id == _displayedParaDeviceId[i])
                             {
-                                if (variable.Id == _displayedParaVariableId[i])
+                                foreach (Variable variable in device.Variables)
                                 {
-                            Control[] controls = this.Controls.Find(string.Format("tb_oc_{0}", i + 1), true);
-                            if (controls.Length > 0)
-                                controls[0].Text = variable.RealValue.ToString(CultureInfo.InvariantCulture);
+                                    if (variable.Id == _displayedParaVariableId[i])
+                                    {
+                                        Control[] controls = this.Controls.Find(string.Format("tb_oc_{0}", i + 1), true);
+                                        if (controls.Length > 0)
+                                            controls[0].Text = variable.RealValue.ToString(CultureInfo.InvariantCulture);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "GetSelectedRule", ex.Message);
             }
         }
 
@@ -1871,11 +1926,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "加载失败",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                WriteLogFile(_logFile, "UpdateLogGrid", ex.Message);
             }
         }
 
@@ -1898,11 +1949,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "添加日志失败",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                WriteLogFile(_logFile, "AddLogInfo", ex.Message);
             }
         }
 
@@ -1911,88 +1958,91 @@ namespace OptimalControl.Forms
         /// 从Modbus更新所有变量，并保存到数据库
         /// </summary>
         /// <param name="time"></param>
-        private void UpdateModbus(DateTime time)
+        private void UpdateParameterValue()
         {
-            for (int deviceID = 0; deviceID < _devices.Length; deviceID++)
+            try
             {
-                if (_devices[deviceID].State)
+                for (int deviceID = 0; deviceID < _devices.Length; deviceID++)
                 {
-                    ModbusTCPGetValue(ref (_devices[deviceID]));
+                    if (_devices[deviceID].State)
+                    {
+                        ModbusTCPGetValue(ref (_devices[deviceID]));
+                    }
                 }
-            }
-            if (_modbusRtuSlaveCreated)
-            {
-                ModbusRTUGetValue();
-            }
-            UpdateRegisterList();
+                if (_modbusRtuSlaveCreated)
+                {
+                    ModbusRTUGetValue();
+                }
+                UpdateRegisterList();
 
-            bool modbusTCPMasterUpdated = false;
-            for (int index = 0; index < _devices.Length; index++)
-            {
-                if (_devices[index].ModbusTcpMasterUpdated)
+                bool modbusTCPMasterUpdated = false;
+                for (int index = 0; index < _devices.Length; index++)
                 {
-                    modbusTCPMasterUpdated = true;
-                    break;
+                    if (_devices[index].ModbusTcpMasterUpdated)
+                    {
+                        modbusTCPMasterUpdated = true;
+                        break;
+                    }
+                }
+                if (_modbusRtuSlaveUpdated || modbusTCPMasterUpdated)
+                {
+                    SaveParameters();
                 }
             }
-            if (_modbusRtuSlaveUpdated || modbusTCPMasterUpdated)
+            catch (Exception ex)
             {
-                SaveParameters(time);
+                WriteLogFile(_logFile, "UpdateModbus", ex.Message);
             }
         }
 
-        private delegate void SaveParametersDelegate(DateTime time);
+        private delegate void SaveParametersDelegate();
 
         /// <summary>
         /// 将变量保存到数据库中
         /// </summary>
-        /// <param name="time"></param>
-        private void SaveParameters(DateTime time)
+        private void SaveParameters()
         {
-            if (InvokeRequired)
+            try
             {
-                Invoke(new SaveParametersDelegate(SaveParameters));
-                return;
+                if (InvokeRequired)
+                {
+                    Invoke(new SaveParametersDelegate(SaveParameters));
+                    return;
+                }
+                DateTime time = DateTime.Now;
+                if (SaveParameter(_modbusRtuParameters, time) > 0)
+                {
+                    _modbusRtuSlaveUpdated = false;
+                    status_Label.Text = string.Format("{0}数据已保存", _dcsName);
+                }
+                foreach (Device device in _devices)
+                {
+                    if (!device.State) continue;
+                    if (SaveParameter(device.Variables, time) <= 0) continue;
+                    device.ModbusTcpMasterUpdated = false;
+                    status_Label.Text = string.Format("{0}数据已保存", device.Name);
+                }
             }
-            if (SaveParameter(_modbusRtuParameters, time) > 0)
+            catch (Exception ex)
             {
-                _modbusRtuSlaveUpdated = false;
-                status_Label.Text = string.Format("{0}数据已保存", _dcsName);
-            }
-            foreach (Device device in _devices)
-            {
-                if (!device.State) continue;
-                if (SaveParameter(device.Variables, time) <= 0) continue;
-                device.ModbusTcpMasterUpdated = false;
-                status_Label.Text = string.Format("{0}数据已保存", device.Name);
+                WriteLogFile(_logFile, "SaveParameters", ex.Message);
             }
         }
 
-        private void UpdateCurveData(DateTime time)
+        private void UpdateCurveData()
         {
-            double tmpTime = new XDate(time);
-            for (int index = 0; index < _curveCount; index++)
+            try
             {
-                if (_curves[index].DataList.Count >= _dataListLength) //数组长度限制
+                double tmpTime = new XDate(DateTime.Now);
+                for (int index = 0; index < _curveCount; index++)
                 {
-                    _curves[index].DataList.RemoveRange(0, (_curves[index].DataList.Count - _dataListLength + 1));
-                }
-                if (_curves[index].DeviceId == 0)
-                {
-                    foreach (Variable parameter in _modbusRtuParameters)
+                    if (_curves[index].DataList.Count >= _dataListLength) //数组长度限制
                     {
-                        if (parameter.Address != _curves[index].Address) continue;
-                        _curves[index].Name = parameter.Name;
-                        _curves[index].DataList.Add(tmpTime, parameter.Value);
-                        break;
+                        _curves[index].DataList.RemoveRange(0, (_curves[index].DataList.Count - _dataListLength + 1));
                     }
-                }
-                else
-                {
-                    foreach (Device device in _devices)
+                    if (_curves[index].DeviceId == 0)
                     {
-                        if (device.Id != _curves[index].DeviceId) continue;
-                        foreach (Variable parameter in device.Variables)
+                        foreach (Variable parameter in _modbusRtuParameters)
                         {
                             if (parameter.Address != _curves[index].Address) continue;
                             _curves[index].Name = parameter.Name;
@@ -2000,36 +2050,32 @@ namespace OptimalControl.Forms
                             break;
                         }
                     }
+                    else
+                    {
+                        foreach (Device device in _devices)
+                        {
+                            if (device.Id != _curves[index].DeviceId) continue;
+                            foreach (Variable parameter in device.Variables)
+                            {
+                                if (parameter.Address != _curves[index].Address) continue;
+                                _curves[index].Name = parameter.Name;
+                                _curves[index].DataList.Add(tmpTime, parameter.Value);
+                                break;
+                            }
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "UpdateCurveData", ex.Message);
             }
         }
 
-        #endregion
-
-        #region 控件响应
-
-        /// <summary>
-        /// Handles the Tick event of the timer_realtime control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void TimerRealtimeElapsed(object sender, EventArgs e)
+        private void CheckParameterState()
         {
-            if (!_realTimerFlag) return;
             try
             {
-
-                DateTime time = DateTime.Now;
-
-                UpdateModbus(time);
-
-                if (_execteRulesFlag)
-                {
-                    ExecteRules(_rules);
-                }
-
-                UpdateCurveData(time);
-
                 foreach (Variable parameter in _modbusRtuParameters)
                 {
                     Variable.VariableState state = parameter.CheckVariableState();
@@ -2049,19 +2095,79 @@ namespace OptimalControl.Forms
                         AddLogInfo(addLog);
                     }
                 }
+                if (_devices.Length > 0)
+                {
+                    foreach (Device device in _devices)
+                    {
+                        foreach (Variable parameter in device.Variables)
+                        {
+                            Variable.VariableState state = parameter.CheckVariableState();
+                            if (state != Variable.VariableState.正常)
+                            {
+                                Log addLog = new Log()
+                                {
+                                    LogTime = DateTime.Now,
+                                    Content =
+                                        string.Format("变量[{0}]={1}, {2}", parameter.Name, parameter.RealValue, state),
+                                    Type =
+                                        (state == Variable.VariableState.超上上限 || state == Variable.VariableState.超下下限)
+                                            ? Log.LogType.严重
+                                            : Log.LogType.报警,
+                                    State = true,
+                                };
+                                AddLogInfo(addLog);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "CheckParameterState", ex.Message);
+            }
+        }
 
+        #endregion
+
+        #region 控件响应
+
+        /// <summary>
+        /// Handles the Tick event of the timer_realtime control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void TimerUpdateVariableElapsed(object sender, EventArgs e)
+        {
+            if (!_realTimerFlag) return;
+            try
+            {
+                UpdateParameterValue();
+                UpdateCurveData();
+                //CheckParameterState();
                 UpdateOcTextBox();
-                UpdateLogGrid();
-
+                
                 if (_updateGraphFlag)
                     UpdateGraph(ref _masterPaneGraphRealtime, ref zgc_realtime, _curves);
-
                 if (_myFilter.isActive)
                 {
                     _timerLogoff.Stop();
                     _myFilter.isActive = false;
                     _timerLogoff.Start();
                 }
+            }
+            catch (Exception ex)
+            {
+                WriteLogFile(_logFile, "UpdateVariableTimer", ex.Message); //未能正常写入文件，反馈信息到消息栏
+            }
+        }
+
+        private void TimerRealtimeElapsed(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_execteRulesFlag)
+                    ExecuteRules(_rules);
+                UpdateLogGrid();
             }
             catch (Exception ex)
             {
@@ -2119,6 +2225,7 @@ namespace OptimalControl.Forms
                 {
                     if (frmLogin.isPass && frmLogin.currentOperator.RightsCollection[menu_file_quit.Name].RightsState)
                     {
+                        _timerUpdateVariable.Stop();
                         _timerRealtime.Stop();
                         for (int deviceID = 0; deviceID < _devices.Length; deviceID++)
                         {
@@ -2164,7 +2271,7 @@ namespace OptimalControl.Forms
                 try
                 {
                     DateTime endTime = DateTime.Now;
-                    DateTime startTime = endTime.AddSeconds((-1)*(_realTimerInterval/1000)*_dataListLength);
+                    DateTime startTime = endTime.AddSeconds((-1)*(_updateVariableTimerInterval/1000)*_dataListLength);
 
                     for (int index = 0; index < _curveCount; index++)
                     {
@@ -2190,9 +2297,9 @@ namespace OptimalControl.Forms
                             }
                         }
                         _realTimerFlag = true;
-                        TimerRealtimeElapsed(sender, e);
+                        TimerUpdateVariableElapsed(sender, e);
+                        _timerUpdateVariable.Start();
                         _timerRealtime.Start();
-
                         // 加载权限菜单
                         RightsMenuDataManager rmManager = new RightsMenuDataManager();
                         rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
@@ -2227,8 +2334,8 @@ namespace OptimalControl.Forms
         private void btn_stop_Click(object sender, EventArgs e)
         {
             _realTimerFlag = false;
+            _timerUpdateVariable.Stop();
             _timerRealtime.Stop();
-
             // 加载权限菜单
             RightsMenuDataManager rmManager = new RightsMenuDataManager();
             rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
@@ -2748,6 +2855,7 @@ namespace OptimalControl.Forms
                     _rules.Add(new Rule()
                     {
                         Id = Convert.ToInt32(row["Id"]),
+
                         Name = row["Name"].ToString(),
                         Expression = row["Expression"].ToString(),
                         Operation = row["Operation"].ToString(),
@@ -2762,13 +2870,13 @@ namespace OptimalControl.Forms
                 tsbtn_oc_enabled.Enabled = false;
                 tsbtn_oc_disabled.Enabled = true;
             }
-
         }
 
         private void TimerRuleDelayElapsed(object sender, ElapsedEventArgs e)
         {
-            _timerRuleDelay.Stop();
             _execteRulesFlag = true;
+            _timerRuleDelay.Stop();
+            _timerRuleDelay.Elapsed -= TimerRuleDelayElapsed;
         }
 
         private void tsbtn_oc_disabled_Click(object sender, EventArgs e)
