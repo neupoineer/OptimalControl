@@ -1,4 +1,5 @@
-﻿using Model.Control;
+﻿using System.Collections.Generic;
+using Model.Control;
 
 namespace Model.Modbus
 {
@@ -9,10 +10,10 @@ namespace Model.Modbus
     {
         private bool _state;
         private bool _syncState;
-        public ModbusTcpDevice ModbusTcpDevice;
+        public ModbusTcpDevice ModbusTcpDevice = new ModbusTcpDevice();
         private bool _modbusTcpMasterCreated;
         private bool _modbusTcpMasterUpdated;
-        private Variable[] _variables;
+        private List<Variable> _variables = new List<Variable>();
 
         /// <summary>
         /// The Device enabled
@@ -53,7 +54,7 @@ namespace Model.Modbus
         /// <summary>
         /// The Parameters
         /// </summary>
-        public Variable[] Variables
+        public List<Variable> Variables
         {
             get { return _variables; }
             set { _variables = value; }
@@ -64,7 +65,7 @@ namespace Model.Modbus
             
         }
 
-        public Device(bool state, bool syncState, ModbusTcpDevice modbusTcpDevice, bool modbusTcpMasterCreated, bool modbusTcpMasterUpdated, Variable[] variables)
+        public Device(bool state, bool syncState, ModbusTcpDevice modbusTcpDevice, bool modbusTcpMasterCreated, bool modbusTcpMasterUpdated, List<Variable> variables)
         {
             State = state;
             SyncState = syncState;

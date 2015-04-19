@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
+using IBLL.Control;
+using Model.Control;
 using Utility;
 using Rule = Model.Control.Rule;
 
@@ -14,23 +17,25 @@ namespace OptimalControl.Forms
     {
         private readonly DataOperateMode _mode;
         private Rule _rule;
-        private readonly DataTable _parameterDataTable;
-        public int Result { get; private set; }
+        private List<Variable> _parameters;
+        private BLLFactory.BLLFactory _bllFactory = new BLLFactory.BLLFactory();
+        public bool Result { get; private set; }
 
-        public frmRuleEditor(DataOperateMode mode, Rule rule, DataTable parameterDataTable)
+        public frmRuleEditor(DataOperateMode mode, Rule rule)
         {
+            IVariableManager variableManager = _bllFactory.BuildIVariableManager();
             _mode = mode;
             _rule = rule;
-            _parameterDataTable = parameterDataTable.Copy();
+            _parameters = variableManager.GetAllVariableInfo();
             InitializeComponent();
         }
 
-        private void LoadUI(Rule rule, DataTable parameterDataTable, string formText, DataOperateMode mode)
+        private void LoadUI(Rule rule, List<Variable> parameters, string formText, DataOperateMode mode)
         {
             cb_parameter.Items.Clear();
-            for (int index = 0; index < parameterDataTable.Rows.Count; index++)
+            foreach (Variable variable in parameters)
             {
-                cb_parameter.Items.Add(string.Format("{0}", Convert.ToString(parameterDataTable.Rows[index][1])));
+                cb_parameter.Items.Add(string.Format("{0}", variable.Name));
             }
 
             cb_operator.Items.Clear();
@@ -44,7 +49,7 @@ namespace OptimalControl.Forms
             {
                 tb_rule_name.Text = rule.Name;
                 tb_rule_name.Enabled = (mode != DataOperateMode.Delete);
-                cb_rule_enabled.Checked = rule.Enabled;
+                cb_rule_enabled.Checked = rule.State;
                 cb_rule_enabled.Enabled = (mode != DataOperateMode.Delete);
                 tb_rule_expression.Text = rule.Expression;
                 tb_rule_expression.Enabled = (mode != DataOperateMode.Delete);
@@ -65,19 +70,19 @@ namespace OptimalControl.Forms
             }
         }
 
-        private string GetSQLCommand(string sqlName)
+        private Rule GetCurrentRule()
         {
-            //Name,Expression,Operation,Period,Enabled
-            string sql = ConfigAppSettings.GetSettingString(sqlName, "");
-            sql = sql.Replace("@RulesTable", ConfigAppSettings.GetSettingString("RulesTable", "Rules"));
-            sql = sql.Replace("@Id", _rule.Id.ToString(CultureInfo.InvariantCulture));
-            sql = sql.Replace("@Name", tb_rule_name.Text.Trim());
-            sql = sql.Replace("@Expression", tb_rule_expression.Text.Trim());
-            sql = sql.Replace("@Operation", tb_rule_operation.Text.Trim());
-            sql = sql.Replace("@Period", ntb_rule_period.Text.Trim());
-            sql = sql.Replace("@Enabled", cb_rule_enabled.Checked.ToString());
-            sql = sql.Replace("@Priority", ntb_rule_priority.Text.Trim());
-            return sql;
+            Rule rule = new Rule()
+            {
+                Id = _rule.Id,
+                Name = tb_rule_name.Text.Trim(),
+                Expression = tb_rule_expression.Text.Trim(),
+                Operation = tb_rule_operation.Text.Trim(),
+                Period = Convert.ToInt32(ntb_rule_period.Text.Trim()),
+                State = cb_rule_enabled.Checked,
+                Priority = Convert.ToInt32(ntb_rule_priority.Text.Trim()),
+            };
+            return rule;
         }
 
         private void frmAddDevice_Load(object sender, System.EventArgs e)
@@ -85,13 +90,13 @@ namespace OptimalControl.Forms
             switch (_mode)
             {
                 case DataOperateMode.Insert:
-                    LoadUI(_rule, _parameterDataTable, "添加规则", DataOperateMode.Insert);
+                    LoadUI(_rule, _parameters, "添加规则", DataOperateMode.Insert);
                     break;
                 case DataOperateMode.Edit:
-                    LoadUI(_rule, _parameterDataTable, "编辑规则", DataOperateMode.Edit);
+                    LoadUI(_rule, _parameters, "编辑规则", DataOperateMode.Edit);
                     break;
                 case DataOperateMode.Delete:
-                    LoadUI(_rule, _parameterDataTable, "删除规则", DataOperateMode.Delete);
+                    LoadUI(_rule, _parameters, "删除规则", DataOperateMode.Delete);
                     break;
                 default:
                     break;
@@ -122,14 +127,15 @@ namespace OptimalControl.Forms
                     MessageBox.Show("请输入优先级！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                string sql = "";
+
+                IRuleManager ruleManager = _bllFactory.BuildRuleManager();
                 switch (_mode)
                 {
                     case DataOperateMode.Insert:
-                        sql = GetSQLCommand("SQLInsertRules");
+                        Result = ruleManager.AddRule(GetCurrentRule());
                         break;
                     case DataOperateMode.Edit:
-                        sql = GetSQLCommand("SQLEditRules");
+                        Result = ruleManager.ModifyRule(GetCurrentRule());
                         break;
                     case DataOperateMode.Delete:
                         if (
@@ -140,20 +146,14 @@ namespace OptimalControl.Forms
                                 MessageBoxIcon.Warning)
                             == DialogResult.OK)
                         {
-                            sql = GetSQLCommand("SQLDeleteRules");
+                            Result = ruleManager.DeleteRuleById(_rule.Id);
                         }
                         break;
                     default:
                         break;
                 }
-                if (sql.Length > 0)
-                {
-                    Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction,
-                        CommandType.Text, sql);
-
-                    this.DialogResult = DialogResult.OK;
-                    this.Dispose();
-                }
+                this.DialogResult = DialogResult.OK;
+                this.Dispose();
             }
             catch (Exception ex)
             {

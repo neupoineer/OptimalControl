@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
+using IBLL.Control;
 using Model.Control;
+using Model.Modbus;
 using Utility;
 
 namespace OptimalControl.Forms
@@ -11,45 +14,45 @@ namespace OptimalControl.Forms
     {
         private readonly DataOperateMode _mode;
         private Variable _parameter;
-        private readonly DataTable _devicesDataTable;
+        private BLLFactory.BLLFactory _bllFactory = new BLLFactory.BLLFactory();
+        public bool Result { get; private set; }
 
-        public int Result { get; private set; }
-
-        public frmParameterEditor(DataOperateMode mode, Variable parameter, DataTable devicesDataTable)
+        public frmParameterEditor(DataOperateMode mode, Variable parameter)
         {
             _mode = mode;
             _parameter = parameter;
-            _devicesDataTable = devicesDataTable.Copy();
-
-            DataRow row = _devicesDataTable.NewRow();
-            row["Id"] = "0";
-            row["Name"] = "服务器";
-            _devicesDataTable.Rows.InsertAt(row,0);
-
             InitializeComponent();
         }
 
-        private void LoadUI(Variable parameter, DataTable deviceDataTable, string formText, DataOperateMode mode)
+        private void LoadUI(Variable parameter, string formText, DataOperateMode mode)
         {
             cb_para_device.Items.Clear();
-            for (int index = 0; index < deviceDataTable.Rows.Count; index++)
+            cb_para_device.Items.Add("0 服务器");
+            IDeviceManager deviceManager = _bllFactory.BuildDeviceManager();
+            List<Device> devices = deviceManager.GetAllDeviceInfo();
+
+            foreach (Device device in devices)
             {
-                cb_para_device.Items.Add(string.Format("{0} {1}",
-                    Convert.ToString(deviceDataTable.Rows[index][0]),
-                    Convert.ToString(deviceDataTable.Rows[index][1])));
+                cb_para_device.Items.Add(string.Format("{0} {1}", device.Id, device.Name));
             }
             if (mode != DataOperateMode.Insert)
             {
-
                 Text = formText;
                 tb_para_name.Text = parameter.Name;
                 tb_para_name.Enabled = (mode != DataOperateMode.Delete);
                 ntb_para_address.Text = parameter.Address.ToString(CultureInfo.InvariantCulture);
                 ntb_para_address.Enabled = (mode != DataOperateMode.Delete);
-                DataRow[] dataRows = deviceDataTable.Select(string.Format("Id={0}", parameter.DeviceID));
-                cb_para_device.Text = string.Format("{0} {1}",
-                    Convert.ToString(dataRows[0][0]),
-                    Convert.ToString(dataRows[0][1]));
+
+                if (parameter.DeviceID == 0)
+                {
+                    cb_para_device.Text = "0 服务器";
+                }
+                else
+                {
+                    Device device = deviceManager.GetDeviceInfoById(Convert.ToInt32(parameter.DeviceID));
+                    cb_para_device.Text = string.Format("{0} {1}", Convert.ToString(device.Id),
+                        Convert.ToString(device.Name));
+                }
                 cb_para_device.Enabled = (mode != DataOperateMode.Delete);
                 tb_para_ratio.Text = parameter.Ratio.ToString(CultureInfo.InvariantCulture);
                 tb_para_ratio.Enabled = (mode != DataOperateMode.Delete);
@@ -87,28 +90,26 @@ namespace OptimalControl.Forms
             }
         }
 
-        private string GetSQLCommand(string sqlName)
+        private Variable GetCurrentParameter()
         {
-            string sql = ConfigAppSettings.GetSettingString(sqlName, "");
-            sql = sql.Replace("@ParametersTable", ConfigAppSettings.GetSettingString("ParametersTable","Parameters"));
-            sql = sql.Replace("@Id", _parameter.Id.ToString(CultureInfo.InvariantCulture));
-            sql = sql.Replace("@Name", tb_para_name.Text.Trim());
-            sql = sql.Replace("@Address", ntb_para_address.Text.Trim());
-            sql = sql.Replace("@Ratio", tb_para_ratio.Text.Trim());
-            sql = sql.Replace("'@UpperLimit'",
-                tb_para_upperlimit.Text != "" ? string.Format("'{0}'", tb_para_upperlimit.Text.Trim()) : "NULL");
-            sql = sql.Replace("'@LowerLimit'",
-                tb_para_lowerlimit.Text != "" ? string.Format("'{0}'", tb_para_lowerlimit.Text.Trim()) : "NULL");
-            sql = sql.Replace("'@UltimateUpperLimit'",
-                tb_para_uulimit.Text != "" ? string.Format("'{0}'", tb_para_uulimit.Text.Trim()) : "NULL");
-            sql = sql.Replace("'@UltimateLowerLimit'",
-                tb_para_ullimit.Text != "" ? string.Format("'{0}'", tb_para_ullimit.Text.Trim()) : "NULL");
-            sql = sql.Replace("'@ControlPeriod'",
-                ntb_para_period.Text != "" ? string.Format("'{0}'", ntb_para_period.Text.Trim()) : "NULL");
-            sql = sql.Replace("'@OperateDelay'",
-                ntb_para_delay.Text != "" ? string.Format("'{0}'", ntb_para_delay.Text.Trim()) : "NULL");
-            sql = sql.Replace("@DeviceID", Convert.ToString(_devicesDataTable.Rows[cb_para_device.SelectedIndex][0]));
-            return sql;
+            Variable variable = new Variable()
+            {
+                Id = _parameter.Id,
+                Name = tb_para_name.Text.Trim(),
+                Address = Convert.ToInt32(ntb_para_address.Text.Trim()),
+                Ratio = Convert.ToDouble(tb_para_ratio.Text.Trim()),
+                Limit = new Variable.VariableLimit()
+                {
+                    UpperLimit = tb_para_upperlimit.Text != "" ? Convert.ToDouble(tb_para_upperlimit.Text.Trim()) : -1,
+                    LowerLimit = tb_para_lowerlimit.Text != "" ? Convert.ToDouble(tb_para_lowerlimit.Text.Trim()) : -1,
+                    UltimateUpperLimit = tb_para_uulimit.Text != "" ? Convert.ToDouble(tb_para_uulimit.Text.Trim()) : -1,
+                    UltimateLowerLimit = tb_para_ullimit.Text != "" ? Convert.ToDouble(tb_para_ullimit.Text.Trim()) : -1,
+                },
+                ControlPeriod = ntb_para_period.Text != "" ? Convert.ToInt32(ntb_para_period.Text.Trim()) : -1,
+                OperateDelay = ntb_para_delay.Text != "" ? Convert.ToInt32(ntb_para_delay.Text.Trim()) : -1,
+                DeviceID = Convert.ToUInt32(cb_para_device.Text.Split(' ')[0]),
+            };
+            return variable;
         }
 
         private void frmEditParameter_Load(object sender, System.EventArgs e)
@@ -116,13 +117,13 @@ namespace OptimalControl.Forms
             switch (_mode)
             {
                 case DataOperateMode.Insert:
-                    LoadUI(_parameter, _devicesDataTable, "添加变量", _mode);
+                    LoadUI(_parameter, "添加变量", _mode);
                     break;
                 case DataOperateMode.Edit:
-                    LoadUI(_parameter, _devicesDataTable, "编辑变量", _mode);
+                    LoadUI(_parameter, "编辑变量", _mode);
                     break;
                 case DataOperateMode.Delete:
-                    LoadUI(_parameter, _devicesDataTable, "删除变量", _mode);
+                    LoadUI(_parameter, "删除变量", _mode);
                     break;
                 default:
                     break;
@@ -175,21 +176,17 @@ namespace OptimalControl.Forms
                     MessageBox.Show("变量上下限设置错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+                IVariableManager variableManager = _bllFactory.BuildIVariableManager();
 
-                string sql;
                 switch (_mode)
                 {
                     case DataOperateMode.Insert:
-                        sql = GetSQLCommand("SQLInserttParameters");
-                        Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction, CommandType.Text,
-                            sql);
+                        Result = variableManager.AddVariable(GetCurrentParameter());
                         this.DialogResult = DialogResult.OK;
                         this.Dispose();
                         break;
                     case DataOperateMode.Edit:
-                        sql = GetSQLCommand("SQLEdittParameters");
-                        Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction, CommandType.Text,
-                            sql);
+                        Result = variableManager.ModifyVariable(GetCurrentParameter());
                         this.DialogResult = DialogResult.OK;
                         this.Dispose();
                         break;
@@ -202,9 +199,7 @@ namespace OptimalControl.Forms
                                 MessageBoxIcon.Warning)
                             == DialogResult.OK)
                         {
-                            sql = GetSQLCommand("SQLDeletetParameters");
-                            Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction,
-                                CommandType.Text, sql);
+                            Result = variableManager.DeleteVariableById(_parameter.Id);
                             this.DialogResult = DialogResult.OK;
                             this.Dispose();
                         }
@@ -216,7 +211,6 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }

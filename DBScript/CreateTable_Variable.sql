@@ -2,16 +2,16 @@
 Use OptimalControl
 Go
 
--- 判断是否存在 表（Parameter），如果存在，则删除表 Parameter
-if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Parameter'))
-	Drop Table [Parameter]
+-- 判断是否存在 表（Variable），如果存在，则删除表 Variable
+if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Variable'))
+	Drop Table Variable
 Go 
 
--- 创建 表（Parameter）
-Create Table [Parameter]
+-- 创建 表（Variable）
+Create Table [Variable]
 (
 	-- 主键列，自动增长 标识种子为 1 
-	[Id] int identity(1,1) Constraint [PK_ParameterId] Primary Key,
+	[Id] int identity(1,1) Constraint [PK_VariableId] Primary Key,
 
 	-- 参数名
 	[Name] Nvarchar(50) Not Null,

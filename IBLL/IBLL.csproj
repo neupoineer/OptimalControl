@@ -58,6 +58,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\ICurveManager.cs" />
+    <Compile Include="Control\IDeviceManager.cs" />
+    <Compile Include="Control\IRuleManager.cs" />
+    <Compile Include="Control\IVariableManager.cs" />
     <Compile Include="ILogManager.cs" />
     <Compile Include="IOperatorManager.cs" />
     <Compile Include="IRightsGroupManager.cs" />
@@ -87,9 +91,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Control\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

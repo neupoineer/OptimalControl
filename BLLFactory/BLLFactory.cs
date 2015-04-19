@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BLL;
+using BLL.Control;
 using IBLL;
+using IBLL.Control;
 
 namespace BLLFactory
 {
@@ -38,6 +40,22 @@ namespace BLLFactory
             return new RightsRelationManager();
         }
 
+        public ICurveManager BuildCurveManager()
+        {
+            return new CurveManager();
+        }
+        public IDeviceManager BuildDeviceManager()
+        {
+            return new DeviceManager();
+        }
+        public IRuleManager BuildRuleManager()
+        {
+            return new RuleManager();
+        }
+        public IVariableManager BuildIVariableManager()
+        {
+            return new VariableManager();
+        }
         public ILogManager BuildLogManager()
         {
             return new LogManager();

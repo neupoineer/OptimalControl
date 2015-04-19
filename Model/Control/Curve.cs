@@ -8,7 +8,7 @@ namespace Model.Control
     /// </summary>
     public class Curve : ModelBase
     {
-        private PointPairList _dataList;
+        private PointPairList _dataList = new PointPairList();
         private int _deviceId;
         private ushort _address;
         private Color _lineColor;

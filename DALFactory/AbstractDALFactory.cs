@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using IDAL;
+using IDAL.Control;
 
 namespace DALFactory
 {
@@ -28,7 +29,12 @@ namespace DALFactory
         /// <returns>权限关系数据访问操作类实例</returns>
         public abstract IRightsRelationService BuildRightsRelationService();
 
+        public abstract ICurveService BuildCurveService();
+        public abstract IDeviceService BuildDeviceService();
+        public abstract IRuleService BuildRuleService();
+        public abstract IVariableService BuildVariableService();
         public abstract ILogService BuildLogService();
+
         #endregion
 
         #region Static Methods

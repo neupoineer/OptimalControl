@@ -58,6 +58,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\CurveManager.cs" />
+    <Compile Include="Control\DeviceManager.cs" />
+    <Compile Include="Control\RuleManager.cs" />
+    <Compile Include="Control\VariableManager.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="OperatorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

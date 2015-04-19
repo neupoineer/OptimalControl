@@ -10,7 +10,7 @@ namespace Model.Control
         private string _expression;
         private string _operation;
         private int _period;
-        private bool _enabled;
+        private bool _state;
         private int _delayTime;
         private int _priority;
         #endregion
@@ -35,10 +35,10 @@ namespace Model.Control
             set { _period = value; }
         }
 
-        public bool Enabled
+        public bool State
         {
-            get { return _enabled; }
-            set { _enabled = value; }
+            get { return _state; }
+            set { _state = value; }
         }
 
         public int DelayTime
@@ -72,17 +72,17 @@ namespace Model.Control
         /// <param name="expression">The expression.</param>
         /// <param name="operatioin">The operatioin.</param>
         /// <param name="period">The period.</param>
-        /// <param name="enabled">if set to <c>true</c> [enabled].</param>
+        /// <param name="state">if set to <c>true</c> [enabled].</param>
         /// <param name="delayTime">The delay time.</param>
         /// <param name="priority">The priority.</param>
-        public Rule(int id, string name, string expression, string operatioin, int period, bool enabled, int delayTime, int priority)
+        public Rule(int id, string name, string expression, string operatioin, int period, bool state, int delayTime, int priority)
         {
             Id = id;
             Name = name;
             Expression = expression;
             Operation = operatioin;
             Period = period;
-            Enabled = enabled;
+            State = state;
             DelayTime = delayTime;
             Priority = priority;
         }

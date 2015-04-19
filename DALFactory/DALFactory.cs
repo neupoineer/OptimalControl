@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using DAL;
 using IDAL;
+using DAL.Control;
+using IDAL.Control;
 
 namespace DALFactory
 {
@@ -37,7 +39,22 @@ namespace DALFactory
         {
             return new RightsRelationService();
         }
-
+        public override ICurveService BuildCurveService()
+        {
+            return new CurveService();
+        }
+        public override IDeviceService BuildDeviceService()
+        {
+            return new DeviceService();
+        }
+        public override IRuleService BuildRuleService()
+        {
+            return new RuleService();
+        }
+        public override IVariableService BuildVariableService()
+        {
+            return new VariableService();
+        }
         public override ILogService BuildLogService()
         {
             return new LogService();

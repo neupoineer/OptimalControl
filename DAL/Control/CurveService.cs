@@ -32,7 +32,7 @@ namespace DAL.Control
             //创建曲线实体
             Curve tmpCurve = new Curve();
 
-            // 转换数据库存储的 二进制数据为 Byte[] 数组 以便进而转换为曲线权限集合
+            ColorSymbolRotator rotator = new ColorSymbolRotator();
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
 
@@ -51,7 +51,57 @@ namespace DAL.Control
                     {
                         //将数据集转换成实体集合
                         tmpCurve.Id = Convert.ToInt32(myReader["Id"]);
-                        tmpCurve.Name = Convert.ToString(myReader["CurveName"]);
+                        tmpCurve.Name = Convert.ToString(myReader["Name"]);
+                        tmpCurve.DeviceId = Convert.ToInt32(myReader["DeviceID"]);
+                        tmpCurve.Address = Convert.ToUInt16(myReader["Address"]);
+                        tmpCurve.LineColor = string.IsNullOrEmpty(Convert.ToString(myReader["LineColor"]))
+                            ? rotator.NextColor
+                            : Color.FromName(Convert.ToString(myReader["LineColor"]));
+                        tmpCurve.LineType = string.IsNullOrEmpty(Convert.ToString(myReader["LineType"])) ||
+                                            Convert.ToBoolean(myReader["LineType"]);
+                        tmpCurve.LineWidth = string.IsNullOrEmpty(Convert.ToString(myReader["LineWidth"]))
+                            ? 2
+                            : Convert.ToSingle(myReader["LineWidth"]);
+                        tmpCurve.SymbolSize = string.IsNullOrEmpty(Convert.ToString(myReader["SymbolSize"]))
+                            ? 4
+                            : Convert.ToSingle(myReader["SymbolSize"]);
+                        if (!(string.IsNullOrEmpty(Convert.ToString(myReader["SymbolType"]))))
+                        {
+                            switch (Convert.ToString(myReader["SymbolType"]))
+                            {
+
+                                case "Diamond":
+                                    tmpCurve.SymbolType = SymbolType.Diamond;
+                                    break;
+                                case "Circle":
+                                    tmpCurve.SymbolType = SymbolType.Circle;
+                                    break;
+                                case "Square":
+                                    tmpCurve.SymbolType = SymbolType.Square;
+                                    break;
+                                case "Star":
+                                    tmpCurve.SymbolType = SymbolType.Star;
+                                    break;
+                                case "Triangle":
+                                    tmpCurve.SymbolType = SymbolType.Triangle;
+                                    break;
+                                case "Plus":
+                                    tmpCurve.SymbolType = SymbolType.Plus;
+                                    break;
+                                case "None":
+                                    tmpCurve.SymbolType = SymbolType.None;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            tmpCurve.SymbolType = SymbolType.Default;
+                        }
+
+                        tmpCurve.XTitle = Convert.ToString(myReader["XTitle"]);
+                        tmpCurve.YTitle = Convert.ToString(myReader["YTitle"]);
+                        tmpCurve.YMax = Convert.ToSingle(myReader["YMax"]);
+                        tmpCurve.YMin = Convert.ToSingle(myReader["YMin"]);
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -72,7 +122,7 @@ namespace DAL.Control
             // 拼接 SQL 命令
             string sqlTxt =
                 "INSERT INTO Curve (Name,DeviceID,Address,LineColor,LineType,LineWidth,SymbolType,SymbolSize,XTitle,YTitle,YMax,YMin) VALUES " +
-                "('@Name','@DeviceID','@Address','@LineColor','@LineType','@LineWidth','@SymbolType','@SymbolSize','@XTitle','@YTitle','@YMax','@YMin')";
+                "(@Name,@DeviceID,@Address,@LineColor,@LineType,@LineWidth,@SymbolType,@SymbolSize,@XTitle,@YTitle,@YMax,@YMin)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -133,7 +183,7 @@ namespace DAL.Control
         {
             // 拼接 SQL 命令
             string sqlTxt =
-                "UPDATE Curve SET Name='@Name',DeviceID='@DeviceID',Address='@Address',LineColor='@LineColor',LineType='@LineType',LineWidth='@LineWidth',SymbolType='@SymbolType',SymbolSize='@SymbolSize',XTitle='@XTitle',YTitle='@YTitle',YMax='@YMax',YMin='@YMin' WHERE Id='@Id'";
+                "UPDATE Curve SET Name=@Name,DeviceID=@DeviceID,Address=@Address,LineColor=@LineColor,LineType=@LineType,LineWidth=@LineWidth,SymbolType=@SymbolType,SymbolSize=@SymbolSize,XTitle=@XTitle,YTitle=@YTitle,YMax=@YMax,YMin=@YMin WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -153,9 +203,10 @@ namespace DAL.Control
                 SqlParameter prm10 = new SqlParameter("@YTitle", SqlDbType.NVarChar, 50) { Value = currentCurve.YTitle };
                 SqlParameter prm11 = new SqlParameter("@YMax", SqlDbType.Real) { Value = currentCurve.YMax };
                 SqlParameter prm12 = new SqlParameter("@YMin", SqlDbType.Real) { Value = currentCurve.YMin };
+                SqlParameter prm13 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentCurve.Id };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
-                {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12});
+                {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12, prm13});
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -174,10 +225,10 @@ namespace DAL.Control
             //SQL命令
             string sqltxt = "SELECT * FROM Curve";
             //创建曲线实体集合
-            List<Curve> CurveCollection = new List<Curve>();
+            List<Curve> curveCollection = new List<Curve>();
             //定义曲线实体
 
-            // 转换数据库存储的 二进制数据为 Byte[] 数组 以便进而转换为曲线权限集合
+            ColorSymbolRotator rotator = new ColorSymbolRotator();
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -195,13 +246,22 @@ namespace DAL.Control
                         Curve tmpCurve = new Curve();
                         //将数据集转换成实体集合
                         tmpCurve.Id = Convert.ToInt32(myReader["Id"]);
-                        tmpCurve.Name = Convert.ToString(myReader["CurveName"]);
+                        tmpCurve.Name = Convert.ToString(myReader["Name"]);
                         tmpCurve.DeviceId = Convert.ToInt32(myReader["DeviceID"]);
                         tmpCurve.Address = Convert.ToUInt16(myReader["Address"]);
-                        tmpCurve.LineColor = Color.FromName(Convert.ToString(myReader["LineColor"]));
-                        tmpCurve.LineType = Convert.ToBoolean(myReader["LineType"]);
-                        tmpCurve.LineWidth = Convert.ToSingle(myReader["LineWidth"]);
-                        if (Convert.ToString(myReader["SymbolType"]) != "")
+                        tmpCurve.LineColor = string.IsNullOrEmpty(Convert.ToString(myReader["LineColor"]))
+                            ? rotator.NextColor
+                            : Color.FromName(Convert.ToString(myReader["LineColor"]));
+                        tmpCurve.LineType = string.IsNullOrEmpty(Convert.ToString(myReader["LineType"])) ||
+                                            Convert.ToBoolean(myReader["LineType"]);
+                        tmpCurve.LineWidth = string.IsNullOrEmpty(Convert.ToString(myReader["LineWidth"]))
+                            ? 2
+                            : Convert.ToSingle(myReader["LineWidth"]);
+
+                        tmpCurve.SymbolSize = string.IsNullOrEmpty(Convert.ToString(myReader["SymbolSize"]))
+                            ? 4
+                            : Convert.ToSingle(myReader["SymbolSize"]);
+                        if (!(string.IsNullOrEmpty(Convert.ToString(myReader["SymbolType"]))))
                         {
                             switch (Convert.ToString(myReader["SymbolType"]))
                             {
@@ -233,20 +293,19 @@ namespace DAL.Control
                             tmpCurve.SymbolType = SymbolType.Default;
                         }
 
-                        tmpCurve.SymbolSize = Convert.ToSingle(myReader["SymbolSize"]);
                         tmpCurve.XTitle = Convert.ToString(myReader["XTitle"]);
                         tmpCurve.YTitle = Convert.ToString(myReader["YTitle"]);
                         tmpCurve.YMax = Convert.ToSingle(myReader["YMax"]);
                         tmpCurve.YMin = Convert.ToSingle(myReader["YMin"]);
 
                         // 添加到曲线实体集合
-                        CurveCollection.Add(tmpCurve);
+                        curveCollection.Add(tmpCurve);
                     }
                 }
             }
 
             // 返回结果
-            return CurveCollection;
+            return curveCollection;
         }
 
         /// <summary>
@@ -258,8 +317,7 @@ namespace DAL.Control
         {
             //创建查询信息的 SQL
             string sqlTxt = string.Format(
-                "Select Count(*) From Curve Where Name = '{0}'",
-                curveName);
+                "Select Count(*) From Curve Where Name = '{0}'", curveName);
             //创建SQL执行对象
             DBUtility.AbstractDBProvider dbProvider = DBUtility.AbstractDBProvider.Instance();
             //执行查询操作

@@ -1,0 +1,112 @@
+// ■■■■■■■■■■ [2015/4/20 0:45:39] ■■■■■■■■■■ //
+
+
+// ---------- [错误信息] ---------- //
+
+信息: 无法将类型为“VariableLimit”的对象强制转换为类型“System.IConvertible”。
+帮助链接: None
+对象: mscorlib
+堆栈:
+   在 System.Convert.ToDouble(Object value)
+   在 OptimalControl.Forms.frmParametersManager.GetSelectedParameter() 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmParametersManager.cs:行号 140
+   在 OptimalControl.Forms.frmParametersManager.tsbtn_para_edit_Click(Object sender, EventArgs e) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmParametersManager.cs:行号 189
+   在 OptimalControl.Forms.frmParametersManager.dataGridView_parameters_CellDoubleClick(Object sender, DataGridViewCellEventArgs e) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmParametersManager.cs:行号 228
+   在 System.Windows.Forms.DataGridView.OnCellDoubleClick(DataGridViewCellEventArgs e)
+   在 System.Windows.Forms.DataGridView.OnDoubleClick(EventArgs e)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.DataGridView.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+方法: Double ToDouble(System.Object)
+
+
+// ---------- [系统环境] ---------- //
+
+当前路径: E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\bin\Release
+机器名: THINKPAD[Thinkpad]
+操作系统: Microsoft Windows NT 6.1.7601 Service Pack 1
+系统路径: C:\Windows\system32
+用户名: Jeff
+.NET版本: 4.0.30319.34209
+
+
+
+// ■■■■■■■■■■ [2015/4/20 0:46:39] ■■■■■■■■■■ //
+
+
+// ---------- [错误信息] ---------- //
+
+信息: 输入字符串的格式不正确。
+帮助链接: None
+对象: mscorlib
+堆栈:
+   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   在 System.Convert.ToInt32(String value)
+   在 OptimalControl.Forms.frmParametersManager.treeView_AfterSelect(Object sender, TreeViewEventArgs e) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmParametersManager.cs:行号 129
+   在 System.Windows.Forms.TreeView.OnAfterSelect(TreeViewEventArgs e)
+   在 System.Windows.Forms.TreeView.TvnSelected(NMTREEVIEW* nmtv)
+   在 System.Windows.Forms.TreeView.WmNotify(Message& m)
+   在 System.Windows.Forms.TreeView.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+方法: Void StringToNumber(System.String, System.Globalization.NumberStyles, NumberBuffer ByRef, System.Globalization.NumberFormatInfo, Boolean)
+
+
+// ---------- [系统环境] ---------- //
+
+当前路径: E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\bin\Release
+机器名: THINKPAD[Thinkpad]
+操作系统: Microsoft Windows NT 6.1.7601 Service Pack 1
+系统路径: C:\Windows\system32
+用户名: Jeff
+.NET版本: 4.0.30319.34209
+
+
+
+// ■■■■■■■■■■ [2015/4/20 1:43:35] ■■■■■■■■■■ //
+
+
+// ---------- [错误信息] ---------- //
+
+信息: 未能找到名为 dgvId 的列。
+参数名: columnName
+帮助链接: None
+对象: System.Windows.Forms
+堆栈:
+   在 System.Windows.Forms.DataGridViewCellCollection.get_Item(String columnName)
+   在 OptimalControl.Forms.frmParametersManager.UpdatePatameterGrid(Int32 deviceId) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmParametersManager.cs:行号 149
+   在 OptimalControl.Forms.frmParametersManager.UpdateUI() 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmParametersManager.cs:行号 40
+   在 OptimalControl.Forms.frmParametersManager..ctor() 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmParametersManager.cs:行号 20
+   在 OptimalControl.Forms.frmMain.tsbtn_rule_paras_Click(Object sender, EventArgs e) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\Forms\frmMain.cs:行号 2659
+   在 System.Windows.Forms.ToolStripItem.RaiseEvent(Object key, EventArgs e)
+   在 System.Windows.Forms.ToolStripButton.OnClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleClick(EventArgs e)
+   在 System.Windows.Forms.ToolStripItem.HandleMouseUp(MouseEventArgs e)
+   在 System.Windows.Forms.ToolStripItem.FireEventInteractive(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStripItem.FireEvent(EventArgs e, ToolStripItemEventType met)
+   在 System.Windows.Forms.ToolStrip.OnMouseUp(MouseEventArgs mea)
+   在 System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.ToolStrip.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+方法: System.Windows.Forms.DataGridViewCell get_Item(System.String)
+
+
+// ---------- [系统环境] ---------- //
+
+当前路径: E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControl\bin\Release
+机器名: THINKPAD[Thinkpad]
+操作系统: Microsoft Windows NT 6.1.7601 Service Pack 1
+系统路径: C:\Windows\system32
+用户名: Jeff
+.NET版本: 4.0.30319.34209
+
+
+

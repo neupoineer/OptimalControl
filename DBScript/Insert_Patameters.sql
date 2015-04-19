@@ -2,7 +2,7 @@
 Use OptimalControl
 Go
 
-INSERT INTO [Parameter]([Name] ,[Address] ,[Ratio],[DeviceID])
+INSERT INTO [Variable]([Name] ,[Address] ,[Ratio],[DeviceID])
      VALUES
 			('半自磨给矿量设定值','101','1','0'),
 			('半自磨原矿量','103','1','0'),
