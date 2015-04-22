@@ -19,7 +19,7 @@ namespace Model.Modbus
         /// <summary>
         /// The modbus IP address
         /// </summary>
-        public string Ip
+        public string IP
         {
             get { return _ipAddress; }
             set { _ipAddress = value; }
@@ -68,7 +68,7 @@ namespace Model.Modbus
 
         public ModbusTcpDevice(string ipAddress, int portName, TcpClient tcpClient, ModbusIpMaster modbusTcpMaster, byte unitId)
         {
-            Ip = ipAddress;
+            IP = ipAddress;
             Port = portName;
             TcpClient = tcpClient;
             ModbusTcpMaster = modbusTcpMaster;

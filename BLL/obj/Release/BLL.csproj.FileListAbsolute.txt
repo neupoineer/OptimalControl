@@ -18,3 +18,5 @@ E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalContr
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLL\obj\Release\BLL.csprojResolveAssemblyReference.cache
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLL\obj\Release\BLL.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLL\obj\Release\BLL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLL\bin\Release\Utility.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLL\bin\Release\Utility.pdb

@@ -2,33 +2,27 @@
 Use OptimalControl
 Go
 
--- 判断是否存在 表（Device），如果存在，则删除表 Device
-if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Device'))
-	Drop Table [Device]
+-- 判断是否存在 表（Log），如果存在，则删除表 Log
+if exists(Select * From SysObjects Where Id = OBJECT_ID(N'Log'))
+	Drop Table Log
 Go 
 
--- 创建 表（Device）
-Create Table [Device]
+-- 创建 表（Log）
+Create Table Log
 (
 	-- 主键列，自动增长 标识种子为 1 
-	[Id] int identity(1,1) Constraint [PK_DeviceId] Primary Key,
+	[Id] int identity(1,1) Constraint [PK_LogId] Primary Key,
 
 	-- 设备名
-	[Name] Nvarchar(50) Not Null,
+	[LogTime] datetime Not Null,
 	
 	-- 设备状态
-	[State] bit Not Null,
+	[Type] int Not Null,
 	
 	-- 设备状态
-	[SyncState] bit Not Null,
+	[Content] Nvarchar(500) Not Null,
 	
 	-- 设备IP地址
-	[IP] Nvarchar(15) Not Null,
-	
-	-- 设备端口号
-	[Port] int Not Null,
-	
-	-- 设备从站地址号
-	[UnitID] tinyint Not Null
+	[State] bit Not Null,
 )
 Go

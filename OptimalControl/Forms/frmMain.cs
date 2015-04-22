@@ -81,11 +81,6 @@ namespace OptimalControl.Forms
         private bool _isRunning = false;
 
         /// <summary>
-        /// The log file
-        /// </summary>
-        private string _logFile = AppDomain.CurrentDomain.BaseDirectory + "cache\\event.log"; //错误日志文件
-
-        /// <summary>
         /// The logoff time
         /// </summary>
         private int _logoffTime = 900; //注销时间，默认900s
@@ -141,7 +136,6 @@ namespace OptimalControl.Forms
 
         private int _realTimerInterval = 2000; //设置定时器间隔，默认为2000ms
 
-
         /// <summary>
         /// The modbus rtu slave thread
         /// </summary>
@@ -176,36 +170,6 @@ namespace OptimalControl.Forms
         /// The devices
         /// </summary>
         private List<Device> _devices = new List<Device>();
-
-        /// <summary>
-        /// The SQL to save parameter
-        /// </summary>
-        private string[] _sqlSaveData =
-        {
-            "INSERT INTO @DataTable (Time, ParameterName, Value, DeviceID) VALUES ",
-            ",",
-            "('@Time', '@ParameterName', '@Value', '@DeviceID')"
-        };
-
-        /// <summary>
-        /// The SQL get history data
-        /// </summary>
-        private string _sqlGetHistoryData =
-            "SELECT * FROM @DataTable WHERE ParameterName='@ParameterName' AND DeviceID='@DeviceID' AND Time >= '@StartTime' AND Time <= '@EndTime'";
-
-        private string _sqlGetHistoryData1 =
-            "DECLARE @sql1 varchar(8000); SELECT @sql1 = ISNULL(@sql1 + '],[' , '') + [Name] FROM [@CurvesTable] GROUP BY [Name]; SET @sql1 = '[' + @sql1 + ']';";
-
-        private string _sqlGetHistoryData2 =
-            "DECLARE @sql2 varchar(8000); SELECT @sql2 = ISNULL(@sql2 + ''',MAX([' , '') + [Name] +']) AS ''' + [Name]  FROM [@CurvesTable] GROUP BY [Name]; SET @sql2 = 'MAX([' + @sql2 + '''';";
-
-        private string _sqlGetHistoryData3 =
-            "EXEC ('SELECT [Time] AS ''时间'',' + @sql2 + ' 	FROM (SELECT * FROM [@DataTable] WHERE [Time] &gt;= ''@StartTime'' AND [Time] &lt; ''@EndTime'') AS a PIVOT (MAX([Value]) FOR [ParameterName] IN (' + @sql1 + ')) b GROUP BY [Time] ORDER BY [Time]');";
-
-        /// <summary>
-        /// The data table name
-        /// </summary>
-        private string _dataTable = "Data";
 
         /// <summary>
         /// The DCS name displayed in list
@@ -294,8 +258,6 @@ namespace OptimalControl.Forms
 
                 ofd_history.InitialDirectory = (AppDomain.CurrentDomain.BaseDirectory + "cache");
 
-                _logFile = ConfigAppSettings.GetSettingString("LogFile", _logFile);
-
                 //label_info1_info.Text = "";
                 //label_info1_load.Text = "";
                 //label_info1_voltage.Text = "";
@@ -335,7 +297,7 @@ namespace OptimalControl.Forms
 
                 if (_isPass)
                 {
-                    WriteLogFile(_logFile, "Login", string.Format("{0} Login!", _currentOperator.Name));
+                    RecordLog.WriteLogFile("Login", string.Format("{0} Login!", _currentOperator.Name));
 
                     // 加载权限菜单
                     RightsMenuDataManager rmManager = new RightsMenuDataManager();
@@ -369,7 +331,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "Initialization", ex.Message);
+                RecordLog.WriteLogFile("Initialization", ex.Message);
             }
         }
 
@@ -478,7 +440,6 @@ namespace OptimalControl.Forms
         /// </summary>
         private delegate void SynchroButtonDelegate();
 
-
         /// <summary>
         /// Synchroes the buttons.
         /// </summary>
@@ -505,62 +466,12 @@ namespace OptimalControl.Forms
         }
 
         /// <summary>
-        /// 保存日志文件.
-        /// </summary>
-        /// <param name="fileName">日志文件名.</param>
-        /// <param name="category">日志类型.</param>
-        /// <param name="content">日志内容.</param>
-        private void WriteLogFile(string fileName, string category, string content)
-        {
-            try
-            {
-                if (!File.Exists(fileName))
-                {
-                    string directory = fileName.Substring(0, fileName.LastIndexOf("\\", System.StringComparison.Ordinal));
-                    if (!Directory.Exists(directory)) //检查cache目录是否已创建
-                        Directory.CreateDirectory(directory); //若尚未创建，则创建目录
-                    FileStream f = File.Create(fileName);
-                    f.Close();
-                    f.Dispose();
-                }
-
-                StreamWriter fs = new StreamWriter(fileName, true, System.Text.Encoding.GetEncoding("gb2312"));
-                string timeNow = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
-                fs.WriteLine(timeNow + " " + category + ": " + content);
-
-                fs.Close(); //关闭文件
-                fs.Dispose();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-            }
-        }
-
-        /// <summary>
         /// Loads the settings.
         /// </summary>
         private void LoadSettings()
         {
             try
             {
-                _sqlSaveData[0] = ConfigAppSettings.GetSettingString("SQLSaveData0", ",");
-                _sqlSaveData[1] = ConfigAppSettings.GetSettingString("SQLSaveData1",
-                    "INSERT INTO @DataTable (Time, ParameterName, Value, DeviceID) VALUES ");
-                _sqlSaveData[2] = ConfigAppSettings.GetSettingString("SQLSaveData2",
-                    "('@Time', '@ParameterName', '@Value', '@DeviceID')");
-                _sqlGetHistoryData = ConfigAppSettings.GetSettingString("SQLGetHistoryData",
-                    "SELECT * FROM @DataTable WHERE ParameterName='@ParameterName' AND DeviceID='@DeviceID' AND Time >= '@StartTime' AND Time <= '@EndTime'");
-
-                _sqlGetHistoryData1 = ConfigAppSettings.GetSettingString("SQLGetHistoryData1",
-                    "DECLARE @sql1 varchar(8000); SELECT @sql1 = ISNULL(@sql1 + '],[' , '') + [Name] FROM [@CurvesTable] GROUP BY [Name]; SET @sql1 = '[' + @sql1 + ']';");
-                _sqlGetHistoryData2 = ConfigAppSettings.GetSettingString("SQLGetHistoryData2",
-                    "DECLARE @sql2 varchar(8000); SELECT @sql2 = ISNULL(@sql2 + ''',MAX([' , '') + [Name] +']) AS ''' + [Name]  FROM [@CurvesTable] GROUP BY [Name]; SET @sql2 = 'MAX([' + @sql2 + '''';");
-                _sqlGetHistoryData3 = ConfigAppSettings.GetSettingString("SQLGetHistoryData3",
-                    "EXEC ('SELECT [Time] AS ''时间'',' + @sql2 + ' 	FROM (SELECT * FROM [@DataTable] WHERE [Time] &gt;= ''@StartTime'' AND [Time] &lt; ''@EndTime'') AS a PIVOT (MAX([Value]) FOR [ParameterName] IN (' + @sql1 + ')) b GROUP BY [Time] ORDER BY [Time]');");
-
-                _dataTable = ConfigAppSettings.GetSettingString("DataTable", "Data");
-
                 _dcsName = ConfigAppSettings.GetSettingString("DCSName", "磨机工况信息");
 
                 // 创建类实例
@@ -602,7 +513,7 @@ namespace OptimalControl.Forms
                     (StopBits) ConfigAppSettings.GetSettingSingle("ModbusRTUStopBits", 1)
                     );
 
-                _modbusRtuDevice.UnitId = ConfigAppSettings.GetSettingByte("ModbusRTUDeviceID", 1);
+                _modbusRtuDevice.UnitID = ConfigAppSettings.GetSettingByte("ModbusRTUDeviceID", 1);
 
                 _masterPaneGraphRealtime.Title.Text = ConfigAppSettings.GetSettingString("MasterTitle", "My MasterPane Title");
                 _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigAppSettings.GetSettingSingle("MasterTitleSize", 12);
@@ -638,144 +549,8 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "LoadSettings", ex.Message);
+                RecordLog.WriteLogFile("LoadSettings", ex.Message);
             }
-        }
-
-        /// <summary>
-        /// Gets the devices command.
-        /// </summary>
-        /// <param name="sqlCmd">The SQL command.</param>
-        /// <param name="table">The table.</param>
-        /// <returns>
-        /// Command
-        /// </returns>
-        private string GetDevicesCommand(string sqlCmd, string table)
-        {
-            string sql = sqlCmd;
-            sql = sql.Replace("@DevicesTable", table);
-            return sql;
-        }
-
-        /// <summary>
-        /// Gets the parameters command.
-        /// </summary>
-        /// <param name="sqlCmd">The SQL command.</param>
-        /// <param name="table">The table.</param>
-        /// <returns>
-        /// Command
-        /// </returns>
-        private string GetParametersCommand(string sqlCmd, string table)
-        {
-            string sql = sqlCmd;
-            sql = sql.Replace("@ParametersTable", table);
-            sql = sql.Replace("@DeviceID", "1");
-            sql = sql.Replace("DeviceID", "1");
-            return sql;
-        }
-
-        /// <summary>
-        /// Gets the save parameter command.
-        /// </summary>
-        /// <param name="sqlCmd">The SQL command.</param>
-        /// <param name="table">The table.</param>
-        /// <param name="time">The time.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>
-        /// Command
-        /// </returns>
-        private string GetSaveDataCommand(string[] sqlCmd, string table, string time, List<Variable> parameters)
-        {
-            string sql = "";
-            if (parameters.Count <= 0) return sql;
-            sql = sqlCmd[0].Replace("@DataTable", table);
-            for (int index = 0; index < parameters.Count; index++)
-            {
-                if (index > 0)
-                {
-                    sql += sqlCmd[1];
-                }
-                sql += sqlCmd[2]
-                    .Replace("@Time", time)
-                    .Replace("@ParameterName", parameters[index].Name)
-                    .Replace("@Value", parameters[index].Value.ToString(CultureInfo.InvariantCulture))
-                    .Replace("@DeviceID", parameters[index].DeviceID.ToString(CultureInfo.InvariantCulture));
-            }
-            return sql;
-        }
-
-        /// <summary>
-        /// Gets the curves command.
-        /// </summary>
-        /// <param name="sqlCmd">The SQL command.</param>
-        /// <param name="table">The table.</param>
-        /// <returns>Command</returns>
-        private string GetCurvesCommand(string sqlCmd, string table)
-        {
-            string sql = sqlCmd;
-            sql = sql.Replace("@CurvesTable", table);
-            return sql;
-        }
-
-        /// <summary>
-        /// Gets the history data command.
-        /// </summary>
-        /// <param name="sqlCmd">The SQL command.</param>
-        /// <param name="dataTable">The data table.</param>
-        /// <param name="curveTable">The curce table.</param>
-        /// <param name="statrTime">The statr time.</param>
-        /// <param name="endTime">The end time.</param>
-        /// <returns>
-        /// Command
-        /// </returns>
-        private string GetHistoryDataCommand(string sqlCmd, string dataTable, string curveTable, DateTime statrTime,
-            DateTime endTime)
-        {
-            string sql = sqlCmd;
-            sql = sql.Replace("@DataTable", dataTable)
-                .Replace("@CurvesTable", curveTable)
-                .Replace("@StartTime", statrTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
-                .Replace("@EndTime", endTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-            return sql;
-        }
-
-        /// <summary>
-        /// Gets the history data command.
-        /// </summary>
-        /// <param name="sqlCmd">The SQL command.</param>
-        /// <param name="datatable">The table.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="deviceID">The device identifier.</param>
-        /// <param name="statrTime">The statr time.</param>
-        /// <param name="endTime">The end time.</param>
-        /// <returns>
-        /// Command
-        /// </returns>
-        private string GetHistoryDataCommand(string sqlCmd, string datatable, string parameterName, int deviceID,
-            DateTime statrTime, DateTime endTime)
-        {
-            string sql = sqlCmd;
-            sql = sql.Replace("@DataTable", datatable)
-                .Replace("@ParameterName", parameterName)
-                .Replace("@DeviceID", deviceID.ToString(CultureInfo.InvariantCulture))
-                .Replace("@StartTime", statrTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
-                .Replace("@EndTime", endTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-            return sql;
-        }
-
-        /// <summary>
-        /// Gets the rules command.
-        /// </summary>
-        /// <param name="sqlCmd">The SQL command.</param>
-        /// <param name="table">The table.</param>
-        /// <returns>
-        /// Command
-        /// </returns>
-        private string GetRulesCommand(string sqlCmd, string table)
-        {
-            string sql = sqlCmd;
-            sql = sql.Replace("@RulesTable", table);
-            return sql;
         }
 
         /// <summary>
@@ -805,7 +580,7 @@ namespace OptimalControl.Forms
                 if (modbusRtuDevice.SerialPortObject.IsOpen)
                 {
                     // create modbus slave
-                    _modbusRtuSlave = ModbusSerialSlave.CreateRtu(modbusRtuDevice.UnitId,
+                    _modbusRtuSlave = ModbusSerialSlave.CreateRtu(modbusRtuDevice.UnitID,
                         modbusRtuDevice.SerialPortObject);
                     _modbusRtuSlave.ModbusSlaveRequestReceived += ModbusRTU_Request_Event;
                     _modbusRtuSlave.DataStore = DataStoreFactory.CreateDefaultDataStore();
@@ -819,7 +594,7 @@ namespace OptimalControl.Forms
             catch (Exception ex)
             {
                 status_Label.Text = ex.Message;
-                //WriteLogFile(LogFile, "ModbusRTUCreatListener", ex.Message);
+                //RecordLog.WriteLogFile(LogFile, "ModbusRTUCreatListener", ex.Message);
             }
             return false;
         }
@@ -868,7 +643,7 @@ namespace OptimalControl.Forms
                         {
                             ModbusRTUStopComm(); //处理连接错误，重试连接
                             ModbusRTUCreatListener(_modbusRtuDevice);
-                            //WriteLogFile(LogFile, "ModbusRTU->ModbusTCP", ex.Message);
+                            //RecordLog.WriteLogFile(LogFile, "ModbusRTU->ModbusTCP", ex.Message);
                             continue;
                         }
                         for (int deviceIndex = 0; deviceIndex < _devices.Count; deviceIndex++)
@@ -905,7 +680,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "ModbusRTUGetValue", ex.Message);
+                RecordLog.WriteLogFile("ModbusRTUGetValue", ex.Message);
             }
         }
 
@@ -928,7 +703,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "StopModbusRTUComm", ex.Message);
+                RecordLog.WriteLogFile("StopModbusRTUComm", ex.Message);
             }
         }
 
@@ -943,11 +718,11 @@ namespace OptimalControl.Forms
         {
             try
             {
-                if (string.IsNullOrEmpty(modbusTcpDevice.Ip) || modbusTcpDevice.Port.Equals(0))
+                if (string.IsNullOrEmpty(modbusTcpDevice.IP) || modbusTcpDevice.Port.Equals(0))
                 {
                     return false;
                 }
-                modbusTcpDevice.TcpClient = new TcpClient(modbusTcpDevice.Ip, modbusTcpDevice.Port);
+                modbusTcpDevice.TcpClient = new TcpClient(modbusTcpDevice.IP, modbusTcpDevice.Port);
 
                 modbusTcpDevice.ModbusTcpMaster = ModbusIpMaster.CreateIp(modbusTcpDevice.TcpClient);
                 // create Modbus TCP Master with the tcp client
@@ -957,7 +732,7 @@ namespace OptimalControl.Forms
             catch (Exception ex)
             {
                 status_Label.Text = ex.Message;
-                //WriteLogFile(LogFile, "ModbusTCPCreateClient", ex.Message);
+                //RecordLog.WriteLogFile(LogFile, "ModbusTCPCreateClient", ex.Message);
             }
             return false;
         }
@@ -1005,7 +780,7 @@ namespace OptimalControl.Forms
                             {
                                 ModbusRTUStopComm(); //处理连接错误，重试连接
                                 ModbusRTUCreatListener(_modbusRtuDevice);
-                                //WriteLogFile(LogFile, "ModbusTCP->ModbusRTU", ex.Message);
+                                //RecordLog.WriteLogFile(LogFile, "ModbusTCP->ModbusRTU", ex.Message);
                             }
                         }
                         byte[] byteString = new byte[4];
@@ -1022,7 +797,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "ModbusTCPGetValue", ex.Message);
+                RecordLog.WriteLogFile("ModbusTCPGetValue", ex.Message);
             }
         }
 
@@ -1043,7 +818,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "StopModbusTCPComm", ex.Message);
+                RecordLog.WriteLogFile("StopModbusTCPComm", ex.Message);
             }
             return false;
         }
@@ -1149,7 +924,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "ExecuteRules", ex.Message);
+                RecordLog.WriteLogFile("ExecuteRules", ex.Message);
             }
         }
 
@@ -1196,7 +971,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "GetValueByName", ex.Message);
+                RecordLog.WriteLogFile("GetValueByName", ex.Message);
             }
             return -1;
         }
@@ -1305,7 +1080,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "RefreshRegisterList", ex.Message);
+                RecordLog.WriteLogFile("RefreshRegisterList", ex.Message);
             }
         }
 
@@ -1315,14 +1090,25 @@ namespace OptimalControl.Forms
         /// <param name="parameters">The parameters.</param>
         /// <param name="time">The time.</param>
         /// <returns>
-        /// Result rows
+        /// Result
         /// </returns>
-        private int SaveParameter(List<Variable> parameters, DateTime time)
+        private bool SaveParameter(List<Variable> parameters, DateTime time)
         {
-            string sql = GetSaveDataCommand(_sqlSaveData, _dataTable,
-                time.ToString(CultureInfo.InvariantCulture), parameters);
-            int count = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction, CommandType.Text, sql);
-            return count;
+            List<Data> addData = new List<Data>();
+            foreach (Variable parameter in parameters)
+            {
+                Data data = new Data()
+                {
+                    ParameterName = parameter.Name,
+                    TimeValue = time,
+                    Value = parameter.RealValue,
+                    DeviceID = Convert.ToInt32(parameter.DeviceID),
+                };
+                addData.Add(data);
+            }
+            IDataManager dataManager = _bllFactory.BuildDataManager();
+            bool result = dataManager.AddData(addData);
+            return result;
         }
 
         /// <summary>
@@ -1412,7 +1198,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "UpdateGraph", ex.Message);
+                RecordLog.WriteLogFile("UpdateGraph", ex.Message);
             }
         }
 
@@ -1493,7 +1279,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "CreatGraphPane", ex.Message);
+                RecordLog.WriteLogFile("CreatGraphPane", ex.Message);
             }
             return graphPane;
         }
@@ -1514,7 +1300,7 @@ namespace OptimalControl.Forms
                 // 调用实例方法
                 List<Rule> ruleCollection = ruleManager.GetAllRuleInfo();
 
-                // 如果包含权限组信息
+                // 如果包含信息
                 if (ruleCollection.Count > 0)
                 {
                     BindingSource source = new BindingSource {DataSource = ruleCollection};
@@ -1564,7 +1350,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "UpdateRulesGrid", ex.Message); 
+                RecordLog.WriteLogFile("UpdateRulesGrid", ex.Message); 
             }
 
         }
@@ -1581,13 +1367,12 @@ namespace OptimalControl.Forms
             DataTable dataTable = new DataTable();
             try
             {
-                string sql = GetHistoryDataCommand(_sqlGetHistoryData1 + _sqlGetHistoryData2 + _sqlGetHistoryData3,
-                    _dataTable, "Curve", startTime, endTime);
-                dataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction, sql);
+                IDataManager dataManager = _bllFactory.BuildDataManager();
+                dataTable = dataManager.GetAllDataInfoByTime(startTime, endTime);
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "LoadHistoryData", ex.Message);
+                RecordLog.WriteLogFile("LoadHistoryData", ex.Message);
             }
             return dataTable;
         }
@@ -1622,7 +1407,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "LoadHistoryCurves", ex.Message);
+                RecordLog.WriteLogFile("LoadHistoryCurves", ex.Message);
             }
             return curves;
         }
@@ -1651,7 +1436,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "GetSelectedRule", ex.Message);
+                RecordLog.WriteLogFile("GetSelectedRule", ex.Message);
             }
             return new Rule();
         }
@@ -1703,7 +1488,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "GetSelectedRule", ex.Message);
+                RecordLog.WriteLogFile("GetSelectedRule", ex.Message);
             }
         }
 
@@ -1756,7 +1541,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "UpdateLogGrid", ex.Message);
+                RecordLog.WriteLogFile("UpdateLogGrid", ex.Message);
             }
         }
 
@@ -1779,7 +1564,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "AddLogInfo", ex.Message);
+                RecordLog.WriteLogFile("AddLogInfo", ex.Message);
             }
         }
 
@@ -1815,7 +1600,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "UpdateModbus", ex.Message);
+                RecordLog.WriteLogFile("UpdateModbus", ex.Message);
             }
         }
 
@@ -1834,7 +1619,7 @@ namespace OptimalControl.Forms
                     return;
                 }
                 DateTime time = DateTime.Now;
-                if (SaveParameter(_modbusRtuParameters, time) > 0)
+                if (SaveParameter(_modbusRtuParameters, time))
                 {
                     _modbusRtuSlaveUpdated = false;
                     status_Label.Text = string.Format("{0}数据已保存", _dcsName);
@@ -1842,14 +1627,14 @@ namespace OptimalControl.Forms
                 foreach (Device device in _devices)
                 {
                     if (!device.State) continue;
-                    if (SaveParameter(device.Variables, time) <= 0) continue;
+                    if (!SaveParameter(device.Variables, time)) continue;
                     device.ModbusTcpMasterUpdated = false;
                     status_Label.Text = string.Format("{0}数据已保存", device.Name);
                 }
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "SaveParameters", ex.Message);
+                RecordLog.WriteLogFile("SaveParameters", ex.Message);
             }
         }
 
@@ -1864,7 +1649,7 @@ namespace OptimalControl.Forms
                     {
                         _curves[index].DataList.RemoveRange(0, (_curves[index].DataList.Count - _dataListLength + 1));
                     }
-                    if (_curves[index].DeviceId == 0)
+                    if (_curves[index].DeviceID == 0)
                     {
                         foreach (Variable parameter in _modbusRtuParameters)
                         {
@@ -1878,7 +1663,7 @@ namespace OptimalControl.Forms
                     {
                         foreach (Device device in _devices)
                         {
-                            if (device.Id != _curves[index].DeviceId) continue;
+                            if (device.Id != _curves[index].DeviceID) continue;
                             foreach (Variable parameter in device.Variables)
                             {
                                 if (parameter.Address != _curves[index].Address) continue;
@@ -1892,7 +1677,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "UpdateCurveData", ex.Message);
+                RecordLog.WriteLogFile("UpdateCurveData", ex.Message);
             }
         }
 
@@ -1947,7 +1732,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "CheckParameterState", ex.Message);
+                RecordLog.WriteLogFile("CheckParameterState", ex.Message);
             }
         }
 
@@ -1981,7 +1766,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "UpdateVariableTimer", ex.Message); //未能正常写入文件，反馈信息到消息栏
+                RecordLog.WriteLogFile("UpdateVariableTimer", ex.Message); //未能正常写入文件，反馈信息到消息栏
             }
         }
 
@@ -1995,7 +1780,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "RealTimer", ex.Message); //未能正常写入文件，反馈信息到消息栏
+                RecordLog.WriteLogFile("RealTimer", ex.Message); //未能正常写入文件，反馈信息到消息栏
             }
         }
 
@@ -2057,7 +1842,7 @@ namespace OptimalControl.Forms
                                 ModbusTCPStopComm(_devices[deviceID].ModbusTcpDevice);
                         }
                         ModbusRTUStopComm();
-                        WriteLogFile(_logFile, "Closed", "Software Closed!");
+                        RecordLog.WriteLogFile("Closed", "Software Closed!");
                         Dispose(); //释放内存，退出程序
                     }
                     else
@@ -2072,7 +1857,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "frmMain_FormClosing", ex.Message);
+                RecordLog.WriteLogFile("frmMain_FormClosing", ex.Message);
             }
         }
 
@@ -2096,16 +1881,16 @@ namespace OptimalControl.Forms
                 {
                     DateTime endTime = DateTime.Now;
                     DateTime startTime = endTime.AddSeconds((-1)*(_updateVariableTimerInterval/1000)*_dataListLength);
-
-                    for (int index = 0; index < _curves.Count; index++)
+                    IDataManager dataManager = _bllFactory.BuildDataManager();
+                    foreach (Curve curve in _curves)
                     {
-                        string sql = GetHistoryDataCommand(_sqlGetHistoryData, _dataTable, _curves[index].Name,
-                            _curves[index].DeviceId, startTime, endTime);
-                        DataTable dataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction, sql);
-                        for (int i = 0; i < dataTable.Rows.Count; i++)
+                        List<Data> dataCollection = dataManager.GetDataByVariableName(curve.Name,
+                            curve.DeviceID, startTime, endTime);
+                        foreach (Data tmpData in dataCollection)
                         {
-                            _curves[index].DataList.Add(new XDate(DateTime.Parse(dataTable.Rows[i][1].ToString())),
-                                Convert.ToDouble(dataTable.Rows[i][3]));
+                            curve.DataList.Add(
+                                new XDate(DateTime.Parse(tmpData.TimeValue.ToString())),
+                                Convert.ToDouble(tmpData.Value));
                         }
                     }
 
@@ -2139,13 +1924,13 @@ namespace OptimalControl.Forms
 
                         status_Label.Text = "运行中...";
                         _isRunning = true;
-                        WriteLogFile(_logFile, "Start",
+                        RecordLog.WriteLogFile("Start",
                             string.Format("Software started by {0}!", _currentOperator.Name));
                     }
                 }
                 catch (Exception ex)
                 {
-                    WriteLogFile(_logFile, "Run_Click", ex.Message);
+                    RecordLog.WriteLogFile("Run_Click", ex.Message);
                 }
             }
         }
@@ -2182,7 +1967,7 @@ namespace OptimalControl.Forms
             //listview_parainfo.Items.Clear();
             status_Label.Text = "停止.";
             _isRunning = false;
-            WriteLogFile(_logFile, "Stop", string.Format("Software stoped by {0}!", _currentOperator.Name));
+            RecordLog.WriteLogFile("Stop", string.Format("Software stoped by {0}!", _currentOperator.Name));
         }
 
         /// <summary>
@@ -2225,7 +2010,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                WriteLogFile(_logFile, "tool_btn_config_Click", ex.Message);
+                RecordLog.WriteLogFile("tool_btn_config_Click", ex.Message);
             }
         }
 
@@ -2404,7 +2189,7 @@ namespace OptimalControl.Forms
                 if (frmLogin.isPass)
                 {
                     _currentOperator = frmLogin.currentOperator;
-                    WriteLogFile(_logFile, "Login", string.Format("{0} Login!", _currentOperator.Name));
+                    RecordLog.WriteLogFile("Login", string.Format("{0} Login!", _currentOperator.Name));
 
                     // 加载权限菜单
                     RightsMenuDataManager rmManager = new RightsMenuDataManager();
@@ -2435,7 +2220,7 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void menu_file_logoff_Click(object sender, EventArgs e)
         {
-            WriteLogFile(_logFile, "Logoff", string.Format("{0} Logoff!", _currentOperator.Name));
+            RecordLog.WriteLogFile("Logoff", string.Format("{0} Logoff!", _currentOperator.Name));
             _currentOperator = null;
             LoadMenuRightsItem(msMain, _logoffMenuList);
             SynchroButton();

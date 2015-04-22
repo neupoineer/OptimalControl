@@ -22,7 +22,7 @@ namespace Model.Modbus
         /// <summary>
         /// The device identifier
         /// </summary>
-        public byte UnitId
+        public byte UnitID
         {
             get { return _unitId; }
             set { _unitId = value; }
@@ -36,7 +36,7 @@ namespace Model.Modbus
         public ModbusRtuDevice(SerialPort serialPortObject, byte unitId)
         {
             SerialPortObject = serialPortObject;
-            UnitId = unitId;
+            UnitID = unitId;
         }
     }
 }

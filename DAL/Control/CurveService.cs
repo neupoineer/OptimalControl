@@ -52,7 +52,7 @@ namespace DAL.Control
                         //将数据集转换成实体集合
                         tmpCurve.Id = Convert.ToInt32(myReader["Id"]);
                         tmpCurve.Name = Convert.ToString(myReader["Name"]);
-                        tmpCurve.DeviceId = Convert.ToInt32(myReader["DeviceID"]);
+                        tmpCurve.DeviceID = Convert.ToInt32(myReader["DeviceID"]);
                         tmpCurve.Address = Convert.ToUInt16(myReader["Address"]);
                         tmpCurve.LineColor = string.IsNullOrEmpty(Convert.ToString(myReader["LineColor"]))
                             ? rotator.NextColor
@@ -129,18 +129,18 @@ namespace DAL.Control
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
-                SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) {Value = addCurve.Name};
-                SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) {Value = addCurve.DeviceId};
-                SqlParameter prm3 = new SqlParameter("@Address", SqlDbType.Int) {Value = addCurve.Address};
-                SqlParameter prm4 = new SqlParameter("@LineColor", SqlDbType.NVarChar, 50) {Value = addCurve.LineColor};
-                SqlParameter prm5 = new SqlParameter("@LineType", SqlDbType.Bit) {Value = addCurve.LineType};
-                SqlParameter prm6 = new SqlParameter("@LineWidth", SqlDbType.Real) {Value = addCurve.LineWidth};
-                SqlParameter prm7 = new SqlParameter("@SymbolType", SqlDbType.NVarChar, 30){Value = addCurve.SymbolType};
-                SqlParameter prm8 = new SqlParameter("@SymbolSize", SqlDbType.Real) {Value = addCurve.SymbolSize};
-                SqlParameter prm9 = new SqlParameter("@XTitle", SqlDbType.NVarChar, 50) {Value = addCurve.XTitle};
-                SqlParameter prm10 = new SqlParameter("@YTitle", SqlDbType.NVarChar, 50) {Value = addCurve.YTitle};
-                SqlParameter prm11 = new SqlParameter("@YMax", SqlDbType.Real) {Value = addCurve.YMax};
-                SqlParameter prm12 = new SqlParameter("@YMin", SqlDbType.Real) {Value = addCurve.YMin};
+                SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addCurve.Name };
+                SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = addCurve.DeviceID };
+                SqlParameter prm3 = new SqlParameter("@Address", SqlDbType.Int) { Value = addCurve.Address };
+                SqlParameter prm4 = new SqlParameter("@LineColor", SqlDbType.NVarChar, 50) { Value = IsColorNull(addCurve.LineColor) };
+                SqlParameter prm5 = new SqlParameter("@LineType", SqlDbType.Bit) { Value = IsStringNull(addCurve.LineType) };
+                SqlParameter prm6 = new SqlParameter("@LineWidth", SqlDbType.Real) { Value = IsDoubleNull(addCurve.LineWidth) };
+                SqlParameter prm7 = new SqlParameter("@SymbolType", SqlDbType.NVarChar, 30) { Value = IsSymbolNull(addCurve.SymbolType) };
+                SqlParameter prm8 = new SqlParameter("@SymbolSize", SqlDbType.Real) { Value = IsDoubleNull(addCurve.SymbolSize) };
+                SqlParameter prm9 = new SqlParameter("@XTitle", SqlDbType.NVarChar, 50) { Value = addCurve.XTitle };
+                SqlParameter prm10 = new SqlParameter("@YTitle", SqlDbType.NVarChar, 50) { Value = addCurve.YTitle };
+                SqlParameter prm11 = new SqlParameter("@YMax", SqlDbType.Real) { Value = addCurve.YMax };
+                SqlParameter prm12 = new SqlParameter("@YMin", SqlDbType.Real) { Value = addCurve.YMin };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
                 {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12});
@@ -192,13 +192,13 @@ namespace DAL.Control
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentCurve.Name };
-                SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentCurve.DeviceId };
+                SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentCurve.DeviceID };
                 SqlParameter prm3 = new SqlParameter("@Address", SqlDbType.Int) { Value = currentCurve.Address };
-                SqlParameter prm4 = new SqlParameter("@LineColor", SqlDbType.NVarChar, 50) { Value = currentCurve.LineColor };
-                SqlParameter prm5 = new SqlParameter("@LineType", SqlDbType.Bit) { Value = currentCurve.LineType };
-                SqlParameter prm6 = new SqlParameter("@LineWidth", SqlDbType.Real) { Value = currentCurve.LineWidth };
-                SqlParameter prm7 = new SqlParameter("@SymbolType", SqlDbType.NVarChar, 30) { Value = currentCurve.SymbolType };
-                SqlParameter prm8 = new SqlParameter("@SymbolSize", SqlDbType.Real) { Value = currentCurve.SymbolSize };
+                SqlParameter prm4 = new SqlParameter("@LineColor", SqlDbType.NVarChar, 50) { Value = IsColorNull(currentCurve.LineColor) };
+                SqlParameter prm5 = new SqlParameter("@LineType", SqlDbType.Bit) { Value = IsStringNull(currentCurve.LineType) };
+                SqlParameter prm6 = new SqlParameter("@LineWidth", SqlDbType.Real) { Value = IsDoubleNull(currentCurve.LineWidth) };
+                SqlParameter prm7 = new SqlParameter("@SymbolType", SqlDbType.NVarChar, 30) { Value = IsSymbolNull(currentCurve.SymbolType) };
+                SqlParameter prm8 = new SqlParameter("@SymbolSize", SqlDbType.Real) { Value = IsDoubleNull(currentCurve.SymbolSize) };
                 SqlParameter prm9 = new SqlParameter("@XTitle", SqlDbType.NVarChar, 50) { Value = currentCurve.XTitle };
                 SqlParameter prm10 = new SqlParameter("@YTitle", SqlDbType.NVarChar, 50) { Value = currentCurve.YTitle };
                 SqlParameter prm11 = new SqlParameter("@YMax", SqlDbType.Real) { Value = currentCurve.YMax };
@@ -247,7 +247,7 @@ namespace DAL.Control
                         //将数据集转换成实体集合
                         tmpCurve.Id = Convert.ToInt32(myReader["Id"]);
                         tmpCurve.Name = Convert.ToString(myReader["Name"]);
-                        tmpCurve.DeviceId = Convert.ToInt32(myReader["DeviceID"]);
+                        tmpCurve.DeviceID = Convert.ToInt32(myReader["DeviceID"]);
                         tmpCurve.Address = Convert.ToUInt16(myReader["Address"]);
                         tmpCurve.LineColor = string.IsNullOrEmpty(Convert.ToString(myReader["LineColor"]))
                             ? rotator.NextColor
@@ -290,7 +290,7 @@ namespace DAL.Control
                         }
                         else
                         {
-                            tmpCurve.SymbolType = SymbolType.Default;
+                            tmpCurve.SymbolType = SymbolType. UserDefined;
                         }
 
                         tmpCurve.XTitle = Convert.ToString(myReader["XTitle"]);
@@ -329,6 +329,41 @@ namespace DAL.Control
                 return false;
         }
 
+        #endregion
+
+        #region 私有成员
+        /// <summary>
+        /// Determines whether the specified parameter is null.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>result(null for -1)</returns>
+        private object IsDoubleNull(object parameter)
+        {
+            if (Convert.ToDouble(parameter).Equals(-1))
+                return DBNull.Value;
+            else return parameter;
+        }
+
+        private object IsStringNull(object parameter)
+        {
+            if (Convert.ToString(parameter).Equals(""))
+                return DBNull.Value;
+            else return parameter;
+        }
+
+        private object IsSymbolNull(SymbolType symbol)
+        {
+            if (symbol.Equals(SymbolType.UserDefined))
+                return DBNull.Value;
+            else return symbol;
+        }
+
+        private object IsColorNull(Color color)
+        {
+            if (color.Equals(Color.FromArgb(0)))
+                return DBNull.Value;
+            else return color;
+        }
         #endregion
     }
 }

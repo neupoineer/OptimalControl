@@ -59,5 +59,9 @@ namespace DALFactory
         {
             return new LogService();
         }
+        public override IDataService BuildDataService()
+        {
+            return new DataService();
+        }
     }
 }

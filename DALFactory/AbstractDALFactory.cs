@@ -34,7 +34,7 @@ namespace DALFactory
         public abstract IRuleService BuildRuleService();
         public abstract IVariableService BuildVariableService();
         public abstract ILogService BuildLogService();
-
+        public abstract IDataService BuildDataService();
         #endregion
 
         #region Static Methods

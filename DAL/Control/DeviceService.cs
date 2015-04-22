@@ -14,7 +14,6 @@ namespace DAL.Control
     /// </summary>
     public class DeviceService : IDeviceService
     {
-
         #region IDeviceService 成员
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace DAL.Control
                         tmpDevice.SyncState = Convert.ToBoolean(myReader["SyncState"]);
                         tmpDevice.ModbusTcpDevice = new ModbusTcpDevice()
                         {
-                            Ip = Convert.ToString(myReader["Ip"]),
+                            IP = Convert.ToString(myReader["Ip"]),
                             Port = Convert.ToInt32(myReader["Port"]),
                             UnitID = Convert.ToByte(myReader["UnitID"]),
                         };
@@ -88,7 +87,7 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addDevice.Name };
                 SqlParameter prm2 = new SqlParameter("@State", SqlDbType.Bit) { Value = addDevice.State };
                 SqlParameter prm3 = new SqlParameter("@SyncState", SqlDbType.Bit) { Value = addDevice.SyncState };
-                SqlParameter prm4 = new SqlParameter("@IP", SqlDbType.NVarChar, 15) { Value = addDevice.ModbusTcpDevice.Ip };
+                SqlParameter prm4 = new SqlParameter("@IP", SqlDbType.NVarChar, 15) { Value = addDevice.ModbusTcpDevice.IP };
                 SqlParameter prm5 = new SqlParameter("@Port", SqlDbType.Int) { Value = addDevice.ModbusTcpDevice.Port };
                 SqlParameter prm6 = new SqlParameter("@UnitID", SqlDbType.TinyInt) { Value = addDevice.ModbusTcpDevice.UnitID };
 
@@ -143,7 +142,7 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentDevice.Name };
                 SqlParameter prm2 = new SqlParameter("@State", SqlDbType.Bit) { Value = currentDevice.State };
                 SqlParameter prm3 = new SqlParameter("@SyncState", SqlDbType.Bit) { Value = currentDevice.SyncState };
-                SqlParameter prm4 = new SqlParameter("@IP", SqlDbType.NVarChar, 15) { Value = currentDevice.ModbusTcpDevice.Ip };
+                SqlParameter prm4 = new SqlParameter("@IP", SqlDbType.NVarChar, 15) { Value = currentDevice.ModbusTcpDevice.IP };
                 SqlParameter prm5 = new SqlParameter("@Port", SqlDbType.Int) { Value = currentDevice.ModbusTcpDevice.Port };
                 SqlParameter prm6 = new SqlParameter("@UnitID", SqlDbType.TinyInt) { Value = currentDevice.ModbusTcpDevice.UnitID };
                 SqlParameter prm7 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentDevice.Id };
@@ -193,7 +192,7 @@ namespace DAL.Control
                         tmpDevice.SyncState = Convert.ToBoolean(myReader["SyncState"]);
                         tmpDevice.ModbusTcpDevice = new ModbusTcpDevice()
                         {
-                            Ip = Convert.ToString(myReader["Ip"]),
+                            IP = Convert.ToString(myReader["Ip"]),
                             Port = Convert.ToInt32(myReader["Port"]),
                             UnitID = Convert.ToByte(myReader["UnitID"]),
                         };

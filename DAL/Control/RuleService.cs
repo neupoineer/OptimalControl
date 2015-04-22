@@ -52,7 +52,9 @@ namespace DAL.Control
                         tmpRule.Name = Convert.ToString(myReader["Name"]);
                         tmpRule.Expression = Convert.ToString(myReader["Expression"]);
                         tmpRule.Operation = Convert.ToString(myReader["Operation"]);
-                        tmpRule.Period = Convert.ToInt32(myReader["Period"]);
+                        tmpRule.Period = Convert.ToString(myReader["Period"]) != ""
+                            ? Convert.ToInt32(myReader["Period"])
+                            : -1;
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
                     }
@@ -85,7 +87,7 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addRule.Name };
                 SqlParameter prm2 = new SqlParameter("@Expression", SqlDbType.NVarChar, 1000) { Value = addRule.Expression };
                 SqlParameter prm3 = new SqlParameter("@Operation", SqlDbType.NVarChar, 1000) { Value = addRule.Operation };
-                SqlParameter prm4 = new SqlParameter("@Period", SqlDbType.Int) { Value = addRule.Period };
+                SqlParameter prm4 = new SqlParameter("@Period", SqlDbType.Int) { Value = IsParameterNull(addRule.Period) };
                 SqlParameter prm5 = new SqlParameter("@State", SqlDbType.Bit) { Value = addRule.State };
                 SqlParameter prm6 = new SqlParameter("@Priority", SqlDbType.Int) { Value = addRule.Priority };
 
@@ -140,7 +142,7 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentRule.Name };
                 SqlParameter prm2 = new SqlParameter("@Expression", SqlDbType.NVarChar, 1000) { Value = currentRule.Expression };
                 SqlParameter prm3 = new SqlParameter("@Operation", SqlDbType.NVarChar, 1000) { Value = currentRule.Operation };
-                SqlParameter prm4 = new SqlParameter("@Period", SqlDbType.Int) { Value = currentRule.Period };
+                SqlParameter prm4 = new SqlParameter("@Period", SqlDbType.Int) { Value = IsParameterNull(currentRule.Period) };
                 SqlParameter prm5 = new SqlParameter("@State", SqlDbType.Bit) { Value = currentRule.State };
                 SqlParameter prm6 = new SqlParameter("@Priority", SqlDbType.Int) { Value = currentRule.Priority };
                 SqlParameter prm7 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentRule.Id };
@@ -189,7 +191,9 @@ namespace DAL.Control
                         tmpRule.Name = Convert.ToString(myReader["Name"]);
                         tmpRule.Expression = Convert.ToString(myReader["Expression"]);
                         tmpRule.Operation = Convert.ToString(myReader["Operation"]);
-                        tmpRule.Period = Convert.ToInt32(myReader["Period"]);
+                        tmpRule.Period = Convert.ToString(myReader["Period"]) != ""
+                            ? Convert.ToInt32(myReader["Period"])
+                            : -1;
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
 
@@ -236,7 +240,9 @@ namespace DAL.Control
                         tmpRule.Name = Convert.ToString(myReader["Name"]);
                         tmpRule.Expression = Convert.ToString(myReader["Expression"]);
                         tmpRule.Operation = Convert.ToString(myReader["Operation"]);
-                        tmpRule.Period = Convert.ToInt32(myReader["Period"]);
+                        tmpRule.Period = Convert.ToString(myReader["Period"]) != ""
+                            ? Convert.ToInt32(myReader["Period"])
+                            : -1;
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
 
@@ -272,5 +278,21 @@ namespace DAL.Control
         }
 
         #endregion
+
+
+        #region 私有成员
+        /// <summary>
+        /// Determines whether the specified parameter is null.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>result(null for -1)</returns>
+        private object IsParameterNull(object parameter)
+        {
+            if (Convert.ToDouble(parameter).Equals(-1))
+                return DBNull.Value;
+            else return parameter;
+        }
+        #endregion
+
     }
 }

@@ -14,9 +14,7 @@ namespace DAL
     /// </summary>
     public class LogService:ILogService
     {
-
         #region ILogService 成员
-
         /// <summary>
         /// 根据日志时间获取日志实体
         /// <param name="time">日志时间</param>
@@ -169,7 +167,6 @@ namespace DAL
             // 返回结果
             return LogCollection;
         }
-
 
         /// <summary>
         /// 获取最后20条日志信息

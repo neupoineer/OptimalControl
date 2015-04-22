@@ -3,6 +3,7 @@ using System.Data;
 using System.Globalization;
 using System.Net;
 using System.Windows.Forms;
+using IBLL.Control;
 using Utility;
 using Model.Modbus;
 
@@ -12,7 +13,7 @@ namespace OptimalControl.Forms
     {
         private readonly DataOperateMode _mode;
         private Device _device;
-        public int Result { get; private set; }
+        public bool Result { get; private set; }
 
         public frmDeviceEditor(DataOperateMode mode, Device device)
         {
@@ -30,7 +31,7 @@ namespace OptimalControl.Forms
             nud_device_unitid.Enabled = editable;
             cb_device_state.Checked = device.State;
             cb_device_state.Enabled = editable;
-            tb_device_ip.Text = device.ModbusTcpDevice.Ip;
+            tb_device_ip.Text = device.ModbusTcpDevice.IP;
             tb_device_ip.Enabled = editable;
             ntb_device_port.Text = device.ModbusTcpDevice.Port.ToString(CultureInfo.InvariantCulture);
             ntb_device_port.Enabled = editable;
@@ -38,18 +39,22 @@ namespace OptimalControl.Forms
             cb_device_sync.Enabled = editable;
         }
 
-        private string GetSQLCommand(string sqlName)
+        private Device GetCurrentDevice()
         {
-            string sql = ConfigAppSettings.GetSettingString(sqlName, "");
-            sql = sql.Replace("@DevicesTable", ConfigAppSettings.GetSettingString("DevicesTable", "Devices"));
-            sql = sql.Replace("@Id", _device.Id.ToString(CultureInfo.InvariantCulture));
-            sql = sql.Replace("@Name", tb_device_name.Text.Trim());
-            sql = sql.Replace("@State", cb_device_state.Checked.ToString());
-            sql = sql.Replace("@SyncState", cb_device_sync.Checked.ToString());
-            sql = sql.Replace("@IP", tb_device_ip.Text);
-            sql = sql.Replace("@Port", ntb_device_port.Text);
-            sql = sql.Replace("@UnitID", nud_device_unitid.Text);
-            return sql;
+            Device device = new Device()
+            {
+                Id = _device.Id,
+                Name = tb_device_name.Text.Trim(),
+                State = cb_device_state.Checked,
+                SyncState = cb_device_sync.Checked,
+                ModbusTcpDevice = new ModbusTcpDevice()
+                {
+                    IP = tb_device_ip.Text,
+                    Port = Convert.ToInt32(ntb_device_port.Text.Trim()),
+                    UnitID = Convert.ToByte(nud_device_unitid.Text.Trim()),
+                },
+            };
+            return device;
         }
 
         private void frmAddDevice_Load(object sender, System.EventArgs e)
@@ -84,7 +89,7 @@ namespace OptimalControl.Forms
                     MessageBox.Show("请输入设备名！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (Convert.ToInt32(ntb_device_port.Text)>65535)
+                if (Convert.ToInt32(ntb_device_port.Text) > 65535)
                 {
                     MessageBox.Show("端口号错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -94,14 +99,16 @@ namespace OptimalControl.Forms
                     MessageBox.Show("从站号错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                string sql = "";
+                BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
+                IDeviceManager deviceManager = bllFactory.BuildDeviceManager();
+
                 switch (_mode)
                 {
                     case DataOperateMode.Insert:
-                        sql = GetSQLCommand("SQLInsertDevices");
+                        Result = deviceManager.AddDevice(GetCurrentDevice());
                         break;
                     case DataOperateMode.Edit:
-                        sql = GetSQLCommand("SQLEditDevices");
+                        Result = deviceManager.ModifyDevice(GetCurrentDevice());
                         break;
                     case DataOperateMode.Delete:
                         if (
@@ -112,25 +119,19 @@ namespace OptimalControl.Forms
                                 MessageBoxIcon.Warning)
                             == DialogResult.OK)
                         {
-                            sql = GetSQLCommand("SQLDeleteDevices");
+                            Result = deviceManager.DeleteDeviceById(_device.Id);
                         }
                         break;
                     default:
                         break;
                 }
-                if (sql.Length > 0)
-                {
-                    Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction,
-                        CommandType.Text, sql);
 
-                    this.DialogResult = DialogResult.OK;
-                    this.Dispose();
-                }
+                this.DialogResult = DialogResult.OK;
+                this.Dispose();
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show(ex.Message);
+                RecordLog.WriteLogFile("frmDeviceManager",ex.Message);
             }
         }
 

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
+using IBLL.Control;
+using Model.Modbus;
 using Utility;
 using Model.Control;
 using ZedGraph;
@@ -15,43 +18,40 @@ namespace OptimalControl.Forms
     {
         private readonly DataOperateMode _mode;
         private Curve _curve;
-        private readonly DataTable _devicesDataTable;
-        private readonly DataTable _parameterDataTable;
+        private BLLFactory.BLLFactory _bllFactory = new BLLFactory.BLLFactory();
+        private List<Variable> _variableCollection = new List<Variable>();
+        private List<Device> _deviceCollection = new List<Device>();
+        private IDeviceManager _deviceManager;
+        private IVariableManager _variableManager;
 
-        public int Result { get; private set; }
+        public bool Result { get; private set; }
 
-        public frmCurveEditor(DataOperateMode mode, Curve curve, DataTable devicesDataTable, DataTable parameterDataTable)
+        public frmCurveEditor(DataOperateMode mode, Curve curve)
         {
             _mode = mode;
             _curve = curve;
-            _devicesDataTable = devicesDataTable.Copy();
-            _parameterDataTable = parameterDataTable.Copy();
-
-            DataRow row = _devicesDataTable.NewRow();
-            row["Id"] = "0";
-            row["Name"] = "服务器";
-            _devicesDataTable.Rows.InsertAt(row, 0);
-
+            _variableManager = _bllFactory.BuildIVariableManager();
+            _deviceManager = _bllFactory.BuildDeviceManager();
+            _variableCollection = _variableManager.GetAllVariableInfo();
+            _deviceCollection = _deviceManager.GetAllDeviceInfo();
             InitializeComponent();
             cb_curve_name.DrawMode = DrawMode.OwnerDrawVariable;
             cb_curve_color.DrawMode = DrawMode.OwnerDrawVariable;
         }
 
-        private void LoadUI(Curve curve, DataTable devicesDataTable, DataTable parameterDataTable, string formText,
-            DataOperateMode mode)
+        private void LoadUI(Curve curve, string formText, DataOperateMode mode)
         {
             cb_curve_name.Items.Clear();
-            for (int index = 0; index < parameterDataTable.Rows.Count; index++)
+            foreach (Variable variable in _variableCollection)
             {
-                cb_curve_name.Items.Add(Convert.ToString(parameterDataTable.Rows[index][1]));
+                cb_curve_name.Items.Add(variable.Name);
             }
 
             cb_curve_device.Items.Clear();
-            for (int index = 0; index < devicesDataTable.Rows.Count; index++)
+            cb_curve_device.Items.Add("0 服务器");
+            foreach (Device device in _deviceCollection)
             {
-                cb_curve_device.Items.Add(string.Format("{0} {1}",
-                    Convert.ToString(devicesDataTable.Rows[index][0]),
-                    Convert.ToString(devicesDataTable.Rows[index][1])));
+                cb_curve_device.Items.Add(string.Format("{0} {1}", device.Id, device.Name));
             }
 
             ArrayList colorList = new ArrayList();
@@ -88,14 +88,21 @@ namespace OptimalControl.Forms
                 Text = formText;
                 cb_curve_name.Text = curve.Name;
                 cb_curve_name.Enabled = (mode != DataOperateMode.Delete);
-                DataRow[] dataRows = devicesDataTable.Select(string.Format("Id={0}", curve.DeviceId));
-                cb_curve_device.Text = string.Format("{0} {1}",
-                    Convert.ToString(dataRows[0][0]),
-                    Convert.ToString(dataRows[0][1]));
+
+                if (curve.DeviceID == 0)
+                {
+                    cb_curve_device.Text = "0 服务器";
+                }
+                else
+                {
+                    Device device = _deviceManager.GetDeviceInfoById(Convert.ToInt32(curve.DeviceID));
+                    cb_curve_device.Text = string.Format("{0} {1}", Convert.ToString(device.Id), Convert.ToString(device.Name));
+                }
+
                 //cb_curve_device.Enabled = (mode != DataOperateMode.Delete);
                 ntb_curve_address.Text = curve.Address.ToString(CultureInfo.InvariantCulture);
                 ntb_curve_address.Enabled = (mode != DataOperateMode.Delete);
-                if (curve.LineColor != new Color())
+                if (curve.LineColor != Color.FromArgb(0))
                 {
                     cb_curve_color.SelectedIndex = colorList.IndexOf(curve.LineColor.Name) + 1;
                     //cb_curve_color.Text = curve.LineColour.ToString();
@@ -135,28 +142,26 @@ namespace OptimalControl.Forms
             }
         }
 
-        private string GetSQLCommand(string sqlName)
+        private Curve GetCurrentCurve()
         {
-            string sql = ConfigAppSettings.GetSettingString(sqlName, "");
-            sql = sql.Replace("@CurvesTable", ConfigAppSettings.GetSettingString("CurvesTable", "Curves"));
-            sql = sql.Replace("@Id", _curve.Id.ToString(CultureInfo.InvariantCulture));
-            sql = sql.Replace("@Name", cb_curve_name.Text.Trim());
-            sql = sql.Replace("@DeviceID", Convert.ToString(_devicesDataTable.Rows[cb_curve_device.SelectedIndex][0]));
-            sql = sql.Replace("@Address", ntb_curve_address.Text.Trim());
-            sql = sql.Replace("'@LineColor'",
-                cb_curve_color.Text != "" ? string.Format("'{0}'", cb_curve_color.Text.Trim()) : "NULL");
-            sql = sql.Replace("@LineType", cb_curve_type.Text.Trim().Equals("点线").ToString());
-            sql = sql.Replace("'@LineWidth'",
-                tb_curve_size.Text != "" ? string.Format("'{0}'", tb_curve_size.Text.Trim()) : "NULL");
-            sql = sql.Replace("'@SymbolType'",
-                cb_curve_symbol.Text != "" ? string.Format("'{0}'", cb_curve_symbol.Text.Trim()) : "NULL");
-            sql = sql.Replace("'@SymbolSize'",
-                tb_curve_symbolsize.Text != "" ? string.Format("'{0}'", tb_curve_symbolsize.Text.Trim()) : "NULL");
-            sql = sql.Replace("@XTitle", tb_curve_xtitle.Text.Trim());
-            sql = sql.Replace("@YTitle", tb_curve_ytitle.Text.Trim());
-            sql = sql.Replace("@YMax", tb_curve_ymax.Text.Trim());
-            sql = sql.Replace("@YMin", tb_curve_ymin.Text.Trim());
-            return sql;
+            SymbolType symbol;
+            Curve curve = new Curve()
+            {
+                Id = _curve.Id,
+                Name = cb_curve_name.Text.Trim(),
+                DeviceID = Convert.ToInt32(cb_curve_device.Text.Split(' ')[0].Trim()),
+                Address = Convert.ToUInt16(ntb_curve_address.Text.Trim()),
+                LineWidth = tb_curve_size.Text.Trim() != "" ? Convert.ToSingle(tb_curve_size.Text.Trim()) : -1,
+                LineColor = cb_curve_color.Text.Trim() != "" ? Color.FromName(cb_curve_color.Text.Trim()) : Color.FromArgb(0),
+                LineType = cb_curve_type.Text == "点线",
+                SymbolSize = tb_curve_symbolsize.Text != "" ? Convert.ToSingle(tb_curve_symbolsize.Text.Trim()) : -1,
+                SymbolType = SymbolType.TryParse(cb_curve_symbol.Text.Trim(), out symbol) ? symbol : SymbolType.UserDefined,
+                XTitle = tb_curve_xtitle.Text.Trim(),
+                YTitle = tb_curve_ytitle.Text.Trim(),
+                YMax = Convert.ToDouble(tb_curve_ymax.Text.Trim()),
+                YMin = Convert.ToDouble(tb_curve_ymin.Text.Trim()),
+            };
+            return curve;
         }
 
         private void frmEditParameter_Load(object sender, System.EventArgs e)
@@ -164,13 +169,13 @@ namespace OptimalControl.Forms
             switch (_mode)
             {
                 case DataOperateMode.Insert:
-                    LoadUI(_curve, _devicesDataTable, _parameterDataTable, "添加曲线", _mode);
+                    LoadUI(_curve, "添加曲线", _mode);
                     break;
                 case DataOperateMode.Edit:
-                    LoadUI(_curve, _devicesDataTable, _parameterDataTable, "编辑曲线", _mode);
+                    LoadUI(_curve, "编辑曲线", _mode);
                     break;
                 case DataOperateMode.Delete:
-                    LoadUI(_curve, _devicesDataTable, _parameterDataTable, "删除曲线", _mode);
+                    LoadUI(_curve, "删除曲线", _mode);
                     break;
                 default:
                     break;
@@ -219,21 +224,16 @@ namespace OptimalControl.Forms
                     MessageBox.Show("最大值应不小于最小值！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
-                string sql;
+                ICurveManager curveManager = _bllFactory.BuildCurveManager();
                 switch (_mode)
                 {
                     case DataOperateMode.Insert:
-                        sql = GetSQLCommand("SQLInsertCurves");
-                        Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction, CommandType.Text,
-                            sql);
+                        Result = curveManager.AddCurve(GetCurrentCurve());
                         this.DialogResult = DialogResult.OK;
                         this.Dispose();
                         break;
                     case DataOperateMode.Edit:
-                        sql = GetSQLCommand("SQLEditCurves");
-                        Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction, CommandType.Text,
-                            sql);
+                        Result = curveManager.ModifyCurve(GetCurrentCurve());
                         this.DialogResult = DialogResult.OK;
                         this.Dispose();
                         break;
@@ -246,9 +246,7 @@ namespace OptimalControl.Forms
                                 MessageBoxIcon.Warning)
                             == DialogResult.OK)
                         {
-                            sql = GetSQLCommand("SQLDeleteCurves");
-                            Result = SQLHelper.ExecuteNonQuery(SQLHelper.ConnectionStringLocalTransaction,
-                                CommandType.Text, sql);
+                            Result = curveManager.DeleteCurveById(_curve.Id);
                             this.DialogResult = DialogResult.OK;
                             this.Dispose();
                         }
@@ -258,8 +256,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show(ex.Message);
+                RecordLog.WriteLogFile("frmCurveEdirtor", ex.Message);
             }
         }
 
@@ -271,10 +268,21 @@ namespace OptimalControl.Forms
 
         private void cb_curve_name_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cb_curve_device.Text = string.Format("{0} {1}",
-                _devicesDataTable.Rows[Convert.ToInt32(_parameterDataTable.Rows[cb_curve_name.SelectedIndex][10])][0],
-                _devicesDataTable.Rows[Convert.ToInt32(_parameterDataTable.Rows[cb_curve_name.SelectedIndex][10])][1]);
-            ntb_curve_address.Text = _parameterDataTable.Rows[cb_curve_name.SelectedIndex][2].ToString();
+            if (_variableCollection[cb_curve_name.SelectedIndex].DeviceID <= 0)
+            {
+                cb_curve_device.Text = "0 服务器";
+            }
+            else
+            {
+                Device device =
+                    _deviceManager.GetDeviceInfoById(
+                        Convert.ToInt32(_variableCollection[cb_curve_name.SelectedIndex].DeviceID));
+                cb_curve_device.Text = string.Format("{0} {1}", Convert.ToString(device.Id),
+                    Convert.ToString(device.Name));
+            }
+
+            ntb_curve_address.Text =
+                _variableCollection[cb_curve_name.SelectedIndex].Address.ToString(CultureInfo.InvariantCulture);
             tb_curve_xtitle.Text = "时间/(秒)";
             tb_curve_ytitle.Text = cb_curve_name.Text;
         }

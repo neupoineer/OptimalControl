@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using IDAL.Control;
 using Model.Control;
 
@@ -29,8 +28,6 @@ namespace DAL.Control
 
             //创建变量实体
             Variable tmpVariable = new Variable();
-
-            // 转换数据库存储的 二进制数据为 Byte[] 数组 以便进而转换为变量权限集合
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
 
@@ -170,12 +167,12 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = addVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = addVariable.Ratio };
-                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = addVariable.Limit.UltimateUpperLimit };
-                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = addVariable.Limit.UpperLimit };
-                SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = addVariable.Limit.LowerLimit };
-                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = addVariable.Limit.UltimateLowerLimit };
-                SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = addVariable.ControlPeriod };
-                SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = addVariable.OperateDelay };
+                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateUpperLimit) };
+                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UpperLimit) };
+                SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.LowerLimit) };
+                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateLowerLimit) };
+                SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(addVariable.ControlPeriod) };
+                SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(addVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = addVariable.DeviceID };
 
                 cmd.Parameters.AddRange(new SqlParameter[] { prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10 });
@@ -229,12 +226,12 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = currentVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = currentVariable.Ratio };
-                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = currentVariable.Limit.UltimateUpperLimit };
-                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = currentVariable.Limit.UpperLimit };
-                SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = currentVariable.Limit.LowerLimit };
-                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = currentVariable.Limit.UltimateLowerLimit };
-                SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = currentVariable.ControlPeriod };
-                SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = currentVariable.OperateDelay };
+                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateUpperLimit) };
+                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UpperLimit) };
+                SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.LowerLimit) };
+                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateLowerLimit) };
+                SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(currentVariable.ControlPeriod) };
+                SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(currentVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentVariable.DeviceID };
                 SqlParameter prm11 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentVariable.Id };
 
@@ -259,9 +256,7 @@ namespace DAL.Control
             string sqltxt = "SELECT * FROM Variable";
             //创建变量实体集合
             List<Variable> VariableCollection = new List<Variable>();
-            //定义变量实体
 
-            // 转换数据库存储的 二进制数据为 Byte[] 数组 以便进而转换为变量权限集合
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -325,9 +320,6 @@ namespace DAL.Control
 
             //创建变量实体集合
             List<Variable> variableCollection = new List<Variable>();
-            //定义变量实体
-
-            // 转换数据库存储的 二进制数据为 Byte[] 数组 以便进而转换为变量权限集合
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -401,6 +393,20 @@ namespace DAL.Control
                 return false;
         }
 
+        #endregion
+
+        #region 私有成员
+        /// <summary>
+        /// Determines whether the specified parameter is null.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>result(null for -1)</returns>
+        private object IsParameterNull(object parameter)
+        {
+            if (Convert.ToDouble(parameter).Equals(-1))
+                return DBNull.Value;
+            else return parameter;
+        }
         #endregion
     }
 }

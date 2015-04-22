@@ -2,6 +2,7 @@
 using System.ComponentModel.Design;
 using Modbus.Device;
 using Model.Modbus;
+using Utility;
 
 namespace Model.Control
 {
@@ -175,7 +176,6 @@ namespace Model.Control
 
         #endregion
 
-
         #region Public Methods
 
         /// <summary>
@@ -271,6 +271,7 @@ namespace Model.Control
             }
             catch (Exception ex)
             {
+                RecordLog.WriteLogFile("GetValueFromModbusTcpMaster", ex.Message);
                 return false;
             }
         }
@@ -298,6 +299,7 @@ namespace Model.Control
             }
             catch (Exception ex)
             {
+                RecordLog.WriteLogFile("SetValueToModbusTcpMaster", ex.Message);
                 return false;
             }
         }
@@ -323,6 +325,7 @@ namespace Model.Control
             }
             catch (Exception ex)
             {
+                RecordLog.WriteLogFile("GetValueFromModbusSalve", ex.Message);
                 return false;
             }
         }
@@ -338,6 +341,7 @@ namespace Model.Control
             }
             catch (Exception ex)
             {
+                RecordLog.WriteLogFile("SetValueToModbusSalve", ex.Message);
                 return false;
             }
         }

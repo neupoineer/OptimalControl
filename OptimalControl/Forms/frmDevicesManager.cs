@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
+using IBLL.Control;
 using Model.Modbus;
 using Utility;
 
@@ -19,8 +21,6 @@ namespace OptimalControl.Forms
 
     public partial class frmDevicesManager : Form
     {
-        private string SQLGetDevices = ConfigAppSettings.GetSettingString("SQLGetDevices", "SELECT * FROM @DevicesTable");
-        private string DevicesTable = ConfigAppSettings.GetSettingString("DevicesTable", "Device");
 
         public frmDevicesManager()
         {
@@ -28,60 +28,67 @@ namespace OptimalControl.Forms
             UpdateUI();
         }
 
-        private string GetDevicesCommand(string sqlCmd, string table)
-        {
-            string sql = sqlCmd;
-            sql = sql.Replace("@DevicesTable", table);
-            return sql;
-        }
-
         private void UpdateUI()
         {
-            DataTable deviceDataTable = SQLHelper.ExcuteDataTable(SQLHelper.ConnectionStringLocalTransaction,
-                GetDevicesCommand(SQLGetDevices, DevicesTable));
-            UpdateDevicesGrid(deviceDataTable, "1=1");
-            tssl_device_manager.Text = string.Format("查询到 {0} 行数据", deviceDataTable.Rows.Count);
+            UpdateDevicesGrid();
         }
 
-        private void UpdateDevicesGrid(DataTable dataTable, string filter)
+        private delegate void UpdateDevicesGridDelegate();
+
+        private void UpdateDevicesGrid()
         {
-            DataRow[] data = dataTable.Select(filter);
-            DataTable table = dataTable.Clone();
-            foreach (DataRow row in data)
+            if (InvokeRequired)
             {
-                table.Rows.Add(row.ItemArray);
+                Invoke(new UpdateDevicesGridDelegate(UpdateDevicesGrid));
             }
-
-            dataGridView_devices.DataSource = table;
-
-            foreach (DataGridViewColumn column in dataGridView_devices.Columns)
+            try
             {
-                switch (column.HeaderText) //更改列名
+                BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
+                IDeviceManager deviceManager = bllFactory.BuildDeviceManager();
+                List<Device> deviceCollection = deviceManager.GetAllDeviceInfo();
+                // 如果包含信息
+                if (deviceCollection.Count > 0)
                 {
-                    case "Id":
-                        column.HeaderText = "序号";
-                        break;
-                    case "Name":
-                        column.HeaderText = "设备名";
-                        break;
-                    case "State":
-                        column.HeaderText = "启用";
-                        break;
-                    case "SyncState":
-                        column.HeaderText = "同步数据";
-                        break;
-                    case "IP":
-                        column.HeaderText = "IP地址";
-                        break;
-                    case "Port":
-                        column.HeaderText = "端口";
-                        break;
-                    case "UnitID":
-                        column.HeaderText = "从站号";
-                        break;
-                    default:
-                        break;
+                    BindingSource source = new BindingSource {DataSource = deviceCollection};
+                    dataGridView_devices.DataSource = source;
+
+                    foreach (DataGridViewColumn column in dataGridView_devices.Columns)
+                    {
+                        switch (column.HeaderText) //更改列名
+                        {
+                            case "Id":
+                                column.HeaderText = "序号";
+                                column.DisplayIndex = 0;
+                                break;
+                            case "Name":
+                                column.HeaderText = "设备名";
+                                column.DisplayIndex = 1;
+                                break;
+                            case "State":
+                                column.HeaderText = "启用";
+                                break;
+                            case "SyncState":
+                                column.HeaderText = "同步数据";
+                                break;
+                            case "IP":
+                                column.HeaderText = "IP地址";
+                                break;
+                            case "Port":
+                                column.HeaderText = "端口";
+                                break;
+                            case "UnitID":
+                                column.HeaderText = "从站号";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    tssl_device_manager.Text = string.Format("查询到 {0} 行数据", deviceCollection.Count);
                 }
+            }
+            catch (Exception ex)
+            {
+                RecordLog.WriteLogFile("frmDevicesManager", ex.Message);
             }
         }
 
@@ -92,15 +99,15 @@ namespace OptimalControl.Forms
                 int selectRowIndex = dataGridView_devices.CurrentRow.Index;
                 Device device = new Device
                 {
-                    Id = Convert.ToInt32(dataGridView_devices.Rows[selectRowIndex].Cells[0].Value),
-                    Name = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells[1].Value),
-                    State = Convert.ToBoolean(dataGridView_devices.Rows[selectRowIndex].Cells[2].Value),
-                    SyncState = Convert.ToBoolean(dataGridView_devices.Rows[selectRowIndex].Cells[3].Value),
+                    Id = Convert.ToInt32(dataGridView_devices.Rows[selectRowIndex].Cells["Id"].Value),
+                    Name = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells["Name"].Value),
+                    State = Convert.ToBoolean(dataGridView_devices.Rows[selectRowIndex].Cells["State"].Value),
+                    SyncState = Convert.ToBoolean(dataGridView_devices.Rows[selectRowIndex].Cells["SyncState"].Value),
                     ModbusTcpDevice = new ModbusTcpDevice()
                     {
-                        Ip = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells[4].Value),
-                        Port = Convert.ToInt32(dataGridView_devices.Rows[selectRowIndex].Cells[5].Value),
-                        UnitID = Convert.ToByte(dataGridView_devices.Rows[selectRowIndex].Cells[6].Value)
+                        IP = Convert.ToString(dataGridView_devices.Rows[selectRowIndex].Cells["IP"].Value),
+                        Port = Convert.ToInt32(dataGridView_devices.Rows[selectRowIndex].Cells["Port"].Value),
+                        UnitID = Convert.ToByte(dataGridView_devices.Rows[selectRowIndex].Cells["UnitID"].Value)
                     }
                 };
                 return device;

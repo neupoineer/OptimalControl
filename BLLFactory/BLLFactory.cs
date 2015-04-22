@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using BLL;
 using BLL.Control;
 using IBLL;
@@ -59,6 +56,10 @@ namespace BLLFactory
         public ILogManager BuildLogManager()
         {
             return new LogManager();
+        }
+        public IDataManager BuildDataManager()
+        {
+            return new DataManager();
         }
     }
 }

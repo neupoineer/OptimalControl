@@ -33,7 +33,7 @@ namespace Model.Control
         /// <summary>
         /// The device identifier
         /// </summary>
-        public int DeviceId
+        public int DeviceID
         {
             get { return _deviceId; }
             set { _deviceId = value; }
@@ -139,7 +139,7 @@ namespace Model.Control
             double yAxisMax, double yAxisMin)
         {
             DataList = dataList;
-            DeviceId = deviceId;
+            DeviceID = deviceId;
             Address = address;
             LineColor = lineColour;
             LineType = lineType;

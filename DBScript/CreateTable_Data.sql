@@ -13,11 +13,11 @@ Create Table [Data]
 	-- 主键列，自动增长 标识种子为 1 
 	[Id] int identity(1,1) Constraint [PK_DataId] Primary Key,
 
-	-- 时间
-	[Time] datetime Not Null,
-
 	-- 参数名
 	[ParameterName] Nvarchar(50) Not Null,
+
+	-- 时间
+	[TimeValue] datetime Not Null,
 
 	-- 参数值
 	[Value] real Not Null,
