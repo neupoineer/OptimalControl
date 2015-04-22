@@ -251,7 +251,7 @@ namespace Model.Control
         /// </summary>
         /// <param name="modbusTcpDevice">The modbus TCP device.</param>
         /// <returns>Result</returns>
-        public bool GetValueFromModbusTcpMaster(ModbusTcpDevice modbusTcpDevice)
+        public bool GetValueFromModbusTcpMaster(ref ModbusTcpDevice modbusTcpDevice)
         {
             try
             {
@@ -281,7 +281,7 @@ namespace Model.Control
         /// </summary>
         /// <param name="modbusTcpDevice">The modbus TCP device.</param>
         /// <returns></returns>
-        public bool SetValueToModbusTcpMaster(ModbusTcpDevice modbusTcpDevice)
+        public bool SetValueToModbusTcpMaster(ref ModbusTcpDevice modbusTcpDevice)
         {
             try
             {
@@ -304,7 +304,7 @@ namespace Model.Control
             }
         }
 
-        public bool GetValueFromModbusSalve(ModbusSlave modbusSlave)
+        public bool GetValueFromModbusSalve(ref ModbusSlave modbusSlave)
         {
             ushort[] register = new ushort[2];
             try
@@ -330,7 +330,7 @@ namespace Model.Control
             }
         }
 
-        public bool SetValueToModbusSalve(ModbusSlave modbusSlave)
+        public bool SetValueToModbusSalve(ref ModbusSlave modbusSlave)
         {
             try
             {

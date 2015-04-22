@@ -14,7 +14,6 @@ namespace DAL.Control
     /// </summary>
     public class RuleService : IRuleService
     {
-
         #region IRuleService 成员
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace DAL.Control
             // 拼接 SQL 命令
             string sqlTxt =
                 "INSERT INTO Rules (Name,Expression,Operation,Period,State,Priority) VALUES " +
-                "(@Name,@Expression,@Operation,@Period,@Enabled,@Priority)";
+                "(@Name,@Expression,@Operation,@Period,@State,@Priority)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -131,7 +130,7 @@ namespace DAL.Control
         {
             // 拼接 SQL 命令
             string sqlTxt =
-                "UPDATE Rules SET Name=@Name,State=@State,SyncState=@SyncState,IP=@IP,Port=@Port,UnitID=@UnitID WHERE Id=@Id";
+                "UPDATE Rules SET Name=@Name,Expression=@Expression,Operation=@Operation,Period=@Period,State=@State,Priority=@Priority WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -279,7 +278,6 @@ namespace DAL.Control
 
         #endregion
 
-
         #region 私有成员
         /// <summary>
         /// Determines whether the specified parameter is null.
@@ -293,6 +291,5 @@ namespace DAL.Control
             else return parameter;
         }
         #endregion
-
     }
 }

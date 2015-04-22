@@ -93,17 +93,17 @@ namespace OptimalControl.Forms
         /// <summary>
         /// The real timer
         /// </summary>
-        private System.Timers.Timer _timerUpdateVariable = new System.Timers.Timer(10000);
+        private System.Threading.Timer _timerUpdateVariable;
 
         /// <summary>
         /// The real timer
         /// </summary>
-        private System.Timers.Timer _timerRealtime = new System.Timers.Timer(2000);
+        private System.Threading.Timer _timerRealtime;
 
         /// <summary>
         /// The real timer
         /// </summary>
-        private System.Timers.Timer _timerRuleDelay = new System.Timers.Timer(300000);
+        private System.Threading.Timer _timerRuleDelay;
 
         /// <summary>
         /// The real timer flag
@@ -314,15 +314,15 @@ namespace OptimalControl.Forms
 
                 Application.AddMessageFilter(_myFilter);
 
-                _timerUpdateVariable = new System.Timers.Timer(_updateVariableTimerInterval);
-                _timerUpdateVariable.Elapsed += TimerUpdateVariableElapsed;
+                //_timerUpdateVariable = new System.Timers.Timer(_updateVariableTimerInterval);
+                //_timerUpdateVariable.Elapsed += TimerUpdateVariableElapsed;
 
                 _timerLogoff = new System.Timers.Timer(_logoffTime*1000);
                 _timerLogoff.Elapsed += TimerLogoffElapsed;
                 _timerLogoff.Start();
 
-                _timerRealtime = new System.Timers.Timer(_realTimerInterval);
-                _timerUpdateVariable.Elapsed += TimerRealtimeElapsed;
+                //_timerRealtime = new System.Threading.Timer(TimerRealtimeElapsed,null,0,_realTimerInterval);
+                //_timerUpdateVariable.Elapsed += TimerRealtimeElapsed;
             }
             catch (Exception ex)
             {
@@ -492,11 +492,11 @@ namespace OptimalControl.Forms
 
                 _updateVariableTimerInterval = ConfigAppSettings.GetSettingInt("UpdateVariableTime", _updateVariableTimerInterval); //时间间隔
 
-                _timerUpdateVariable.Interval = _updateVariableTimerInterval;
+                //_timerUpdateVariable.Interval = _updateVariableTimerInterval;
 
                 _realTimerInterval = ConfigAppSettings.GetSettingInt("RealTime", _realTimerInterval); //时间间隔
 
-                _timerRealtime.Interval = _realTimerInterval;
+                //_timerRealtime.Interval = _realTimerInterval;
 
                 _modbusRtuDevice.SerialPortObject = new SerialPort
                     (
@@ -889,7 +889,7 @@ namespace OptimalControl.Forms
 
                                             if (_modbusRtuSlaveCreated)
                                             {
-                                                parameter.SetValueToModbusSalve(_modbusRtuSlave);
+                                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
                                             }
                                             Log addLog = new Log()
                                             {
@@ -909,9 +909,10 @@ namespace OptimalControl.Forms
                         }
                     }
                     _timerRuleDelay =
-                        new System.Timers.Timer(rule.Period > 0 ? rule.Period*1000 : _defaultControlPeriod*1000);
-                    _timerRuleDelay.Elapsed += TimerRuleDelayElapsed;
-                    _timerRuleDelay.Start();
+                        new System.Threading.Timer(TimerRuleDelayElapsed, null, 0,
+                            rule.Period > 0 ? rule.Period*1000 : _defaultControlPeriod*1000);
+                    //_timerRuleDelay.Elapsed += TimerRuleDelayElapsed;
+                    //_timerRuleDelay.Start();
                     _execteRulesFlag = false;
                     break;
                 }
@@ -1364,6 +1365,9 @@ namespace OptimalControl.Forms
                                 column.HeaderText = "优先级";
                                 column.DisplayIndex = 0;
                                 break;
+                            case "DelayTime":
+                                column.Visible = false;
+                                break;
                             default:
                                 break;
                         }
@@ -1725,7 +1729,7 @@ namespace OptimalControl.Forms
             }
         }
 
-        #endregion
+        #endregion 
 
         #region 控件响应
 
@@ -1734,7 +1738,7 @@ namespace OptimalControl.Forms
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void TimerUpdateVariableElapsed(object sender, EventArgs e)
+        private void TimerUpdateVariableElapsed(object o)
         {
             if (!_realTimerFlag) return;
             try
@@ -1752,6 +1756,7 @@ namespace OptimalControl.Forms
                     _myFilter.isActive = false;
                     _timerLogoff.Start();
                 }
+                Console.WriteLine(string.Format("2:{0}", DateTime.Now));
             }
             catch (Exception ex)
             {
@@ -1759,13 +1764,14 @@ namespace OptimalControl.Forms
             }
         }
 
-        private void TimerRealtimeElapsed(object sender, EventArgs e)
+        private void TimerRealtimeElapsed(object o)
         {
             try
             {
                 if (_execteRulesFlag)
                     ExecuteRules(_rules);
                 UpdateLogGrid();
+                Console.WriteLine(string.Format("1:{0}",DateTime.Now));
             }
             catch (Exception ex)
             {
@@ -1823,12 +1829,15 @@ namespace OptimalControl.Forms
                 {
                     if (frmLogin.isPass && frmLogin.currentOperator.RightsCollection[menu_file_quit.Name].RightsState)
                     {
-                        _timerUpdateVariable.Stop();
-                        _timerRealtime.Stop();
-                        for (int deviceID = 0; deviceID < _devices.Count; deviceID++)
+                        //_timerUpdateVariable.Stop();
+                        _timerUpdateVariable.Dispose();
+                        //_timerRealtime.Stop();
+                        _timerRealtime.Dispose();
+
+                        foreach (Device device in _devices)
                         {
-                            _devices[deviceID].ModbusTcpMasterCreated =
-                                ModbusTCPStopComm(_devices[deviceID].ModbusTcpDevice);
+                            device.ModbusTcpMasterCreated =
+                                ModbusTCPStopComm(device.ModbusTcpDevice);
                         }
                         ModbusRTUStopComm();
                         RecordLog.WriteLogFile("Closed", "Software Closed!");
@@ -1895,9 +1904,12 @@ namespace OptimalControl.Forms
                             }
                         }
                         _realTimerFlag = true;
-                        TimerUpdateVariableElapsed(sender, e);
-                        _timerUpdateVariable.Start();
-                        _timerRealtime.Start();
+                        //TimerUpdateVariableElapsed(sender, e);
+                        //_timerUpdateVariable.Start();
+                        _timerUpdateVariable = new System.Threading.Timer(TimerUpdateVariableElapsed,null,0,_updateVariableTimerInterval);
+                        //_timerRealtime.Start();
+                        _timerRealtime = new System.Threading.Timer(TimerRealtimeElapsed, null, 0, _realTimerInterval);
+
                         // 加载权限菜单
                         RightsMenuDataManager rmManager = new RightsMenuDataManager();
                         rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
@@ -1932,8 +1944,10 @@ namespace OptimalControl.Forms
         private void btn_stop_Click(object sender, EventArgs e)
         {
             _realTimerFlag = false;
-            _timerUpdateVariable.Stop();
-            _timerRealtime.Stop();
+            //_timerUpdateVariable.Stop();
+            _timerUpdateVariable.Dispose();
+            //_timerRealtime.Stop();
+            _timerRealtime.Dispose();
             // 加载权限菜单
             RightsMenuDataManager rmManager = new RightsMenuDataManager();
             rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
@@ -1968,6 +1982,8 @@ namespace OptimalControl.Forms
         {
             zgc_realtime.Invalidate();
             _updateGraphFlag = true;
+            btn_curve_realtime.Enabled = false;
+            btn_curve_stop.Enabled = true;
         }
 
         /// <summary>
@@ -1979,6 +1995,8 @@ namespace OptimalControl.Forms
         {
             zgc_realtime.Invalidate();
             _updateGraphFlag = false;
+            btn_curve_realtime.Enabled = true;
+            btn_curve_stop.Enabled = false;
         }
 
         /// <summary>
@@ -2453,11 +2471,12 @@ namespace OptimalControl.Forms
             tsbtn_oc_disabled.Enabled = true;
         }
 
-        private void TimerRuleDelayElapsed(object sender, ElapsedEventArgs e)
+        private void TimerRuleDelayElapsed(object o)
         {
             _execteRulesFlag = true;
-            _timerRuleDelay.Stop();
-            _timerRuleDelay.Elapsed -= TimerRuleDelayElapsed;
+            _timerRuleDelay.Dispose();
+            //_timerRuleDelay.Stop();
+            //_timerRuleDelay.Elapsed -= TimerRuleDelayElapsed;
         }
 
         private void tsbtn_oc_disabled_Click(object sender, EventArgs e)

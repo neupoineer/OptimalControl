@@ -32,13 +32,13 @@ namespace OptimalControl.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.statusStrip_main = new System.Windows.Forms.StatusStrip();
             this.status_Label = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip_main = new System.Windows.Forms.ToolStrip();
@@ -300,18 +300,19 @@ namespace OptimalControl.Forms
             this.btn_curve_realtime.Margin = new System.Windows.Forms.Padding(5, 2, 5, 2);
             this.btn_curve_realtime.Name = "btn_curve_realtime";
             this.btn_curve_realtime.Size = new System.Drawing.Size(40, 40);
-            this.btn_curve_realtime.Text = "toolStripButton2";
+            this.btn_curve_realtime.Text = "开始更新曲线";
             this.btn_curve_realtime.Click += new System.EventHandler(this.btn_curve_realtime_Click);
             // 
             // btn_curve_stop
             // 
             this.btn_curve_stop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btn_curve_stop.Enabled = false;
             this.btn_curve_stop.Image = ((System.Drawing.Image)(resources.GetObject("btn_curve_stop.Image")));
             this.btn_curve_stop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_curve_stop.Margin = new System.Windows.Forms.Padding(5, 2, 5, 2);
             this.btn_curve_stop.Name = "btn_curve_stop";
             this.btn_curve_stop.Size = new System.Drawing.Size(40, 40);
-            this.btn_curve_stop.Text = "toolStripButton1";
+            this.btn_curve_stop.Text = "停止更新曲线";
             this.btn_curve_stop.Click += new System.EventHandler(this.btn_curve_stop_Click);
             // 
             // toolStripSeparator5
@@ -1097,36 +1098,36 @@ namespace OptimalControl.Forms
             this.dgv_oc_rules.AllowUserToDeleteRows = false;
             this.dgv_oc_rules.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_oc_rules.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle22.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_oc_rules.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_oc_rules.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgv_oc_rules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_oc_rules.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_oc_rules.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgv_oc_rules.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_oc_rules.Location = new System.Drawing.Point(3, 17);
             this.dgv_oc_rules.MultiSelect = false;
             this.dgv_oc_rules.Name = "dgv_oc_rules";
             this.dgv_oc_rules.ReadOnly = true;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_oc_rules.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_oc_rules.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgv_oc_rules.RowHeadersVisible = false;
             this.dgv_oc_rules.RowTemplate.Height = 23;
             this.dgv_oc_rules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -1161,7 +1162,7 @@ namespace OptimalControl.Forms
             this.tsbtn_oc_enabled.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_oc_enabled.Image")));
             this.tsbtn_oc_enabled.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_oc_enabled.Name = "tsbtn_oc_enabled";
-            this.tsbtn_oc_enabled.Size = new System.Drawing.Size(60, 42);
+            this.tsbtn_oc_enabled.Size = new System.Drawing.Size(61, 42);
             this.tsbtn_oc_enabled.Text = "运行";
             this.tsbtn_oc_enabled.Click += new System.EventHandler(this.tsbtn_oc_enabled_Click);
             // 
@@ -1171,7 +1172,7 @@ namespace OptimalControl.Forms
             this.tsbtn_oc_disabled.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_oc_disabled.Image")));
             this.tsbtn_oc_disabled.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_oc_disabled.Name = "tsbtn_oc_disabled";
-            this.tsbtn_oc_disabled.Size = new System.Drawing.Size(60, 42);
+            this.tsbtn_oc_disabled.Size = new System.Drawing.Size(61, 42);
             this.tsbtn_oc_disabled.Text = "停止";
             this.tsbtn_oc_disabled.Click += new System.EventHandler(this.tsbtn_oc_disabled_Click);
             // 
@@ -1185,7 +1186,7 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_add.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_add.Image")));
             this.tsbtn_rule_add.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_add.Name = "tsbtn_rule_add";
-            this.tsbtn_rule_add.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_add.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_add.Text = "增加规则";
             this.tsbtn_rule_add.ToolTipText = "增加规则";
             this.tsbtn_rule_add.Click += new System.EventHandler(this.tsbtn_rule_add_Click);
@@ -1195,7 +1196,7 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_edit.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_edit.Image")));
             this.tsbtn_rule_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_edit.Name = "tsbtn_rule_edit";
-            this.tsbtn_rule_edit.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_edit.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_edit.Text = "编辑规则";
             this.tsbtn_rule_edit.Click += new System.EventHandler(this.tsbtn_rule_edit_Click);
             // 
@@ -1204,7 +1205,7 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_delete.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_delete.Image")));
             this.tsbtn_rule_delete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_delete.Name = "tsbtn_rule_delete";
-            this.tsbtn_rule_delete.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_delete.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_delete.Text = "删除规则";
             this.tsbtn_rule_delete.Click += new System.EventHandler(this.tsbtn_rule_delete_Click);
             // 
@@ -1218,7 +1219,7 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_update.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_update.Image")));
             this.tsbtn_rule_update.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_update.Name = "tsbtn_rule_update";
-            this.tsbtn_rule_update.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_update.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_update.Text = "刷新列表";
             this.tsbtn_rule_update.Click += new System.EventHandler(this.tsbtn_rule_update_Click);
             // 
@@ -1232,7 +1233,7 @@ namespace OptimalControl.Forms
             this.tsbtn_rule_paras.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_paras.Image")));
             this.tsbtn_rule_paras.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_paras.Name = "tsbtn_rule_paras";
-            this.tsbtn_rule_paras.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_paras.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_paras.Text = "管理变量";
             this.tsbtn_rule_paras.Click += new System.EventHandler(this.tsbtn_rule_paras_Click);
             // 
@@ -1253,23 +1254,23 @@ namespace OptimalControl.Forms
             this.dgv_oc_logs.AllowUserToDeleteRows = false;
             this.dgv_oc_logs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_oc_logs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_oc_logs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_oc_logs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgv_oc_logs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_oc_logs.DefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_oc_logs.DefaultCellStyle = dataGridViewCellStyle12;
             this.dgv_oc_logs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_oc_logs.Location = new System.Drawing.Point(3, 17);
             this.dgv_oc_logs.MultiSelect = false;
@@ -1346,7 +1347,7 @@ namespace OptimalControl.Forms
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2.Controls.Add(this.groupBox4);
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2MinSize = 200;
             this.splitContainerH1_2H2_1V1_2V2_2V3.Size = new System.Drawing.Size(707, 551);
-            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 503;
+            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 506;
             this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1_2V2_2V3.TabIndex = 0;
             // 
@@ -1368,7 +1369,7 @@ namespace OptimalControl.Forms
             this.zgc_realtime.ScrollMinX = 0D;
             this.zgc_realtime.ScrollMinY = 0D;
             this.zgc_realtime.ScrollMinY2 = 0D;
-            this.zgc_realtime.Size = new System.Drawing.Size(503, 551);
+            this.zgc_realtime.Size = new System.Drawing.Size(506, 551);
             this.zgc_realtime.TabIndex = 12;
             this.zgc_realtime.TabStop = false;
             // 
@@ -1379,7 +1380,7 @@ namespace OptimalControl.Forms
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(203, 551);
+            this.groupBox4.Size = new System.Drawing.Size(200, 551);
             this.groupBox4.TabIndex = 14;
             this.groupBox4.TabStop = false;
             // 
@@ -1627,16 +1628,16 @@ namespace OptimalControl.Forms
             // 
             this.dgv_data.AllowUserToAddRows = false;
             this.dgv_data.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control;
-            this.dgv_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle27;
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_data.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            this.dgv_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_data.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgv_data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_data.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_data.Location = new System.Drawing.Point(0, 0);
