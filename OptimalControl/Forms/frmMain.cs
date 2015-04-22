@@ -210,8 +210,6 @@ namespace OptimalControl.Forms
         /// </summary>
         private int _dataListLength = 720;
 
-        private List<Variable> _variables = new List<Variable>();
-
         private List<Rule> _rules = new List<Rule>();
 
         private int _defaultControlPeriod = 5;
@@ -258,9 +256,6 @@ namespace OptimalControl.Forms
 
                 ofd_history.InitialDirectory = (AppDomain.CurrentDomain.BaseDirectory + "cache");
 
-                //label_info1_info.Text = "";
-                //label_info1_load.Text = "";
-                //label_info1_voltage.Text = "";
                 status_Label.Text = "";
 
                 _masterPaneGraphRealtime = zgc_realtime.MasterPane;
@@ -288,7 +283,7 @@ namespace OptimalControl.Forms
                 _masterPaneGraphHistory.InnerPaneGap = 0;
                 //MasterPaneGraphHistory.Legend.IsVisible = true;
                 //MasterPaneGraphHistory.Legend.Position = LegendPos.TopCenter;
-                UpdateGraph(ref _masterPaneGraphHistory, ref zgc_realtime, _curves);
+                UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _curves);
 
                 dtp_curve_start.Value = DateTime.Today;
                 dtp_curve_end.Value = DateTime.Today.AddDays(1);
@@ -433,7 +428,6 @@ namespace OptimalControl.Forms
                 }
             }
         }
-
 
         /// <summary>
         /// 刷新工况列表.托管
@@ -1085,6 +1079,38 @@ namespace OptimalControl.Forms
         }
 
         /// <summary>
+        /// 将变量保存到数据库中
+        /// </summary>
+        private void SaveParameters()
+        {
+            try
+            {
+                if (InvokeRequired)
+                {
+                    Invoke(new SaveParametersDelegate(SaveParameters));
+                    return;
+                }
+                DateTime time = DateTime.Now;
+                if (SaveParameter(_modbusRtuParameters, time))
+                {
+                    _modbusRtuSlaveUpdated = false;
+                    status_Label.Text = string.Format("{0}数据已保存", _dcsName);
+                }
+                foreach (Device device in _devices)
+                {
+                    if (!device.State) continue;
+                    if (!SaveParameter(device.Variables, time)) continue;
+                    device.ModbusTcpMasterUpdated = false;
+                    status_Label.Text = string.Format("{0}数据已保存", device.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                RecordLog.WriteLogFile("SaveParameters", ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Saves the parameter.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
@@ -1116,9 +1142,6 @@ namespace OptimalControl.Forms
         /// </summary>
         private void ClearGraph() //清空图形和信息
         {
-            //label_info1_info.Text = ""; //清空波形图信息
-            //label_info1_load.Text = "";
-            //label_info1_voltage.Text = "";
             //zedGraphControl.MasterPane.PaneList.Clear(); //清波形图
             //zedGraphControl.MasterPane.GraphObjList.Clear();
             zgc_realtime.Invalidate(); //清空zedgraph信息
@@ -1134,7 +1157,7 @@ namespace OptimalControl.Forms
         {
             if (InvokeRequired)
             {
-                Invoke(new UpdateGraphDelegate(UpdateGraph));
+                Invoke(new UpdateGraphDelegate(UpdateGraph),masterPane,zgc,curves);
                 return;
             }
             try
@@ -1355,7 +1378,6 @@ namespace OptimalControl.Forms
 
         }
 
-
         /// <summary>
         /// Loads the history data.
         /// </summary>
@@ -1387,7 +1409,7 @@ namespace OptimalControl.Forms
             List<Curve> curves = new List<Curve>();
             try
             {
-                for (int index = 0; index < curves.Count; index++)
+                for (int index = 0; index < _curves.Count; index++)
                 {
                     curves.Add(_curves[index]);
                     curves[index].DataList.Clear();
@@ -1568,7 +1590,6 @@ namespace OptimalControl.Forms
             }
         }
 
-
         /// <summary>
         /// 从Modbus更新所有变量，并保存到数据库
         /// </summary>
@@ -1606,56 +1627,24 @@ namespace OptimalControl.Forms
 
         private delegate void SaveParametersDelegate();
 
-        /// <summary>
-        /// 将变量保存到数据库中
-        /// </summary>
-        private void SaveParameters()
-        {
-            try
-            {
-                if (InvokeRequired)
-                {
-                    Invoke(new SaveParametersDelegate(SaveParameters));
-                    return;
-                }
-                DateTime time = DateTime.Now;
-                if (SaveParameter(_modbusRtuParameters, time))
-                {
-                    _modbusRtuSlaveUpdated = false;
-                    status_Label.Text = string.Format("{0}数据已保存", _dcsName);
-                }
-                foreach (Device device in _devices)
-                {
-                    if (!device.State) continue;
-                    if (!SaveParameter(device.Variables, time)) continue;
-                    device.ModbusTcpMasterUpdated = false;
-                    status_Label.Text = string.Format("{0}数据已保存", device.Name);
-                }
-            }
-            catch (Exception ex)
-            {
-                RecordLog.WriteLogFile("SaveParameters", ex.Message);
-            }
-        }
-
         private void UpdateCurveData()
         {
             try
             {
                 double tmpTime = new XDate(DateTime.Now);
-                for (int index = 0; index < _curves.Count; index++)
+                foreach (Curve curve in _curves)
                 {
-                    if (_curves[index].DataList.Count >= _dataListLength) //数组长度限制
+                    if (curve.DataList.Count >= _dataListLength) //数组长度限制
                     {
-                        _curves[index].DataList.RemoveRange(0, (_curves[index].DataList.Count - _dataListLength + 1));
+                        curve.DataList.RemoveRange(0, (curve.DataList.Count - _dataListLength + 1));
                     }
-                    if (_curves[index].DeviceID == 0)
+                    if (curve.DeviceID == 0)
                     {
                         foreach (Variable parameter in _modbusRtuParameters)
                         {
-                            if (parameter.Address != _curves[index].Address) continue;
-                            _curves[index].Name = parameter.Name;
-                            _curves[index].DataList.Add(tmpTime, parameter.Value);
+                            if (parameter.Address != curve.Address) continue;
+                            curve.Name = parameter.Name;
+                            curve.DataList.Add(tmpTime, parameter.Value);
                             break;
                         }
                     }
@@ -1663,12 +1652,12 @@ namespace OptimalControl.Forms
                     {
                         foreach (Device device in _devices)
                         {
-                            if (device.Id != _curves[index].DeviceID) continue;
+                            if (device.Id != curve.DeviceID) continue;
                             foreach (Variable parameter in device.Variables)
                             {
-                                if (parameter.Address != _curves[index].Address) continue;
-                                _curves[index].Name = parameter.Name;
-                                _curves[index].DataList.Add(tmpTime, parameter.Value);
+                                if (parameter.Address != curve.Address) continue;
+                                curve.Name = parameter.Name;
+                                curve.DataList.Add(tmpTime, parameter.Value);
                                 break;
                             }
                         }

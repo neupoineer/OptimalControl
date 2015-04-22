@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using IBLL.Control;
 using Utility;
 using Model.Modbus;
+using System.Text.RegularExpressions;
 
 namespace OptimalControl.Forms
 {
@@ -22,21 +23,36 @@ namespace OptimalControl.Forms
             InitializeComponent();
         }
 
-        private void LoadUI(Device device, string formText, bool editable)
+        private delegate void LoadUIDelegate(Device device, string formText, DataOperateMode mode);
+
+        private void LoadUI(Device device, string formText, DataOperateMode mode)
         {
-            Text = formText;
-            tb_device_name.Text = device.Name;
-            tb_device_name.Enabled = editable;
-            nud_device_unitid.Value = device.ModbusTcpDevice.UnitID;
-            nud_device_unitid.Enabled = editable;
-            cb_device_state.Checked = device.State;
-            cb_device_state.Enabled = editable;
-            tb_device_ip.Text = device.ModbusTcpDevice.IP;
-            tb_device_ip.Enabled = editable;
-            ntb_device_port.Text = device.ModbusTcpDevice.Port.ToString(CultureInfo.InvariantCulture);
-            ntb_device_port.Enabled = editable;
-            cb_device_sync.Checked = device.SyncState;
-            cb_device_sync.Enabled = editable;
+            if (InvokeRequired)
+            {
+                Invoke(new LoadUIDelegate(LoadUI));
+                return;
+            }
+            if (mode == DataOperateMode.Insert)
+            {
+                ntb_device_port.Text = "502";
+                cb_device_state.Checked = true;
+            }
+            else
+            {
+                Text = formText;
+                tb_device_name.Text = device.Name;
+                tb_device_name.Enabled = (mode != DataOperateMode.Delete);
+                nud_device_unitid.Value = device.ModbusTcpDevice.UnitID;
+                nud_device_unitid.Enabled = (mode != DataOperateMode.Delete);
+                cb_device_state.Checked = device.State;
+                cb_device_state.Enabled = (mode != DataOperateMode.Delete);
+                tb_device_ip.Text = device.ModbusTcpDevice.IP;
+                tb_device_ip.Enabled = (mode != DataOperateMode.Delete);
+                ntb_device_port.Text = device.ModbusTcpDevice.Port.ToString(CultureInfo.InvariantCulture);
+                ntb_device_port.Enabled = (mode != DataOperateMode.Delete);
+                cb_device_sync.Checked = device.SyncState;
+                cb_device_sync.Enabled = (mode != DataOperateMode.Delete);
+            }
         }
 
         private Device GetCurrentDevice()
@@ -62,12 +78,13 @@ namespace OptimalControl.Forms
             switch (_mode)
             {
                 case DataOperateMode.Insert:
+                    LoadUI(_device, "添加设备", _mode);
                     break;
                 case DataOperateMode.Edit:
-                    LoadUI(_device, "编辑设备", true);
+                    LoadUI(_device, "编辑设备", _mode);
                     break;
                 case DataOperateMode.Delete:
-                    LoadUI(_device, "删除设备", false);
+                    LoadUI(_device, "删除设备", _mode);
                     break;
                 default:
                     break;
@@ -78,8 +95,10 @@ namespace OptimalControl.Forms
         {
             try
             {
-                IPAddress ip;
-                if (!IPAddress.TryParse(tb_device_ip.Text.Trim(), out ip))
+                Regex reg =
+                    new Regex(
+                        @"(?n)^(([1-9]?[0-9]|1[0-9]{2}|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9]{2}|2([0-4][0-9]|5[0-5]))$");
+                if (!reg.IsMatch(tb_device_ip.Text))
                 {
                     MessageBox.Show("IP地址格式错误！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -101,7 +120,7 @@ namespace OptimalControl.Forms
                 }
                 BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
                 IDeviceManager deviceManager = bllFactory.BuildDeviceManager();
-
+                IVariableManager variableManager = bllFactory.BuildIVariableManager();
                 switch (_mode)
                 {
                     case DataOperateMode.Insert:
@@ -119,7 +138,9 @@ namespace OptimalControl.Forms
                                 MessageBoxIcon.Warning)
                             == DialogResult.OK)
                         {
-                            Result = deviceManager.DeleteDeviceById(_device.Id);
+                            bool result1 = variableManager.DeleteVariableByDeviceId(_device.Id);
+                            bool result2 = deviceManager.DeleteDeviceById(_device.Id);
+                            Result = result1 && result2;
                         }
                         break;
                     default:

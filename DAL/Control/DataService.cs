@@ -70,8 +70,10 @@ namespace DAL.Control
         /// <returns>True:成功/False:失败</returns>
         public bool AddData(List<Data> dataCollection)
         {
+            // 从配置文件读取连接字符串
+            string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
 
-            SqlConnection conn = new SqlConnection();
+            SqlConnection conn = new SqlConnection(connectionString);
             conn.Open();
             SqlTransaction tran = conn.BeginTransaction();
 

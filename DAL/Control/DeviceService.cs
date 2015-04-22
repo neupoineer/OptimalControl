@@ -131,7 +131,7 @@ namespace DAL.Control
         {
             // 拼接 SQL 命令
             string sqlTxt =
-                "UPDATE Rules SET Name=@Name,Expression=@Expression,Operation=@Operation,Period=@Period,State=@Enabled,Priority=@Priority WHERE Id=@Id";
+                "UPDATE Device SET Name=@Name,State=@State,SyncState=@SyncState,IP=@IP,Port=@Port,UnitID=@UnitID WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;

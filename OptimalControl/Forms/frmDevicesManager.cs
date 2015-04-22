@@ -40,6 +40,7 @@ namespace OptimalControl.Forms
             if (InvokeRequired)
             {
                 Invoke(new UpdateDevicesGridDelegate(UpdateDevicesGrid));
+                return;
             }
             try
             {
@@ -49,39 +50,73 @@ namespace OptimalControl.Forms
                 // 如果包含信息
                 if (deviceCollection.Count > 0)
                 {
-                    BindingSource source = new BindingSource {DataSource = deviceCollection};
-                    dataGridView_devices.DataSource = source;
-
-                    foreach (DataGridViewColumn column in dataGridView_devices.Columns)
+                    dataGridView_devices.Columns.Clear();
+                    // 手动创建数据列
+                    DataGridViewTextBoxColumn dgvId = new DataGridViewTextBoxColumn
                     {
-                        switch (column.HeaderText) //更改列名
-                        {
-                            case "Id":
-                                column.HeaderText = "序号";
-                                column.DisplayIndex = 0;
-                                break;
-                            case "Name":
-                                column.HeaderText = "设备名";
-                                column.DisplayIndex = 1;
-                                break;
-                            case "State":
-                                column.HeaderText = "启用";
-                                break;
-                            case "SyncState":
-                                column.HeaderText = "同步数据";
-                                break;
-                            case "IP":
-                                column.HeaderText = "IP地址";
-                                break;
-                            case "Port":
-                                column.HeaderText = "端口";
-                                break;
-                            case "UnitID":
-                                column.HeaderText = "从站号";
-                                break;
-                            default:
-                                break;
-                        }
+                        Name = "Id",
+                        HeaderText = "序号",
+                        DataPropertyName = "Id"
+                    };
+                    DataGridViewTextBoxColumn dgvName = new DataGridViewTextBoxColumn
+                    {
+                        Name = "Name",
+                        HeaderText = "设备名",
+                        DataPropertyName = "Name",
+                    };
+                    DataGridViewTextBoxColumn dgvState = new DataGridViewTextBoxColumn
+                    {
+                        Name = "State",
+                        HeaderText = "启用",
+                        DataPropertyName = "State"
+                    };
+                    DataGridViewTextBoxColumn dgvSyncState = new DataGridViewTextBoxColumn
+                    {
+                        Name = "SyncState",
+                        HeaderText = "同步数据",
+                        DataPropertyName = "SyncState"
+                    };
+                    DataGridViewTextBoxColumn dgvIP = new DataGridViewTextBoxColumn
+                    {
+                        Name = "IP",
+                        HeaderText = "IP地址",
+                        DataPropertyName = "IP",
+                        //DefaultCellStyle = new DataGridViewCellStyle() { Alignment = DataGridViewContentAlignment.MiddleLeft },
+                    };
+                    DataGridViewTextBoxColumn dgvPort = new DataGridViewTextBoxColumn
+                    {
+                        Name = "Port",
+                        HeaderText = "端口",
+                        DataPropertyName = "Port"
+                    };
+                    DataGridViewTextBoxColumn dgvUnitID = new DataGridViewTextBoxColumn
+                    {
+                        Name = "UnitID",
+                        HeaderText = "从站号",
+                        DataPropertyName = "UnitID"
+                    };
+
+                    dataGridView_devices.Columns.AddRange(new DataGridViewColumn[]
+                    {
+                        dgvId,
+                        dgvName,
+                        dgvState,
+                        dgvSyncState,
+                        dgvIP,
+                        dgvPort,
+                        dgvUnitID,
+                    });
+
+                    for (int index = 0; index < deviceCollection.Count; index++)
+                    {
+                        dataGridView_devices.Rows.Add();
+                        dataGridView_devices.Rows[index].Cells["Id"].Value = deviceCollection[index].Id;
+                        dataGridView_devices.Rows[index].Cells["Name"].Value = deviceCollection[index].Name;
+                        dataGridView_devices.Rows[index].Cells["State"].Value = deviceCollection[index].State;
+                        dataGridView_devices.Rows[index].Cells["SyncState"].Value = deviceCollection[index].SyncState;
+                        dataGridView_devices.Rows[index].Cells["IP"].Value = deviceCollection[index].ModbusTcpDevice.IP;
+                        dataGridView_devices.Rows[index].Cells["Port"].Value = deviceCollection[index].ModbusTcpDevice.Port;
+                        dataGridView_devices.Rows[index].Cells["UnitID"].Value = deviceCollection[index].ModbusTcpDevice.UnitID;
                     }
                     tssl_device_manager.Text = string.Format("查询到 {0} 行数据", deviceCollection.Count);
                 }

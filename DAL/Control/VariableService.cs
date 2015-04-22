@@ -207,6 +207,27 @@ namespace DAL.Control
         }
 
         /// <summary>
+        /// 按照设备号删除变量
+        /// </summary>
+        /// <param name="deviceID">要删除的变量的设备号</param>
+        /// <returns>True:成功/False:失败</returns>
+        public bool DeleteVariableByDeviceId(int deviceID)
+        {
+            // 删除单个信息 SQL 命令
+            string sqlTxt = string.Format("Delete From Variable Where DeviceID = {0}", deviceID);
+            // 创建 SQL 执行对象
+            DBUtility.AbstractDBProvider dbProvider = DBUtility.AbstractDBProvider.Instance();
+            // 执行 删除操作
+            int rowsAffected;
+            dbProvider.RunCommand(sqlTxt, out rowsAffected);
+
+            if (rowsAffected >= 1)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
         /// 修改变量
         /// </summary>
         /// <param name="currentVariable">要修改的变量实体</param>

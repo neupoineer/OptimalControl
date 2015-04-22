@@ -163,16 +163,6 @@ namespace OptimalControl.Forms
                     dataGridView_parameters.Rows[index].Cells["OperateDelay"].Value = variables[index].OperateDelay;
                 dataGridView_parameters.Rows[index].Cells["DeviceID"].Value = variables[index].DeviceID;
             }
-
-
-            //foreach (DataGridViewRow dgvRow in dataGridView_parameters.Rows)
-            //{
-            //    foreach (DataGridViewCell dgvCell in dgvRow.Cells)
-            //    {
-            //        if (dgvCell.Value.Equals("-1"))
-            //            dgvCell.Value = null;
-            //    }
-            //}
             tssl_parameters_manager.Text = string.Format("查询到 {0} 行数据", variables.Count);
         }
 
@@ -185,6 +175,9 @@ namespace OptimalControl.Forms
                     break;
                 case "服务器":
                     UpdatePatameterGrid(0);
+                    break;
+                case "设备":
+                    treeView.SelectedNode = treeView.SelectedNode.NextVisibleNode;
                     break;
                 default:
                     UpdatePatameterGrid(Convert.ToInt32(treeView.SelectedNode.Name));

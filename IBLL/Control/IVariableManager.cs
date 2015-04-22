@@ -53,6 +53,13 @@ namespace IBLL.Control
         bool DeleteVariableById(int id);
 
         /// <summary>
+        /// 按照设备号删除变量
+        /// </summary>
+        /// <param name="deviceID">要删除的变量的设备号</param>
+        /// <returns>True:成功/False:失败</returns>
+        bool DeleteVariableByDeviceId(int deviceID);
+
+        /// <summary>
         /// 修改变量
         /// </summary>
         /// <param name="currentVariable">要修改的变量实体</param>

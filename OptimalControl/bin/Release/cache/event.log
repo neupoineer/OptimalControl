@@ -1,29 +1,22 @@
-15/04/21 00:49:46 Stop: Software stoped by admin!
-15/04/21 00:54:02 Login: admin Login!
-15/04/22 01:36:57 Login: admin Login!
-15/04/22 01:44:30 Login: admin Login!
-15/04/22 01:51:28 Login: admin Login!
-15/04/22 01:51:44 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 01:51:49 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 01:51:50 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 01:51:50 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 01:51:50 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 01:54:11 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 01:54:57 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 01:59:51 Login: admin Login!
-15/04/22 02:03:21 frmCurveEdirtor: 输入字符串的格式不正确。
-15/04/22 02:04:59 frmCurveEdirtor: 输入字符串的格式不正确。
-15/04/22 02:10:12 Login: admin Login!
-15/04/22 02:14:43 Login: admin Login!
-15/04/22 02:15:30 Login: admin Login!
-15/04/22 08:19:34 Login: admin Login!
-15/04/22 08:23:06 Login: admin Login!
-15/04/22 08:33:44 Login: admin Login!
-15/04/22 08:41:39 Login: admin Login!
-15/04/22 08:50:48 Login: admin Login!
-15/04/22 09:05:48 Logoff: admin Logoff!
-15/04/22 09:37:40 Login: admin Login!
-15/04/22 09:39:31 frmCurveEdirtor: 无法将类型为“System.Drawing.Color”的对象强制转换为类型“System.IConvertible”。
-15/04/22 09:44:28 Login: admin Login!
-15/04/22 10:14:19 Login: admin Login!
-15/04/22 10:14:56 Login: admin Login!
+15/04/22 15:21:14 Login: admin Login!
+15/04/22 15:21:36 Start: Software started by admin!
+15/04/22 15:25:05 Stop: Software stoped by admin!
+15/04/22 15:27:08 Login: admin Login!
+15/04/22 15:27:15 Start: Software started by admin!
+15/04/22 15:35:14 Login: admin Login!
+15/04/22 15:36:33 Login: admin Login!
+15/04/22 15:39:20 Login: admin Login!
+15/04/22 15:40:19 Login: admin Login!
+15/04/22 15:44:04 Login: admin Login!
+15/04/22 15:44:13 LoadHistoryCurves: 索引超出范围。必须为非负值并小于集合大小。
+参数名: index
+15/04/22 16:27:04 Login: admin Login!
+15/04/22 16:28:39 Login: admin Login!
+15/04/22 16:32:56 Login: admin Login!
+15/04/22 16:42:16 Login: admin Login!
+15/04/22 16:45:44 Login: admin Login!
+15/04/22 16:46:41 Login: admin Login!
+15/04/22 16:49:19 Login: admin Login!
+15/04/22 16:49:53 Login: admin Login!
+15/04/22 16:55:39 Login: admin Login!
+15/04/22 16:59:26 Login: admin Login!
