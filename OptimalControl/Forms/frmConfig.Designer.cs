@@ -32,11 +32,17 @@ namespace OptimalControl.Forms
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btn_OK = new System.Windows.Forms.Button();
             this.btn_Cancel = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage_comm = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cb_heartbeat = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cb_control = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.nud_device_id = new System.Windows.Forms.NumericUpDown();
             this.cb_stopbits = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,7 +53,7 @@ namespace OptimalControl.Forms
             this.label_serialnumber = new System.Windows.Forms.Label();
             this.cb_portname = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage_curve = new System.Windows.Forms.TabPage();
             this.splitContainerH1 = new System.Windows.Forms.SplitContainer();
             this.btn_Curve_Update = new System.Windows.Forms.Button();
             this.btn_Curve_Delete = new System.Windows.Forms.Button();
@@ -56,16 +62,27 @@ namespace OptimalControl.Forms
             this.splitContainerH2 = new System.Windows.Forms.SplitContainer();
             this.dataGridView_Curve = new System.Windows.Forms.DataGridView();
             this.label_Curve_Status = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage_other = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.tb_TimerInterval = new NumbericTextbox();
+            this.numbericTextbox1 = new Utility.NumbericTextbox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tb_TimerInterval = new Utility.NumbericTextbox();
             this.label16 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tabPage_textbox = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btn_Textbox_Update = new System.Windows.Forms.Button();
+            this.btn_Textbox_Delete = new System.Windows.Forms.Button();
+            this.btn_Textbox_Edit = new System.Windows.Forms.Button();
+            this.btn_Textbox_Add = new System.Windows.Forms.Button();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.dataGridView_Textbox = new System.Windows.Forms.DataGridView();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPage_comm.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_device_id)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tabPage_curve.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).BeginInit();
             this.splitContainerH1.Panel1.SuspendLayout();
             this.splitContainerH1.Panel2.SuspendLayout();
@@ -75,9 +92,19 @@ namespace OptimalControl.Forms
             this.splitContainerH2.Panel2.SuspendLayout();
             this.splitContainerH2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Curve)).BeginInit();
-            this.tabPage3.SuspendLayout();
+            this.tabPage_other.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tabPage_textbox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Textbox)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_OK
@@ -103,9 +130,10 @@ namespace OptimalControl.Forms
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabPage1);
-            this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Controls.Add(this.tabPage3);
+            this.tabControl.Controls.Add(this.tabPage_comm);
+            this.tabControl.Controls.Add(this.tabPage_curve);
+            this.tabControl.Controls.Add(this.tabPage_textbox);
+            this.tabControl.Controls.Add(this.tabPage_other);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -113,19 +141,23 @@ namespace OptimalControl.Forms
             this.tabControl.Size = new System.Drawing.Size(478, 360);
             this.tabControl.TabIndex = 5;
             // 
-            // tabPage1
+            // tabPage_comm
             // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage1.Controls.Add(this.groupBox3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(470, 332);
-            this.tabPage1.TabIndex = 1;
-            this.tabPage1.Text = "通讯设置";
+            this.tabPage_comm.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage_comm.Controls.Add(this.groupBox3);
+            this.tabPage_comm.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_comm.Name = "tabPage_comm";
+            this.tabPage_comm.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_comm.Size = new System.Drawing.Size(470, 332);
+            this.tabPage_comm.TabIndex = 1;
+            this.tabPage_comm.Text = "通讯设置";
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.cb_heartbeat);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.cb_control);
+            this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.nud_device_id);
             this.groupBox3.Controls.Add(this.cb_stopbits);
             this.groupBox3.Controls.Add(this.label1);
@@ -143,6 +175,42 @@ namespace OptimalControl.Forms
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Modbus通讯参数";
+            // 
+            // cb_heartbeat
+            // 
+            this.cb_heartbeat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_heartbeat.FormattingEnabled = true;
+            this.cb_heartbeat.Location = new System.Drawing.Point(120, 247);
+            this.cb_heartbeat.Name = "cb_heartbeat";
+            this.cb_heartbeat.Size = new System.Drawing.Size(275, 22);
+            this.cb_heartbeat.TabIndex = 44;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(50, 250);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 14);
+            this.label3.TabIndex = 45;
+            this.label3.Text = "心跳位";
+            // 
+            // cb_control
+            // 
+            this.cb_control.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_control.FormattingEnabled = true;
+            this.cb_control.Location = new System.Drawing.Point(120, 197);
+            this.cb_control.Name = "cb_control";
+            this.cb_control.Size = new System.Drawing.Size(275, 22);
+            this.cb_control.TabIndex = 42;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(50, 200);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(49, 14);
+            this.label2.TabIndex = 43;
+            this.label2.Text = "控制位";
             // 
             // nud_device_id
             // 
@@ -247,16 +315,16 @@ namespace OptimalControl.Forms
             this.label19.TabIndex = 22;
             this.label19.Text = "从站号";
             // 
-            // tabPage2
+            // tabPage_curve
             // 
-            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage2.Controls.Add(this.splitContainerH1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(470, 332);
-            this.tabPage2.TabIndex = 0;
-            this.tabPage2.Text = "曲线设置";
+            this.tabPage_curve.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage_curve.Controls.Add(this.splitContainerH1);
+            this.tabPage_curve.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_curve.Name = "tabPage_curve";
+            this.tabPage_curve.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_curve.Size = new System.Drawing.Size(470, 332);
+            this.tabPage_curve.TabIndex = 0;
+            this.tabPage_curve.Text = "曲线设置";
             // 
             // splitContainerH1
             // 
@@ -385,20 +453,22 @@ namespace OptimalControl.Forms
             this.label_Curve_Status.Size = new System.Drawing.Size(0, 14);
             this.label_Curve_Status.TabIndex = 0;
             // 
-            // tabPage3
+            // tabPage_other
             // 
-            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage3.Controls.Add(this.groupBox6);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(470, 332);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "其它设置";
+            this.tabPage_other.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage_other.Controls.Add(this.groupBox6);
+            this.tabPage_other.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_other.Name = "tabPage_other";
+            this.tabPage_other.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_other.Size = new System.Drawing.Size(470, 332);
+            this.tabPage_other.TabIndex = 2;
+            this.tabPage_other.Text = "其它设置";
             // 
             // groupBox6
             // 
             this.groupBox6.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox6.Controls.Add(this.numbericTextbox1);
+            this.groupBox6.Controls.Add(this.label4);
             this.groupBox6.Controls.Add(this.tb_TimerInterval);
             this.groupBox6.Controls.Add(this.label16);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -409,13 +479,30 @@ namespace OptimalControl.Forms
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "其它设置";
             // 
+            // numbericTextbox1
+            // 
+            this.numbericTextbox1.Location = new System.Drawing.Point(124, 101);
+            this.numbericTextbox1.Name = "numbericTextbox1";
+            this.numbericTextbox1.Size = new System.Drawing.Size(50, 23);
+            this.numbericTextbox1.TabIndex = 29;
+            this.numbericTextbox1.Text = "1000";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(33, 104);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(259, 14);
+            this.label4.TabIndex = 28;
+            this.label4.Text = "规则扫描间隔        毫秒 (≥500毫秒)";
+            // 
             // tb_TimerInterval
             // 
             this.tb_TimerInterval.Location = new System.Drawing.Point(124, 51);
             this.tb_TimerInterval.Name = "tb_TimerInterval";
             this.tb_TimerInterval.Size = new System.Drawing.Size(50, 23);
             this.tb_TimerInterval.TabIndex = 27;
-            this.tb_TimerInterval.Text = "2000";
+            this.tb_TimerInterval.Text = "5000";
             // 
             // label16
             // 
@@ -434,13 +521,146 @@ namespace OptimalControl.Forms
             this.panel1.Size = new System.Drawing.Size(478, 360);
             this.panel1.TabIndex = 6;
             // 
+            // tabPage_textbox
+            // 
+            this.tabPage_textbox.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage_textbox.Controls.Add(this.splitContainer1);
+            this.tabPage_textbox.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_textbox.Name = "tabPage_textbox";
+            this.tabPage_textbox.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_textbox.Size = new System.Drawing.Size(470, 332);
+            this.tabPage_textbox.TabIndex = 4;
+            this.tabPage_textbox.Text = "显示变量设置";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Update);
+            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Delete);
+            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Edit);
+            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Add);
+            this.splitContainer1.Panel1MinSize = 40;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Size = new System.Drawing.Size(464, 326);
+            this.splitContainer1.SplitterDistance = 40;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // btn_Textbox_Update
+            // 
+            this.btn_Textbox_Update.Location = new System.Drawing.Point(247, 10);
+            this.btn_Textbox_Update.Name = "btn_Textbox_Update";
+            this.btn_Textbox_Update.Size = new System.Drawing.Size(75, 23);
+            this.btn_Textbox_Update.TabIndex = 7;
+            this.btn_Textbox_Update.Text = "刷新";
+            this.btn_Textbox_Update.UseVisualStyleBackColor = true;
+            // 
+            // btn_Textbox_Delete
+            // 
+            this.btn_Textbox_Delete.Location = new System.Drawing.Point(166, 10);
+            this.btn_Textbox_Delete.Name = "btn_Textbox_Delete";
+            this.btn_Textbox_Delete.Size = new System.Drawing.Size(75, 23);
+            this.btn_Textbox_Delete.TabIndex = 6;
+            this.btn_Textbox_Delete.Text = "删除";
+            this.btn_Textbox_Delete.UseVisualStyleBackColor = true;
+            // 
+            // btn_Textbox_Edit
+            // 
+            this.btn_Textbox_Edit.Location = new System.Drawing.Point(85, 10);
+            this.btn_Textbox_Edit.Name = "btn_Textbox_Edit";
+            this.btn_Textbox_Edit.Size = new System.Drawing.Size(75, 23);
+            this.btn_Textbox_Edit.TabIndex = 5;
+            this.btn_Textbox_Edit.Text = "编辑";
+            this.btn_Textbox_Edit.UseVisualStyleBackColor = true;
+            // 
+            // btn_Textbox_Add
+            // 
+            this.btn_Textbox_Add.Location = new System.Drawing.Point(4, 10);
+            this.btn_Textbox_Add.Name = "btn_Textbox_Add";
+            this.btn_Textbox_Add.Size = new System.Drawing.Size(75, 23);
+            this.btn_Textbox_Add.TabIndex = 4;
+            this.btn_Textbox_Add.Text = "添加";
+            this.btn_Textbox_Add.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.dataGridView_Textbox);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.label5);
+            this.splitContainer2.Size = new System.Drawing.Size(464, 282);
+            this.splitContainer2.SplitterDistance = 252;
+            this.splitContainer2.TabIndex = 1;
+            this.splitContainer2.TabStop = false;
+            // 
+            // dataGridView_Textbox
+            // 
+            this.dataGridView_Textbox.AllowUserToAddRows = false;
+            this.dataGridView_Textbox.AllowUserToDeleteRows = false;
+            this.dataGridView_Textbox.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Textbox.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView_Textbox.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_Textbox.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dataGridView_Textbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_Textbox.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_Textbox.MultiSelect = false;
+            this.dataGridView_Textbox.Name = "dataGridView_Textbox";
+            this.dataGridView_Textbox.ReadOnly = true;
+            this.dataGridView_Textbox.RowHeadersVisible = false;
+            this.dataGridView_Textbox.RowTemplate.Height = 23;
+            this.dataGridView_Textbox.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView_Textbox.Size = new System.Drawing.Size(464, 252);
+            this.dataGridView_Textbox.TabIndex = 0;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(5, 6);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(0, 14);
+            this.label5.TabIndex = 0;
+            // 
             // frmConfig
             // 
             this.AcceptButton = this.btn_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_Cancel;
-            this.ClientSize = new System.Drawing.Size(514, 422);
+            this.ClientSize = new System.Drawing.Size(504, 414);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btn_Cancel);
@@ -455,11 +675,11 @@ namespace OptimalControl.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = " ";
             this.tabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tabPage_comm.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_device_id)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.tabPage_curve.ResumeLayout(false);
             this.splitContainerH1.Panel1.ResumeLayout(false);
             this.splitContainerH1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).EndInit();
@@ -470,10 +690,21 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH2)).EndInit();
             this.splitContainerH2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Curve)).EndInit();
-            this.tabPage3.ResumeLayout(false);
+            this.tabPage_other.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.tabPage_textbox.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Textbox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -483,8 +714,8 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Button btn_OK;
         private System.Windows.Forms.Button btn_Cancel;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage_comm;
+        private System.Windows.Forms.TabPage tabPage_other;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label19;
@@ -500,7 +731,7 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Label label_serialnumber;
         private System.Windows.Forms.ComboBox cb_portname;
         private System.Windows.Forms.NumericUpDown nud_device_id;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage_curve;
         private System.Windows.Forms.SplitContainer splitContainerH1;
         private System.Windows.Forms.Button btn_Curve_Update;
         private System.Windows.Forms.Button btn_Curve_Delete;
@@ -509,5 +740,20 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.SplitContainer splitContainerH2;
         private System.Windows.Forms.DataGridView dataGridView_Curve;
         private System.Windows.Forms.Label label_Curve_Status;
+        private System.Windows.Forms.ComboBox cb_control;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cb_heartbeat;
+        private System.Windows.Forms.Label label3;
+        private NumbericTextbox numbericTextbox1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabPage tabPage_textbox;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Button btn_Textbox_Update;
+        private System.Windows.Forms.Button btn_Textbox_Delete;
+        private System.Windows.Forms.Button btn_Textbox_Edit;
+        private System.Windows.Forms.Button btn_Textbox_Add;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.DataGridView dataGridView_Textbox;
+        private System.Windows.Forms.Label label5;
     }
 }

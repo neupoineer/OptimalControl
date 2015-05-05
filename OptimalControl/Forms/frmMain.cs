@@ -216,6 +216,10 @@ namespace OptimalControl.Forms
         
         private Log _historyLog = new Log();
 
+        private string _optimalControlEnabledVariable;
+
+        private string _optimalControlHeartBeatVariable;
+
         private int[] _displayedParaVariableId = new int[]
         {
             2, 1, 1,
@@ -536,6 +540,9 @@ namespace OptimalControl.Forms
 
                 _dataListLength = ConfigAppSettings.GetSettingInt("DataListLength", 720);
 
+                _optimalControlEnabledVariable = ConfigAppSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
+                _optimalControlHeartBeatVariable = ConfigAppSettings.GetSettingString("OptimalControlHeartBeatVariable", "").Trim();
+
                 ICurveManager curveManager = _bllFactory.BuildCurveManager();
                 _curves = curveManager.GetAllCurveInfo();
 
@@ -622,16 +629,16 @@ namespace OptimalControl.Forms
             {
                 if (_modbusRtuSlaveCreated)
                 {
-                    for (int paraIndex = 0; paraIndex < _modbusRtuParameters.Count; paraIndex++)
+                    foreach (Variable variable in _modbusRtuParameters)
                     {
                         ushort[] register = new ushort[2];
                         try
                         {
                             //读寄存器
                             register[0] =
-                                _modbusRtuSlave.DataStore.HoldingRegisters[_modbusRtuParameters[paraIndex].Address];
+                                _modbusRtuSlave.DataStore.HoldingRegisters[variable.Address];
                             register[1] =
-                                _modbusRtuSlave.DataStore.HoldingRegisters[_modbusRtuParameters[paraIndex].Address + 1];
+                                _modbusRtuSlave.DataStore.HoldingRegisters[variable.Address + 1];
                         }
                         catch (Exception)
                         {
@@ -640,24 +647,24 @@ namespace OptimalControl.Forms
                             //RecordLog.WriteLogFile(LogFile, "ModbusRTU->ModbusTCP", ex.Message);
                             continue;
                         }
-                        for (int deviceIndex = 0; deviceIndex < _devices.Count; deviceIndex++)
+                        foreach (Device device in _devices)
                         {
-                            if (!_devices[deviceIndex].State ||
-                                !_devices[deviceIndex].SyncState ||
-                                !_devices[deviceIndex].ModbusTcpMasterCreated)
+                            if (!device.State ||
+                                !device.SyncState ||
+                                !device.ModbusTcpMasterCreated)
                                 continue;
                             try
                             {
                                 //读寄存器
-                                _devices[deviceIndex].ModbusTcpDevice.ModbusTcpMaster.WriteMultipleRegisters(
-                                    _devices[deviceIndex].ModbusTcpDevice.UnitID,
-                                    (ushort) (_modbusRtuParameters[paraIndex].Address - 1),
+                                device.ModbusTcpDevice.ModbusTcpMaster.WriteMultipleRegisters(
+                                    device.ModbusTcpDevice.UnitID,
+                                    (ushort) (variable.Address - 1),
                                     register);
                             }
                             catch (Exception)
                             {
-                                ModbusTCPStopComm(_devices[deviceIndex].ModbusTcpDevice); //处理连接错误，重试连接
-                                ModbusTCPCreateClient(ref _devices[deviceIndex].ModbusTcpDevice);
+                                ModbusTCPStopComm(device.ModbusTcpDevice); //处理连接错误，重试连接
+                                ModbusTCPCreateClient(ref device.ModbusTcpDevice);
                             }
                         }
                         byte[] byteString = new byte[4];
@@ -668,7 +675,7 @@ namespace OptimalControl.Forms
                             byteString[2*j + 1] = tempByte[1];
                         }
                         float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
-                        _modbusRtuParameters[paraIndex].Value = value*_modbusRtuParameters[paraIndex].Ratio;
+                        variable.Value = value*variable.Ratio;
                     }
                 }
             }
@@ -884,7 +891,7 @@ namespace OptimalControl.Forms
                                     {
                                         if (parameter.Name == op[0].TrimStart('@'))
                                         {
-                                            double result = Convert.ToDouble(rpn.Evaluate())/parameter.Ratio;
+                                            double result = Convert.ToDouble(rpn.Evaluate());
                                             parameter.RealValue = result;
 
                                             if (_modbusRtuSlaveCreated)
@@ -1747,7 +1754,22 @@ namespace OptimalControl.Forms
                 UpdateCurveData();
                 //CheckParameterState();
                 UpdateOcTextBox();
-                
+                foreach (Variable parameter in _modbusRtuParameters)
+                {
+                    if (parameter.Name == _optimalControlEnabledVariable)
+                    {
+                        _execteRulesFlag = parameter.Value > 0;
+                    }
+                    if (parameter.Name == _optimalControlHeartBeatVariable)
+                    {
+                        parameter.Value = 1;
+                        if (_modbusRtuSlaveCreated)
+                        {
+                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                        }
+                    }
+                }
+
                 if (_updateGraphFlag)
                     UpdateGraph(ref _masterPaneGraphRealtime, ref zgc_realtime, _curves);
                 if (_myFilter.isActive)
@@ -1895,12 +1917,11 @@ namespace OptimalControl.Forms
                     _modbusRtuSlaveCreated = ModbusRTUCreatListener(_modbusRtuDevice);
                     if (_modbusRtuSlaveCreated)
                     {
-                        for (int deviceID = 0; deviceID < _devices.Count; deviceID++)
+                        foreach (Device device in _devices)
                         {
-                            if (_devices[deviceID].State)
+                            if (device.State)
                             {
-                                _devices[deviceID].ModbusTcpMasterCreated =
-                                    ModbusTCPCreateClient(ref _devices[deviceID].ModbusTcpDevice);
+                                device.ModbusTcpMasterCreated = ModbusTCPCreateClient(ref device.ModbusTcpDevice);
                             }
                         }
                         _realTimerFlag = true;

@@ -14,6 +14,7 @@ namespace OptimalControl.Forms
     public partial class frmConfig : Form
     {
         #region 构造函数
+        private BLLFactory.BLLFactory _bllFactory = new BLLFactory.BLLFactory();
 
         public frmConfig()
         {
@@ -25,19 +26,18 @@ namespace OptimalControl.Forms
 
         #region 私有函数
 
-        private delegate void UpdateDevicesGridDelegate();
+        private delegate void UpdateCurveGridDelegate();
 
-        private void UpdateDevicesGrid()
+        private void UpdateCurveGrid()
         {
             if (InvokeRequired)
             {
-                Invoke(new UpdateDevicesGridDelegate(UpdateDevicesGrid));
+                Invoke(new UpdateCurveGridDelegate(UpdateCurveGrid));
                 return;
             }
             try
             {
-                BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
-                ICurveManager curveManager = bllFactory.BuildCurveManager();
+                ICurveManager curveManager = _bllFactory.BuildCurveManager();
                 List<Curve> curveCollection = curveManager.GetAllCurveInfo();
                 // 如果包含信息
                 if (curveCollection.Count > 0)
@@ -170,7 +170,15 @@ namespace OptimalControl.Forms
 
         private void LoadSetting()
         {
-            UpdateDevicesGrid();
+            IVariableManager variableManager = _bllFactory.BuildIVariableManager();
+            List<Variable> variableCollection = variableManager.GetAllVariableInfo();
+            cb_control.Items.Clear();
+            foreach (Variable variable in variableCollection)
+            {
+                cb_control.Items.Add(variable.Name);
+                cb_heartbeat.Items.Add(variable.Name);
+            }
+
             string[] tempStrings = System.IO.Ports.SerialPort.GetPortNames();
             cb_portname.Items.AddRange(tempStrings);
 
@@ -179,8 +187,13 @@ namespace OptimalControl.Forms
             cb_databits.Text = ConfigAppSettings.GetSettingInt("ModbusRTUDatabits", 8).ToString(CultureInfo.InvariantCulture);
             cb_stopbits.Text = ConfigAppSettings.GetSettingInt("ModbusRTUStopbits", 1).ToString(CultureInfo.InvariantCulture);
             nud_device_id.Text = ConfigAppSettings.GetSettingInt("ModbusRTUDeviceID", 1).ToString(CultureInfo.InvariantCulture);
+            cb_control.Text = ConfigAppSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
+            cb_heartbeat.Text = ConfigAppSettings.GetSettingString("OptimalControlHeartBeatVariable", "").Trim();
 
             tb_TimerInterval.Text = ConfigAppSettings.GetSettingInt("RealTime", 2000).ToString(CultureInfo.InvariantCulture);
+
+            //cb_control.Text = 
+            UpdateCurveGrid();
         }
 
         private void SaveSetting()
@@ -191,6 +204,8 @@ namespace OptimalControl.Forms
             ConfigAppSettings.SetSettingInt("ModbusRTUDataBits", cb_databits.Text);
             ConfigAppSettings.SetSettingInt("ModbusRTUStopBits", cb_stopbits.Text);
             ConfigAppSettings.SetSettingInt("ModbusRTUDeviceID", nud_device_id.Text);
+            ConfigAppSettings.SetSettingString("OptimalControlEnabledVariable", cb_control.Text);
+            ConfigAppSettings.SetSettingString("OptimalControlHeartBeatVariable", cb_heartbeat.Text);
 
             if (tb_TimerInterval.Text.Equals("") || tb_TimerInterval.Text.Equals("0") || Convert.ToInt32(tb_TimerInterval.Text) < 500)
             {
@@ -229,7 +244,7 @@ namespace OptimalControl.Forms
             {
                 label_Curve_Status.Text = string.Format("插入 {0} 行数据",
                     addCurveForm.Result.ToString(CultureInfo.InvariantCulture));
-                UpdateDevicesGrid();
+                UpdateCurveGrid();
             }
         }
 
@@ -242,7 +257,7 @@ namespace OptimalControl.Forms
             {
                 label_Curve_Status.Text = string.Format("编辑 {0} 行数据",
                     editCurveForm.Result.ToString(CultureInfo.InvariantCulture));
-                UpdateDevicesGrid();
+                UpdateCurveGrid();
             }
         }
 
@@ -255,13 +270,13 @@ namespace OptimalControl.Forms
             {
                 label_Curve_Status.Text = string.Format("删除 {0} 行数据",
                     deleteCurveForm.Result.ToString(CultureInfo.InvariantCulture));
-                UpdateDevicesGrid();
+                UpdateCurveGrid();
             }
         }
 
         private void btn_Curve_Update_Click(object sender, EventArgs e)
         {
-            UpdateDevicesGrid();
+            UpdateCurveGrid();
         }
 
         private void dataGridView_Curve_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

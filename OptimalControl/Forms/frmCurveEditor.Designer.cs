@@ -52,11 +52,11 @@ namespace OptimalControl.Forms
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.ntb_curve_address = new Utility.NumbericTextbox();
             this.tb_curve_ymin = new System.Windows.Forms.TextBox();
             this.tb_curve_ymax = new System.Windows.Forms.TextBox();
             this.tb_curve_symbolsize = new System.Windows.Forms.TextBox();
             this.tb_curve_size = new System.Windows.Forms.TextBox();
-            this.ntb_curve_address = new NumbericTextbox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -286,6 +286,14 @@ namespace OptimalControl.Forms
             this.label1.TabIndex = 16;
             this.label1.Text = "曲线名称";
             // 
+            // ntb_curve_address
+            // 
+            this.ntb_curve_address.Location = new System.Drawing.Point(529, 37);
+            this.ntb_curve_address.Name = "ntb_curve_address";
+            this.ntb_curve_address.ReadOnly = true;
+            this.ntb_curve_address.Size = new System.Drawing.Size(80, 21);
+            this.ntb_curve_address.TabIndex = 10;
+            // 
             // tb_curve_ymin
             // 
             this.tb_curve_ymin.Location = new System.Drawing.Point(391, 277);
@@ -314,21 +322,13 @@ namespace OptimalControl.Forms
             this.tb_curve_size.Size = new System.Drawing.Size(80, 21);
             this.tb_curve_size.TabIndex = 9;
             // 
-            // ntb_curve_address
-            // 
-            this.ntb_curve_address.Location = new System.Drawing.Point(529, 37);
-            this.ntb_curve_address.Name = "ntb_curve_address";
-            this.ntb_curve_address.ReadOnly = true;
-            this.ntb_curve_address.Size = new System.Drawing.Size(80, 21);
-            this.ntb_curve_address.TabIndex = 10;
-            // 
-            // frmEditCurve
+            // frmCurveEditor
             // 
             this.AcceptButton = this.btn_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
-            this.ClientSize = new System.Drawing.Size(650, 395);
+            this.ClientSize = new System.Drawing.Size(640, 385);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_cancel);
@@ -336,7 +336,7 @@ namespace OptimalControl.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximumSize = new System.Drawing.Size(660, 425);
             this.MinimumSize = new System.Drawing.Size(660, 425);
-            this.Name = "frmEditCurve";
+            this.Name = "frmCurveEditor";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
