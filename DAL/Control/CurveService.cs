@@ -362,7 +362,7 @@ namespace DAL.Control
         {
             if (color.Equals(Color.FromArgb(0)))
                 return DBNull.Value;
-            else return color;
+            else return color.Name;
         }
         #endregion
     }

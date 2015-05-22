@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpertSystem", "ExpertSyste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{49761B2D-E13E-48CE-ADF3-449608948AD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalControlService", "OptimalControlService\OptimalControlService.csproj", "{0E82AE8E-B0F0-4683-9EBE-33BE78779E2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalControlClient", "OptimalControlClient\OptimalControlClient.csproj", "{3ACF02EC-6156-4879-8208-D76881AEF63F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,14 @@ Global
 		{49761B2D-E13E-48CE-ADF3-449608948AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49761B2D-E13E-48CE-ADF3-449608948AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49761B2D-E13E-48CE-ADF3-449608948AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E82AE8E-B0F0-4683-9EBE-33BE78779E2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E82AE8E-B0F0-4683-9EBE-33BE78779E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E82AE8E-B0F0-4683-9EBE-33BE78779E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E82AE8E-B0F0-4683-9EBE-33BE78779E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ACF02EC-6156-4879-8208-D76881AEF63F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ACF02EC-6156-4879-8208-D76881AEF63F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ACF02EC-6156-4879-8208-D76881AEF63F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ACF02EC-6156-4879-8208-D76881AEF63F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

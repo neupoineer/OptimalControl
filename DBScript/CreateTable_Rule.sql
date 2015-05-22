@@ -30,5 +30,8 @@ Create Table Rules
 
 	-- 优先级
 	[Priority] int Not Null,
+
+	-- 是否一直有效
+	[Type] bit Not Null,
 )
 Go

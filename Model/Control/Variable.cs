@@ -49,6 +49,7 @@ namespace Model.Control
 
         #region Private Members
         private double _value;
+        private double _historyValue;
         private double _ratio;
         private VariableLimit _limit;
         private int _controlPeriod;
@@ -174,6 +175,12 @@ namespace Model.Control
             set { _address = value; }
         }
 
+        public double HistoryValue
+        {
+            get { return _historyValue; }
+            set { _historyValue = value; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -225,6 +232,7 @@ namespace Model.Control
         /// <param name="variableOperateDelay">The variable operate delay.</param>
         /// <param name="variableDeviceID">The variable device identifier.</param>
         /// <param name="variableAddress">The variable address.</param>
+        /// <param name="historyValue">The history value.</param>
         public Variable(
             int variableId,
             string variableName,
@@ -233,7 +241,8 @@ namespace Model.Control
             VariableLimit variableLimit,
             int variableControlPeriod,
             int variableOperateDelay,
-            uint variableDeviceID, int variableAddress)
+            uint variableDeviceID, int variableAddress,
+            double historyValue)
             : base(variableId, variableName)
         {
             this.Value = variableValue;
@@ -243,9 +252,17 @@ namespace Model.Control
             this.OperateDelay = variableOperateDelay;
             this.DeviceID = variableDeviceID;
             Address = variableAddress;
+            HistoryValue = historyValue;
         }
 
-
+        /// <summary>
+        /// Updates the history value with current value.
+        /// </summary>
+        public void UpdateHistoryValue()
+        {
+            _historyValue = _value;
+        }
+        
         /// <summary>
         /// Gets the value from modbus TCP master.
         /// </summary>

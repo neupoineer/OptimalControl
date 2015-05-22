@@ -256,7 +256,7 @@ namespace OptimalControl.Forms
             this.btn_config,
             this.btn_info,
             this.btn_quit});
-            this.toolStrip_main.Location = new System.Drawing.Point(0, 31);
+            this.toolStrip_main.Location = new System.Drawing.Point(0, 32);
             this.toolStrip_main.Name = "toolStrip_main";
             this.toolStrip_main.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStrip_main.Size = new System.Drawing.Size(1008, 44);
@@ -369,7 +369,7 @@ namespace OptimalControl.Forms
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
             this.msMain.Padding = new System.Windows.Forms.Padding(3, 7, 1, 6);
-            this.msMain.Size = new System.Drawing.Size(1008, 31);
+            this.msMain.Size = new System.Drawing.Size(1008, 32);
             this.msMain.TabIndex = 41;
             // 
             // menu_file
@@ -382,7 +382,7 @@ namespace OptimalControl.Forms
             this.menu_file_quit});
             this.menu_file.Name = "menu_file";
             this.menu_file.ShortcutKeyDisplayString = "";
-            this.menu_file.Size = new System.Drawing.Size(68, 18);
+            this.menu_file.Size = new System.Drawing.Size(68, 19);
             this.menu_file.Text = "文件(&F)";
             // 
             // menu_file_login
@@ -433,7 +433,7 @@ namespace OptimalControl.Forms
             this.menu_control_stop,
             this.menu_control_clear});
             this.menu_control.Name = "menu_control";
-            this.menu_control.Size = new System.Drawing.Size(68, 18);
+            this.menu_control.Size = new System.Drawing.Size(68, 19);
             this.menu_control.Text = "波形(&G)";
             // 
             // menu_control_run
@@ -475,7 +475,7 @@ namespace OptimalControl.Forms
             this.menu_config_devices,
             this.menu_config_parameters});
             this.menu_config.Name = "menu_config";
-            this.menu_config.Size = new System.Drawing.Size(68, 18);
+            this.menu_config.Size = new System.Drawing.Size(68, 19);
             this.menu_config.Text = "设置(&O)";
             // 
             // menu_config_config
@@ -538,7 +538,7 @@ namespace OptimalControl.Forms
             this.menu_help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_help_about});
             this.menu_help.Name = "menu_help";
-            this.menu_help.Size = new System.Drawing.Size(68, 18);
+            this.menu_help.Size = new System.Drawing.Size(68, 19);
             this.menu_help.Text = "帮助(&H)";
             // 
             // menu_help_about
@@ -573,8 +573,8 @@ namespace OptimalControl.Forms
             // 
             this.splitContainerH1_2H2.Panel1.Controls.Add(this.splitContainerH1_2H2_1V1);
             this.splitContainerH1_2H2.Panel2MinSize = 0;
-            this.splitContainerH1_2H2.Size = new System.Drawing.Size(1008, 609);
-            this.splitContainerH1_2H2.SplitterDistance = 583;
+            this.splitContainerH1_2H2.Size = new System.Drawing.Size(1008, 608);
+            this.splitContainerH1_2H2.SplitterDistance = 582;
             this.splitContainerH1_2H2.SplitterWidth = 1;
             this.splitContainerH1_2H2.TabIndex = 0;
             // 
@@ -590,7 +590,7 @@ namespace OptimalControl.Forms
             // splitContainerH1_2H2_1V1.Panel2
             // 
             this.splitContainerH1_2H2_1V1.Panel2.Controls.Add(this.tabControl);
-            this.splitContainerH1_2H2_1V1.Size = new System.Drawing.Size(1008, 583);
+            this.splitContainerH1_2H2_1V1.Size = new System.Drawing.Size(1008, 582);
             this.splitContainerH1_2H2_1V1.SplitterDistance = 30;
             this.splitContainerH1_2H2_1V1.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1.TabIndex = 44;
@@ -605,7 +605,7 @@ namespace OptimalControl.Forms
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(977, 583);
+            this.tabControl.Size = new System.Drawing.Size(977, 582);
             this.tabControl.TabIndex = 0;
             // 
             // tabPage_optimal_control
@@ -615,7 +615,7 @@ namespace OptimalControl.Forms
             this.tabPage_optimal_control.Location = new System.Drawing.Point(4, 22);
             this.tabPage_optimal_control.Name = "tabPage_optimal_control";
             this.tabPage_optimal_control.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_optimal_control.Size = new System.Drawing.Size(969, 557);
+            this.tabPage_optimal_control.Size = new System.Drawing.Size(969, 556);
             this.tabPage_optimal_control.TabIndex = 3;
             this.tabPage_optimal_control.Text = "优化控制";
             // 
@@ -635,7 +635,7 @@ namespace OptimalControl.Forms
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer2.Size = new System.Drawing.Size(963, 551);
+            this.splitContainer2.Size = new System.Drawing.Size(963, 550);
             this.splitContainer2.SplitterDistance = 390;
             this.splitContainer2.TabIndex = 2;
             // 
@@ -1243,7 +1243,7 @@ namespace OptimalControl.Forms
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(963, 157);
+            this.groupBox3.Size = new System.Drawing.Size(963, 156);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "日志记录";
@@ -1279,7 +1279,7 @@ namespace OptimalControl.Forms
             this.dgv_oc_logs.RowHeadersVisible = false;
             this.dgv_oc_logs.RowTemplate.Height = 23;
             this.dgv_oc_logs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_oc_logs.Size = new System.Drawing.Size(957, 137);
+            this.dgv_oc_logs.Size = new System.Drawing.Size(957, 136);
             this.dgv_oc_logs.TabIndex = 1;
             // 
             // tabPage_realtime_data
@@ -1347,7 +1347,7 @@ namespace OptimalControl.Forms
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2.Controls.Add(this.groupBox4);
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2MinSize = 200;
             this.splitContainerH1_2H2_1V1_2V2_2V3.Size = new System.Drawing.Size(707, 551);
-            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 506;
+            this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 503;
             this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1_2V2_2V3.TabIndex = 0;
             // 
@@ -1369,7 +1369,7 @@ namespace OptimalControl.Forms
             this.zgc_realtime.ScrollMinX = 0D;
             this.zgc_realtime.ScrollMinY = 0D;
             this.zgc_realtime.ScrollMinY2 = 0D;
-            this.zgc_realtime.Size = new System.Drawing.Size(506, 551);
+            this.zgc_realtime.Size = new System.Drawing.Size(503, 551);
             this.zgc_realtime.TabIndex = 12;
             this.zgc_realtime.TabStop = false;
             // 
@@ -1380,7 +1380,7 @@ namespace OptimalControl.Forms
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(200, 551);
+            this.groupBox4.Size = new System.Drawing.Size(203, 551);
             this.groupBox4.TabIndex = 14;
             this.groupBox4.TabStop = false;
             // 
@@ -1653,7 +1653,7 @@ namespace OptimalControl.Forms
             this.splitContainerH1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainerH1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainerH1.IsSplitterFixed = true;
-            this.splitContainerH1.Location = new System.Drawing.Point(0, 75);
+            this.splitContainerH1.Location = new System.Drawing.Point(0, 76);
             this.splitContainerH1.Name = "splitContainerH1";
             this.splitContainerH1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.splitContainerH1.Panel1MinSize = 0;
@@ -1661,7 +1661,7 @@ namespace OptimalControl.Forms
             // splitContainerH1.Panel2
             // 
             this.splitContainerH1.Panel2.Controls.Add(this.splitContainerH1_2H2);
-            this.splitContainerH1.Size = new System.Drawing.Size(1008, 635);
+            this.splitContainerH1.Size = new System.Drawing.Size(1008, 634);
             this.splitContainerH1.SplitterDistance = 25;
             this.splitContainerH1.SplitterWidth = 1;
             this.splitContainerH1.TabIndex = 42;

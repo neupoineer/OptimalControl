@@ -56,6 +56,7 @@ namespace DAL.Control
                             : -1;
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
+                        tmpRule.Type = Convert.ToBoolean(myReader["Type"]);
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -75,8 +76,8 @@ namespace DAL.Control
         {
             // 拼接 SQL 命令
             string sqlTxt =
-                "INSERT INTO Rules (Name,Expression,Operation,Period,State,Priority) VALUES " +
-                "(@Name,@Expression,@Operation,@Period,@State,@Priority)";
+                "INSERT INTO Rules (Name,Expression,Operation,Period,State,Priority,Type) VALUES " +
+                "(@Name,@Expression,@Operation,@Period,@State,@Priority,@Type)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -89,8 +90,8 @@ namespace DAL.Control
                 SqlParameter prm4 = new SqlParameter("@Period", SqlDbType.Int) { Value = IsParameterNull(addRule.Period) };
                 SqlParameter prm5 = new SqlParameter("@State", SqlDbType.Bit) { Value = addRule.State };
                 SqlParameter prm6 = new SqlParameter("@Priority", SqlDbType.Int) { Value = addRule.Priority };
-
-                cmd.Parameters.AddRange(new SqlParameter[] { prm1, prm2, prm3, prm4, prm5, prm6 });
+                SqlParameter prm7 = new SqlParameter("@Type", SqlDbType.Bit) {Value = addRule.Type};
+                cmd.Parameters.AddRange(new SqlParameter[] { prm1, prm2, prm3, prm4, prm5, prm6,prm7 });
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -130,7 +131,7 @@ namespace DAL.Control
         {
             // 拼接 SQL 命令
             string sqlTxt =
-                "UPDATE Rules SET Name=@Name,Expression=@Expression,Operation=@Operation,Period=@Period,State=@State,Priority=@Priority WHERE Id=@Id";
+                "UPDATE Rules SET Name=@Name,Expression=@Expression,Operation=@Operation,Period=@Period,State=@State,Priority=@Priority,Type=@Type WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -145,8 +146,9 @@ namespace DAL.Control
                 SqlParameter prm5 = new SqlParameter("@State", SqlDbType.Bit) { Value = currentRule.State };
                 SqlParameter prm6 = new SqlParameter("@Priority", SqlDbType.Int) { Value = currentRule.Priority };
                 SqlParameter prm7 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentRule.Id };
+                SqlParameter prm8 = new SqlParameter("@Type", SqlDbType.Bit) { Value = currentRule.Type };
 
-                cmd.Parameters.AddRange(new SqlParameter[] {prm1, prm2, prm3, prm4, prm5, prm6, prm7});
+                cmd.Parameters.AddRange(new SqlParameter[] {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8});
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -163,7 +165,7 @@ namespace DAL.Control
         public List<Rule> GetRuleInfoEnabled()
         {
             //SQL命令
-            string sqltxt = string.Format("Select * From Rules Where State = 'True'");
+            string sqltxt = string.Format("Select * From Rules Where State = 'True' Order by Priority");
 
             //创建规则实体集合
             List<Rule> ruleCollection = new List<Rule>();
@@ -195,6 +197,7 @@ namespace DAL.Control
                             : -1;
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
+                        tmpRule.Type = Convert.ToBoolean(myReader["Type"]);
 
                         // 添加到规则实体集合
                         ruleCollection.Add(tmpRule);
@@ -244,6 +247,7 @@ namespace DAL.Control
                             : -1;
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
+                        tmpRule.Type = Convert.ToBoolean(myReader["Type"]);
 
                         // 添加到规则实体集合
                         ruleCollection.Add(tmpRule);

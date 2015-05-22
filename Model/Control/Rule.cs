@@ -13,6 +13,7 @@ namespace Model.Control
         private bool _state;
         private int _delayTime;
         private int _priority;
+        private bool _type;
         #endregion
 
         #region Public Properties
@@ -53,6 +54,12 @@ namespace Model.Control
             set { _priority = value; }
         }
 
+        public bool Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -62,6 +69,7 @@ namespace Model.Control
         /// </summary>
         public Rule()
         {
+
         }
 
         /// <summary>
@@ -75,7 +83,8 @@ namespace Model.Control
         /// <param name="state">if set to <c>true</c> [enabled].</param>
         /// <param name="delayTime">The delay time.</param>
         /// <param name="priority">The priority.</param>
-        public Rule(int id, string name, string expression, string operatioin, int period, bool state, int delayTime, int priority)
+        /// <param name="type">The type.</param>
+        public Rule(int id, string name, string expression, string operatioin, int period, bool state, int delayTime, int priority, bool type)
         {
             Id = id;
             Name = name;
@@ -85,6 +94,7 @@ namespace Model.Control
             State = state;
             DelayTime = delayTime;
             Priority = priority;
+            Type = type;
         }
 
         #endregion
