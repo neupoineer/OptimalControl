@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using Modbus.Device;
 using Model.Modbus;
 using Utility;
@@ -48,14 +47,18 @@ namespace Model.Control
         }
 
         #region Private Members
+
+        private string _code;
         private double _value;
         private double _historyValue;
+        private double _initialValue;
         private double _ratio;
         private VariableLimit _limit;
         private int _controlPeriod;
         private int _operateDelay;
         private uint _deviceId;
         private int _address;
+        private bool _isDisplayed;
         #endregion
 
         #region Public Properties
@@ -98,6 +101,10 @@ namespace Model.Control
                     if (_ratio != 0)
                     {
                         _value = value/_ratio;
+                    }
+                    else
+                    {
+                        _value = value;
                     }
                 }
             }
@@ -175,10 +182,52 @@ namespace Model.Control
             set { _address = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the history value.
+        /// </summary>
+        /// <value>
+        /// 历史值.
+        /// </value>
         public double HistoryValue
         {
             get { return _historyValue; }
             set { _historyValue = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the initial value.
+        /// </summary>
+        /// <value>
+        /// 初始值.
+        /// </value>
+        public double InitialValue
+        {
+            get { return _initialValue; }
+            set { _initialValue = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the code.
+        /// </summary>
+        /// <value>
+        /// 编码.
+        /// </value>
+        public string Code
+        {
+            get { return _code; }
+            set { _code = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is displayed.
+        /// </summary>
+        /// <value>
+        /// 是否显示，<c>true</c> if this instance is displayed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDisplayed
+        {
+            get { return _isDisplayed; }
+            set { _isDisplayed = value; }
         }
 
         #endregion
@@ -190,7 +239,6 @@ namespace Model.Control
         /// </summary>
         public Variable()
         {
-
         }
 
         public VariableState CheckVariableState()
@@ -233,6 +281,9 @@ namespace Model.Control
         /// <param name="variableDeviceID">The variable device identifier.</param>
         /// <param name="variableAddress">The variable address.</param>
         /// <param name="historyValue">The history value.</param>
+        /// <param name="initialValue">The initial value.</param>
+        /// <param name="code">The code.</param>
+        /// <param name="isDisplayed">if set to <c>true</c> [is displayed].</param>
         public Variable(
             int variableId,
             string variableName,
@@ -241,8 +292,12 @@ namespace Model.Control
             VariableLimit variableLimit,
             int variableControlPeriod,
             int variableOperateDelay,
-            uint variableDeviceID, int variableAddress,
-            double historyValue)
+            uint variableDeviceID,
+            int variableAddress,
+            double historyValue,
+            double initialValue, 
+            string code, 
+            bool isDisplayed)
             : base(variableId, variableName)
         {
             this.Value = variableValue;
@@ -253,6 +308,9 @@ namespace Model.Control
             this.DeviceID = variableDeviceID;
             Address = variableAddress;
             HistoryValue = historyValue;
+            InitialValue = initialValue;
+            Code = code;
+            IsDisplayed = isDisplayed;
         }
 
         /// <summary>

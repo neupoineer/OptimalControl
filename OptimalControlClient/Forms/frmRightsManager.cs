@@ -22,11 +22,11 @@ namespace OptimalControl.Forms
             get { return _msMain; }
             set { _msMain = value; }
         }
-        frmMain _frmMain = null;
+        FrmMain _frmMain = null;
         /// <summary>
         /// 主界面对象
         /// </summary>
-        public frmMain FrmMain
+        public FrmMain FrmMain
         {
             get { return _frmMain; }
             set { _frmMain = value; }
@@ -87,7 +87,7 @@ namespace OptimalControl.Forms
         /// <param name="msMain">主界面待管理的菜单对象</param>
         /// <param name="frmMain">主界面对象</param>
         /// <param name="currentOperator">当前登录操作员对象</param>
-        public frmRightsManager(MenuStrip msMain, frmMain frmMain, Operator currentOperator)
+        public frmRightsManager(MenuStrip msMain, FrmMain frmMain, Operator currentOperator)
         {
             // 构建设计器控件
             InitializeComponent();

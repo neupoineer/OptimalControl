@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using IBLL.Control;
 using Model.Control;
 using Model.Modbus;
-using Utility;
 
 namespace OptimalControl.Forms
 {
@@ -61,6 +59,12 @@ namespace OptimalControl.Forms
                 Name = "Id",
                 HeaderText = "序号",
                 DataPropertyName = "Id"
+            };
+            DataGridViewTextBoxColumn dgvCode = new DataGridViewTextBoxColumn
+            {
+                Name = "Code",
+                HeaderText = "编码",
+                DataPropertyName = "Code"
             };
             DataGridViewTextBoxColumn dgvName = new DataGridViewTextBoxColumn
             {
@@ -124,10 +128,18 @@ namespace OptimalControl.Forms
                 HeaderText = "设备序号",
                 DataPropertyName = "DeviceID"
             };
+            DataGridViewTextBoxColumn dgvIsDisplayed = new DataGridViewTextBoxColumn
+            {
+                Name = "IsDisplayed",
+                HeaderText = "显示变量",
+                DataPropertyName = "IsDisplayed"
+            };
+
             // 添加新建的列
             dataGridView_parameters.Columns.AddRange(new DataGridViewColumn[]
             {
                 dgvId,
+                dgvCode,
                 dgvName,
                 dgvAddress,
                 dgvRatio,
@@ -138,12 +150,14 @@ namespace OptimalControl.Forms
                 dgvControlPeriod,
                 dgvOperateDelay,
                 dgvDeviceId,
+                dgvIsDisplayed,
             });
 
             for (int index = 0; index < variables.Count; index++)
             {
                 dataGridView_parameters.Rows.Add();
                 dataGridView_parameters.Rows[index].Cells["Id"].Value = variables[index].Id;
+                dataGridView_parameters.Rows[index].Cells["Code"].Value = variables[index].Code;
                 dataGridView_parameters.Rows[index].Cells["Name"].Value = variables[index].Name;
                 dataGridView_parameters.Rows[index].Cells["Address"].Value = variables[index].Address;
                 dataGridView_parameters.Rows[index].Cells["Ratio"].Value = variables[index].Ratio;
@@ -162,6 +176,7 @@ namespace OptimalControl.Forms
                 if (!variables[index].OperateDelay.Equals(-1))
                     dataGridView_parameters.Rows[index].Cells["OperateDelay"].Value = variables[index].OperateDelay;
                 dataGridView_parameters.Rows[index].Cells["DeviceID"].Value = variables[index].DeviceID;
+                dataGridView_parameters.Rows[index].Cells["IsDisplayed"].Value = variables[index].IsDisplayed;
             }
             tssl_parameters_manager.Text = string.Format("查询到 {0} 行数据", variables.Count);
         }
@@ -194,6 +209,7 @@ namespace OptimalControl.Forms
                 Variable parameter = new Variable
                 {
                     Id = Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["Id"].Value),
+                    Code = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["Code"].Value),
                     Name = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["Name"].Value),
                     Address = Convert.ToUInt16(dataGridView_parameters.Rows[selectRowIndex].Cells["Address"].Value),
                     Ratio = Math.Round(Convert.ToDouble(dataGridView_parameters.Rows[selectRowIndex].Cells["Ratio"].Value), 2),
@@ -219,6 +235,7 @@ namespace OptimalControl.Forms
                     ? Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["OperateDelay"].Value)
                     : -1,
                     DeviceID = Convert.ToUInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["DeviceID"].Value),
+                    IsDisplayed = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsDisplayed"].Value)
                 };
                 return parameter;
             }

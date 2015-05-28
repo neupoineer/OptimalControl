@@ -284,7 +284,7 @@ namespace OptimalControl.Forms
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 16;
-            this.label1.Text = "曲线名称";
+            this.label1.Text = "变量名称";
             // 
             // ntb_curve_address
             // 

@@ -16,10 +16,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Net;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
-using System.IO.Ports;
 using System.Net.Sockets;
 using System.Timers;
 using IBLL;
@@ -51,7 +51,7 @@ namespace OptimalControl.Forms
     /// <summary>
     /// Class MainForm
     /// </summary>
-    public partial class frmMain : Form
+    public partial class FrmMain : Form
     {
         #region 全局变量
 
@@ -60,12 +60,12 @@ namespace OptimalControl.Forms
         /// <summary>
         /// The _isPass
         /// </summary>
-        private bool _isPass = false;
+        private bool _isPass;
 
         /// <summary>
         /// 当前登录操作员实体
         /// </summary>
-        private Operator _currentOperator = null;
+        private Operator _currentOperator;
 
         /// <summary>
         /// 创建工厂类
@@ -75,7 +75,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// The software is running
         /// </summary>
-        private bool _isRunning = false;
+        private bool _isRunning;
 
         /// <summary>
         /// The logoff time
@@ -93,23 +93,11 @@ namespace OptimalControl.Forms
         private System.Threading.Timer _timerUpdateVariable;
 
         /// <summary>
-        /// The real timer
-        /// </summary>
-        private System.Threading.Timer _timerRealtime;
-
-        /// <summary>
-        /// The real timer
-        /// </summary>
-        private System.Threading.Timer _timerRuleDelay;
-
-        /// <summary>
         /// The real timer flag
         /// </summary>
-        private bool _realTimerFlag = false;
+        private bool _realTimerFlag;
 
-        private bool _updateGraphFlag = false;
-
-        private bool _execteRulesFlag = false;
+        private bool _updateGraphFlag;
 
         /// <summary>
         /// The MessageFilter
@@ -133,45 +121,27 @@ namespace OptimalControl.Forms
 
         private int _realTimerInterval = 2000; //设置定时器间隔，默认为2000ms
 
-        /// <summary>
-        /// The modbus rtu slave thread
-        /// </summary>
-        private Thread _modbusRtuSlaveThread;
+        private Thread _modbusTcpSlaveThread;
 
-        /// <summary>
-        /// The modbus rtu slave
-        /// </summary>
-        private ModbusSlave _modbusRtuSlave;
+        private ModbusTcpDevice _modbusTcpDevice;
 
-        /// <summary>
-        /// The modbus rtu device
-        /// </summary>
-        private ModbusRtuDevice _modbusRtuDevice = new ModbusRtuDevice();
-
-        /// <summary>
-        /// The modbus rtu parameters
-        /// </summary>
-        private List<Variable> _modbusRtuParameters = new List<Variable>();
-
-        /// <summary>
-        /// The modbus rtu slave created flag
-        /// </summary>
-        private bool _modbusRtuSlaveCreated;
-
-        /// <summary>
-        /// The modbus rtu slave updated
-        /// </summary>
-        private bool _modbusRtuSlaveUpdated;
-
+        private List<Variable> _modbusTcpVariables = new List<Variable>(); 
+        
         /// <summary>
         /// The devices
         /// </summary>
         private List<Device> _devices = new List<Device>();
 
         /// <summary>
+        /// The modbus Tcp slave created flag
+        /// </summary>
+        private bool _modbusTcpSlaveCreated;
+
+        /// <summary>
         /// The DCS name displayed in list
         /// </summary>
-        private string _dcsName = "磨机工况信息";
+        private string _dcsName;
+        private string _clientName;
 
         /// <summary>
         /// The master pane graph
@@ -179,11 +149,6 @@ namespace OptimalControl.Forms
         private MasterPane _masterPaneGraphRealtime = new MasterPane();
 
         private MasterPane _masterPaneGraphHistory = new MasterPane();
-
-        /// <summary>
-        /// The rotator
-        /// </summary>
-        private ColorSymbolRotator _rotator = new ColorSymbolRotator();
 
         /// <summary>
         /// The curve list
@@ -207,27 +172,12 @@ namespace OptimalControl.Forms
         /// </summary>
         private int _dataListLength = 720;
 
-        private List<Rule> _rules = new List<Rule>();
-
-        private int _defaultControlPeriod = 5;
-        
-        private Log _historyLog = new Log();
-
-        private string _optimalControlEnabledVariable;
-
-        private string _optimalControlHeartBeatVariable;
-
-        private string _feedVariable;
-        private double _feedCvHistory;
-
-        private bool _ruleTriggered = false;
-
         private int[] _displayedParaVariableId = new int[]
         {
-            8, 7, 4,
-            14, 13, 5,
-            21, 20, 6,
-            16, 41, 18, 11, 10, 10, 17, 22, 29, 27, 30
+            10, 9, 6,
+            16, 15, 7,
+            23, 22, 8,
+            18, 43, 20, 13, 12, 12, 19, 24, 31, 29, 32
         };
 
         private int[] _displayedParaDeviceId = new int[]
@@ -235,16 +185,22 @@ namespace OptimalControl.Forms
             0, 0, 0,
             0, 0, 0,
             0, 0, 0,
-            0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0
         };
+
+
+
+        private string _optimalControlEnabledVariable;
+        private string _optimalControlEnabledClientVariable;
+
         #endregion
 
         #region 构造函数
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="frmMain"/> class.
+        /// Initializes a new instance of the <see cref="FrmMain"/> class.
         /// </summary>
-        public frmMain(string[] args, bool isPass, Operator currentOperator)
+        public FrmMain(string[] args, bool isPass, Operator currentOperator)
         {
             this._args = args;
             // 保存当前登录操作员实体
@@ -472,7 +428,8 @@ namespace OptimalControl.Forms
         {
             try
             {
-                _dcsName = ConfigAppSettings.GetSettingString("DCSName", "磨机工况信息");
+                _dcsName = ConfigExeSettings.GetSettingString("DCSName", "磨机工况信息");
+                _clientName = ConfigExeSettings.GetSettingString("ClientName", "管理端");
 
                 // 创建类实例
                 IDeviceManager deviceManager = _bllFactory.BuildDeviceManager();
@@ -481,44 +438,40 @@ namespace OptimalControl.Forms
 
                 foreach (Device device in _devices)
                 {
-                    device.ModbusTcpDevice.TcpClient = new TcpClient();
-                    device.ModbusTcpMasterCreated = false;
-                    device.ModbusTcpMasterUpdated = false;
+                    //device.ModbusTcpDevice.TcpClient = new TcpClient();
+                    //device.ModbusTcpMasterCreated = false;
+                    //device.ModbusTcpMasterUpdated = false;
                     device.Variables = variableManager.GetVariableByDeviceId(device.Id);
+                    if (device.Name == _clientName)
+                    {
+                        _modbusTcpDevice = new ModbusTcpDevice()
+                        {
+                            IP = device.ModbusTcpDevice.IP,
+                            Port = device.ModbusTcpDevice.Port,
+                            UnitID = device.ModbusTcpDevice.UnitID,
+                        };
+                    }
                 }
 
-                _modbusRtuParameters = variableManager.GetVariableByDeviceId(0);
+                _modbusTcpVariables = variableManager.GetVariableByDeviceId(0);
 
-                string tempString = ConfigAppSettings.GetValue("LogoffMenulist").Trim();
+                string tempString = ConfigExeSettings.GetValue("LogoffMenulist").Trim();
                 if (tempString.Length > 0)
                 {
                     _logoffMenuList = tempString.Split(',');
                 }
-                _logoffTime = ConfigAppSettings.GetSettingInt("LogoffTime", _logoffTime);
 
-                _updateVariableTimerInterval = ConfigAppSettings.GetSettingInt("UpdateVariableTime", _updateVariableTimerInterval); //时间间隔
+                _logoffTime = ConfigExeSettings.GetSettingInt("LogoffTime", _logoffTime);
+                _updateVariableTimerInterval = ConfigExeSettings.GetSettingInt("UpdateVariableTime", _updateVariableTimerInterval); //时间间隔
+                _realTimerInterval = ConfigExeSettings.GetSettingInt("RealTime", _realTimerInterval); //时间间隔
 
-                //_timerUpdateVariable.Interval = _updateVariableTimerInterval;
+                _optimalControlEnabledVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
+                _optimalControlEnabledClientVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledClientVariable", "").Trim();
 
-                _realTimerInterval = ConfigAppSettings.GetSettingInt("RealTime", _realTimerInterval); //时间间隔
+                _masterPaneGraphRealtime.Title.Text = ConfigExeSettings.GetSettingString("MasterTitle", "My MasterPane Title");
+                _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigExeSettings.GetSettingSingle("MasterTitleSize", 12);
 
-                //_timerRealtime.Interval = _realTimerInterval;
-
-                _modbusRtuDevice.SerialPortObject = new SerialPort
-                    (
-                    ConfigAppSettings.GetSettingString("ModbusRTUPortName", "COM1"),
-                    ConfigAppSettings.GetSettingInt("ModbusRTUBaudRate", 19200),
-                    Parity.None,
-                    ConfigAppSettings.GetSettingInt("ModbusRTUDataBits", 8),
-                    (StopBits) ConfigAppSettings.GetSettingSingle("ModbusRTUStopBits", 1)
-                    );
-
-                _modbusRtuDevice.UnitID = ConfigAppSettings.GetSettingByte("ModbusRTUDeviceID", 1);
-
-                _masterPaneGraphRealtime.Title.Text = ConfigAppSettings.GetSettingString("MasterTitle", "My MasterPane Title");
-                _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigAppSettings.GetSettingSingle("MasterTitleSize", 12);
-
-                tempString = ConfigAppSettings.GetValue("CurveList").Trim();
+                tempString = ConfigExeSettings.GetValue("CurveList").Trim();
                 if (tempString.Length > 0)
                 {
                     string[] tempstrings = tempString.Split(',');
@@ -529,7 +482,7 @@ namespace OptimalControl.Forms
                     }
                 }
 
-                tempString = ConfigAppSettings.GetValue("Proportion").Trim();
+                tempString = ConfigExeSettings.GetValue("Proportion").Trim();
                 if (tempString.Length > 0)
                 {
                     string[] tempstrings = tempString.Split(',');
@@ -540,15 +493,10 @@ namespace OptimalControl.Forms
                     }
                 }
 
-                _dataListLength = ConfigAppSettings.GetSettingInt("DataListLength", 720);
+                _dataListLength = ConfigExeSettings.GetSettingInt("DataListLength", 720);
 
-                _optimalControlEnabledVariable = ConfigAppSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
-                _optimalControlHeartBeatVariable = ConfigAppSettings.GetSettingString("OptimalControlHeartBeatVariable", "").Trim();
-                _feedVariable = ConfigAppSettings.GetSettingString("FeedVariable", "").Trim();
-                
                 ICurveManager curveManager = _bllFactory.BuildCurveManager();
                 _curves = curveManager.GetAllCurveInfo();
-
                 UpdateRulesGrid();
             }
             catch (Exception ex)
@@ -557,66 +505,76 @@ namespace OptimalControl.Forms
             }
         }
 
+
+
         /// <summary>
-        /// 建立Modbus TCP 客户端.
+        /// 建立Modbus监听.
         /// </summary>
-        /// <param name="modbusTcpDevice">The modbus TCP device.</param>
         /// <returns>
-        /// Modbus TCP 客户端是否创建成功
+        /// Modbus TCP Listener是否创建成功
         /// </returns>
-        private bool ModbusTCPCreateClient(ref ModbusTcpDevice modbusTcpDevice)
+        private bool ModbusTcpCreateListener(ref ModbusTcpDevice modbusTcpDevice)
         {
             try
             {
-                if (string.IsNullOrEmpty(modbusTcpDevice.IP) || modbusTcpDevice.Port.Equals(0))
+                if ((modbusTcpDevice.IP.Equals("0.0.0.0")) || (modbusTcpDevice.Port <= 0))
                 {
-                    return false;
+                    statusStrip_main.Text = "Modbus TCP 地址或端口错误！";
                 }
-                modbusTcpDevice.TcpClient = new TcpClient(modbusTcpDevice.IP, modbusTcpDevice.Port);
+                else
+                {
+                    IPAddress modbusIpAddress;
+                    if (IPAddress.TryParse(modbusTcpDevice.IP, out modbusIpAddress))
+                    {
+                        // create and start the TCP slave
+                        modbusTcpDevice.TcpListener = new TcpListener(modbusIpAddress, modbusTcpDevice.Port);
+                        modbusTcpDevice.TcpListener.Start();
 
-                modbusTcpDevice.ModbusTcpMaster = ModbusIpMaster.CreateIp(modbusTcpDevice.TcpClient);
-                // create Modbus TCP Master with the tcp client
-                modbusTcpDevice.ModbusTcpMaster.Transport.ReadTimeout = 1000;
-                return true;
+                        modbusTcpDevice.ModbusTcpSlave = ModbusTcpSlave.CreateTcp(modbusTcpDevice.UnitID,
+                            modbusTcpDevice.TcpListener);
+                        modbusTcpDevice.ModbusTcpSlave.DataStore = DataStoreFactory.CreateDefaultDataStore();
+                        //modbusTcpDevice.ModbusTcpSlave.DataStore.DataStoreWrittenTo += ModbusTCP_DataStoreWriteTo_Event;
+                        _modbusTcpSlaveThread = new Thread(modbusTcpDevice.ModbusTcpSlave.Listen);
+                        _modbusTcpSlaveThread.Start();
+
+                        return true;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                status_Label.Text = ex.Message;
-                //RecordLog.WriteLogFile(LogFile, "ModbusTCPCreateClient", ex.Message);
+                RecordLog.WriteLogFile("ModbusCreatTCPListener", ex.Message);
             }
             return false;
         }
 
+
         /// <summary>
-        /// Get The Modbus TCP  value.
+        /// Get the Modbus Tcp values.
         /// </summary>
-        /// <param name="device">The device.</param>
-        private void ModbusTCPGetValue()
+        private void ModbusTcpGetValue()
         {
             try
             {
-                foreach (Device device in _devices)
+                if (_modbusTcpSlaveCreated)
                 {
-                    if (!device.State) return;
-                    for (int paraIndex = 0; paraIndex < device.Variables.Count; paraIndex++)
+                    foreach (Variable variable in _modbusTcpVariables)
                     {
-                        ushort[] register;
+                        ushort[] register = new ushort[2];
                         try
                         {
                             //读寄存器
-                            register =
-                                device.ModbusTcpDevice.ModbusTcpMaster.ReadHoldingRegisters(
-                                    device.ModbusTcpDevice.UnitID,
-                                    (ushort)(device.Variables[paraIndex].Address - 1), 2);
-                            device.ModbusTcpMasterUpdated = true;
+                            register[0] =
+                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address];
+                            register[1] =
+                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1];
                         }
                         catch (Exception)
                         {
-                            device.ModbusTcpMasterCreated = !ModbusTCPStopComm(device.ModbusTcpDevice); //处理连接错误，重试连接
-                            device.ModbusTcpMasterCreated = ModbusTCPCreateClient(ref device.ModbusTcpDevice);
+                            ModbusTcpStopComm(); //处理连接错误，重试连接
+                            ModbusTcpCreateListener(ref _modbusTcpDevice);
                             continue;
                         }
-
                         byte[] byteString = new byte[4];
                         for (int j = 0; j < 2; j++)
                         {
@@ -625,37 +583,79 @@ namespace OptimalControl.Forms
                             byteString[2*j + 1] = tempByte[1];
                         }
                         float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
-                        device.Variables[paraIndex].UpdateHistoryValue();
-                        device.Variables[paraIndex].Value = value;
+                        variable.UpdateHistoryValue();
+                        variable.Value = value;
+                    }
+                    if (_devices.Count > 0)
+                    {
+                        foreach (Device device in _devices)
+                        {
+                            if (device.Name == _clientName)
+                            {
+                                continue;
+                            }
+                            if (device.Variables.Count > 0)
+                            {
+                                foreach (Variable variable in device.Variables)
+                                {
+                                    ushort[] register = new ushort[2];
+                                    try
+                                    {
+                                        //读寄存器
+                                        register[0] =
+                                            _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address];
+                                        register[1] =
+                                            _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1];
+                                    }
+                                    catch (Exception)
+                                    {
+                                        ModbusTcpStopComm(); //处理连接错误，重试连接
+                                        ModbusTcpCreateListener(ref _modbusTcpDevice);
+                                        continue;
+                                    }
+                                    byte[] byteString = new byte[4];
+                                    for (int j = 0; j < 2; j++)
+                                    {
+                                        byte[] tempByte = BitConverter.GetBytes(register[j]);
+                                        byteString[2*j] = tempByte[0];
+                                        byteString[2*j + 1] = tempByte[1];
+                                    }
+                                    float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
+                                    variable.UpdateHistoryValue();
+                                    variable.Value = value;
+                                }
+                            }
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                RecordLog.WriteLogFile("ModbusTCPGetValue", ex.Message);
+                RecordLog.WriteLogFile("ModbusTcpGetValue", ex.Message);
             }
         }
 
         /// <summary>
         /// Stops the communication.
         /// </summary>
-        /// <param name="modbusTcpDevice">The modbus TCP device.</param>
-        /// <returns></returns>
-        private bool ModbusTCPStopComm(ModbusTcpDevice modbusTcpDevice) //通讯停止
+        private void ModbusTcpStopComm() //通讯停止
         {
             try
             {
-                if (modbusTcpDevice.ModbusTcpMaster != null)
-                    modbusTcpDevice.ModbusTcpMaster.Dispose();
-                if (modbusTcpDevice.TcpClient != null)
-                    modbusTcpDevice.TcpClient.Close();
-                return true;
+                if (_modbusTcpSlaveCreated)
+                {
+                    //_modbusTcpDevice.ModbusTcpSlave.ModbusSlaveRequestReceived -= ModbusTcp_Request_Event;
+                    //_modbusTcpDevice.ModbusTcpSlave.DataStore.DataStoreWrittenTo -= ModbusTcp_DataStoreWriteTo_Event;
+                    _modbusTcpDevice.ModbusTcpSlave.Dispose();
+                    _modbusTcpDevice.TcpListener.Stop();
+                    _modbusTcpSlaveThread.Abort();
+                    _modbusTcpSlaveCreated = false;
+                }
             }
             catch (Exception ex)
             {
-                RecordLog.WriteLogFile("StopModbusTCPComm", ex.Message);
+                RecordLog.WriteLogFile("StopModbusRTUComm", ex.Message);
             }
-            return false;
         }
 
         /// <summary>
@@ -698,54 +698,38 @@ namespace OptimalControl.Forms
                 group[_devices.Count] = new ListViewGroup(_dcsName, HorizontalAlignment.Center);
                 listview_parainfo.Groups.AddRange(group);
 
-                for (int deviceIndex = 0; deviceIndex < (_devices.Count); deviceIndex++)
+                if (_modbusTcpSlaveCreated)
                 {
-                    if (_devices[deviceIndex].State)
+                    for (int deviceIndex = 0; deviceIndex < (_devices.Count); deviceIndex++)
                     {
-                        listview_parainfo.Items.Add(
-                            new ListViewItem(
-                                new string[]
-                                {
-                                    "状态",
-                                    _devices[deviceIndex].ModbusTcpMasterCreated ? "在线" : "离线"
-                                },
-                                group[deviceIndex]
-                                )
-                            {
-                                BackColor = _devices[deviceIndex].ModbusTcpMasterCreated ? Color.LightGreen : Color.Pink,
-                                Font = new Font(DefaultFont.FontFamily, 9)
-                            }
-                            );
-
-                        ListViewItem[] items = new ListViewItem[_devices[deviceIndex].Variables.Count];
-                        for (int paraIndex = 0; paraIndex < _devices[deviceIndex].Variables.Count; paraIndex++)
+                        if (_devices[deviceIndex].State)
                         {
-                            items[paraIndex] =
-                                new ListViewItem(
-                                    new string[]
+                            ListViewItem[] listViewItems = new ListViewItem[_devices[deviceIndex].Variables.Count];
+                            for (int paraIndex = 0; paraIndex < _devices[deviceIndex].Variables.Count; paraIndex++)
+                            {
+                                listViewItems[paraIndex] =
+                                    new ListViewItem(
+                                        new string[]
                                     {
                                         _devices[deviceIndex].Variables[paraIndex].Name,
                                         _devices[deviceIndex].Variables[paraIndex].Value.ToString("F02")
                                     },
-                                    group[deviceIndex])
-                                {BackColor = (paraIndex%2 == 0 ? Color.White : Color.Cyan)};
+                                        group[deviceIndex]) { BackColor = (paraIndex % 2 == 0 ? Color.White : Color.Cyan) };
+                            }
+                            listview_parainfo.Items.AddRange(listViewItems);
                         }
-                        listview_parainfo.Items.AddRange(items);
                     }
-                }
 
-                if (_modbusRtuSlaveCreated)
-                {
-                    ListViewItem[] items = new ListViewItem[_modbusRtuParameters.Count];
+                    ListViewItem[] items = new ListViewItem[_modbusTcpVariables.Count];
 
-                    for (int paraIndex = 0; paraIndex < _modbusRtuParameters.Count; paraIndex++)
+                    for (int paraIndex = 0; paraIndex < _modbusTcpVariables.Count; paraIndex++)
                     {
                         items[paraIndex] =
                             new ListViewItem(
                                 new string[]
                                 {
-                                    _modbusRtuParameters[paraIndex].Name,
-                                    _modbusRtuParameters[paraIndex].Value.ToString("F02")
+                                    _modbusTcpVariables[paraIndex].Name,
+                                    _modbusTcpVariables[paraIndex].Value.ToString("F02")
                                 },
                                 group[_devices.Count])
                             {
@@ -963,39 +947,52 @@ namespace OptimalControl.Forms
                     {
                         switch (column.HeaderText) //更改列名
                         {
-                            case "Id":
-                                column.HeaderText = "序号";
-                                column.DisplayIndex = 1;
+                            case "Priority":
+                                column.HeaderText = "优先级";
+                                column.DisplayIndex = 0;
+                                column.MinimumWidth = 50;
+                                column.FillWeight = 100;
                                 break;
                             case "Name":
                                 column.HeaderText = "名称";
-                                column.DisplayIndex = 2;
+                                column.DisplayIndex = 1;
+                                column.MinimumWidth = 50;
+                                column.FillWeight = 100;
                                 break;
                             case "Expression":
                                 column.HeaderText = "控制规则";
                                 column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                                column.DisplayIndex = 3;
+                                column.DisplayIndex = 2;
+                                column.MinimumWidth = 100;
+                                column.FillWeight = 300;
                                 break;
                             case "Operation":
                                 column.HeaderText = "执行动作";
                                 column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                                column.DisplayIndex = 4;
+                                column.DisplayIndex = 3;
+                                column.MinimumWidth = 100;
+                                column.FillWeight = 300;
                                 break;
                             case "Period":
                                 column.HeaderText = "控制周期";
-                                column.DisplayIndex = 5;
+                                column.DisplayIndex = 4;
+                                column.MinimumWidth = 50;
+                                column.FillWeight = 100;
                                 break;
                             case "State":
                                 column.HeaderText = "启用";
-                                column.DisplayIndex = 6;
-                                break;
-                            case "Priority":
-                                column.HeaderText = "优先级";
-                                column.DisplayIndex = 0;
+                                column.DisplayIndex = 5;
+                                column.MinimumWidth = 50;
+                                column.FillWeight = 100;
                                 break;
                             case "Type":
                                 column.HeaderText = "类型";
-                                column.DisplayIndex = 7;
+                                column.DisplayIndex = 6;
+                                column.MinimumWidth = 50;
+                                column.FillWeight = 100;
+                                break;
+                            case "Id":
+                                column.Visible = false;
                                 break;
                             case "DelayTime":
                                 column.Visible = false;
@@ -1115,7 +1112,7 @@ namespace OptimalControl.Forms
                 {
                     if (_displayedParaDeviceId[i] == 0)
                     {
-                        foreach (Variable parameter in _modbusRtuParameters)
+                        foreach (Variable parameter in _modbusTcpVariables)
                         {
                             if (parameter.Id == _displayedParaVariableId[i])
                             {
@@ -1162,18 +1159,14 @@ namespace OptimalControl.Forms
             }
             try
             {
-                // 创建工厂类实例
-                BLLFactory.BLLFactory bllFactory = new BLLFactory.BLLFactory();
                 // 创建权限组管理类实例
-                ILogManager logManager = bllFactory.BuildLogManager();
+                ILogManager logManager = _bllFactory.BuildLogManager();
                 // 调用实例方法
                 List<Log> logCollection = logManager.GetLastTwentyLogInfo();
 
                 // 如果包含权限组信息
                 if (logCollection.Count > 0)
                 {
-                    _historyLog = logCollection[0];
-
                     // 绑定权限组数据显示
                     BindingSource source = new BindingSource();
                     source.DataSource = logCollection;
@@ -1185,7 +1178,7 @@ namespace OptimalControl.Forms
                     dgv_oc_logs.Columns["Id"].Visible = false;
                     dgv_oc_logs.Columns["LogTime"].HeaderText = "时间";
                     dgv_oc_logs.Columns["LogTime"].DisplayIndex = 1;
-                    dgv_oc_logs.Columns["LogTime"].DefaultCellStyle.Format = "yyyy-MM-dd hh:mm:ss";
+                    dgv_oc_logs.Columns["LogTime"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
                     dgv_oc_logs.Columns["LogTime"].Width = 200;
                     dgv_oc_logs.Columns["Type"].HeaderText = "等级";
                     dgv_oc_logs.Columns["Type"].DisplayIndex = 2;
@@ -1204,6 +1197,7 @@ namespace OptimalControl.Forms
             }
         }
 
+
         /// <summary>
         /// 从Modbus更新所有变量
         /// </summary>
@@ -1211,15 +1205,13 @@ namespace OptimalControl.Forms
         {
             try
             {
-                ModbusTCPGetValue();
+                ModbusTcpGetValue();
             }
             catch (Exception ex)
             {
                 RecordLog.WriteLogFile("UpdateModbus", ex.Message);
             }
         }
-
-        private delegate void SaveParametersDelegate();
 
         private void UpdateCurveData()
         {
@@ -1234,7 +1226,7 @@ namespace OptimalControl.Forms
                     }
                     if (curve.DeviceID == 0)
                     {
-                        foreach (Variable parameter in _modbusRtuParameters)
+                        foreach (Variable parameter in _modbusTcpVariables)
                         {
                             if (parameter.Address != curve.Address) continue;
                             curve.Name = parameter.Name;
@@ -1263,7 +1255,7 @@ namespace OptimalControl.Forms
                 RecordLog.WriteLogFile("UpdateCurveData", ex.Message);
             }
         }
-
+        
         #endregion 
 
         #region 控件响应
@@ -1276,9 +1268,27 @@ namespace OptimalControl.Forms
             if (!_realTimerFlag) return;
             try
             {
+                UpdateParameterValue();
                 UpdateRegisterList();
                 UpdateCurveData();
                 UpdateOcTextBox();
+                UpdateLogGrid();
+
+                foreach (Variable variable in _modbusTcpVariables)
+                {
+                    if(variable.Name == _optimalControlEnabledVariable)
+                        if (variable.Value > 0)
+                        {
+                            tsbtn_rule_run.Enabled = false;
+                            tsbtn_rule_stop.Enabled = true;
+                        }
+                        else
+                        {
+                            tsbtn_rule_run.Enabled = true;
+                            tsbtn_rule_stop.Enabled = false;
+                        }
+                    break;
+                }
 
                 if (_updateGraphFlag)
                     UpdateGraph(ref _masterPaneGraphRealtime, ref zgc_realtime, _curves);
@@ -1293,19 +1303,6 @@ namespace OptimalControl.Forms
             catch (Exception ex)
             {
                 RecordLog.WriteLogFile("UpdateVariableTimer", ex.Message); //未能正常写入文件，反馈信息到消息栏
-            }
-        }
-
-        private void TimerRealtimeElapsed(object o)
-        {
-            try
-            {
-                UpdateParameterValue();
-                UpdateLogGrid();
-            }
-            catch (Exception ex)
-            {
-                RecordLog.WriteLogFile("RealTimer", ex.Message); //未能正常写入文件，反馈信息到消息栏
             }
         }
 
@@ -1360,13 +1357,7 @@ namespace OptimalControl.Forms
                     if (frmLogin.isPass && frmLogin.currentOperator.RightsCollection[menu_file_quit.Name].RightsState)
                     {
                         _timerUpdateVariable.Dispose();
-                        _timerRealtime.Dispose();
-
-                        foreach (Device device in _devices)
-                        {
-                            device.ModbusTcpMasterCreated =
-                                ModbusTCPStopComm(device.ModbusTcpDevice);
-                        }
+                        ModbusTcpStopComm();
                         RecordLog.WriteLogFile("Closed", "Software Closed!");
                         Dispose(); //释放内存，退出程序
                     }
@@ -1393,43 +1384,51 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_run_Click(object sender, EventArgs e)
         {
-
-            if (string.IsNullOrEmpty(_modbusRtuDevice.SerialPortObject.PortName))
+            LoadSettings();
+            try
             {
-                MessageBox.Show("未设置Modbus RTU通讯端口！", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                LoadSettings();
-                //ClearGraph();
-                try
+                DateTime endTime = DateTime.Now;
+                DateTime startTime = endTime.AddSeconds((-1)*(_updateVariableTimerInterval/1000)*_dataListLength);
+                IDataManager dataManager = _bllFactory.BuildDataManager();
+                foreach (Curve curve in _curves)
                 {
-                    DateTime endTime = DateTime.Now;
-                    DateTime startTime = endTime.AddSeconds((-1)*(_updateVariableTimerInterval/1000)*_dataListLength);
-                    IDataManager dataManager = _bllFactory.BuildDataManager();
-                    foreach (Curve curve in _curves)
+                    List<Data> dataCollection = dataManager.GetDataByVariableCode(curve.Name,
+                        curve.DeviceID, startTime, endTime);
+                    foreach (Data tmpData in dataCollection)
                     {
-                        List<Data> dataCollection = dataManager.GetDataByVariableName(curve.Name,
-                            curve.DeviceID, startTime, endTime);
-                        foreach (Data tmpData in dataCollection)
-                        {
-                            curve.DataList.Add(
-                                new XDate(DateTime.Parse(tmpData.TimeValue.ToString())),
-                                Convert.ToDouble(tmpData.Value));
-                        }
+                        curve.DataList.Add(
+                            new XDate(DateTime.Parse(tmpData.TimeValue.ToString())),
+                            Convert.ToDouble(tmpData.Value));
                     }
+                }
+
+                _modbusTcpSlaveCreated = ModbusTcpCreateListener(ref _modbusTcpDevice);
+                if (_modbusTcpSlaveCreated)
+                {
+                    _realTimerFlag = true;
+                    _timerUpdateVariable = new System.Threading.Timer(TimerUpdateVariableElapsed, null, 0,
+                        _updateVariableTimerInterval);
 
                     foreach (Device device in _devices)
                     {
-                        if (device.State)
+                        if (device.Name == _clientName)
                         {
-                            device.ModbusTcpMasterCreated = ModbusTCPCreateClient(ref device.ModbusTcpDevice);
+                            foreach (Variable variable in device.Variables)
+                            {
+                                if (variable.Name == _optimalControlEnabledClientVariable)
+                                {
+                                    Data data = dataManager.GetLastDataByVariableCode(_optimalControlEnabledVariable, 0);
+                                    variable.Value = data.Value;
+                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
+                                    break;
+                                }
+                            }
                         }
                     }
-                    _realTimerFlag = true;
-                    _timerRealtime = new System.Threading.Timer(TimerRealtimeElapsed, null, 0, _realTimerInterval);
-                    _timerUpdateVariable = new System.Threading.Timer(TimerUpdateVariableElapsed, null, 0,
-                        _updateVariableTimerInterval);
 
                     // 加载权限菜单
                     RightsMenuDataManager rmManager = new RightsMenuDataManager();
@@ -1448,13 +1447,13 @@ namespace OptimalControl.Forms
                     _isRunning = true;
                     RecordLog.WriteLogFile("Start",
                         string.Format("Software started by {0}!", _currentOperator.Name));
-
-                }
-                catch (Exception ex)
-                {
-                    RecordLog.WriteLogFile("Run_Click", ex.Message);
                 }
             }
+            catch (Exception ex)
+            {
+                RecordLog.WriteLogFile("Run_Click", ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -1466,7 +1465,6 @@ namespace OptimalControl.Forms
         {
             _realTimerFlag = false;
             _timerUpdateVariable.Dispose();
-            _timerRealtime.Dispose();
             // 加载权限菜单
             RightsMenuDataManager rmManager = new RightsMenuDataManager();
             rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
@@ -1476,12 +1474,8 @@ namespace OptimalControl.Forms
             SynchroButton();
 
             ClearGraph();
-            for (int deviceID = 0; deviceID < _devices.Count; deviceID++)
-            {
-                Device device = _devices[deviceID];
-                device.ModbusTcpMasterCreated = ModbusTCPStopComm(_devices[deviceID].ModbusTcpDevice);
-                _devices[deviceID] = device;
-            }
+            ModbusTcpStopComm();
+            //listview_parainfo.Items.Clear();
             status_Label.Text = "停止.";
             _isRunning = false;
             RecordLog.WriteLogFile("Stop", string.Format("Software stoped by {0}!", _currentOperator.Name));
@@ -1979,6 +1973,63 @@ namespace OptimalControl.Forms
             tsbtn_rule_edit_Click(sender, e);
         }
 
+
+        private void tsbtn_rule_run_Click(object sender, EventArgs e)
+        {
+            tsbtn_rule_run.Enabled = false;
+            tsbtn_rule_stop.Enabled = true;
+            foreach (Device device in _devices)
+            {
+                if (device.Name == _clientName)
+                {
+                    foreach (Variable variable in device.Variables)
+                    {
+                        if (variable.Name == _optimalControlEnabledClientVariable)
+                        {
+                            variable.Value = 1;
+                            byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                            if (_modbusTcpSlaveCreated)
+                            {
+                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                    Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
+                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                    Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void tsbtn_rule_stop_Click(object sender, EventArgs e)
+        {
+            tsbtn_rule_run.Enabled = true;
+            tsbtn_rule_stop.Enabled = false;
+            foreach (Device device in _devices)
+            {
+                if (device.Name == _clientName)
+                {
+                    foreach (Variable variable in device.Variables)
+                    {
+                        if (variable.Name == _optimalControlEnabledClientVariable)
+                        {
+                            variable.Value = 0;
+                            byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                            if (_modbusTcpSlaveCreated)
+                            {
+                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                    Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                    Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         #endregion
+
     }
 }

@@ -11,7 +11,7 @@ namespace OptimalControl.Forms
     public partial class frmLockScreen : Form
     {
         #region Private Members
-        frmMain _frmMain = null;
+        FrmMain _frmMain = null;
         Operator _currentOperator = null;
         bool isPass = false;
         // 创建一个背景窗体
@@ -24,7 +24,7 @@ namespace OptimalControl.Forms
         /// </summary>
         /// <param name="frmMain">主窗体</param>
         /// <param name="currentOperator">当前登录操作员实体</param>
-        public frmLockScreen(frmMain frmMain, Operator currentOperator)
+        public frmLockScreen(FrmMain frmMain, Operator currentOperator)
         {
             // 设置窗体同步
             frmBackground.TopLevel = false;

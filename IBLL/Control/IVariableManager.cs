@@ -20,11 +20,11 @@ namespace IBLL.Control
         /// <summary>
         /// 根据变量ID获取变量实体
         /// </summary>
-        /// <param name="name">变量名</param>
+        /// <param name="code">变量名</param>
         /// <returns>
         /// 变量实体
         /// </returns>
-        Variable GetVariableInfoByName(string name);
+        Variable GetVariableInfoByCode(string code);
 
         /// <summary>
         /// 获取所有变量信息

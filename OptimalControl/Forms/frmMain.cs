@@ -959,7 +959,7 @@ namespace OptimalControl.Forms
                     variableName = variableName.Replace(".history", "");
                     isGetHistoryValue = true;
                 }
-                Variable tmpVariable = variableManager.GetVariableInfoByName(variableName);
+                Variable tmpVariable = variableManager.GetVariableInfoByCode(variableName);
                 if (tmpVariable.DeviceID == 0)
                 {
                     foreach (Variable parameter in _modbusRtuParameters)

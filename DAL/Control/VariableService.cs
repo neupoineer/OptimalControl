@@ -46,6 +46,7 @@ namespace DAL.Control
                     {
                         //将数据集转换成实体集合
                         tmpVariable.Id = Convert.ToInt32(myReader["Id"]);
+                        tmpVariable.Code = Convert.ToString(myReader["Code"]);
                         tmpVariable.Name = Convert.ToString(myReader["Name"]);
                         tmpVariable.Address = Convert.ToInt32(myReader["Address"]);
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
@@ -71,6 +72,7 @@ namespace DAL.Control
                             ? Convert.ToInt32(myReader["OperateDelay"])
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
+                        tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -84,12 +86,12 @@ namespace DAL.Control
         /// <summary>
         /// 根据变量名获取变量实体
         /// </summary>
-        /// <param name="name">变量名</param>
+        /// <param name="code">变量名</param>
         /// <returns>变量实体</returns>
-        public Variable GetVariableInfoByName(string name)
+        public Variable GetVariableInfoByCode(string code)
         {
             //SQL命令
-            string sqltxt = string.Format("Select * From Variable Where Name = '{0}'", name);
+            string sqltxt = string.Format("Select * From Variable Where Code = '{0}'", code);
 
             //创建变量实体
             Variable tmpVariable = new Variable();
@@ -112,6 +114,7 @@ namespace DAL.Control
                     {
                         //将数据集转换成实体集合
                         tmpVariable.Id = Convert.ToInt32(myReader["Id"]);
+                        tmpVariable.Code = Convert.ToString(myReader["Code"]);
                         tmpVariable.Name = Convert.ToString(myReader["Name"]);
                         tmpVariable.Address = Convert.ToInt32(myReader["Address"]);
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
@@ -137,6 +140,7 @@ namespace DAL.Control
                             ? Convert.ToInt32(myReader["OperateDelay"])
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
+                        tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -156,14 +160,15 @@ namespace DAL.Control
         {
             // 拼接 SQL 命令
             string sqlTxt =
-                "INSERT INTO Variable (Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID) VALUES " +
-                "(@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID)";
+                "INSERT INTO Variable (Code,Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID,IsDisplayed) VALUES " +
+                "(@Code,@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID,@IsDisplayed)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
+                SqlParameter prm0 = new SqlParameter("@Code", SqlDbType.NVarChar, 16) { Value = addVariable.Code };
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = addVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = addVariable.Ratio };
@@ -174,8 +179,9 @@ namespace DAL.Control
                 SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(addVariable.ControlPeriod) };
                 SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(addVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = addVariable.DeviceID };
+                SqlParameter prm11 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = addVariable.IsDisplayed };
 
-                cmd.Parameters.AddRange(new SqlParameter[] { prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10 });
+                cmd.Parameters.AddRange(new SqlParameter[] { prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11 });
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -236,7 +242,7 @@ namespace DAL.Control
         {
             // 拼接 SQL 命令
             string sqlTxt =
-                "UPDATE Variable SET Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID WHERE Id=@Id";
+                "UPDATE Variable SET Code=@Code,Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID,IsDisplayed=@IsDisplayed WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -244,6 +250,7 @@ namespace DAL.Control
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
+                SqlParameter prm0 = new SqlParameter("@Code", SqlDbType.NVarChar, 16) { Value = currentVariable.Code };
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = currentVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = currentVariable.Ratio };
@@ -254,10 +261,11 @@ namespace DAL.Control
                 SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(currentVariable.ControlPeriod) };
                 SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(currentVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentVariable.DeviceID };
-                SqlParameter prm11 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentVariable.Id };
+                SqlParameter prm11 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = currentVariable.IsDisplayed };
+                SqlParameter prm12 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentVariable.Id };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
-                {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11});
+                {prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12});
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -295,6 +303,7 @@ namespace DAL.Control
                         Variable tmpVariable = new Variable();
                         //将数据集转换成实体集合
                         tmpVariable.Id = Convert.ToInt32(myReader["Id"]);
+                        tmpVariable.Code = Convert.ToString(myReader["Code"]);
                         tmpVariable.Name = Convert.ToString(myReader["Name"]);
                         tmpVariable.Address = Convert.ToInt32(myReader["Address"]);
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
@@ -320,6 +329,7 @@ namespace DAL.Control
                             ? Convert.ToInt32(myReader["OperateDelay"])
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
+                        tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                         // 添加到变量实体集合
                         VariableCollection.Add(tmpVariable);
                     }
@@ -358,6 +368,7 @@ namespace DAL.Control
                         Variable tmpVariable = new Variable();
                         //将数据集转换成实体集合
                         tmpVariable.Id = Convert.ToInt32(myReader["Id"]);
+                        tmpVariable.Code = Convert.ToString(myReader["Code"]);
                         tmpVariable.Name = Convert.ToString(myReader["Name"]);
                         tmpVariable.Address = Convert.ToInt32(myReader["Address"]);
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
@@ -383,6 +394,7 @@ namespace DAL.Control
                             ? Convert.ToInt32(myReader["OperateDelay"])
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
+                        tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                         // 添加到变量实体集合
                         variableCollection.Add(tmpVariable);
                     }
@@ -392,17 +404,16 @@ namespace DAL.Control
             return variableCollection;
         }
 
-
         /// <summary>
         /// 根据变量名称校验变量是否存在
         /// </summary>
         /// <param name="variableName">变量名称</param>
         /// <returns>True:存在/Flase:不存在</returns>
-        public bool CheckVariableExist(string variableName)
+        public bool CheckVariableExist(string code)
         {
             //创建查询信息的 SQL
             string sqlTxt = string.Format(
-                "Select Count(*) From Variable Where Name = '{0}'", variableName);
+                "Select Count(*) From Variable Where Code = '{0}'", code);
             //创建SQL执行对象
             DBUtility.AbstractDBProvider dbProvider = DBUtility.AbstractDBProvider.Instance();
             //执行查询操作

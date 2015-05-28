@@ -38,6 +38,8 @@ namespace OptimalControl.Forms
             if (mode != DataOperateMode.Insert)
             {
                 Text = formText;
+                tb_para_code.Text = parameter.Code;
+                tb_para_code.Enabled = (mode != DataOperateMode.Delete);
                 tb_para_name.Text = parameter.Name;
                 tb_para_name.Enabled = (mode != DataOperateMode.Delete);
                 ntb_para_address.Text = parameter.Address.ToString(CultureInfo.InvariantCulture);
@@ -56,6 +58,9 @@ namespace OptimalControl.Forms
                 cb_para_device.Enabled = (mode != DataOperateMode.Delete);
                 tb_para_ratio.Text = parameter.Ratio.ToString(CultureInfo.InvariantCulture);
                 tb_para_ratio.Enabled = (mode != DataOperateMode.Delete);
+                cb_para_isdisplayed.Checked = parameter.IsDisplayed;
+                cb_para_isdisplayed.Enabled = (mode != DataOperateMode.Delete);
+
                 if (!parameter.ControlPeriod.Equals(-1))
                 {
                     ntb_para_period.Text = parameter.ControlPeriod.ToString(CultureInfo.InvariantCulture);
@@ -95,9 +100,11 @@ namespace OptimalControl.Forms
             Variable variable = new Variable()
             {
                 Id = _parameter.Id,
+                Code = tb_para_code.Text.Trim(),
                 Name = tb_para_name.Text.Trim(),
                 Address = Convert.ToInt32(ntb_para_address.Text.Trim()),
                 Ratio = Convert.ToDouble(tb_para_ratio.Text.Trim()),
+                IsDisplayed = cb_para_isdisplayed.Checked,
                 Limit = new Variable.VariableLimit()
                 {
                     UpperLimit = tb_para_upperlimit.Text != "" ? Convert.ToDouble(tb_para_upperlimit.Text.Trim()) : -1,
@@ -134,7 +141,11 @@ namespace OptimalControl.Forms
         {
             try
             {
-
+                if (tb_para_code.Text.Length < 1)
+                {
+                    MessageBox.Show("必须输入变量编码！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 if (tb_para_name.Text.Length < 1)
                 {
                     MessageBox.Show("请输入变量名！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);

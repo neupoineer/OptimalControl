@@ -41,9 +41,9 @@ namespace OptimalControl.Forms
             this.label8 = new System.Windows.Forms.Label();
             this.tb_para_uulimit = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.ntb_para_delay = new NumbericTextbox();
+            this.ntb_para_delay = new Utility.NumbericTextbox();
             this.label6 = new System.Windows.Forms.Label();
-            this.ntb_para_period = new NumbericTextbox();
+            this.ntb_para_period = new Utility.NumbericTextbox();
             this.label5 = new System.Windows.Forms.Label();
             this.tb_para_ratio = new System.Windows.Forms.TextBox();
             this.cb_para_device = new System.Windows.Forms.ComboBox();
@@ -51,14 +51,17 @@ namespace OptimalControl.Forms
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.ntb_para_address = new NumbericTextbox();
+            this.ntb_para_address = new Utility.NumbericTextbox();
             this.tb_para_name = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tb_para_code = new System.Windows.Forms.TextBox();
+            this.cb_para_isdisplayed = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_ok
             // 
-            this.btn_ok.Location = new System.Drawing.Point(80, 225);
+            this.btn_ok.Location = new System.Drawing.Point(80, 265);
             this.btn_ok.Name = "btn_ok";
             this.btn_ok.Size = new System.Drawing.Size(75, 23);
             this.btn_ok.TabIndex = 6;
@@ -69,7 +72,7 @@ namespace OptimalControl.Forms
             // btn_cancel
             // 
             this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btn_cancel.Location = new System.Drawing.Point(260, 225);
+            this.btn_cancel.Location = new System.Drawing.Point(260, 265);
             this.btn_cancel.Name = "btn_cancel";
             this.btn_cancel.Size = new System.Drawing.Size(75, 23);
             this.btn_cancel.TabIndex = 6;
@@ -79,6 +82,9 @@ namespace OptimalControl.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_para_isdisplayed);
+            this.groupBox1.Controls.Add(this.tb_para_code);
+            this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.tb_para_ullimit);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.tb_para_lowerlimit);
@@ -101,14 +107,14 @@ namespace OptimalControl.Forms
             this.groupBox1.Controls.Add(this.tb_para_name);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(396, 200);
+            this.groupBox1.Size = new System.Drawing.Size(396, 240);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "变量信息";
             // 
             // tb_para_ullimit
             // 
-            this.tb_para_ullimit.Location = new System.Drawing.Point(329, 157);
+            this.tb_para_ullimit.Location = new System.Drawing.Point(329, 197);
             this.tb_para_ullimit.Name = "tb_para_ullimit";
             this.tb_para_ullimit.Size = new System.Drawing.Size(50, 21);
             this.tb_para_ullimit.TabIndex = 31;
@@ -116,7 +122,7 @@ namespace OptimalControl.Forms
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(282, 160);
+            this.label10.Location = new System.Drawing.Point(282, 200);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(41, 12);
             this.label10.TabIndex = 30;
@@ -124,7 +130,7 @@ namespace OptimalControl.Forms
             // 
             // tb_para_lowerlimit
             // 
-            this.tb_para_lowerlimit.Location = new System.Drawing.Point(209, 157);
+            this.tb_para_lowerlimit.Location = new System.Drawing.Point(209, 197);
             this.tb_para_lowerlimit.Name = "tb_para_lowerlimit";
             this.tb_para_lowerlimit.Size = new System.Drawing.Size(50, 21);
             this.tb_para_lowerlimit.TabIndex = 29;
@@ -132,7 +138,7 @@ namespace OptimalControl.Forms
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(150, 160);
+            this.label9.Location = new System.Drawing.Point(150, 200);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 28;
@@ -140,7 +146,7 @@ namespace OptimalControl.Forms
             // 
             // tb_para_upperlimit
             // 
-            this.tb_para_upperlimit.Location = new System.Drawing.Point(209, 117);
+            this.tb_para_upperlimit.Location = new System.Drawing.Point(209, 157);
             this.tb_para_upperlimit.Name = "tb_para_upperlimit";
             this.tb_para_upperlimit.Size = new System.Drawing.Size(50, 21);
             this.tb_para_upperlimit.TabIndex = 27;
@@ -148,7 +154,7 @@ namespace OptimalControl.Forms
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(150, 120);
+            this.label8.Location = new System.Drawing.Point(150, 160);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(53, 12);
             this.label8.TabIndex = 26;
@@ -156,7 +162,7 @@ namespace OptimalControl.Forms
             // 
             // tb_para_uulimit
             // 
-            this.tb_para_uulimit.Location = new System.Drawing.Point(329, 117);
+            this.tb_para_uulimit.Location = new System.Drawing.Point(329, 157);
             this.tb_para_uulimit.Name = "tb_para_uulimit";
             this.tb_para_uulimit.Size = new System.Drawing.Size(50, 21);
             this.tb_para_uulimit.TabIndex = 25;
@@ -164,7 +170,7 @@ namespace OptimalControl.Forms
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(282, 120);
+            this.label7.Location = new System.Drawing.Point(282, 160);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(41, 12);
             this.label7.TabIndex = 24;
@@ -172,7 +178,7 @@ namespace OptimalControl.Forms
             // 
             // ntb_para_delay
             // 
-            this.ntb_para_delay.Location = new System.Drawing.Point(69, 157);
+            this.ntb_para_delay.Location = new System.Drawing.Point(69, 197);
             this.ntb_para_delay.Name = "ntb_para_delay";
             this.ntb_para_delay.Size = new System.Drawing.Size(50, 21);
             this.ntb_para_delay.TabIndex = 23;
@@ -180,7 +186,7 @@ namespace OptimalControl.Forms
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 160);
+            this.label6.Location = new System.Drawing.Point(10, 200);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(119, 12);
             this.label6.TabIndex = 22;
@@ -188,7 +194,7 @@ namespace OptimalControl.Forms
             // 
             // ntb_para_period
             // 
-            this.ntb_para_period.Location = new System.Drawing.Point(69, 117);
+            this.ntb_para_period.Location = new System.Drawing.Point(69, 157);
             this.ntb_para_period.Name = "ntb_para_period";
             this.ntb_para_period.Size = new System.Drawing.Size(50, 21);
             this.ntb_para_period.TabIndex = 21;
@@ -196,7 +202,7 @@ namespace OptimalControl.Forms
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 120);
+            this.label5.Location = new System.Drawing.Point(10, 160);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(119, 12);
             this.label5.TabIndex = 20;
@@ -213,7 +219,7 @@ namespace OptimalControl.Forms
             // 
             this.cb_para_device.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_para_device.FormattingEnabled = true;
-            this.cb_para_device.Location = new System.Drawing.Point(69, 77);
+            this.cb_para_device.Location = new System.Drawing.Point(69, 117);
             this.cb_para_device.Name = "cb_para_device";
             this.cb_para_device.Size = new System.Drawing.Size(150, 20);
             this.cb_para_device.TabIndex = 18;
@@ -239,7 +245,7 @@ namespace OptimalControl.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 80);
+            this.label3.Location = new System.Drawing.Point(10, 120);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 17;
@@ -248,7 +254,7 @@ namespace OptimalControl.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 40);
+            this.label1.Location = new System.Drawing.Point(10, 80);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 16;
@@ -263,24 +269,50 @@ namespace OptimalControl.Forms
             // 
             // tb_para_name
             // 
-            this.tb_para_name.Location = new System.Drawing.Point(69, 37);
+            this.tb_para_name.Location = new System.Drawing.Point(69, 77);
             this.tb_para_name.Name = "tb_para_name";
             this.tb_para_name.Size = new System.Drawing.Size(150, 21);
             this.tb_para_name.TabIndex = 9;
             // 
-            // frmEditParameter
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(10, 40);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 12);
+            this.label11.TabIndex = 32;
+            this.label11.Text = "变量编码";
+            // 
+            // tb_para_code
+            // 
+            this.tb_para_code.Location = new System.Drawing.Point(69, 37);
+            this.tb_para_code.Name = "tb_para_code";
+            this.tb_para_code.Size = new System.Drawing.Size(150, 21);
+            this.tb_para_code.TabIndex = 33;
+            // 
+            // cb_para_isdisplayed
+            // 
+            this.cb_para_isdisplayed.AutoSize = true;
+            this.cb_para_isdisplayed.Location = new System.Drawing.Point(284, 119);
+            this.cb_para_isdisplayed.Name = "cb_para_isdisplayed";
+            this.cb_para_isdisplayed.Size = new System.Drawing.Size(72, 16);
+            this.cb_para_isdisplayed.TabIndex = 34;
+            this.cb_para_isdisplayed.Text = "显示变量";
+            this.cb_para_isdisplayed.UseVisualStyleBackColor = true;
+            // 
+            // frmParameterEditor
             // 
             this.AcceptButton = this.btn_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
-            this.ClientSize = new System.Drawing.Size(420, 260);
+            this.ClientSize = new System.Drawing.Size(416, 296);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_cancel);
             this.Controls.Add(this.btn_ok);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "frmEditParameter";
+            this.Name = "frmParameterEditor";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -313,9 +345,12 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox tb_para_uulimit;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox ntb_para_delay;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox ntb_para_period;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox cb_para_isdisplayed;
+        private System.Windows.Forms.TextBox tb_para_code;
+        private System.Windows.Forms.Label label11;
+        private NumbericTextbox ntb_para_delay;
+        private NumbericTextbox ntb_para_period;
     }
 }

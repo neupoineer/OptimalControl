@@ -15,20 +15,35 @@ namespace BLL.Control
         /// <summary>
         /// 根据变量名和设备ID获取数据
         /// </summary>
-        /// <param name="variableName">变量名</param>
+        /// <param name="variableCode">变量名</param>
         /// <param name="deviceID">设备ID</param>
         /// <param name="starTime">起始时间</param>
         /// <param name="endTime">截止时间</param>
         /// <returns>
         /// 数据
         /// </returns>
-        public List<Data> GetDataByVariableName(string variableName, int deviceID, DateTime starTime, DateTime endTime)
+        public List<Data> GetDataByVariableCode(string variableCode, int deviceID, DateTime starTime, DateTime endTime)
         {
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
             IDataService dataService = absDALFactory.BuildDataService();
             //调用实例方法
-            return dataService.GetDataByVariableName(variableName, deviceID, starTime, endTime);
+            return dataService.GetDataByVariableCode(variableCode, deviceID, starTime, endTime);
+        }
+
+        /// <summary>
+        /// Gets the last data by variable name.
+        /// </summary>
+        /// <param name="variableCode">Name of the variable.</param>
+        /// <param name="deviceID">The device identifier.</param>
+        /// <returns></returns>
+        public Data GetLastDataByVariableCode(string variableCode, int deviceID)
+        {
+            DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
+            //调用工厂方法生成实例
+            IDataService dataService = absDALFactory.BuildDataService();
+            //调用实例方法
+            return dataService.GetLastDataByVariableCode(variableCode, deviceID);
         }
 
         /// <summary>

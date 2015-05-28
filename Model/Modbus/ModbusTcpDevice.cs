@@ -14,7 +14,8 @@ namespace Model.Modbus
         private byte _unitId;
         private TcpClient _tcpClient;
         private ModbusIpMaster _modbusTcpMaster;
-
+        private TcpListener _tcpListener;
+        private ModbusTcpSlave _modbusTcpSlave;
 
         /// <summary>
         /// The modbus IP address
@@ -61,18 +62,31 @@ namespace Model.Modbus
             set { _modbusTcpMaster = value; }
         }
 
-        public ModbusTcpDevice()
+        public TcpListener TcpListener
         {
-            
+            get { return _tcpListener; }
+            set { _tcpListener = value; }
         }
 
-        public ModbusTcpDevice(string ipAddress, int portName, TcpClient tcpClient, ModbusIpMaster modbusTcpMaster, byte unitId)
+        public ModbusTcpSlave ModbusTcpSlave
+        {
+            get { return _modbusTcpSlave; }
+            set { _modbusTcpSlave = value; }
+        }
+
+        public ModbusTcpDevice()
+        {
+        }
+
+        public ModbusTcpDevice(string ipAddress, int portName, TcpClient tcpClient, ModbusIpMaster modbusTcpMaster, byte unitId, TcpListener tcpListener, ModbusTcpSlave modbusTcpSlave)
         {
             IP = ipAddress;
             Port = portName;
             TcpClient = tcpClient;
             ModbusTcpMaster = modbusTcpMaster;
             UnitID = unitId;
+            TcpListener = tcpListener;
+            ModbusTcpSlave = modbusTcpSlave;
         }
     }
 }

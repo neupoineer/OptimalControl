@@ -12,6 +12,9 @@ Create Table [Variable]
 (
 	-- 主键列，自动增长 标识种子为 1 
 	[Id] int identity(1,1) Constraint [PK_VariableId] Primary Key,
+	
+	-- 参数编码
+	[Code] Nvarchar(16) Not Null,
 
 	-- 参数名
 	[Name] Nvarchar(50) Not Null,
@@ -35,6 +38,9 @@ Create Table [Variable]
 	[OperateDelay] int,
 
 	-- 设备ID
-	[DeviceID] int Not Null
+	[DeviceID] int Not Null,
+
+	-- 显示变量
+	[IsDisplayed] bit Not Null,
 )
 Go

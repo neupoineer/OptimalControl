@@ -30,16 +30,15 @@ namespace BLL.Control
         /// <summary>
         /// 根据变量名获取变量实体
         /// </summary>
-        /// <param name="name">变量名</param>
+        /// <param name="code">变量名</param>
         /// <returns>变量实体</returns>
-        public Variable GetVariableInfoByName(string name)
+        public Variable GetVariableInfoByCode(string code)
         {
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
             IVariableService variableService = absDALFactory.BuildVariableService();
             //调用实例方法
-            return variableService.GetVariableInfoByName(name);
-
+            return variableService.GetVariableInfoByCode(code);
         }
 
         /// <summary>

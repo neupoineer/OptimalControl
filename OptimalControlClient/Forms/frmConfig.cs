@@ -259,8 +259,6 @@ namespace OptimalControl.Forms
             this.Dispose();
         }
 
-        #endregion
-
         private void btn_Curve_Add_Click(object sender, EventArgs e)
         {
             Curve curve = GetSelectedCurve();
@@ -309,5 +307,7 @@ namespace OptimalControl.Forms
         {
             btn_Curve_Edit_Click(sender, e);
         }
+
+        #endregion
     }
 }

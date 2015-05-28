@@ -40,7 +40,7 @@ namespace OptimalControl.Forms
         /// <summary>
         /// 系统主界面
         /// </summary>
-        frmMain _frmMain = null;
+        FrmMain _frmMain = null;
         /// <summary>
         /// 当前编辑的权限组名称
         /// </summary>
@@ -631,7 +631,7 @@ namespace OptimalControl.Forms
         /// </summary>
         /// <param name="frmRightsManager">权限管理界面</param>
         /// <param name="frmMain">系统主界面</param>
-        public frmRightsGroupManager(frmRightsManager frmRightsManager, frmMain frmMain)
+        public frmRightsGroupManager(frmRightsManager frmRightsManager, FrmMain frmMain)
         {
             InitializeComponent();
 

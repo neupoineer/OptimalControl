@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Model.Control
 {
@@ -8,7 +6,7 @@ namespace Model.Control
     {
         #region Private Members
 
-        private string _ParameterName;
+        private string _parameterCode;
         private DateTime _timeValue;
         private double _value;
         private int _deviceID;
@@ -34,10 +32,10 @@ namespace Model.Control
             set { _deviceID = value; }
         }
 
-        public string ParameterName
+        public string ParameterCode
         {
-            get { return _ParameterName; }
-            set { _ParameterName = value; }
+            get { return _parameterCode; }
+            set { _parameterCode = value; }
         }
 
         #endregion
@@ -54,14 +52,14 @@ namespace Model.Control
         /// <summary>
         /// 带参构造
         /// </summary>
-        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="parameterCode">Name of the parameter.</param>
         /// <param name="timeValue">The time value.</param>
         /// <param name="value">The value.</param>
         /// <param name="deviceId">The device identifier.</param>
 
-        public Data(string parameterName, DateTime timeValue, double value, int deviceId )
+        public Data(string parameterCode, DateTime timeValue, double value, int deviceId )
         {
-            ParameterName = parameterName;
+            ParameterCode = parameterCode;
             TimeValue = timeValue;
             Value = value;
             DeviceID = deviceId;

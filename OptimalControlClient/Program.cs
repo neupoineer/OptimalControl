@@ -53,7 +53,7 @@ namespace OptimalControl
                 {
                     if (frmLogin.isPass)
                     {
-                        Application.Run(new frmMain(args, frmLogin.isPass, frmLogin.currentOperator));
+                        Application.Run(new FrmMain(args, frmLogin.isPass, frmLogin.currentOperator));
                     }
                 }
                 else if (dialogResult.Equals(DialogResult.Cancel))
