@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Net;
+using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
@@ -1058,6 +1059,8 @@ namespace OptimalControl.Forms
         /// <returns></returns>
         private DataTable LoadHistoryData(DateTime startTime, DateTime endTime)
         {
+
+
             DataTable dataTable = new DataTable();
             try
             {
@@ -1067,6 +1070,29 @@ namespace OptimalControl.Forms
             catch (Exception ex)
             {
                 RecordLog.WriteLogFile("LoadHistoryData", ex.Message);
+            }
+            foreach (DataColumn column in dataTable.Columns)
+            {
+                foreach (Variable variable in _modbusTcpVariables)
+                {
+                    if (variable.Code == column.ColumnName)
+                    {
+                        column.ColumnName = variable.Name;
+                        break;
+                    }
+                }
+
+                foreach (Device device in _devices)
+                {
+                    foreach (Variable variable in device.Variables)
+                    {
+                        if (variable.Code == column.ColumnName)
+                        {
+                            column.ColumnName = variable.Name;
+                            break;
+                        }
+                    }
+                }
             }
             return dataTable;
         }
@@ -1086,7 +1112,7 @@ namespace OptimalControl.Forms
                     PointPairList tmpDataList = new PointPairList();
                     for (int j = 1; j < dataTable.Columns.Count; j++)
                     {
-                        if (dataTable.Columns[j].ColumnName.Equals(curve.VariableCode))
+                        if (dataTable.Columns[j].ColumnName.Equals(curve.Name))
                         {
                             for (int i = 0; i < dataTable.Rows.Count; i++)
                             {
@@ -1325,7 +1351,61 @@ namespace OptimalControl.Forms
                 RecordLog.WriteLogFile("UpdateCurveData", ex.Message);
             }
         }
-        
+
+
+        /// <summary>
+        /// 将数据导出到文件.
+        /// </summary>
+        /// <param name="dataTable">数据表.</param>
+        /// <param name="fileName">文件名.</param>
+        /// <param name="splitChar">分隔符.</param>
+        /// <param name="isOutputName">是否导出列名.</param>
+        private void SaveDataToFlie(DataGridView dataTable, string fileName, string splitChar, bool isOutputName)
+        {
+            try
+            {
+                FileStream fs = new FileStream(fileName, FileMode.Create); //实例化一个文件流--->与写入文件相关联  
+                Encoding encode = Encoding.GetEncoding("gb2312"); //实例化一个StreamWriter-->与fs相关联 
+                StreamWriter sw = new StreamWriter(fs, encode);
+
+                if (isOutputName)
+                {
+                    //write data column name 第一行导出列名
+                    string columnname = string.Empty;
+                    for (int j = 0; j < dataTable.Columns.Count; j++)
+                    {
+                        if (j == dataTable.Columns.Count - 1)
+                            columnname += dataTable.Columns[j].Name;
+                        else
+                            columnname += dataTable.Columns[j].Name + splitChar;
+                    }
+                    sw.WriteLine(columnname);
+                }
+                // Call Read before accessing data.
+                foreach (DataGridViewRow dataRow in dataTable.Rows)
+                {
+                    string linecontent = string.Empty;
+                    for (int j = 0; j < dataTable.Columns.Count; j++)
+                    {
+                        if (j == dataTable.Columns.Count - 1)
+                            linecontent += dataRow.Cells[j].Value.ToString();
+                        else
+                            linecontent += dataRow.Cells[j].Value.ToString() + splitChar;
+                    }
+                    sw.WriteLine(linecontent);
+                }
+                //清空缓冲区
+                sw.Flush();
+                //关闭流  
+                sw.Close();
+                fs.Close();
+            }
+            catch (Exception ex)
+            {
+                RecordLog.WriteLogFile("WriteCSVFlie", ex.Message);
+            }
+        }
+
         #endregion 
 
         #region 控件响应
@@ -1639,7 +1719,6 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
-                dgv_data.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 _hisoryCurves = LoadHistoryCurves(dataTable);
                 UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
@@ -1662,7 +1741,6 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
-                dgv_data.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 _hisoryCurves = LoadHistoryCurves(dataTable);
                 UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
                 dtp_curve_start.Value = startTime;
@@ -1687,7 +1765,6 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
-                dgv_data.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 _hisoryCurves = LoadHistoryCurves(dataTable);
                 UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
                 dtp_curve_start.Value = startTime;
@@ -1712,7 +1789,6 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
-                dgv_data.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
                     startTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
@@ -1733,7 +1809,6 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
-                dgv_data.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 dtp_data_start.Value = startTime;
                 dtp_data_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
@@ -1756,7 +1831,6 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
-                dgv_data.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 dtp_data_start.Value = startTime;
                 dtp_data_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
@@ -2107,7 +2181,25 @@ namespace OptimalControl.Forms
                 }
             }
         }
+
+        private void btn_data_export_Click(object sender, EventArgs e)
+        {
+            if (dgv_data.RowCount > 0)
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog
+                {
+                    SelectedPath = AppDomain.CurrentDomain.BaseDirectory
+                };
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK) //选定存储目录
+                {
+                    string saveDir = folderBrowserDialog.SelectedPath; //选定存储目录
+                    string fileName = string.Format("{0}\\{1}.csv", saveDir, DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    SaveDataToFlie(dgv_data,fileName,",",true);
+                }
+            }
+        }
         #endregion
+
 
     }
 }
