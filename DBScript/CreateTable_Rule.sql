@@ -33,5 +33,8 @@ Create Table Rules
 
 	-- 是否一直有效
 	[Type] bit Not Null,
+
+	-- 是否写入日志记录
+	[IsLogged] bit Not Null,
 )
 Go

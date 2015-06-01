@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
@@ -15,6 +14,9 @@ namespace OptimalControl.Forms
     {
         #region 构造函数
         private BLLFactory.BLLFactory _bllFactory = new BLLFactory.BLLFactory();
+        private IVariableManager _variableManager;
+        private List<Variable> _variableCollection;
+        private List<string> _variableCodes = new List<string>();
 
         public frmConfig()
         {
@@ -56,13 +58,14 @@ namespace OptimalControl.Forms
                                 column.HeaderText = "名称";
                                 column.DisplayIndex = 1;
                                 break;
+                            case "VariableCode":
+                                column.HeaderText = "变量编码";
+                                break;
                             case "DeviceID":
                                 column.HeaderText = "设备序号";
-                                column.DisplayIndex = 2;
                                 break;
                             case "Address":
                                 column.HeaderText = "变量地址";
-                                column.DisplayIndex = 3;
                                 break;
                             case "LineColor":
                                 column.HeaderText = "颜色";
@@ -113,6 +116,7 @@ namespace OptimalControl.Forms
                 curve = new Curve
                 {
                     Id = Convert.ToInt32(dataGridView_Curve.Rows[selectRowIndex].Cells["Id"].Value),
+                    VariableCode = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells["VariableCode"].Value),
                     Name = Convert.ToString(dataGridView_Curve.Rows[selectRowIndex].Cells["Name"].Value),
                     DeviceID = Convert.ToInt32(dataGridView_Curve.Rows[selectRowIndex].Cells["DeviceID"].Value),
                     Address = Convert.ToUInt16(dataGridView_Curve.Rows[selectRowIndex].Cells["Address"].Value),
@@ -170,10 +174,10 @@ namespace OptimalControl.Forms
 
         private void LoadSetting()
         {
-            IVariableManager variableManager = _bllFactory.BuildIVariableManager();
-            List<Variable> variableCollection = variableManager.GetAllVariableInfo();
-            cb_control.Items.Clear();
-            foreach (Variable variable in variableCollection)
+            _variableManager = _bllFactory.BuildIVariableManager();
+            _variableCollection = _variableManager.GetAllVariableInfo();
+
+            foreach (Variable variable in _variableCollection)
             {
                 cb_control.Items.Add(variable.Name);
                 cb_heartbeat.Items.Add(variable.Name);
@@ -183,47 +187,81 @@ namespace OptimalControl.Forms
                 cb_oc_feedWater.Items.Add(variable.Name);
                 cb_supWater.Items.Add(variable.Name);
                 cb_oc_supWater.Items.Add(variable.Name);
+                _variableCodes.Add(variable.Code);
             }
 
             string[] tempStrings = System.IO.Ports.SerialPort.GetPortNames();
             cb_portname.Items.AddRange(tempStrings);
 
-            cb_portname.Text = ConfigAppSettings.GetSettingString("ModbusRTUPortName","COM1").Trim();
-            cb_baudrate.Text = ConfigAppSettings.GetSettingInt("ModbusRTUBaudrate", 19200).ToString(CultureInfo.InvariantCulture);
-            cb_databits.Text = ConfigAppSettings.GetSettingInt("ModbusRTUDatabits", 8).ToString(CultureInfo.InvariantCulture);
-            cb_stopbits.Text = ConfigAppSettings.GetSettingInt("ModbusRTUStopbits", 1).ToString(CultureInfo.InvariantCulture);
-            nud_device_id.Text = ConfigAppSettings.GetSettingInt("ModbusRTUDeviceID", 1).ToString(CultureInfo.InvariantCulture);
-            cb_control.Text = ConfigAppSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
-            cb_heartbeat.Text = ConfigAppSettings.GetSettingString("OptimalControlHeartBeatVariable", "").Trim();
-            cb_feed.Text = ConfigAppSettings.GetSettingString("FeedVariable", "").Trim();
-            cb_oc_feed.Text = ConfigAppSettings.GetSettingString("OptimalControlFeedVariable", "").Trim();
-            cb_feedWater.Text = ConfigAppSettings.GetSettingString("FeedWaterVariable", "").Trim();
-            cb_oc_feedWater.Text = ConfigAppSettings.GetSettingString("OptimalControlFeedWaterVariable", "").Trim();
-            cb_supWater.Text = ConfigAppSettings.GetSettingString("SupWaterVariable", "").Trim();
-            cb_oc_supWater.Text = ConfigAppSettings.GetSettingString("OptimalControlSupWaterVariable", "").Trim();
+            cb_portname.Text = ConfigExeSettings.GetSettingString("ModbusRTUPortName","COM1").Trim();
+            cb_baudrate.Text = ConfigExeSettings.GetSettingInt("ModbusRTUBaudrate", 19200).ToString(CultureInfo.InvariantCulture);
+            cb_databits.Text = ConfigExeSettings.GetSettingInt("ModbusRTUDatabits", 8).ToString(CultureInfo.InvariantCulture);
+            cb_stopbits.Text = ConfigExeSettings.GetSettingInt("ModbusRTUStopbits", 1).ToString(CultureInfo.InvariantCulture);
+            nud_device_id.Text = ConfigExeSettings.GetSettingInt("ModbusRTUDeviceID", 1).ToString(CultureInfo.InvariantCulture);
 
-            tb_UpdateVariableTime.Text = ConfigAppSettings.GetSettingInt("UpdateVariableTime", 10000).ToString(CultureInfo.InvariantCulture);
-            tb_Realtime.Text = ConfigAppSettings.GetSettingInt("RealTime", 2000).ToString(CultureInfo.InvariantCulture);
+            string tmpCode = ConfigExeSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
+            int tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_control.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tmpCode = ConfigExeSettings.GetSettingString("OptimalControlHeartBeatVariable", "").Trim();
+            tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_heartbeat.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tmpCode = ConfigExeSettings.GetSettingString("FeedVariable", "").Trim();
+            tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_feed.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tmpCode = ConfigExeSettings.GetSettingString("OptimalControlFeedVariable", "").Trim();
+            tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_oc_feed.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tmpCode = ConfigExeSettings.GetSettingString("FeedWaterVariable", "").Trim();
+            tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_feedWater.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tmpCode = ConfigExeSettings.GetSettingString("OptimalControlFeedWaterVariable", "").Trim();
+            tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_oc_feedWater.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tmpCode = ConfigExeSettings.GetSettingString("SupWaterVariable", "").Trim();
+            tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_supWater.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tmpCode = ConfigExeSettings.GetSettingString("OptimalControlSupWaterVariable", "").Trim();
+            tmpindex = _variableCodes.IndexOf(tmpCode);
+            cb_oc_supWater.Text = tmpindex == -1 ? "" : _variableCollection[tmpindex].Name;
+
+            tb_UpdateVariableTime.Text = ConfigExeSettings.GetSettingInt("UpdateVariableTime", 10000).ToString(CultureInfo.InvariantCulture);
+            tb_Realtime.Text = ConfigExeSettings.GetSettingInt("RealTime", 2000).ToString(CultureInfo.InvariantCulture);
 
             UpdateCurveGrid();
         }
 
         private void SaveSetting()
         {
-            ConfigAppSettings.SetSettingString("ModbusRTUPortName", cb_portname.Text.Trim());
-            ConfigAppSettings.SetSettingInt("ModbusRTUBaudrate", cb_baudrate.Text);
-            ConfigAppSettings.SetSettingInt("ModbusRTUDataBits", cb_databits.Text);
-            ConfigAppSettings.SetSettingInt("ModbusRTUStopBits", cb_stopbits.Text);
-            ConfigAppSettings.SetSettingInt("ModbusRTUDeviceID", nud_device_id.Text);
-            ConfigAppSettings.SetSettingString("OptimalControlEnabledVariable", cb_control.Text);
-            ConfigAppSettings.SetSettingString("OptimalControlHeartBeatVariable", cb_heartbeat.Text);
+            ConfigExeSettings.SetSettingString("ModbusRTUPortName", cb_portname.Text.Trim());
+            ConfigExeSettings.SetSettingInt("ModbusRTUBaudrate", cb_baudrate.Text);
+            ConfigExeSettings.SetSettingInt("ModbusRTUDataBits", cb_databits.Text);
+            ConfigExeSettings.SetSettingInt("ModbusRTUStopBits", cb_stopbits.Text);
+            ConfigExeSettings.SetSettingInt("ModbusRTUDeviceID", nud_device_id.Text);
 
-            ConfigAppSettings.SetSettingString("FeedVariable", cb_feed.Text);
-            ConfigAppSettings.SetSettingString("OptimalControlFeedVariable", cb_oc_feed.Text);
-            ConfigAppSettings.SetSettingString("FeedWaterVariable", cb_feedWater.Text);
-            ConfigAppSettings.SetSettingString("OptimalControlFeedWaterVariable", cb_oc_feedWater.Text);
-            ConfigAppSettings.SetSettingString("SupWaterVariable", cb_supWater.Text);
-            ConfigAppSettings.SetSettingString("OptimalControlSupWaterVariable", cb_oc_supWater.Text);
+            ConfigExeSettings.SetSettingString("OptimalControlEnabledVariable",
+                cb_control.SelectedIndex == -1 ? "" : _variableCodes[cb_control.SelectedIndex]);
+            ConfigExeSettings.SetSettingString("OptimalControlHeartBeatVariable",
+                cb_heartbeat.SelectedIndex == -1 ? "" : _variableCodes[cb_heartbeat.SelectedIndex]);
+
+            ConfigExeSettings.SetSettingString("FeedVariable",
+                cb_feed.SelectedIndex == -1 ? "" : _variableCodes[cb_feed.SelectedIndex]);
+            ConfigExeSettings.SetSettingString("OptimalControlFeedVariable",
+                cb_oc_feed.SelectedIndex == -1 ? "" : _variableCodes[cb_oc_feed.SelectedIndex]);
+            ConfigExeSettings.SetSettingString("FeedWaterVariable",
+                cb_feedWater.SelectedIndex == -1 ? "" : _variableCodes[cb_feedWater.SelectedIndex]);
+            ConfigExeSettings.SetSettingString("OptimalControlFeedWaterVariable",
+                cb_oc_feedWater.SelectedIndex == -1 ? "" : _variableCodes[cb_oc_feedWater.SelectedIndex]);
+            ConfigExeSettings.SetSettingString("SupWaterVariable",
+                cb_supWater.SelectedIndex == -1 ? "" : _variableCodes[cb_supWater.SelectedIndex]);
+            ConfigExeSettings.SetSettingString("OptimalControlSupWaterVariable",
+                cb_oc_supWater.SelectedIndex == -1 ? "" : _variableCodes[cb_oc_supWater.SelectedIndex]);
 
             if (tb_UpdateVariableTime.Text.Equals("") || tb_UpdateVariableTime.Text.Equals("0") || Convert.ToInt32(tb_UpdateVariableTime.Text) < 500)
             {
@@ -231,7 +269,7 @@ namespace OptimalControl.Forms
             }
             else
             {
-                ConfigAppSettings.SetValue("RealTime", tb_UpdateVariableTime.Text.Trim());
+                ConfigExeSettings.SetValue("RealTime", tb_UpdateVariableTime.Text.Trim());
             }
             if (tb_Realtime.Text.Equals("") || tb_Realtime.Text.Equals("0") || Convert.ToInt32(tb_Realtime.Text) < 500)
             {
@@ -239,7 +277,7 @@ namespace OptimalControl.Forms
             }
             else
             {
-                ConfigAppSettings.SetValue("RealTime", tb_Realtime.Text.Trim());
+                ConfigExeSettings.SetValue("RealTime", tb_Realtime.Text.Trim());
             }
         }
 
@@ -275,7 +313,7 @@ namespace OptimalControl.Forms
         private void btn_Curve_Edit_Click(object sender, EventArgs e)
         {
             Curve curve = GetSelectedCurve();
-            if (curve.Name == "") return;
+            if (curve.Name == null) return;
             frmCurveEditor editCurveForm = new frmCurveEditor(DataOperateMode.Edit, curve);
             if (editCurveForm.ShowDialog() == DialogResult.OK)
             {
@@ -288,7 +326,7 @@ namespace OptimalControl.Forms
         private void btn_Curve_Delete_Click(object sender, EventArgs e)
         {
             Curve curve = GetSelectedCurve();
-            if (curve.Name == "") return;
+            if (curve.Name == null) return;
             frmCurveEditor deleteCurveForm = new frmCurveEditor(DataOperateMode.Delete, curve);
             if (deleteCurveForm.ShowDialog() == DialogResult.OK)
             {

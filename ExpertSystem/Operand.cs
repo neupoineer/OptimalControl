@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Model.Control.Postfix
+namespace ExpertSystem
 {
     /// <summary>
     /// 操作数类

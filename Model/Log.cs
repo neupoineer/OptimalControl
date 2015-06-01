@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Model
 {
     public class Log
     {
+        /// <summary>
+        /// 日志等级
+        /// </summary>
         public enum LogType
         {
             严重 = 0,
@@ -26,30 +27,45 @@ namespace Model
 
         #region Public Properties
 
+        /// <summary>
+        /// ID
+        /// </summary>
         public int Id
         {
             get { return _id; }
             set { _id = value; }
         }
 
+        /// <summary>
+        /// 时间
+        /// </summary>
         public DateTime LogTime
         {
             get { return _logTime; }
             set { _logTime = value; }
         }
 
+        /// <summary>
+        /// 日志等级
+        /// </summary>
         public LogType Type
         {
             get { return _type; }
             set { _type = value; }
         }
 
+        /// <summary>
+        /// 日志内容
+        /// </summary>
         public string Content
         {
             get { return _content; }
             set { _content = value; }
         }
 
+        /// <summary>
+        /// 日志状态
+        /// </summary>
         public bool State
         {
             get { return _state; }
@@ -65,18 +81,17 @@ namespace Model
         /// </summary>
         public Log()
         {
-
         }
 
         /// <summary>
         /// 带参构造
         /// </summary>
-        /// <param name="id">实体模型 ID</param>
-        /// <param name="time">The time.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="content">The content.</param>
-        /// <param name="state">if set to <c>true</c> [state].</param>
-        public Log(int id, DateTime time, LogType type, string content, bool state)
+        public Log(
+            int id, 
+            DateTime time, 
+            LogType type, 
+            string content, 
+            bool state)
         {
             Id = id;
             LogTime = time;

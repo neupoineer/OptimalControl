@@ -412,13 +412,6 @@ namespace OptimalControl.Forms
             btn_config.Enabled = menu_config_config.Enabled;
             btn_info.Enabled = menu_help_about.Enabled;
             btn_quit.Enabled = menu_file_quit.Enabled;
-
-            //btn_run.Visible = menu_control_run.Enabled;
-            //btn_stop.Visible = menu_control_stop.Enabled;
-            //btn_history.Visible = menu_control_history.Enabled;
-            //btn_config.Visible = menu_config_config.Enabled;
-            //btn_info.Visible = menu_help_about.Enabled;
-            //btn_quit.Visible = menu_file_quit.Enabled;
         }
 
         /// <summary>
@@ -690,13 +683,13 @@ namespace OptimalControl.Forms
                     ColumnHeader columnHeader1 = new ColumnHeader {Text = "数值", Width = 60};
                     listview_parainfo.Columns.AddRange(new ColumnHeader[] {columnHeader0, columnHeader1});
                 }
-                ListViewGroup[] group = new ListViewGroup[_devices.Count + 1];
+                ListViewGroup[] listGroups = new ListViewGroup[_devices.Count + 1];
                 for (int index = 0; index < (_devices.Count); index++)
                 {
-                    group[index] = new ListViewGroup(_devices[index].Name, HorizontalAlignment.Center);
+                    listGroups[index] = new ListViewGroup(_devices[index].Name, HorizontalAlignment.Center);
                 }
-                group[_devices.Count] = new ListViewGroup(_dcsName, HorizontalAlignment.Center);
-                listview_parainfo.Groups.AddRange(group);
+                listGroups[_devices.Count] = new ListViewGroup(_dcsName, HorizontalAlignment.Center);
+                listview_parainfo.Groups.AddRange(listGroups);
 
                 if (_modbusTcpSlaveCreated)
                 {
@@ -714,35 +707,38 @@ namespace OptimalControl.Forms
                                         _devices[deviceIndex].Variables[paraIndex].Name,
                                         _devices[deviceIndex].Variables[paraIndex].Value.ToString("F02")
                                     },
-                                        group[deviceIndex]) { BackColor = (paraIndex % 2 == 0 ? Color.White : Color.Cyan) };
+                                        listGroups[deviceIndex]) { BackColor = (paraIndex % 2 == 0 ? Color.White : Color.Cyan) };
                             }
                             listview_parainfo.Items.AddRange(listViewItems);
                         }
                     }
 
-                    ListViewItem[] items = new ListViewItem[_modbusTcpVariables.Count];
+                    List<ListViewItem> items = new List<ListViewItem>();
+                    bool isEvenItem = false;
 
-                    for (int paraIndex = 0; paraIndex < _modbusTcpVariables.Count; paraIndex++)
+                    foreach (Variable variable in _modbusTcpVariables)
                     {
-                        items[paraIndex] =
-                            new ListViewItem(
-                                new string[]
+                        if (variable.IsDisplayed)
+                        {
+                            ListViewItem item =
+                                new ListViewItem(
+                                    new string[]
+                                    {
+                                        variable.Name,
+                                        variable.Value.ToString("F02")
+                                    },
+                                    listGroups[_devices.Count])
                                 {
-                                    _modbusTcpVariables[paraIndex].Name,
-                                    _modbusTcpVariables[paraIndex].Value.ToString("F02")
-                                },
-                                group[_devices.Count])
-                            {
-                                BackColor = (paraIndex%2 == 0 ? Color.White : Color.Cyan)
-                            };
+                                    BackColor = (isEvenItem ? Color.White : Color.Cyan)
+                                };
+                            items.Add(item);
+                            isEvenItem = !isEvenItem;
+                        }
                     }
-                    listview_parainfo.Items.AddRange(items);
+                    listview_parainfo.Items.AddRange(items.ToArray());
                 }
-
                 listview_parainfo.EndUpdate();
-
                 //listview_parainfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-
             }
             catch (Exception ex)
             {
@@ -936,73 +932,116 @@ namespace OptimalControl.Forms
                 // 调用实例方法
                 List<Rule> ruleCollection = ruleManager.GetAllRuleInfo();
 
-                // 如果包含信息
-                if (ruleCollection.Count >= 0)
+                // 清除原有的列
+                dgv_oc_rules.Columns.Clear();
+
+                // 手动创建数据列
+                DataGridViewTextBoxColumn dgvId = new DataGridViewTextBoxColumn
                 {
-                    BindingSource source = new BindingSource {DataSource = ruleCollection};
+                    Name = "Id",
+                    HeaderText = "序号",
+                    DataPropertyName = "ID",
+                    MinimumWidth = 50,
+                    FillWeight = 100,
+                    Visible = false,
+                };
+                DataGridViewTextBoxColumn dgvPriority = new DataGridViewTextBoxColumn
+                {
+                    Name = "Priority",
+                    HeaderText = "优先级",
+                    DataPropertyName = "Priority",
+                    MinimumWidth = 50,
+                    FillWeight = 100,
+                };
+                DataGridViewTextBoxColumn dgvName = new DataGridViewTextBoxColumn
+                {
+                    Name = "Name",
+                    HeaderText = "名称",
+                    DataPropertyName = "Name",
+                    MinimumWidth = 50,
+                    FillWeight = 200,
+                };
+                DataGridViewTextBoxColumn dgvExpression = new DataGridViewTextBoxColumn
+                {
+                    Name = "Expression",
+                    HeaderText = "控制规则",
+                    DataPropertyName = "Expression",
+                    MinimumWidth = 100,
+                    FillWeight = 400,
+                };
+                dgvExpression.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                DataGridViewTextBoxColumn dgvOperation = new DataGridViewTextBoxColumn
+                {
+                    Name = "Operation",
+                    HeaderText = "执行动作",
+                    DataPropertyName = "Operation",
+                    MinimumWidth = 100,
+                    FillWeight = 400,
+                };
+                dgvOperation.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                DataGridViewTextBoxColumn dgvPeriod = new DataGridViewTextBoxColumn
+                {
+                    Name = "Period",
+                    HeaderText = "控制周期",
+                    DataPropertyName = "Period",
+                    MinimumWidth = 50,
+                    FillWeight = 100,
+                };
+                DataGridViewCheckBoxColumn dgvState = new DataGridViewCheckBoxColumn
+                {
+                    Name = "State",
+                    HeaderText = "启用",
+                    DataPropertyName = "State",
+                    MinimumWidth = 50,
+                    FillWeight = 100,
+                };
+                DataGridViewCheckBoxColumn dgvType = new DataGridViewCheckBoxColumn
+                {
+                    Name = "Type",
+                    HeaderText = "类型",
+                    DataPropertyName = "Type",
+                    MinimumWidth = 50,
+                    FillWeight = 100,
+                };
+                DataGridViewCheckBoxColumn dgvIsLogged = new DataGridViewCheckBoxColumn
+                {
+                    Name = "IsLogged",
+                    HeaderText = "写入日志",
+                    DataPropertyName = "IsLogged",
+                    MinimumWidth = 50,
+                    FillWeight = 100,
+                };
 
-                    dgv_oc_rules.DataSource = source;
+                dgv_oc_rules.Columns.AddRange(new DataGridViewColumn[]
+            {
+                dgvPriority,
+                dgvName,
+                dgvExpression,
+                dgvOperation,
+                dgvPeriod,
+                dgvState,
+                dgvType,
+                dgvIsLogged,
+                dgvId,
+            });
 
-                    foreach (DataGridViewColumn column in dgv_oc_rules.Columns)
-                    {
-                        switch (column.HeaderText) //更改列名
-                        {
-                            case "Priority":
-                                column.HeaderText = "优先级";
-                                column.DisplayIndex = 0;
-                                column.MinimumWidth = 50;
-                                column.FillWeight = 100;
-                                break;
-                            case "Name":
-                                column.HeaderText = "名称";
-                                column.DisplayIndex = 1;
-                                column.MinimumWidth = 50;
-                                column.FillWeight = 100;
-                                break;
-                            case "Expression":
-                                column.HeaderText = "控制规则";
-                                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                                column.DisplayIndex = 2;
-                                column.MinimumWidth = 100;
-                                column.FillWeight = 300;
-                                break;
-                            case "Operation":
-                                column.HeaderText = "执行动作";
-                                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                                column.DisplayIndex = 3;
-                                column.MinimumWidth = 100;
-                                column.FillWeight = 300;
-                                break;
-                            case "Period":
-                                column.HeaderText = "控制周期";
-                                column.DisplayIndex = 4;
-                                column.MinimumWidth = 50;
-                                column.FillWeight = 100;
-                                break;
-                            case "State":
-                                column.HeaderText = "启用";
-                                column.DisplayIndex = 5;
-                                column.MinimumWidth = 50;
-                                column.FillWeight = 100;
-                                break;
-                            case "Type":
-                                column.HeaderText = "类型";
-                                column.DisplayIndex = 6;
-                                column.MinimumWidth = 50;
-                                column.FillWeight = 100;
-                                break;
-                            case "Id":
-                                column.Visible = false;
-                                break;
-                            case "DelayTime":
-                                column.Visible = false;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    status_Label.Text = string.Format("查询到 {0} 行数据", ruleCollection.Count);
+                for (int index = 0; index < ruleCollection.Count; index++)
+                {
+                    dgv_oc_rules.Rows.Add();
+                    dgv_oc_rules.Rows[index].Cells["Id"].Value = ruleCollection[index].Id;
+                    dgv_oc_rules.Rows[index].Cells["Priority"].Value = ruleCollection[index].Priority;
+                    dgv_oc_rules.Rows[index].Cells["Name"].Value = ruleCollection[index].Name;
+                    dgv_oc_rules.Rows[index].Cells["Expression"].Value = ruleCollection[index].Expression;
+                    dgv_oc_rules.Rows[index].Cells["Operation"].Value = ruleCollection[index].Operation;
+                    if (!ruleCollection[index].Period.Equals(-1))
+                        dgv_oc_rules.Rows[index].Cells["Period"].Value = ruleCollection[index].Period;
+                    dgv_oc_rules.Rows[index].Cells["State"].Value = ruleCollection[index].State;
+                    dgv_oc_rules.Rows[index].Cells["Type"].Value = ruleCollection[index].Type;
+                    dgv_oc_rules.Rows[index].Cells["IsLogged"].Value = ruleCollection[index].IsLogged;
                 }
+
+                status_Label.Text = string.Format("查询到 {0} 行数据", ruleCollection.Count);
+
             }
             catch (Exception ex)
             {
@@ -1042,22 +1081,42 @@ namespace OptimalControl.Forms
             List<Curve> curves = new List<Curve>();
             try
             {
-                for (int index = 0; index < _curves.Count; index++)
+                foreach (Curve curve in _curves)
                 {
-                    curves.Add(_curves[index]);
-                    curves[index].DataList.Clear();
+                    PointPairList tmpDataList = new PointPairList();
                     for (int j = 1; j < dataTable.Columns.Count; j++)
                     {
-                        if (dataTable.Columns[j].ColumnName.Equals(curves[index].Name))
+                        if (dataTable.Columns[j].ColumnName.Equals(curve.VariableCode))
                         {
                             for (int i = 0; i < dataTable.Rows.Count; i++)
                             {
-                                curves[index].DataList.Add(new XDate(DateTime.Parse(dataTable.Rows[i][0].ToString())),
+                                tmpDataList.Add(new XDate(DateTime.Parse(dataTable.Rows[i][0].ToString())),
                                     Convert.ToDouble(dataTable.Rows[i][j]));
                             }
                             break;
                         }
                     }
+
+                    Curve tmpCurve = new Curve
+                    {
+                        Id = curve.Id,
+                        VariableCode = curve.VariableCode,
+                        Name = curve.Name,
+                        DeviceID = curve.DeviceID,
+                        Address = curve.Address,
+                        LineColor = curve.LineColor,
+                        LineType = curve.LineType,
+                        LineWidth = curve.LineWidth,
+                        SymbolSize = curve.SymbolSize,
+                        SymbolType = curve.SymbolType,
+                        XTitle = curve.XTitle,
+                        YTitle = curve.YTitle,
+                        YMax = curve.YMax,
+                        YMin = curve.YMin,
+                        DataList = tmpDataList,
+                    };
+                    //将数据集转换成实体集合
+                    curves.Add(tmpCurve);
                 }
             }
             catch (Exception ex)
@@ -1086,6 +1145,7 @@ namespace OptimalControl.Forms
                         State = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells["State"].Value),
                         Priority = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells["Priority"].Value),
                         Type = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells["Type"].Value),
+                        IsLogged = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells["IsLogged"].Value),
                     };
                     return rule;
                 }
@@ -1144,7 +1204,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                RecordLog.WriteLogFile("GetSelectedRule", ex.Message);
+                RecordLog.WriteLogFile("UpdateOcTextBox", ex.Message);
             }
         }
 
@@ -1162,7 +1222,7 @@ namespace OptimalControl.Forms
                 // 创建权限组管理类实例
                 ILogManager logManager = _bllFactory.BuildLogManager();
                 // 调用实例方法
-                List<Log> logCollection = logManager.GetLastTwentyLogInfo();
+                List<Log> logCollection = logManager.GetLastLogInfos(100);
 
                 // 如果包含权限组信息
                 if (logCollection.Count > 0)
@@ -1176,19 +1236,29 @@ namespace OptimalControl.Forms
                     dgv_oc_logs.Columns["Id"].HeaderText = "编号";
                     dgv_oc_logs.Columns["Id"].DisplayIndex = 0;
                     dgv_oc_logs.Columns["Id"].Visible = false;
+
                     dgv_oc_logs.Columns["LogTime"].HeaderText = "时间";
                     dgv_oc_logs.Columns["LogTime"].DisplayIndex = 1;
                     dgv_oc_logs.Columns["LogTime"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
-                    dgv_oc_logs.Columns["LogTime"].Width = 200;
+                    dgv_oc_logs.Columns["LogTime"].MinimumWidth = 100;
+                    dgv_oc_logs.Columns["LogTime"].FillWeight = 200;
+
                     dgv_oc_logs.Columns["Type"].HeaderText = "等级";
                     dgv_oc_logs.Columns["Type"].DisplayIndex = 2;
-                    dgv_oc_logs.Columns["Type"].Width = 100;
+                    dgv_oc_logs.Columns["Type"].MinimumWidth = 50;
+                    dgv_oc_logs.Columns["Type"].FillWeight = 100;
+
                     dgv_oc_logs.Columns["Content"].HeaderText = "内容";
                     dgv_oc_logs.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv_oc_logs.Columns["Content"].DisplayIndex = 3;
+                    dgv_oc_logs.Columns["Content"].MinimumWidth = 300;
+                    dgv_oc_logs.Columns["Content"].MinimumWidth = 1200;
+
                     dgv_oc_logs.Columns["State"].HeaderText = "状态";
                     dgv_oc_logs.Columns["State"].DisplayIndex = 4;
-                    dgv_oc_logs.Columns["State"].Width = 100;
+                    dgv_oc_logs.Columns["State"].MinimumWidth = 50;
+                    dgv_oc_logs.Columns["State"].MinimumWidth = 100;
+
                 }
             }
             catch (Exception ex)
@@ -1229,7 +1299,7 @@ namespace OptimalControl.Forms
                         foreach (Variable parameter in _modbusTcpVariables)
                         {
                             if (parameter.Address != curve.Address) continue;
-                            curve.Name = parameter.Name;
+                            //curve.Name = parameter.Name;
                             curve.DataList.Add(tmpTime, parameter.Value);
                             break;
                         }
@@ -1242,7 +1312,7 @@ namespace OptimalControl.Forms
                             foreach (Variable parameter in device.Variables)
                             {
                                 if (parameter.Address != curve.Address) continue;
-                                curve.Name = parameter.Name;
+                                //curve.Name = parameter.Name;
                                 curve.DataList.Add(tmpTime, parameter.Value);
                                 break;
                             }
@@ -1276,16 +1346,22 @@ namespace OptimalControl.Forms
 
                 foreach (Variable variable in _modbusTcpVariables)
                 {
-                    if(variable.Name == _optimalControlEnabledVariable)
+                    if(variable.Code == _optimalControlEnabledVariable)
                         if (variable.Value > 0)
                         {
-                            tsbtn_rule_run.Enabled = false;
-                            tsbtn_rule_stop.Enabled = true;
+                            this.Invoke((EventHandler)(delegate
+                            {
+                                tsbtn_rule_run.Enabled = false;
+                                tsbtn_rule_stop.Enabled = true;
+                            }));
                         }
                         else
                         {
-                            tsbtn_rule_run.Enabled = true;
-                            tsbtn_rule_stop.Enabled = false;
+                            this.Invoke((EventHandler)(delegate
+                            {
+                                tsbtn_rule_run.Enabled = true;
+                                tsbtn_rule_stop.Enabled = false;
+                            }));
                         }
                     break;
                 }
@@ -1392,7 +1468,7 @@ namespace OptimalControl.Forms
                 IDataManager dataManager = _bllFactory.BuildDataManager();
                 foreach (Curve curve in _curves)
                 {
-                    List<Data> dataCollection = dataManager.GetDataByVariableCode(curve.Name,
+                    List<Data> dataCollection = dataManager.GetDataByVariableCode(curve.VariableCode,
                         curve.DeviceID, startTime, endTime);
                     foreach (Data tmpData in dataCollection)
                     {
@@ -1415,7 +1491,7 @@ namespace OptimalControl.Forms
                         {
                             foreach (Variable variable in device.Variables)
                             {
-                                if (variable.Name == _optimalControlEnabledClientVariable)
+                                if (variable.Code == _optimalControlEnabledClientVariable)
                                 {
                                     Data data = dataManager.GetLastDataByVariableCode(_optimalControlEnabledVariable, 0);
                                     variable.Value = data.Value;
@@ -1932,6 +2008,7 @@ namespace OptimalControl.Forms
         private void tsbtn_rule_edit_Click(object sender, EventArgs e)
         {
             Rule rule = GetSelectedRule();
+            if (rule.Name == null) return;
             frmRuleEditor editParameterForm = new frmRuleEditor(DataOperateMode.Edit, rule);
             if (editParameterForm.ShowDialog() == DialogResult.OK)
             {
@@ -1946,6 +2023,7 @@ namespace OptimalControl.Forms
         private void tsbtn_rule_delete_Click(object sender, EventArgs e)
         {
             Rule rule = GetSelectedRule();
+            if (rule.Name == null) return;
             frmRuleEditor deleteParameterForm = new frmRuleEditor(DataOperateMode.Delete, rule);
             if (deleteParameterForm.ShowDialog() == DialogResult.OK)
             {
@@ -1984,7 +2062,7 @@ namespace OptimalControl.Forms
                 {
                     foreach (Variable variable in device.Variables)
                     {
-                        if (variable.Name == _optimalControlEnabledClientVariable)
+                        if (variable.Code == _optimalControlEnabledClientVariable)
                         {
                             variable.Value = 1;
                             byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
@@ -2012,7 +2090,7 @@ namespace OptimalControl.Forms
                 {
                     foreach (Variable variable in device.Variables)
                     {
-                        if (variable.Name == _optimalControlEnabledClientVariable)
+                        if (variable.Code == _optimalControlEnabledClientVariable)
                         {
                             variable.Value = 0;
                             byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));

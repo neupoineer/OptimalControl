@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Model.Control.Postfix;
 
 namespace ExpertSystem
 {
@@ -10,9 +9,8 @@ namespace ExpertSystem
     /// </summary>
     public class RPN
     {
-        private Stack<object> m_tokens = new Stack<object>(); //最终逆波兰式堆栈
-
-        private string _RPNExpression; // 生成的逆波兰式字符串
+        private Stack<object> m_tokens = new Stack<object>();
+        private string _RPNExpression;
 
         /// <summary>
         /// 最终逆波兰式堆栈
@@ -635,7 +633,6 @@ namespace ExpertSystem
 
             return value;
         }
-
 
     }
 }

@@ -32,8 +32,6 @@ namespace OptimalControl.Forms
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btn_OK = new System.Windows.Forms.Button();
             this.btn_Cancel = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -62,17 +60,18 @@ namespace OptimalControl.Forms
             this.splitContainerH2 = new System.Windows.Forms.SplitContainer();
             this.dataGridView_Curve = new System.Windows.Forms.DataGridView();
             this.label_Curve_Status = new System.Windows.Forms.Label();
-            this.tabPage_textbox = new System.Windows.Forms.TabPage();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btn_Textbox_Update = new System.Windows.Forms.Button();
-            this.btn_Textbox_Delete = new System.Windows.Forms.Button();
-            this.btn_Textbox_Edit = new System.Windows.Forms.Button();
-            this.btn_Textbox_Add = new System.Windows.Forms.Button();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.dataGridView_Textbox = new System.Windows.Forms.DataGridView();
-            this.label5 = new System.Windows.Forms.Label();
             this.tabPage_other = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cb_oc_supWater = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.cb_oc_feedWater = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cb_oc_feed = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cb_supWater = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cb_feedWater = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.cb_feed = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tb_Realtime = new Utility.NumbericTextbox();
@@ -80,16 +79,6 @@ namespace OptimalControl.Forms
             this.tb_UpdateVariableTime = new Utility.NumbericTextbox();
             this.label16 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.cb_feedWater = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.cb_supWater = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.cb_oc_feed = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cb_oc_feedWater = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.cb_oc_supWater = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPage_comm.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -104,16 +93,6 @@ namespace OptimalControl.Forms
             this.splitContainerH2.Panel2.SuspendLayout();
             this.splitContainerH2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Curve)).BeginInit();
-            this.tabPage_textbox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Textbox)).BeginInit();
             this.tabPage_other.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -144,7 +123,6 @@ namespace OptimalControl.Forms
             // 
             this.tabControl.Controls.Add(this.tabPage_comm);
             this.tabControl.Controls.Add(this.tabPage_curve);
-            this.tabControl.Controls.Add(this.tabPage_textbox);
             this.tabControl.Controls.Add(this.tabPage_other);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
@@ -427,6 +405,7 @@ namespace OptimalControl.Forms
             // 
             this.dataGridView_Curve.AllowUserToAddRows = false;
             this.dataGridView_Curve.AllowUserToDeleteRows = false;
+            this.dataGridView_Curve.AllowUserToOrderColumns = true;
             this.dataGridView_Curve.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -465,139 +444,6 @@ namespace OptimalControl.Forms
             this.label_Curve_Status.Size = new System.Drawing.Size(0, 14);
             this.label_Curve_Status.TabIndex = 0;
             // 
-            // tabPage_textbox
-            // 
-            this.tabPage_textbox.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPage_textbox.Controls.Add(this.splitContainer1);
-            this.tabPage_textbox.Location = new System.Drawing.Point(4, 24);
-            this.tabPage_textbox.Name = "tabPage_textbox";
-            this.tabPage_textbox.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_textbox.Size = new System.Drawing.Size(470, 332);
-            this.tabPage_textbox.TabIndex = 4;
-            this.tabPage_textbox.Text = "显示变量设置";
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Update);
-            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Delete);
-            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Edit);
-            this.splitContainer1.Panel1.Controls.Add(this.btn_Textbox_Add);
-            this.splitContainer1.Panel1MinSize = 40;
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(464, 326);
-            this.splitContainer1.SplitterDistance = 40;
-            this.splitContainer1.TabIndex = 0;
-            // 
-            // btn_Textbox_Update
-            // 
-            this.btn_Textbox_Update.Location = new System.Drawing.Point(247, 10);
-            this.btn_Textbox_Update.Name = "btn_Textbox_Update";
-            this.btn_Textbox_Update.Size = new System.Drawing.Size(75, 23);
-            this.btn_Textbox_Update.TabIndex = 7;
-            this.btn_Textbox_Update.Text = "刷新";
-            this.btn_Textbox_Update.UseVisualStyleBackColor = true;
-            // 
-            // btn_Textbox_Delete
-            // 
-            this.btn_Textbox_Delete.Location = new System.Drawing.Point(166, 10);
-            this.btn_Textbox_Delete.Name = "btn_Textbox_Delete";
-            this.btn_Textbox_Delete.Size = new System.Drawing.Size(75, 23);
-            this.btn_Textbox_Delete.TabIndex = 6;
-            this.btn_Textbox_Delete.Text = "删除";
-            this.btn_Textbox_Delete.UseVisualStyleBackColor = true;
-            // 
-            // btn_Textbox_Edit
-            // 
-            this.btn_Textbox_Edit.Location = new System.Drawing.Point(85, 10);
-            this.btn_Textbox_Edit.Name = "btn_Textbox_Edit";
-            this.btn_Textbox_Edit.Size = new System.Drawing.Size(75, 23);
-            this.btn_Textbox_Edit.TabIndex = 5;
-            this.btn_Textbox_Edit.Text = "编辑";
-            this.btn_Textbox_Edit.UseVisualStyleBackColor = true;
-            // 
-            // btn_Textbox_Add
-            // 
-            this.btn_Textbox_Add.Location = new System.Drawing.Point(4, 10);
-            this.btn_Textbox_Add.Name = "btn_Textbox_Add";
-            this.btn_Textbox_Add.Size = new System.Drawing.Size(75, 23);
-            this.btn_Textbox_Add.TabIndex = 4;
-            this.btn_Textbox_Add.Text = "添加";
-            this.btn_Textbox_Add.UseVisualStyleBackColor = true;
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer2.IsSplitterFixed = true;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.dataGridView_Textbox);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.label5);
-            this.splitContainer2.Size = new System.Drawing.Size(464, 282);
-            this.splitContainer2.SplitterDistance = 252;
-            this.splitContainer2.TabIndex = 1;
-            this.splitContainer2.TabStop = false;
-            // 
-            // dataGridView_Textbox
-            // 
-            this.dataGridView_Textbox.AllowUserToAddRows = false;
-            this.dataGridView_Textbox.AllowUserToDeleteRows = false;
-            this.dataGridView_Textbox.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Textbox.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView_Textbox.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_Textbox.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dataGridView_Textbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_Textbox.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView_Textbox.MultiSelect = false;
-            this.dataGridView_Textbox.Name = "dataGridView_Textbox";
-            this.dataGridView_Textbox.ReadOnly = true;
-            this.dataGridView_Textbox.RowHeadersVisible = false;
-            this.dataGridView_Textbox.RowTemplate.Height = 23;
-            this.dataGridView_Textbox.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_Textbox.Size = new System.Drawing.Size(464, 252);
-            this.dataGridView_Textbox.TabIndex = 0;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 6);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(0, 14);
-            this.label5.TabIndex = 0;
-            // 
             // tabPage_other
             // 
             this.tabPage_other.BackColor = System.Drawing.SystemColors.Control;
@@ -635,6 +481,96 @@ namespace OptimalControl.Forms
             this.groupBox6.TabIndex = 37;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "其它设置";
+            // 
+            // cb_oc_supWater
+            // 
+            this.cb_oc_supWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_oc_supWater.FormattingEnabled = true;
+            this.cb_oc_supWater.Location = new System.Drawing.Point(131, 292);
+            this.cb_oc_supWater.Name = "cb_oc_supWater";
+            this.cb_oc_supWater.Size = new System.Drawing.Size(239, 22);
+            this.cb_oc_supWater.TabIndex = 56;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(40, 295);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(91, 14);
+            this.label11.TabIndex = 57;
+            this.label11.Text = "补加水优化值";
+            // 
+            // cb_oc_feedWater
+            // 
+            this.cb_oc_feedWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_oc_feedWater.FormattingEnabled = true;
+            this.cb_oc_feedWater.Location = new System.Drawing.Point(131, 217);
+            this.cb_oc_feedWater.Name = "cb_oc_feedWater";
+            this.cb_oc_feedWater.Size = new System.Drawing.Size(239, 22);
+            this.cb_oc_feedWater.TabIndex = 54;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(40, 220);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(91, 14);
+            this.label10.TabIndex = 55;
+            this.label10.Text = "前给水优化值";
+            // 
+            // cb_oc_feed
+            // 
+            this.cb_oc_feed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_oc_feed.FormattingEnabled = true;
+            this.cb_oc_feed.Location = new System.Drawing.Point(131, 142);
+            this.cb_oc_feed.Name = "cb_oc_feed";
+            this.cb_oc_feed.Size = new System.Drawing.Size(239, 22);
+            this.cb_oc_feed.TabIndex = 52;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(40, 145);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(91, 14);
+            this.label9.TabIndex = 53;
+            this.label9.Text = "给矿量优化值";
+            // 
+            // cb_supWater
+            // 
+            this.cb_supWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_supWater.FormattingEnabled = true;
+            this.cb_supWater.Location = new System.Drawing.Point(131, 257);
+            this.cb_supWater.Name = "cb_supWater";
+            this.cb_supWater.Size = new System.Drawing.Size(239, 22);
+            this.cb_supWater.TabIndex = 50;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(40, 260);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(91, 14);
+            this.label8.TabIndex = 51;
+            this.label8.Text = "补加水设定值";
+            // 
+            // cb_feedWater
+            // 
+            this.cb_feedWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_feedWater.FormattingEnabled = true;
+            this.cb_feedWater.Location = new System.Drawing.Point(131, 182);
+            this.cb_feedWater.Name = "cb_feedWater";
+            this.cb_feedWater.Size = new System.Drawing.Size(239, 22);
+            this.cb_feedWater.TabIndex = 48;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(40, 185);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(91, 14);
+            this.label7.TabIndex = 49;
+            this.label7.Text = "前给水设定值";
             // 
             // cb_feed
             // 
@@ -696,96 +632,6 @@ namespace OptimalControl.Forms
             this.panel1.Size = new System.Drawing.Size(478, 360);
             this.panel1.TabIndex = 6;
             // 
-            // cb_feedWater
-            // 
-            this.cb_feedWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_feedWater.FormattingEnabled = true;
-            this.cb_feedWater.Location = new System.Drawing.Point(131, 182);
-            this.cb_feedWater.Name = "cb_feedWater";
-            this.cb_feedWater.Size = new System.Drawing.Size(239, 22);
-            this.cb_feedWater.TabIndex = 48;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(40, 185);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(91, 14);
-            this.label7.TabIndex = 49;
-            this.label7.Text = "前给水设定值";
-            // 
-            // cb_supWater
-            // 
-            this.cb_supWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_supWater.FormattingEnabled = true;
-            this.cb_supWater.Location = new System.Drawing.Point(131, 257);
-            this.cb_supWater.Name = "cb_supWater";
-            this.cb_supWater.Size = new System.Drawing.Size(239, 22);
-            this.cb_supWater.TabIndex = 50;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(40, 260);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(91, 14);
-            this.label8.TabIndex = 51;
-            this.label8.Text = "补加水设定值";
-            // 
-            // cb_oc_feed
-            // 
-            this.cb_oc_feed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_oc_feed.FormattingEnabled = true;
-            this.cb_oc_feed.Location = new System.Drawing.Point(131, 142);
-            this.cb_oc_feed.Name = "cb_oc_feed";
-            this.cb_oc_feed.Size = new System.Drawing.Size(239, 22);
-            this.cb_oc_feed.TabIndex = 52;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(40, 145);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(91, 14);
-            this.label9.TabIndex = 53;
-            this.label9.Text = "给矿量优化值";
-            // 
-            // cb_oc_feedWater
-            // 
-            this.cb_oc_feedWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_oc_feedWater.FormattingEnabled = true;
-            this.cb_oc_feedWater.Location = new System.Drawing.Point(131, 217);
-            this.cb_oc_feedWater.Name = "cb_oc_feedWater";
-            this.cb_oc_feedWater.Size = new System.Drawing.Size(239, 22);
-            this.cb_oc_feedWater.TabIndex = 54;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(40, 220);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(91, 14);
-            this.label10.TabIndex = 55;
-            this.label10.Text = "前给水优化值";
-            // 
-            // cb_oc_supWater
-            // 
-            this.cb_oc_supWater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_oc_supWater.FormattingEnabled = true;
-            this.cb_oc_supWater.Location = new System.Drawing.Point(131, 292);
-            this.cb_oc_supWater.Name = "cb_oc_supWater";
-            this.cb_oc_supWater.Size = new System.Drawing.Size(239, 22);
-            this.cb_oc_supWater.TabIndex = 56;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(40, 295);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(91, 14);
-            this.label11.TabIndex = 57;
-            this.label11.Text = "补加水优化值";
-            // 
             // frmConfig
             // 
             this.AcceptButton = this.btn_OK;
@@ -822,17 +668,6 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH2)).EndInit();
             this.splitContainerH2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Curve)).EndInit();
-            this.tabPage_textbox.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Textbox)).EndInit();
             this.tabPage_other.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
@@ -878,15 +713,6 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Label label3;
         private NumbericTextbox tb_Realtime;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TabPage tabPage_textbox;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button btn_Textbox_Update;
-        private System.Windows.Forms.Button btn_Textbox_Delete;
-        private System.Windows.Forms.Button btn_Textbox_Edit;
-        private System.Windows.Forms.Button btn_Textbox_Add;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.DataGridView dataGridView_Textbox;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cb_feed;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cb_supWater;

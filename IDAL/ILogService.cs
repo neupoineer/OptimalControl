@@ -28,10 +28,13 @@ namespace IDAL
         List<Log> GetAllLogInfo();
 
         /// <summary>
-        /// 获取所有日志信息
+        /// 获取最新的日志信息
         /// </summary>
-        /// <returns>日志实体集合</returns>
-        List<Log> GetLastTwentyLogInfo();
+        /// <param name="logCount">日志条数.</param>
+        /// <returns>
+        /// 日志实体集合
+        /// </returns>
+        List<Log> GetLastLogInfos(int logCount);
 
         /// <summary>
         /// 添加日志

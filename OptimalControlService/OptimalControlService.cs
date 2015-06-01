@@ -379,9 +379,8 @@ namespace OptimalControlService
             }
             catch (Exception ex)
             {
-                RecordLog.WriteLogFile("ModbusTCPCreateClient", ex.Message);
+                return false;
             }
-            return false;
         }
 
         /// <summary>
@@ -518,6 +517,10 @@ namespace OptimalControlService
                             double value = GetValueByName(s.TrimStart('@'));
                             if (value < 0)
                             {
+                                if (Math.Abs(value - (-0.123456789)) < 0.000000001)
+                                {
+                                    continue;
+                                }
                                 expStringBuilder.Append(string.Format("(0{0})", value));
                             }
                             else
@@ -531,6 +534,9 @@ namespace OptimalControlService
                         }
                     }
                     if (expStringBuilder.Length == 0) continue;
+
+                    //RecordLog.WriteLogFile("Rule", expStringBuilder.ToString());
+
                     RPN rpn = new RPN();
                     if (rpn.Parse(expStringBuilder.ToString()))
                     {
@@ -551,7 +557,11 @@ namespace OptimalControlService
                                         double value = GetValueByName(op[index].TrimStart('@'));
                                         if (value < 0)
                                         {
-                                            expStringBuilder.Append(string.Format("(0{0})", value));
+                                            if (Math.Abs(value - (-0.123456789)) < 0.000000001)
+                                            {
+                                                continue;
+                                            }
+                                            opStringBuilder.Append(string.Format("(0{0})", value));
                                         }
                                         else
                                         {
@@ -564,6 +574,9 @@ namespace OptimalControlService
                                     }
                                 }
                                 if (opStringBuilder.Length == 0) continue;
+
+                                //RecordLog.WriteLogFile("Rule", opStringBuilder.ToString());
+
                                 rpn = new RPN();
                                 if (rpn.Parse(opStringBuilder.ToString()))
                                 {
@@ -587,7 +600,10 @@ namespace OptimalControlService
                                                         rule.Expression.Replace("@", ""), parameter.Name, result),
                                                 State = true,
                                             };
-                                            AddLogInfo(addLog);
+                                            if (rule.IsLogged)
+                                            {
+                                                AddLogInfo(addLog);
+                                            }
                                             _isRuleTriggered = true;
                                             int period = rule.Period > 0 ? rule.Period * 1000 : _defaultControlPeriod * 1000;
                                             _timerRuleDelay = new System.Threading.Timer(TimerRuleDelayElapsed, null, period, 0);
@@ -610,67 +626,57 @@ namespace OptimalControlService
         /// </summary>
         /// <param name="variableName">Name of the variable.</param>
         /// <returns>
-        /// value(-1 for error)
+        /// value(-0.123456789 for error)
         /// </returns>
         private double GetValueByName(string variableName)
         {
             try
             {
-                IVariableManager variableManager = _bllFactory.BuildIVariableManager();
                 bool isGetHistoryValue = false;
                 if (variableName.EndsWith("history"))
                 {
                     variableName = variableName.Replace(".history", "");
                     isGetHistoryValue = true;
                 }
-                Variable tmpVariable = variableManager.GetVariableInfoByCode(variableName);
-                if (tmpVariable.DeviceID == 0)
+
+                foreach (Variable parameter in _modbusRtuParameters)
                 {
-                    foreach (Variable parameter in _modbusRtuParameters)
+                    if (parameter.Name == variableName)
                     {
-                        if (parameter.Name == variableName)
+                        if (isGetHistoryValue)
                         {
-                            if (isGetHistoryValue)
-                            {
-                                return parameter.HistoryValue;
-                            }
-                            else
-                            {
-                                return parameter.Value;
-                            }
+                            return parameter.HistoryValue;
                         }
-                    }
-                }
-                else
-                {
-                    foreach (Device device in _devices)
-                    {
-                        if (device.Id == tmpVariable.DeviceID)
+                        else
                         {
-                            foreach (Variable variable in device.Variables)
-                            {
-                                if (variable.Name == variableName)
-                                {
-                                    if (isGetHistoryValue)
-                                    {
-                                        return variable.HistoryValue;
-                                    }
-                                    else
-                                    {
-                                        return variable.Value;
-                                    }
-                                }
-                            }
+                            return parameter.Value;
                         }
                     }
                 }
 
+                foreach (Device device in _devices)
+                {
+                    foreach (Variable variable in device.Variables)
+                    {
+                        if (variable.Name == variableName)
+                        {
+                            if (isGetHistoryValue)
+                            {
+                                return variable.HistoryValue;
+                            }
+                            else
+                            {
+                                return variable.Value;
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 RecordLog.WriteLogFile("GetValueByName", ex.Message);
             }
-            return -1;
+            return -0.123456789;
         }
 
         /// <summary>
@@ -678,7 +684,7 @@ namespace OptimalControlService
         /// </summary>
         /// <param name="variableCode">Code of the variable.</param>
         /// <returns>
-        /// value(-1 for error)
+        /// value(-0.123456789 for error)
         /// </returns>
         private double GetValueByCode(string variableCode)
         {
@@ -718,7 +724,7 @@ namespace OptimalControlService
             {
                 RecordLog.WriteLogFile("GetValueByCode", ex.Message);
             }
-            return -1;
+            return -0.123456789;
         }
 
         /// <summary>
@@ -773,7 +779,7 @@ namespace OptimalControlService
             {
                 Data data = new Data()
                 {
-                    ParameterCode = parameter.Code,
+                    VariableCode = parameter.Code,
                     TimeValue = time,
                     Value = parameter.RealValue,
                     DeviceID = Convert.ToInt32(parameter.DeviceID),
@@ -964,21 +970,33 @@ namespace OptimalControlService
                     {
                         if (parameter.Code == _optimalControlFeedVariable)
                         {
-                            parameter.Value = GetValueByCode(_feedVariable);
-                            parameter.InitialValue = parameter.Value;
-                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            double tmpValue = GetValueByCode(_feedVariable);
+                            if (Math.Abs(tmpValue - 0.123456789) > 0.000000001)
+                            {
+                                parameter.Value = tmpValue;
+                                parameter.InitialValue = tmpValue;
+                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            }
                         }
                         else if (parameter.Code == _optimalControlFeedWaterVariable)
                         {
-                            parameter.Value = GetValueByCode(_feedWaterVariable);
-                            parameter.InitialValue = parameter.Value;
-                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            double tmpValue = GetValueByCode(_feedWaterVariable);
+                            if (Math.Abs(tmpValue - 0.123456789) > 0.000000001)
+                            {
+                                parameter.Value = tmpValue;
+                                parameter.InitialValue = tmpValue;
+                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            }
                         }
                         else if (parameter.Code == _optimalControlSupWaterVariable)
                         {
-                            parameter.Value = GetValueByCode(_supWaterVariable);
-                            parameter.InitialValue = parameter.Value;
-                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            double tmpValue = GetValueByCode(_supWaterVariable);
+                            if (Math.Abs(tmpValue - 0.123456789) > 0.000000001)
+                            {
+                                parameter.Value = tmpValue;
+                                parameter.InitialValue = tmpValue;
+                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            }
                         }
                     }
                     _isFirstRound = false;

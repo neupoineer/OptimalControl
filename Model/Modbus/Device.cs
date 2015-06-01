@@ -4,10 +4,12 @@ using Model.Control;
 namespace Model.Modbus
 {
     /// <summary>
-    /// Device
+    /// 设备模型
     /// </summary>
-    public class Device:ModelBase
+    public class Device : ModelBase
     {
+        #region Private Members
+
         private bool _state;
         private bool _syncState;
         public ModbusTcpDevice ModbusTcpDevice = new ModbusTcpDevice();
@@ -15,8 +17,12 @@ namespace Model.Modbus
         private bool _modbusTcpMasterUpdated;
         private List<Variable> _variables = new List<Variable>();
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
-        /// The Device enabled
+        /// 是否启用设备
         /// </summary>
         public bool State
         {
@@ -25,7 +31,7 @@ namespace Model.Modbus
         }
 
         /// <summary>
-        /// The DeviceEnabledn enabled
+        /// 是否同步数据
         /// </summary>
         public bool SyncState
         {
@@ -52,7 +58,7 @@ namespace Model.Modbus
         }
 
         /// <summary>
-        /// The Parameters
+        /// 变量集合
         /// </summary>
         public List<Variable> Variables
         {
@@ -60,12 +66,28 @@ namespace Model.Modbus
             set { _variables = value; }
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// 无参构造
+        /// </summary>
         public Device()
         {
-            
+
         }
 
-        public Device(bool state, bool syncState, ModbusTcpDevice modbusTcpDevice, bool modbusTcpMasterCreated, bool modbusTcpMasterUpdated, List<Variable> variables)
+        /// <summary>
+        /// 带参构造
+        /// </summary>
+        public Device(
+            bool state,
+            bool syncState,
+            ModbusTcpDevice modbusTcpDevice,
+            bool modbusTcpMasterCreated,
+            bool modbusTcpMasterUpdated,
+            List<Variable> variables)
         {
             State = state;
             SyncState = syncState;
@@ -74,5 +96,7 @@ namespace Model.Modbus
             ModbusTcpMasterUpdated = modbusTcpMasterUpdated;
             Variables = variables;
         }
+
+        #endregion
     }
 }

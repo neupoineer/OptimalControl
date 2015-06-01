@@ -4,11 +4,13 @@ using ZedGraph;
 namespace Model.Control
 {
     /// <summary>
-    /// The Curve property
+    /// 曲线模型
     /// </summary>
     public class Curve : ModelBase
     {
+        #region Private Members
         private PointPairList _dataList = new PointPairList();
+        private string _variableCode;
         private int _deviceId;
         private ushort _address;
         private Color _lineColor;
@@ -20,9 +22,11 @@ namespace Model.Control
         private string _yTitle;
         private double _yMax;
         private double _yMin;
+        #endregion
 
+        #region Public Properties
         /// <summary>
-        /// The curve list
+        /// 数据数组
         /// </summary>
         public PointPairList DataList
         {
@@ -31,7 +35,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The device identifier
+        /// 设备ID
         /// </summary>
         public int DeviceID
         {
@@ -40,7 +44,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The address
+        /// 变量地址
         /// </summary>
         public ushort Address
         {
@@ -49,7 +53,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The curve line colour
+        /// 曲线颜色
         /// </summary>
         public Color LineColor
         {
@@ -58,7 +62,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The curve line type
+        /// 曲线类型
         /// </summary>
         public bool LineType
         {
@@ -67,7 +71,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The curve line width
+        /// 线宽
         /// </summary>
         public float LineWidth
         {
@@ -76,7 +80,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The curve symbol type
+        /// 符号类型
         /// </summary>
         public SymbolType SymbolType
         {
@@ -85,7 +89,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The curve symbol size
+        /// 符号大小
         /// </summary>
         public float SymbolSize
         {
@@ -94,7 +98,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The x axis title
+        /// 横轴标题
         /// </summary>
         public string XTitle
         {
@@ -103,7 +107,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The y axis title
+        /// 纵轴标题
         /// </summary>
         public string YTitle
         {
@@ -112,7 +116,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The pane Y axis max
+        /// 纵轴最大值
         /// </summary>
         public double YMax
         {
@@ -121,7 +125,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// The pane Y axis min
+        /// 纵轴最小值
         /// </summary>
         public double YMin
         {
@@ -129,14 +133,44 @@ namespace Model.Control
             set { _yMin = value; }
         }
 
+        /// <summary>
+        /// 变量编码
+        /// </summary>
+        public string VariableCode
+        {
+            get { return _variableCode; }
+            set { _variableCode = value; }
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// 无参构造
+        /// </summary>
         public Curve()
         {
-
         }
 
-        public Curve(PointPairList dataList, int deviceId, ushort address, Color lineColour, bool lineType,
-            float lineWidth, SymbolType curveSymbolType, float symbolSize, string xAxisTitle, string yAxisTitle,
-            double yAxisMax, double yAxisMin)
+        /// <summary>
+        /// 带参构造
+        /// </summary>
+        public Curve(
+            int id, 
+            string name, 
+            PointPairList dataList, 
+            int deviceId, 
+            ushort address, 
+            Color lineColour,
+            bool lineType, 
+            float lineWidth, 
+            SymbolType curveSymbolType, 
+            float symbolSize, 
+            string xAxisTitle,
+            string yAxisTitle, 
+            double yAxisMax, 
+            double yAxisMin, 
+            string variableCode) 
+            : base(id, name)
         {
             DataList = dataList;
             DeviceID = deviceId;
@@ -150,7 +184,8 @@ namespace Model.Control
             YTitle = yAxisTitle;
             YMax = yAxisMax;
             YMin = yAxisMin;
+            VariableCode = variableCode;
         }
+        #endregion
     }
-
 }

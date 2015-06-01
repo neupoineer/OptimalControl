@@ -8,27 +8,29 @@ using Model.Control;
 
 namespace DAL.Control
 {
+    /// <summary>
+    /// 数据访问操作类
+    /// </summary>
     public class DataService : IDataService
     {
+        #region IDataService 成员
+
         /// <summary>
-        /// 根据变量名和设备ID获取数据
+        /// 根据变量编码和设备ID获取数据
         /// </summary>
-        /// <param name="variableCode">变量名</param>
+        /// <param name="variableCode">变量编码</param>
         /// <param name="deviceID">设备ID</param>
         /// <param name="starTime">起始时间</param>
         /// <param name="endTime">截止时间</param>
-        /// <returns>
-        /// 数据
-        /// </returns>
+        /// <returns>数据</returns>
         public List<Data> GetDataByVariableCode(string variableCode, int deviceID, DateTime starTime, DateTime endTime)
         {
             //SQL命令
-            string sqltxt =
-                "SELECT TimeValue, Value FROM Data WHERE " +
-                "ParameterCode=@ParameterCode AND DeviceID=@DeviceID AND TimeValue >= @StartTime AND TimeValue < @EndTime";
-            //创建曲线实体集合
+            const string sqltxt = "SELECT TimeValue, Value FROM Data WHERE " +
+                                  "VariableCode=@VariableCode AND DeviceID=@DeviceID AND TimeValue >= @StartTime AND TimeValue < @EndTime";
+            //创建数据实体集合
             List<Data> dataCollection = new List<Data>();
-            //定义曲线实体
+            //定义数据实体
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -36,7 +38,7 @@ namespace DAL.Control
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(sqltxt, conn);
-                SqlParameter prm1 = new SqlParameter("@ParameterName", SqlDbType.NVarChar, 50) {Value = variableCode};
+                SqlParameter prm1 = new SqlParameter("@VariableCode", SqlDbType.NVarChar, 16) { Value = variableCode };
                 SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) {Value = deviceID};
                 SqlParameter prm3 = new SqlParameter("@StartTime", SqlDbType.DateTime) {Value = starTime};
                 SqlParameter prm4 = new SqlParameter("@EndTime", SqlDbType.DateTime) {Value = endTime};
@@ -48,13 +50,13 @@ namespace DAL.Control
                 {
                     while (myReader.Read())
                     {
-                        // 创建曲线实体
+                        // 创建数据实体
                         Data tmpData = new Data();
                         //将数据集转换成实体集合
                         tmpData.TimeValue = Convert.ToDateTime(myReader["TimeValue"]);
                         tmpData.Value = Convert.ToDouble(myReader["Value"]);
 
-                        // 添加到曲线实体集合
+                        // 添加到数据实体集合
                         dataCollection.Add(tmpData);
                     }
                 }
@@ -64,20 +66,19 @@ namespace DAL.Control
         }
 
         /// <summary>
-        /// Gets the last data by variable name.
+        /// 根据变量编码和设备ID获取最后的数据
         /// </summary>
-        /// <param name="variableName">Name of the variable.</param>
-        /// <param name="deviceID">The device identifier.</param>
-        /// <returns></returns>
-        public Data GetLastDataByVariableCode(string variableName, int deviceID)
+        /// <param name="variableCode">变量编码</param>
+        /// <param name="deviceID">设备ID</param>
+        /// <returns>数据</returns>
+        public Data GetLastDataByVariableCode(string variableCode, int deviceID)
         {
             //SQL命令
-            string sqltxt =
-                "SELECT TOP 1 TimeValue, Value FROM Data WHERE " +
-                "ParameterName=@ParameterName AND DeviceID=@DeviceID ORDER BY id DESC";
-            //创建曲线实体集合
+            const string sqltxt = "SELECT TOP 1 TimeValue, Value FROM Data WHERE " +
+                                  "VariableCode=@VariableCode AND DeviceID=@DeviceID ORDER BY id DESC";
+            //创建数据实体集合
             Data data = new Data();
-            //定义曲线实体
+            //定义数据实体
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -85,7 +86,7 @@ namespace DAL.Control
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(sqltxt, conn);
-                SqlParameter prm1 = new SqlParameter("@ParameterName", SqlDbType.NVarChar, 50) { Value = variableName };
+                SqlParameter prm1 = new SqlParameter("@VariableCode", SqlDbType.NVarChar, 16) { Value = variableCode };
                 SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = deviceID };
                 cmd.Parameters.AddRange(new SqlParameter[] {prm1, prm2});
                 conn.Open();
@@ -126,14 +127,14 @@ namespace DAL.Control
             {
                 foreach (Data data in dataCollection)
                 {
-                    string sql = "INSERT INTO Data (ParameterName, TimeValue, Value, DeviceID) VALUES " +
-                                 "(@ParameterName, @TimeValue, @Value, @DeviceID)";
+                    const string sql = "INSERT INTO Data (VariableCode, TimeValue, Value, DeviceID) VALUES " +
+                                       "(@VariableCode, @TimeValue, @Value, @DeviceID)";
 
                     SqlCommand cmd = new SqlCommand(sql, conn, tran);
 
                     SqlParameter[] parameters = new SqlParameter[]
                     {
-                        new SqlParameter("@ParameterName", data.ParameterCode),
+                        new SqlParameter("@VariableCode", data.VariableCode),
                         new SqlParameter("@TimeValue", data.TimeValue),
                         new SqlParameter("@Value", data.Value),
                         new SqlParameter("@DeviceID", data.DeviceID),
@@ -167,15 +168,15 @@ namespace DAL.Control
             //SQL命令
             string sqltxt =
                 "DECLARE @sql1 varchar(8000);" +
-                "SELECT @sql1 = ISNULL(@sql1 + '],[' , '') + [Name] FROM [Curve] GROUP BY [Name]; SET @sql1 = '[' + @sql1 + ']';" +
+                "SELECT @sql1 = ISNULL(@sql1 + '],[' , '') + [VariableCode] FROM [Curve] GROUP BY [VariableCode]; SET @sql1 = '[' + @sql1 + ']';" +
                 "DECLARE @sql2 varchar(8000);" +
-                "SELECT @sql2 = ISNULL(@sql2 + ''',MAX([' , '') + [Name] +']) AS ''' + [Name]  FROM [Curve] GROUP BY [Name];" +
+                "SELECT @sql2 = ISNULL(@sql2 + ''',MAX([' , '') + [VariableCode] +']) AS ''' + [VariableCode]  FROM [Curve] GROUP BY [VariableCode];" +
                 "SET @sql2 = 'MAX([' + @sql2 + '''';" +
                 "EXEC ('SELECT [TimeValue] AS ''时间'',' + @sql2 + ' FROM (SELECT * FROM [Data] WHERE [TimeValue] >= ''@StartTime'' AND [TimeValue] < ''@EndTime'') " +
-                "AS a PIVOT (MAX([Value]) FOR [ParameterName] IN (' + @sql1 + ')) b GROUP BY [TimeValue] ORDER BY [TimeValue]');";
+                "AS a PIVOT (MAX([Value]) FOR [VariableCode] IN (' + @sql1 + ')) b GROUP BY [TimeValue] ORDER BY [TimeValue]');";
             sqltxt = sqltxt.Replace("@StartTime", starTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
                 .Replace("@EndTime", endTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-            //创建曲线实体集合
+
             DataSet dataset = new DataSet();
 
             // 从配置文件读取连接字符串
@@ -201,7 +202,7 @@ namespace DAL.Control
             }
             return dataset.Tables[0];
         }
-
-
+        
+        #endregion
     }
 }

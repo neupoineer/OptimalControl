@@ -13,6 +13,9 @@ Create Table Curve
 	-- 主键列，自动增长 标识种子为 1 
 	[Id] int identity(1,1) Constraint [PK_CurveId] Primary Key,
 
+	-- 变量编码
+	[VariableCode] Nvarchar(16) Not Null,
+	
 	-- 曲线名
 	[Name] Nvarchar(50) Not Null,
 

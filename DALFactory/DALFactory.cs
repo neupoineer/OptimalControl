@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using DAL;
 using IDAL;
 using DAL.Control;
@@ -39,26 +36,56 @@ namespace DALFactory
         {
             return new RightsRelationService();
         }
+
+        /// <summary>
+        /// 曲线数据访问操作类的生产方法
+        /// </summary>
+        /// <returns>曲线数据访问操作类实例</returns>
         public override ICurveService BuildCurveService()
         {
             return new CurveService();
         }
+
+        /// <summary>
+        /// 设备数据访问操作类的生产方法
+        /// </summary>
+        /// <returns>设备数据访问操作类实例</returns>
         public override IDeviceService BuildDeviceService()
         {
             return new DeviceService();
         }
+
+        /// <summary>
+        /// 规则数据访问操作类的生产方法
+        /// </summary>
+        /// <returns>规则数据访问操作类实例</returns>
         public override IRuleService BuildRuleService()
         {
             return new RuleService();
         }
+
+        /// <summary>
+        /// 变量数据访问操作类的生产方法
+        /// </summary>
+        /// <returns>变量数据访问操作类实例</returns>
         public override IVariableService BuildVariableService()
         {
             return new VariableService();
         }
+
+        /// <summary>
+        /// 日志数据访问操作类的生产方法
+        /// </summary>
+        /// <returns>日志数据访问操作类实例</returns>
         public override ILogService BuildLogService()
         {
             return new LogService();
         }
+
+        /// <summary>
+        /// 数据访问操作类的生产方法
+        /// </summary>
+        /// <returns>数据访问操作类实例</returns>
         public override IDataService BuildDataService()
         {
             return new DataService();

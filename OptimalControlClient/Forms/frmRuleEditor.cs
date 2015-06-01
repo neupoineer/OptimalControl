@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Windows.Forms;
 using IBLL.Control;
 using Model.Control;
-using Utility;
 using Rule = Model.Control.Rule;
 
 namespace OptimalControl.Forms
@@ -55,12 +52,17 @@ namespace OptimalControl.Forms
                 tb_rule_expression.Enabled = (mode != DataOperateMode.Delete);
                 tb_rule_operation.Text = rule.Operation;
                 tb_rule_operation.Enabled = (mode != DataOperateMode.Delete);
-                ntb_rule_period.Text = rule.Period.ToString(CultureInfo.InvariantCulture);
+                if (rule.Period != -1)
+                {
+                    ntb_rule_period.Text = rule.Period.ToString(CultureInfo.InvariantCulture);
+                }
                 ntb_rule_period.Enabled = (mode != DataOperateMode.Delete);
                 ntb_rule_priority.Text = rule.Priority.ToString(CultureInfo.InvariantCulture);
                 ntb_rule_priority.Enabled = (mode != DataOperateMode.Delete);
                 cb_rule_type.Checked = rule.Type;
                 cb_rule_type.Enabled = (mode != DataOperateMode.Delete);
+                cb_rule_islogged.Checked = rule.IsLogged;
+                cb_rule_islogged.Enabled = (mode != DataOperateMode.Delete);
                 splitContainer3.Panel2Collapsed = (mode == DataOperateMode.Delete);
                 this.ClientSize =
                     new Size((mode == DataOperateMode.Delete) ? (this.ClientSize.Width - 250) : this.ClientSize.Width,
@@ -80,10 +82,11 @@ namespace OptimalControl.Forms
                 Name = tb_rule_name.Text.Trim(),
                 Expression = tb_rule_expression.Text.Trim(),
                 Operation = tb_rule_operation.Text.Trim(),
-                Period = Convert.ToInt32(ntb_rule_period.Text.Trim()),
+                Period = ntb_rule_period.Text.Trim() == "" ? -1 : Convert.ToInt32(ntb_rule_period.Text.Trim()),
                 State = cb_rule_enabled.Checked,
                 Priority = Convert.ToInt32(ntb_rule_priority.Text.Trim()),
                 Type = cb_rule_type.Checked,
+                IsLogged = cb_rule_islogged.Checked,
             };
             return rule;
         }
@@ -313,5 +316,6 @@ namespace OptimalControl.Forms
                   || e.KeyChar == (char) Keys.Back
                   || e.KeyChar == (char) Keys.Delete);
         }
+
     }
 }

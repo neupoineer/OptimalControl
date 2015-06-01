@@ -37,26 +37,55 @@ namespace BLLFactory
             return new RightsRelationManager();
         }
 
+        /// <summary>
+        /// 曲线业务逻辑管理类的生产方法
+        /// </summary>
+        /// <returns>曲线业务逻辑管理类实例</returns>
         public ICurveManager BuildCurveManager()
         {
             return new CurveManager();
         }
+
+        /// <summary>
+        /// 设备业务逻辑管理类的生产方法
+        /// </summary>
+        /// <returns>设备业务逻辑管理类实例</returns>
         public IDeviceManager BuildDeviceManager()
         {
             return new DeviceManager();
         }
+
+        /// <summary>
+        /// 规则业务逻辑管理类的生产方法
+        /// </summary>
+        /// <returns>规则业务逻辑管理类实例</returns>
         public IRuleManager BuildRuleManager()
         {
             return new RuleManager();
         }
+
+        /// <summary>
+        /// 变量业务逻辑管理类的生产方法
+        /// </summary>
+        /// <returns>变量业务逻辑管理类实例</returns>
         public IVariableManager BuildIVariableManager()
         {
             return new VariableManager();
         }
+
+        /// <summary>
+        /// 日志业务逻辑管理类的生产方法
+        /// </summary>
+        /// <returns>日志业务逻辑管理类实例</returns>
         public ILogManager BuildLogManager()
         {
             return new LogManager();
         }
+
+        /// <summary>
+        /// 数据业务逻辑管理类的生产方法
+        /// </summary>
+        /// <returns>数据业务逻辑管理类实例</returns>
         public IDataManager BuildDataManager()
         {
             return new DataManager();

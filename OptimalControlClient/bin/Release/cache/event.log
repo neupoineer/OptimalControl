@@ -1,84 +1,36 @@
-15/05/26 14:58:12 Login: admin Login!
-15/05/26 14:58:26 frmMain_FormClosing: 未将对象引用设置到对象的实例。
-15/05/26 15:01:05 Login: admin Login!
-15/05/26 15:01:08 Start: Software started by admin!
-15/05/26 15:03:51 Closed: Software Closed!
-15/05/26 15:05:57 Login: admin Login!
-15/05/26 15:06:00 Start: Software started by admin!
-15/05/26 15:07:37 Login: admin Login!
-15/05/26 15:07:39 Start: Software started by admin!
-15/05/26 15:10:53 UpdateRulesGrid: 未将对象引用设置到对象的实例。
-15/05/26 15:10:53 Login: admin Login!
-15/05/26 15:11:39 Login: admin Login!
-15/05/26 15:12:59 Login: admin Login!
-15/05/26 15:13:36 Login: admin Login!
-15/05/26 15:14:02 UpdateRulesGrid: 未将对象引用设置到对象的实例。
-15/05/26 15:14:02 Login: admin Login!
-15/05/26 15:15:26 Login: admin Login!
-15/05/26 15:20:29 Login: admin Login!
-15/05/26 15:21:03 UpdateRulesGrid: 未将对象引用设置到对象的实例。
-15/05/26 15:21:03 Login: admin Login!
-15/05/26 15:21:36 UpdateRulesGrid: 未将对象引用设置到对象的实例。
-15/05/26 15:21:36 Login: admin Login!
-15/05/26 15:21:54 Login: admin Login!
-15/05/26 15:22:29 Login: admin Login!
-15/05/26 15:22:53 Login: admin Login!
-15/05/26 15:23:03 Start: Software started by admin!
-15/05/27 08:03:27 Login: admin Login!
-15/05/27 08:03:32 Start: Software started by admin!
-15/05/27 08:10:21 Login: admin Login!
-15/05/27 08:10:28 Start: Software started by admin!
-15/05/27 08:12:09 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 08:12:19 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 08:12:45 Login: admin Login!
-15/05/27 08:12:48 Start: Software started by admin!
-15/05/27 08:12:58 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 08:13:08 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 08:13:18 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 08:13:28 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 08:28:38 Logoff: admin Logoff!
-15/05/27 09:06:41 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 09:06:51 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 09:07:42 Login: admin Login!
-15/05/27 09:08:51 Login: admin Login!
-15/05/27 09:09:49 Login: admin Login!
-15/05/27 09:12:10 Login: admin Login!
-15/05/27 09:13:13 Login: admin Login!
-15/05/27 10:09:37 Login: admin Login!
-15/05/27 10:11:38 Login: admin Login!
-15/05/27 10:12:50 Login: admin Login!
-15/05/27 10:20:04 Login: admin Login!
-15/05/27 10:20:15 Start: Software started by admin!
-15/05/27 10:21:10 Login: admin Login!
-15/05/27 10:21:18 Start: Software started by admin!
-15/05/27 10:21:55 Login: admin Login!
-15/05/27 10:21:57 Start: Software started by admin!
-15/05/27 10:22:07 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:22:17 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:23:00 Login: admin Login!
-15/05/27 10:24:05 Login: admin Login!
-15/05/27 10:24:06 Start: Software started by admin!
-15/05/27 10:24:16 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:24:26 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:25:05 Stop: Software stoped by admin!
-15/05/27 10:25:47 Start: Software started by admin!
-15/05/27 10:26:33 Login: admin Login!
-15/05/27 10:27:23 Login: admin Login!
-15/05/27 10:30:55 Login: admin Login!
-15/05/27 10:31:28 Start: Software started by admin!
-15/05/27 10:31:45 Login: admin Login!
-15/05/27 10:31:47 Start: Software started by admin!
-15/05/27 10:31:57 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:32:07 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:32:36 Stop: Software stoped by admin!
-15/05/27 10:54:16 Login: admin Login!
-15/05/27 10:54:18 Start: Software started by admin!
-15/05/27 10:54:28 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:54:38 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:54:58 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:55:08 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:55:18 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:55:28 UpdateVariableTimer: 线程间操作无效: 从不是创建控件“toolStrip_oc”的线程访问它。
-15/05/27 10:55:49 Login: admin Login!
-15/05/27 10:55:52 Start: Software started by admin!
-15/05/27 11:11:02 Logoff: admin Logoff!
+15/05/29 14:43:20 Login: admin Login!
+15/05/29 14:43:23 Start: Software started by admin!
+15/05/29 15:27:24 Login: admin Login!
+15/05/29 15:27:27 Start: Software started by admin!
+15/05/29 16:01:32 Logoff: admin Logoff!
+15/06/01 08:43:43 Login: admin Login!
+15/06/01 08:45:44 Login: admin Login!
+15/06/01 09:03:50 Login: admin Login!
+15/06/01 09:03:54 Start: Software started by admin!
+15/06/01 09:06:27 Stop: Software stoped by admin!
+15/06/01 10:53:34 Login: admin Login!
+15/06/01 10:53:46 Start: Software started by admin!
+15/06/01 11:03:08 Login: admin Login!
+15/06/01 11:03:10 Start: Software started by admin!
+15/06/01 11:18:50 Logoff: admin Logoff!
+15/06/01 11:23:04 Login: admin Login!
+15/06/01 11:40:01 Logoff: admin Logoff!
+15/06/01 12:32:16 Login: admin Login!
+15/06/01 12:32:20 Start: Software started by admin!
+15/06/01 12:35:30 Stop: Software stoped by admin!
+15/06/01 12:35:37 Start: Software started by admin!
+15/06/01 12:36:25 Stop: Software stoped by admin!
+15/06/01 12:36:47 Start: Software started by admin!
+15/06/01 12:38:57 Login: admin Login!
+15/06/01 12:39:00 Start: Software started by admin!
+15/06/01 14:25:05 Login: admin Login!
+15/06/01 14:38:09 Login: admin Login!
+15/06/01 14:38:43 Start: Software started by admin!
+15/06/01 14:42:38 Login: admin Login!
+15/06/01 14:42:41 Start: Software started by admin!
+15/06/01 14:59:35 Login: admin Login!
+15/06/01 14:59:39 Start: Software started by admin!
+15/06/01 15:07:49 Login: admin Login!
+15/06/01 15:07:51 Start: Software started by admin!
+15/06/01 15:26:57 Login: admin Login!
+15/06/01 15:27:00 Start: Software started by admin!

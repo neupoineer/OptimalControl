@@ -11,6 +11,9 @@ namespace Model.Control
     [Serializable]
     public class Variable : ModelBase
     {
+        /// <summary>
+        /// 变量状态
+        /// </summary>
         public enum VariableState
         {
             正常 = 0,
@@ -21,7 +24,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// 变量上下限结构体
+        /// 变量上下限
         /// </summary>
         public struct VariableLimit
         {
@@ -63,11 +66,8 @@ namespace Model.Control
 
         #region Public Properties
         /// <summary>
-        /// Gets or sets the value.
+        /// 变量值
         /// </summary>
-        /// <value>
-        /// 变量值.
-        /// </value>
         public double Value
         {
             get { return _value; }
@@ -85,11 +85,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets the real value.
+        /// 变量真值=变量值*放大倍数
         /// </summary>
-        /// <value>
-        /// 变量真值=变量值*放大倍数.
-        /// </value>
         public double RealValue
         {
             get { return _value*_ratio; }
@@ -111,11 +108,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the ratio.
+        /// 放大倍数
         /// </summary>
-        /// <value>
-        /// 放大倍数.
-        /// </value>
         public double Ratio
         {
             get { return _ratio; }
@@ -123,11 +117,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the limit.
+        /// 上下限
         /// </summary>
-        /// <value>
-        /// 上下限.
-        /// </value>
         public VariableLimit Limit
         {
             get { return _limit; }
@@ -135,11 +126,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the control period.
-        /// </summary>
-        /// <value>
         /// 控制周期.
-        /// </value>
+        /// </summary>
         public int ControlPeriod
         {
             get { return _controlPeriod; }
@@ -147,11 +135,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the operate delay.
+        /// 动作延时
         /// </summary>
-        /// <value>
-        /// 动作延时.
-        /// </value>
         public int OperateDelay
         {
             get { return _operateDelay; }
@@ -159,11 +144,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the device identifier.
+        /// 设备ID
         /// </summary>
-        /// <value>
-        /// 设备ID.
-        /// </value>
         public uint DeviceID
         {
             get { return _deviceId; }
@@ -171,11 +153,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the address.
+        /// 变量地址
         /// </summary>
-        /// <value>
-        /// 变量地址.
-        /// </value>
         public int Address
         {
             get { return _address; }
@@ -183,11 +162,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the history value.
+        /// 历史值
         /// </summary>
-        /// <value>
-        /// 历史值.
-        /// </value>
         public double HistoryValue
         {
             get { return _historyValue; }
@@ -195,11 +171,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the initial value.
-        /// </summary>
-        /// <value>
         /// 初始值.
-        /// </value>
+        /// </summary>
         public double InitialValue
         {
             get { return _initialValue; }
@@ -207,11 +180,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets the code.
+        /// 变量编码
         /// </summary>
-        /// <value>
-        /// 编码.
-        /// </value>
         public string Code
         {
             get { return _code; }
@@ -219,11 +189,8 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is displayed.
+        /// 是否显示
         /// </summary>
-        /// <value>
-        /// 是否显示，<c>true</c> if this instance is displayed; otherwise, <c>false</c>.
-        /// </value>
         public bool IsDisplayed
         {
             get { return _isDisplayed; }
@@ -235,15 +202,51 @@ namespace Model.Control
         #region Public Methods
 
         /// <summary>
-        /// 无参构造(基类属性赋值说明：Id - 权限 ID / Name - 权限名称)
+        /// 无参构造
         /// </summary>
         public Variable()
         {
         }
 
+        /// <summary>
+        /// 带参构造
+        /// </summary>
+        public Variable(
+            int variableId,
+            string variableName,
+            double variableValue,
+            double variableRatio,
+            VariableLimit variableLimit,
+            int variableControlPeriod,
+            int variableOperateDelay,
+            uint variableDeviceID,
+            int variableAddress,
+            double historyValue,
+            double initialValue, 
+            string code, 
+            bool isDisplayed)
+            : base(variableId, variableName)
+        {
+            Value = variableValue;
+            Ratio = variableRatio;
+            Limit = variableLimit;
+            ControlPeriod = variableControlPeriod;
+            OperateDelay = variableOperateDelay;
+            DeviceID = variableDeviceID;
+            Address = variableAddress;
+            HistoryValue = historyValue;
+            InitialValue = initialValue;
+            Code = code;
+            IsDisplayed = isDisplayed;
+        }
+
+        /// <summary>
+        /// 检测变量状态
+        /// </summary>
+        /// <returns>变量状态</returns>
         public VariableState CheckVariableState()
         {
-            double tmpValue = _value*_ratio;
+            double tmpValue = _value * _ratio;
             if (_limit.UltimateUpperLimit > 0 && tmpValue > _limit.UltimateUpperLimit)
             {
                 return VariableState.超上上限;
@@ -269,52 +272,7 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// 带参构造
-        /// </summary>
-        /// <param name="variableId">The variable identifier.</param>
-        /// <param name="variableName">Name of the variable.</param>
-        /// <param name="variableValue">The variable value.</param>
-        /// <param name="variableRatio">The variable ratio.</param>
-        /// <param name="variableLimit">The variable limit.</param>
-        /// <param name="variableControlPeriod">The variable control period.</param>
-        /// <param name="variableOperateDelay">The variable operate delay.</param>
-        /// <param name="variableDeviceID">The variable device identifier.</param>
-        /// <param name="variableAddress">The variable address.</param>
-        /// <param name="historyValue">The history value.</param>
-        /// <param name="initialValue">The initial value.</param>
-        /// <param name="code">The code.</param>
-        /// <param name="isDisplayed">if set to <c>true</c> [is displayed].</param>
-        public Variable(
-            int variableId,
-            string variableName,
-            double variableValue,
-            double variableRatio,
-            VariableLimit variableLimit,
-            int variableControlPeriod,
-            int variableOperateDelay,
-            uint variableDeviceID,
-            int variableAddress,
-            double historyValue,
-            double initialValue, 
-            string code, 
-            bool isDisplayed)
-            : base(variableId, variableName)
-        {
-            this.Value = variableValue;
-            this.Ratio = variableRatio;
-            this.Limit = variableLimit;
-            this.ControlPeriod = variableControlPeriod;
-            this.OperateDelay = variableOperateDelay;
-            this.DeviceID = variableDeviceID;
-            Address = variableAddress;
-            HistoryValue = historyValue;
-            InitialValue = initialValue;
-            Code = code;
-            IsDisplayed = isDisplayed;
-        }
-
-        /// <summary>
-        /// Updates the history value with current value.
+        /// 更新历史值
         /// </summary>
         public void UpdateHistoryValue()
         {
@@ -379,6 +337,11 @@ namespace Model.Control
             }
         }
 
+        /// <summary>
+        /// Gets the value from modbus salve.
+        /// </summary>
+        /// <param name="modbusSlave">The modbus slave.</param>
+        /// <returns></returns>
         public bool GetValueFromModbusSalve(ref ModbusSlave modbusSlave)
         {
             ushort[] register = new ushort[2];
@@ -405,6 +368,11 @@ namespace Model.Control
             }
         }
 
+        /// <summary>
+        /// Sets the value to modbus salve.
+        /// </summary>
+        /// <param name="modbusSlave">The modbus slave.</param>
+        /// <returns></returns>
         public bool SetValueToModbusSalve(ref ModbusSlave modbusSlave)
         {
             try
@@ -421,8 +389,6 @@ namespace Model.Control
             }
         }
         #endregion
-
-
 
     }
 }

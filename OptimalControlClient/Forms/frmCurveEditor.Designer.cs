@@ -33,7 +33,8 @@ namespace OptimalControl.Forms
             this.btn_ok = new System.Windows.Forms.Button();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cb_curve_name = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.cb_curve_variablename = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.tb_curve_xtitle = new System.Windows.Forms.TextBox();
@@ -57,6 +58,7 @@ namespace OptimalControl.Forms
             this.tb_curve_ymax = new System.Windows.Forms.TextBox();
             this.tb_curve_symbolsize = new System.Windows.Forms.TextBox();
             this.tb_curve_size = new System.Windows.Forms.TextBox();
+            this.cb_curve_variablecode = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +85,9 @@ namespace OptimalControl.Forms
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cb_curve_name);
+            this.groupBox1.Controls.Add(this.cb_curve_variablecode);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.cb_curve_variablename);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.tb_curve_xtitle);
@@ -114,17 +118,26 @@ namespace OptimalControl.Forms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "曲线信息";
             // 
-            // cb_curve_name
+            // label13
             // 
-            this.cb_curve_name.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_curve_name.FormattingEnabled = true;
-            this.cb_curve_name.Location = new System.Drawing.Point(68, 37);
-            this.cb_curve_name.Name = "cb_curve_name";
-            this.cb_curve_name.Size = new System.Drawing.Size(121, 20);
-            this.cb_curve_name.TabIndex = 40;
-            this.cb_curve_name.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cb_curve_name_DrawItem);
-            this.cb_curve_name.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.cb_curve_name_MeasureItem);
-            this.cb_curve_name.SelectedIndexChanged += new System.EventHandler(this.cb_curve_name_SelectedIndexChanged);
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(240, 40);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(53, 12);
+            this.label13.TabIndex = 41;
+            this.label13.Text = "变量编码";
+            // 
+            // cb_curve_variablename
+            // 
+            this.cb_curve_variablename.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_curve_variablename.FormattingEnabled = true;
+            this.cb_curve_variablename.Location = new System.Drawing.Point(68, 37);
+            this.cb_curve_variablename.Name = "cb_curve_variablename";
+            this.cb_curve_variablename.Size = new System.Drawing.Size(121, 20);
+            this.cb_curve_variablename.TabIndex = 40;
+            this.cb_curve_variablename.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cb_curve_name_DrawItem);
+            this.cb_curve_variablename.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.cb_curve_name_MeasureItem);
+            this.cb_curve_variablename.SelectedIndexChanged += new System.EventHandler(this.cb_curve_name_SelectedIndexChanged);
             // 
             // label12
             // 
@@ -179,7 +192,7 @@ namespace OptimalControl.Forms
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(240, 160);
+            this.label8.Location = new System.Drawing.Point(470, 160);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(53, 12);
             this.label8.TabIndex = 26;
@@ -189,7 +202,7 @@ namespace OptimalControl.Forms
             // 
             this.cb_curve_symbol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_curve_symbol.FormattingEnabled = true;
-            this.cb_curve_symbol.Location = new System.Drawing.Point(69, 157);
+            this.cb_curve_symbol.Location = new System.Drawing.Point(299, 157);
             this.cb_curve_symbol.Name = "cb_curve_symbol";
             this.cb_curve_symbol.Size = new System.Drawing.Size(120, 20);
             this.cb_curve_symbol.TabIndex = 25;
@@ -197,7 +210,7 @@ namespace OptimalControl.Forms
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 160);
+            this.label7.Location = new System.Drawing.Point(240, 160);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 24;
@@ -245,7 +258,7 @@ namespace OptimalControl.Forms
             this.cb_curve_device.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_curve_device.Enabled = false;
             this.cb_curve_device.FormattingEnabled = true;
-            this.cb_curve_device.Location = new System.Drawing.Point(299, 37);
+            this.cb_curve_device.Location = new System.Drawing.Point(69, 157);
             this.cb_curve_device.Name = "cb_curve_device";
             this.cb_curve_device.Size = new System.Drawing.Size(120, 20);
             this.cb_curve_device.TabIndex = 18;
@@ -271,7 +284,7 @@ namespace OptimalControl.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(240, 40);
+            this.label3.Location = new System.Drawing.Point(10, 160);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 17;
@@ -310,7 +323,7 @@ namespace OptimalControl.Forms
             // 
             // tb_curve_symbolsize
             // 
-            this.tb_curve_symbolsize.Location = new System.Drawing.Point(299, 157);
+            this.tb_curve_symbolsize.Location = new System.Drawing.Point(529, 157);
             this.tb_curve_symbolsize.Name = "tb_curve_symbolsize";
             this.tb_curve_symbolsize.Size = new System.Drawing.Size(80, 21);
             this.tb_curve_symbolsize.TabIndex = 9;
@@ -321,6 +334,16 @@ namespace OptimalControl.Forms
             this.tb_curve_size.Name = "tb_curve_size";
             this.tb_curve_size.Size = new System.Drawing.Size(80, 21);
             this.tb_curve_size.TabIndex = 9;
+            // 
+            // cb_curve_variablecode
+            // 
+            this.cb_curve_variablecode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_curve_variablecode.Enabled = false;
+            this.cb_curve_variablecode.FormattingEnabled = true;
+            this.cb_curve_variablecode.Location = new System.Drawing.Point(299, 37);
+            this.cb_curve_variablecode.Name = "cb_curve_variablecode";
+            this.cb_curve_variablecode.Size = new System.Drawing.Size(120, 20);
+            this.cb_curve_variablecode.TabIndex = 42;
             // 
             // frmCurveEditor
             // 
@@ -374,8 +397,10 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tb_curve_symbolsize;
         private System.Windows.Forms.TextBox tb_curve_size;
-        private System.Windows.Forms.ComboBox cb_curve_name;
+        private System.Windows.Forms.ComboBox cb_curve_variablename;
         private System.Windows.Forms.TextBox tb_curve_ymin;
         private System.Windows.Forms.TextBox tb_curve_ymax;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox cb_curve_variablecode;
     }
 }

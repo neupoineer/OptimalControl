@@ -56,44 +56,57 @@ namespace OptimalControl.Forms
                     {
                         Name = "Id",
                         HeaderText = "序号",
-                        DataPropertyName = "Id"
+                        DataPropertyName = "Id",
+                        MinimumWidth = 50,
+                        FillWeight = 100,
                     };
                     DataGridViewTextBoxColumn dgvName = new DataGridViewTextBoxColumn
                     {
                         Name = "Name",
                         HeaderText = "设备名",
                         DataPropertyName = "Name",
+                        MinimumWidth = 50,
+                        FillWeight = 200,
                     };
-                    DataGridViewTextBoxColumn dgvState = new DataGridViewTextBoxColumn
+                    DataGridViewCheckBoxColumn dgvState = new DataGridViewCheckBoxColumn
                     {
                         Name = "State",
                         HeaderText = "启用",
-                        DataPropertyName = "State"
+                        DataPropertyName = "State",
+                        MinimumWidth = 50,
+                        FillWeight = 100,
                     };
-                    DataGridViewTextBoxColumn dgvSyncState = new DataGridViewTextBoxColumn
+                    DataGridViewCheckBoxColumn dgvSyncState = new DataGridViewCheckBoxColumn
                     {
                         Name = "SyncState",
                         HeaderText = "同步数据",
-                        DataPropertyName = "SyncState"
+                        DataPropertyName = "SyncState",
+                        MinimumWidth = 50,
+                        FillWeight = 150,
                     };
                     DataGridViewTextBoxColumn dgvIP = new DataGridViewTextBoxColumn
                     {
                         Name = "IP",
                         HeaderText = "IP地址",
                         DataPropertyName = "IP",
-                        //DefaultCellStyle = new DataGridViewCellStyle() { Alignment = DataGridViewContentAlignment.MiddleLeft },
+                        MinimumWidth = 50,
+                        FillWeight = 200,
                     };
                     DataGridViewTextBoxColumn dgvPort = new DataGridViewTextBoxColumn
                     {
                         Name = "Port",
                         HeaderText = "端口",
-                        DataPropertyName = "Port"
+                        DataPropertyName = "Port",
+                        MinimumWidth = 50,
+                        FillWeight = 100,
                     };
                     DataGridViewTextBoxColumn dgvUnitID = new DataGridViewTextBoxColumn
                     {
                         Name = "UnitID",
                         HeaderText = "从站号",
-                        DataPropertyName = "UnitID"
+                        DataPropertyName = "UnitID",
+                        MinimumWidth = 50,
+                        FillWeight = 150,
                     };
 
                     dataGridView_devices.Columns.AddRange(new DataGridViewColumn[]
@@ -166,7 +179,7 @@ namespace OptimalControl.Forms
         private void tsbtn_device_edit_Click(object sender, EventArgs e)
         {
             Device device = GetSelectedDevice();
-            if (device.Name == "") return;
+            if (device.Name == null) return;
             frmDeviceEditor addDeviceForm = new frmDeviceEditor(DataOperateMode.Edit, device);
             if (addDeviceForm.ShowDialog() == DialogResult.OK)
             {
@@ -180,7 +193,7 @@ namespace OptimalControl.Forms
         private void tsbtn_device_delete_Click(object sender, EventArgs e)
         {
             Device device = GetSelectedDevice();
-            if (device.Name == "") return;
+            if (device.Name == null) return;
             frmDeviceEditor addDeviceForm = new frmDeviceEditor(DataOperateMode.Delete, device);
             if (addDeviceForm.ShowDialog() == DialogResult.OK)
             {

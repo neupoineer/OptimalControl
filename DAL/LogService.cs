@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Text;
 using IDAL;
 using Model;
 
@@ -17,7 +16,9 @@ namespace DAL
         #region ILogService 成员
         /// <summary>
         /// 根据日志时间获取日志实体
-        /// <param name="time">日志时间</param>
+        /// </summary>
+        /// <param name="startTime">日志开始时间.</param>
+        /// <param name="endTime">日志结束时间.</param>
         /// <returns>
         /// 日志实体
         /// </returns>
@@ -83,9 +84,8 @@ namespace DAL
         public bool AddLog(Log addLog)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "INSERT INTO Log (LogTime,Type,Content,State) VALUES " +
-                "(@LogTime,@Type,@Content,@State)";
+            const string sqlTxt = "INSERT INTO Log (LogTime,Type,Content,State) VALUES " +
+                                  "(@LogTime,@Type,@Content,@State)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -114,9 +114,9 @@ namespace DAL
         public List<Log> GetAllLogInfo()
         {
             //SQL命令
-            string sqltxt = "SELECT * FROM Log";
+            const string sqltxt = "SELECT * FROM Log";
             //创建日志实体集合
-            List<Log> LogCollection = new List<Log>();
+            List<Log> logCollection = new List<Log>();
             //定义日志实体
 
             // 从配置文件读取连接字符串
@@ -159,23 +159,26 @@ namespace DAL
                         tmpLog.State = Convert.ToBoolean(myReader["State"]);
 
                         // 添加到曲线实体集合
-                        LogCollection.Add(tmpLog);
+                        logCollection.Add(tmpLog);
                     }
                 }
             }
 
             // 返回结果
-            return LogCollection;
+            return logCollection;
         }
 
         /// <summary>
-        /// 获取最后20条日志信息
+        /// 获取最新的日志信息
         /// </summary>
-        /// <returns>日志实体集合</returns>
-        public List<Log> GetLastTwentyLogInfo()
+        /// <param name="logCount">日志条数.</param>
+        /// <returns>
+        /// 日志实体集合
+        /// </returns>
+        public List<Log> GetLastLogInfos(int logCount)
         {
             //SQL命令
-            string sqltxt = "SELECT TOP 20 * FROM Log ORDER BY LogTime DESC";
+            string sqltxt = string.Format("SELECT TOP {0} * FROM Log ORDER BY LogTime DESC", logCount);
             //创建日志实体集合
             List<Log> LogCollection = new List<Log>();
             //定义日志实体

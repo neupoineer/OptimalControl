@@ -128,7 +128,7 @@ namespace OptimalControl.Forms
                 HeaderText = "设备序号",
                 DataPropertyName = "DeviceID"
             };
-            DataGridViewTextBoxColumn dgvIsDisplayed = new DataGridViewTextBoxColumn
+            DataGridViewCheckBoxColumn dgvIsDisplayed = new DataGridViewCheckBoxColumn
             {
                 Name = "IsDisplayed",
                 HeaderText = "显示变量",
@@ -258,7 +258,7 @@ namespace OptimalControl.Forms
         private void tsbtn_para_edit_Click(object sender, EventArgs e)
         {
             Variable parameter = GetSelectedParameter();
-            if (parameter.Name == "") return;
+            if (parameter.Name == null) return;
             frmParameterEditor editParameterForm = new frmParameterEditor(DataOperateMode.Edit, parameter);
             if (editParameterForm.ShowDialog() == DialogResult.OK)
             {
@@ -271,7 +271,7 @@ namespace OptimalControl.Forms
         private void tsbtn_para_delete_Click(object sender, EventArgs e)
         {
             Variable parameter = GetSelectedParameter();
-            if (parameter.Name == "") return;
+            if (parameter.Name == null) return;
             frmParameterEditor editParameterForm = new frmParameterEditor(DataOperateMode.Delete, parameter);
             if (editParameterForm.ShowDialog() == DialogResult.OK)
             {

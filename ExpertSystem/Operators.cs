@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Model.Control.Postfix
+namespace ExpertSystem
 {
     /// <summary>
     /// 操作符类

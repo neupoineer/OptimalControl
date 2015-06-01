@@ -43,16 +43,19 @@ namespace BLL
         }
 
         /// <summary>
-        /// 获取最后20条日志信息
+        /// 获取最新的日志信息
         /// </summary>
-        /// <returns>日志实体集合</returns>
-        public List<Log> GetLastTwentyLogInfo()
+        /// <param name="logCount">日志条数.</param>
+        /// <returns>
+        /// 日志实体集合
+        /// </returns>
+        public List<Log> GetLastLogInfos(int logCount)
         {
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
             //调用工厂方法生成实例
             ILogService logService = absDALFactory.BuildLogService();
             //调用实例方法
-            return logService.GetLastTwentyLogInfo();
+            return logService.GetLastLogInfos(logCount);
         }
 
         /// <summary>

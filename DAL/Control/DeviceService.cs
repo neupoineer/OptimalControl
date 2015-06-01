@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using IDAL.Control;
 using Model.Modbus;
 
@@ -75,9 +74,8 @@ namespace DAL.Control
         public bool AddDevice(Device addDevice)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "INSERT INTO Device (Name,State,SyncState,IP,Port,UnitID) VALUES "+
-                "(@Name,@State,@SyncState,@IP,@Port,@UnitID)";
+            const string sqlTxt = "INSERT INTO Device (Name,State,SyncState,IP,Port,UnitID) VALUES "+
+                                  "(@Name,@State,@SyncState,@IP,@Port,@UnitID)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -130,8 +128,7 @@ namespace DAL.Control
         public bool ModifyDevice(Device currentDevice)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "UPDATE Device SET Name=@Name,State=@State,SyncState=@SyncState,IP=@IP,Port=@Port,UnitID=@UnitID WHERE Id=@Id";
+            const string sqlTxt = "UPDATE Device SET Name=@Name,State=@State,SyncState=@SyncState,IP=@IP,Port=@Port,UnitID=@UnitID WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -164,7 +161,7 @@ namespace DAL.Control
         public List<Device> GetAllDeviceInfo()
         {
             //SQL命令
-            string sqltxt = "SELECT * FROM Device";
+            const string sqltxt = "SELECT * FROM Device";
             //创建设备实体集合
             List<Device> deviceCollection = new List<Device>();
             //定义设备实体

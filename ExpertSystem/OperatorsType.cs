@@ -1,4 +1,4 @@
-﻿namespace Model.Control.Postfix
+﻿namespace ExpertSystem
 {
     /// <summary>
     /// 运算符类，数值越大，优先级越低

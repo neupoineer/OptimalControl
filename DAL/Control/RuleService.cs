@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using IDAL.Control;
 using Rule = Model.Control.Rule;
 
@@ -57,6 +56,7 @@ namespace DAL.Control
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
                         tmpRule.Type = Convert.ToBoolean(myReader["Type"]);
+                        tmpRule.IsLogged = Convert.ToBoolean(myReader["IsLogged"]);
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -75,9 +75,8 @@ namespace DAL.Control
         public bool AddRule(Rule addRule)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "INSERT INTO Rules (Name,Expression,Operation,Period,State,Priority,Type) VALUES " +
-                "(@Name,@Expression,@Operation,@Period,@State,@Priority,@Type)";
+            const string sqlTxt = "INSERT INTO Rules (Name,Expression,Operation,Period,State,Priority,Type,IsLogged) VALUES " +
+                                  "(@Name,@Expression,@Operation,@Period,@State,@Priority,@Type,@IsLogged)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -91,7 +90,9 @@ namespace DAL.Control
                 SqlParameter prm5 = new SqlParameter("@State", SqlDbType.Bit) { Value = addRule.State };
                 SqlParameter prm6 = new SqlParameter("@Priority", SqlDbType.Int) { Value = addRule.Priority };
                 SqlParameter prm7 = new SqlParameter("@Type", SqlDbType.Bit) {Value = addRule.Type};
-                cmd.Parameters.AddRange(new SqlParameter[] { prm1, prm2, prm3, prm4, prm5, prm6,prm7 });
+                SqlParameter prm8 = new SqlParameter("@IsLogged", SqlDbType.Bit) { Value = addRule.IsLogged };
+
+                cmd.Parameters.AddRange(new SqlParameter[] {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8});
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -130,8 +131,7 @@ namespace DAL.Control
         public bool ModifyRule(Rule currentRule)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "UPDATE Rules SET Name=@Name,Expression=@Expression,Operation=@Operation,Period=@Period,State=@State,Priority=@Priority,Type=@Type WHERE Id=@Id";
+            const string sqlTxt = "UPDATE Rules SET Name=@Name,Expression=@Expression,Operation=@Operation,Period=@Period,State=@State,Priority=@Priority,Type=@Type,IsLogged=@IsLogged WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -145,10 +145,11 @@ namespace DAL.Control
                 SqlParameter prm4 = new SqlParameter("@Period", SqlDbType.Int) { Value = IsParameterNull(currentRule.Period) };
                 SqlParameter prm5 = new SqlParameter("@State", SqlDbType.Bit) { Value = currentRule.State };
                 SqlParameter prm6 = new SqlParameter("@Priority", SqlDbType.Int) { Value = currentRule.Priority };
-                SqlParameter prm7 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentRule.Id };
-                SqlParameter prm8 = new SqlParameter("@Type", SqlDbType.Bit) { Value = currentRule.Type };
+                SqlParameter prm7 = new SqlParameter("@Type", SqlDbType.Bit) { Value = currentRule.Type };
+                SqlParameter prm8 = new SqlParameter("@IsLogged", SqlDbType.Bit) { Value = currentRule.IsLogged };
+                SqlParameter prm9 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentRule.Id };
 
-                cmd.Parameters.AddRange(new SqlParameter[] {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8});
+                cmd.Parameters.AddRange(new SqlParameter[] {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9});
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -165,7 +166,7 @@ namespace DAL.Control
         public List<Rule> GetRuleInfoEnabled()
         {
             //SQL命令
-            string sqltxt = string.Format("Select * From Rules Where State = 'True' Order by Priority");
+            const string sqltxt = "Select * From Rules Where State = 'true' Order by Priority";
 
             //创建规则实体集合
             List<Rule> ruleCollection = new List<Rule>();
@@ -198,7 +199,7 @@ namespace DAL.Control
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
                         tmpRule.Type = Convert.ToBoolean(myReader["Type"]);
-
+                        tmpRule.IsLogged = Convert.ToBoolean(myReader["IsLogged"]);
                         // 添加到规则实体集合
                         ruleCollection.Add(tmpRule);
                     }
@@ -216,7 +217,7 @@ namespace DAL.Control
         public List<Rule> GetAllRuleInfo()
         {
             //SQL命令
-            string sqltxt = "SELECT * FROM Rules";
+            const string sqltxt = "SELECT * FROM Rules";
             //创建规则实体集合
             List<Rule> ruleCollection = new List<Rule>();
             //定义规则实体
@@ -248,7 +249,7 @@ namespace DAL.Control
                         tmpRule.State = Convert.ToBoolean(myReader["State"]);
                         tmpRule.Priority = Convert.ToInt32(myReader["Priority"]);
                         tmpRule.Type = Convert.ToBoolean(myReader["Type"]);
-
+                        tmpRule.IsLogged = Convert.ToBoolean(myReader["IsLogged"]);
                         // 添加到规则实体集合
                         ruleCollection.Add(tmpRule);
                     }
@@ -267,8 +268,7 @@ namespace DAL.Control
         public bool CheckRuleExist(string ruleName)
         {
             //创建查询信息的 SQL
-            string sqlTxt = string.Format(
-                "Select Count(*) From Rules Where Name = '{0}'", ruleName);
+            string sqlTxt = string.Format("Select Count(*) From Rules Where Name = '{0}'", ruleName);
             //创建SQL执行对象
             DBUtility.AbstractDBProvider dbProvider = DBUtility.AbstractDBProvider.Instance();
             //执行查询操作

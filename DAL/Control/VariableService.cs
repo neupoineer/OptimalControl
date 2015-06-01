@@ -84,9 +84,9 @@ namespace DAL.Control
         }
 
         /// <summary>
-        /// 根据变量名获取变量实体
+        /// 根据变量编码获取变量实体
         /// </summary>
-        /// <param name="code">变量名</param>
+        /// <param name="code">变量编码</param>
         /// <returns>变量实体</returns>
         public Variable GetVariableInfoByCode(string code)
         {
@@ -159,9 +159,8 @@ namespace DAL.Control
         public bool AddVariable(Variable addVariable)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "INSERT INTO Variable (Code,Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID,IsDisplayed) VALUES " +
-                "(@Code,@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID,@IsDisplayed)";
+            const string sqlTxt = "INSERT INTO Variable (Code,Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID,IsDisplayed) VALUES " +
+                                  "(@Code,@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID,@IsDisplayed)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -241,8 +240,7 @@ namespace DAL.Control
         public bool ModifyVariable(Variable currentVariable)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "UPDATE Variable SET Code=@Code,Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID,IsDisplayed=@IsDisplayed WHERE Id=@Id";
+            const string sqlTxt = "UPDATE Variable SET Code=@Code,Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID,IsDisplayed=@IsDisplayed WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -282,7 +280,7 @@ namespace DAL.Control
         public List<Variable> GetAllVariableInfo()
         {
             //SQL命令
-            string sqltxt = "SELECT * FROM Variable";
+            const string sqltxt = "SELECT * FROM Variable";
             //创建变量实体集合
             List<Variable> VariableCollection = new List<Variable>();
 

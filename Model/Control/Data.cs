@@ -2,40 +2,55 @@
 
 namespace Model.Control
 {
+    /// <summary>
+    /// 数据模型
+    /// </summary>
     public class Data
     {
         #region Private Members
 
-        private string _parameterCode;
+        private string _variableCode;
         private DateTime _timeValue;
         private double _value;
         private int _deviceID;
         #endregion
 
         #region Public Properties
-        
+
+        /// <summary>
+        /// 时间
+        /// </summary>
         public DateTime TimeValue
         {
             get { return _timeValue; }
             set { _timeValue = value; }
         }
 
+        /// <summary>
+        /// 数值
+        /// </summary>
         public double Value
         {
             get { return _value; }
             set { _value = value; }
         }
 
+        /// <summary>
+        /// 设备ID
+        /// </summary>
         public int DeviceID
         {
             get { return _deviceID; }
             set { _deviceID = value; }
         }
 
-        public string ParameterCode
+        /// <summary>
+        /// 变量编码
+        /// </summary>
+        public string VariableCode
         {
-            get { return _parameterCode; }
-            set { _parameterCode = value; }
+            get { return _variableCode; }
+            set { _variableCode = value; }
         }
 
         #endregion
@@ -52,21 +67,18 @@ namespace Model.Control
         /// <summary>
         /// 带参构造
         /// </summary>
-        /// <param name="parameterCode">Name of the parameter.</param>
-        /// <param name="timeValue">The time value.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="deviceId">The device identifier.</param>
-
-        public Data(string parameterCode, DateTime timeValue, double value, int deviceId )
+        public Data(
+            string variableCode,
+            DateTime timeValue,
+            double value,
+            int deviceId)
         {
-            ParameterCode = parameterCode;
+            VariableCode = variableCode;
             TimeValue = timeValue;
             Value = value;
             DeviceID = deviceId;
         }
 
         #endregion
-
     }
-
 }

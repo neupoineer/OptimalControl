@@ -30,7 +30,6 @@ namespace Model.Modbus
 
         public ModbusRtuDevice()
         {
-            
         }
 
         public ModbusRtuDevice(SerialPort serialPortObject, byte unitId)

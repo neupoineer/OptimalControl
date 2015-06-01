@@ -1,4 +1,4 @@
-﻿namespace Model.Control.Postfix
+﻿namespace ExpertSystem
 {
     /// <summary>
     /// 操作数类型

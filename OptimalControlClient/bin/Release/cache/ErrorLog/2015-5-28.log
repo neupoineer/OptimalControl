@@ -1,0 +1,32 @@
+// ■■■■■■■■■■ [2015/5/28 13:40:40] ■■■■■■■■■■ //
+
+
+// ---------- [错误信息] ---------- //
+
+信息: 设备ID错误！
+帮助链接: None
+对象: DAL
+堆栈:
+   在 DAL.Control.DeviceService.GetDeviceInfoById(Int32 id) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\DAL\Control\DeviceService.cs:行号 63
+   在 BLL.Control.DeviceManager.GetDeviceInfoById(Int32 id) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\BLL\Control\DeviceManager.cs:行号 27
+   在 OptimalControl.Forms.frmCurveEditor.cb_curve_name_SelectedIndexChanged(Object sender, EventArgs e) 位置 e:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlClient\Forms\frmCurveEditor.cs:行号 279
+   在 System.Windows.Forms.ComboBox.OnSelectedIndexChanged(EventArgs e)
+   在 System.Windows.Forms.ComboBox.WmReflectCommand(Message& m)
+   在 System.Windows.Forms.ComboBox.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+方法: Model.Modbus.Device GetDeviceInfoById(Int32)
+
+
+// ---------- [系统环境] ---------- //
+
+当前路径: E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlClient\bin\Release
+机器名: THINKPAD[Thinkpad]
+操作系统: Microsoft Windows NT 6.1.7601 Service Pack 1
+系统路径: C:\Windows\system32
+用户名: Jeff
+.NET版本: 4.0.30319.34209
+
+
+

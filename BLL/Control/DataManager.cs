@@ -32,11 +32,11 @@ namespace BLL.Control
         }
 
         /// <summary>
-        /// Gets the last data by variable name.
+        /// 根据变量编码和设备ID获取最后的数据
         /// </summary>
-        /// <param name="variableCode">Name of the variable.</param>
-        /// <param name="deviceID">The device identifier.</param>
-        /// <returns></returns>
+        /// <param name="variableCode">变量编码</param>
+        /// <param name="deviceID">设备ID</param>
+        /// <returns>数据</returns>
         public Data GetLastDataByVariableCode(string variableCode, int deviceID)
         {
             DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
@@ -59,7 +59,6 @@ namespace BLL.Control
             //调用实例方法
             return dataService.AddData(dataCollection);
         }
-
 
         /// <summary>
         /// 获得所选时间内的所有数据.

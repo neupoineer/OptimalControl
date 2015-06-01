@@ -34,6 +34,8 @@ namespace OptimalControl.Forms
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cb_rule_islogged = new System.Windows.Forms.CheckBox();
+            this.cb_rule_type = new System.Windows.Forms.CheckBox();
             this.ntb_rule_priority = new Utility.NumbericTextbox();
             this.label5 = new System.Windows.Forms.Label();
             this.ntb_rule_period = new Utility.NumbericTextbox();
@@ -54,7 +56,6 @@ namespace OptimalControl.Forms
             this.btn_add_parameter = new System.Windows.Forms.Button();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.btn_ok = new System.Windows.Forms.Button();
-            this.cb_rule_type = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -83,8 +84,8 @@ namespace OptimalControl.Forms
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(622, 252);
-            this.splitContainer1.SplitterDistance = 25;
+            this.splitContainer1.Size = new System.Drawing.Size(630, 260);
+            this.splitContainer1.SplitterDistance = 20;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -105,7 +106,7 @@ namespace OptimalControl.Forms
             // 
             this.splitContainer2.Panel2.Controls.Add(this.btn_cancel);
             this.splitContainer2.Panel2.Controls.Add(this.btn_ok);
-            this.splitContainer2.Size = new System.Drawing.Size(622, 226);
+            this.splitContainer2.Size = new System.Drawing.Size(630, 239);
             this.splitContainer2.SplitterDistance = 190;
             this.splitContainer2.TabIndex = 1;
             // 
@@ -124,12 +125,13 @@ namespace OptimalControl.Forms
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer3.Size = new System.Drawing.Size(622, 190);
+            this.splitContainer3.Size = new System.Drawing.Size(630, 190);
             this.splitContainer3.SplitterDistance = 377;
             this.splitContainer3.TabIndex = 0;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_rule_islogged);
             this.groupBox1.Controls.Add(this.cb_rule_type);
             this.groupBox1.Controls.Add(this.ntb_rule_priority);
             this.groupBox1.Controls.Add(this.label5);
@@ -150,9 +152,31 @@ namespace OptimalControl.Forms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "规则信息";
             // 
+            // cb_rule_islogged
+            // 
+            this.cb_rule_islogged.AutoSize = true;
+            this.cb_rule_islogged.Checked = true;
+            this.cb_rule_islogged.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_rule_islogged.Location = new System.Drawing.Point(321, 159);
+            this.cb_rule_islogged.Name = "cb_rule_islogged";
+            this.cb_rule_islogged.Size = new System.Drawing.Size(48, 16);
+            this.cb_rule_islogged.TabIndex = 21;
+            this.cb_rule_islogged.Text = "日志";
+            this.cb_rule_islogged.UseVisualStyleBackColor = true;
+            // 
+            // cb_rule_type
+            // 
+            this.cb_rule_type.AutoSize = true;
+            this.cb_rule_type.Location = new System.Drawing.Point(261, 159);
+            this.cb_rule_type.Name = "cb_rule_type";
+            this.cb_rule_type.Size = new System.Drawing.Size(48, 16);
+            this.cb_rule_type.TabIndex = 21;
+            this.cb_rule_type.Text = "类型";
+            this.cb_rule_type.UseVisualStyleBackColor = true;
+            // 
             // ntb_rule_priority
             // 
-            this.ntb_rule_priority.Location = new System.Drawing.Point(227, 157);
+            this.ntb_rule_priority.Location = new System.Drawing.Point(195, 157);
             this.ntb_rule_priority.Name = "ntb_rule_priority";
             this.ntb_rule_priority.Size = new System.Drawing.Size(50, 21);
             this.ntb_rule_priority.TabIndex = 20;
@@ -160,7 +184,7 @@ namespace OptimalControl.Forms
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(180, 160);
+            this.label5.Location = new System.Drawing.Point(148, 160);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(41, 12);
             this.label5.TabIndex = 19;
@@ -257,7 +281,7 @@ namespace OptimalControl.Forms
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(241, 190);
+            this.groupBox2.Size = new System.Drawing.Size(249, 190);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "编辑";
@@ -339,23 +363,13 @@ namespace OptimalControl.Forms
             this.btn_ok.UseVisualStyleBackColor = true;
             this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
             // 
-            // cb_rule_type
-            // 
-            this.cb_rule_type.AutoSize = true;
-            this.cb_rule_type.Location = new System.Drawing.Point(321, 159);
-            this.cb_rule_type.Name = "cb_rule_type";
-            this.cb_rule_type.Size = new System.Drawing.Size(48, 16);
-            this.cb_rule_type.TabIndex = 21;
-            this.cb_rule_type.Text = "类型";
-            this.cb_rule_type.UseVisualStyleBackColor = true;
-            // 
             // frmRuleEditor
             // 
             this.AcceptButton = this.btn_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
-            this.ClientSize = new System.Drawing.Size(622, 252);
+            this.ClientSize = new System.Drawing.Size(630, 260);
             this.ControlBox = false;
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -411,6 +425,7 @@ namespace OptimalControl.Forms
         private NumbericTextbox ntb_rule_priority;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox cb_rule_type;
+        private System.Windows.Forms.CheckBox cb_rule_islogged;
 
     }
 }

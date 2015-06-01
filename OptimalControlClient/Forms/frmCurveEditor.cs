@@ -35,16 +35,18 @@ namespace OptimalControl.Forms
             _variableCollection = _variableManager.GetAllVariableInfo();
             _deviceCollection = _deviceManager.GetAllDeviceInfo();
             InitializeComponent();
-            cb_curve_name.DrawMode = DrawMode.OwnerDrawVariable;
+            cb_curve_variablename.DrawMode = DrawMode.OwnerDrawVariable;
             cb_curve_color.DrawMode = DrawMode.OwnerDrawVariable;
         }
 
         private void LoadUI(Curve curve, string formText, DataOperateMode mode)
         {
-            cb_curve_name.Items.Clear();
+            cb_curve_variablecode.Items.Clear();
+            cb_curve_variablename.Items.Clear();
             foreach (Variable variable in _variableCollection)
             {
-                cb_curve_name.Items.Add(variable.Name);
+                cb_curve_variablecode.Items.Add(variable.Code);
+                cb_curve_variablename.Items.Add(variable.Name);
             }
 
             cb_curve_device.Items.Clear();
@@ -86,8 +88,10 @@ namespace OptimalControl.Forms
             else
             {
                 Text = formText;
-                cb_curve_name.Text = curve.Name;
-                cb_curve_name.Enabled = (mode != DataOperateMode.Delete);
+                cb_curve_variablecode.Text = curve.VariableCode;
+
+                cb_curve_variablename.SelectedIndex = cb_curve_variablecode.SelectedIndex;
+                cb_curve_variablename.Enabled = (mode != DataOperateMode.Delete);
 
                 if (curve.DeviceID == 0)
                 {
@@ -101,7 +105,7 @@ namespace OptimalControl.Forms
 
                 //cb_curve_device.Enabled = (mode != DataOperateMode.Delete);
                 ntb_curve_address.Text = curve.Address.ToString(CultureInfo.InvariantCulture);
-                ntb_curve_address.Enabled = (mode != DataOperateMode.Delete);
+                //ntb_curve_address.Enabled = (mode != DataOperateMode.Delete);
                 if (curve.LineColor != Color.FromArgb(0))
                 {
                     cb_curve_color.SelectedIndex = colorList.IndexOf(curve.LineColor.Name) + 1;
@@ -148,7 +152,8 @@ namespace OptimalControl.Forms
             Curve curve = new Curve()
             {
                 Id = _curve.Id,
-                Name = cb_curve_name.Text.Trim(),
+                VariableCode = cb_curve_variablecode.Text,
+                Name = cb_curve_variablename.Text.Trim(),
                 DeviceID = Convert.ToInt32(cb_curve_device.Text.Split(' ')[0].Trim()),
                 Address = Convert.ToUInt16(ntb_curve_address.Text.Trim()),
                 LineWidth = tb_curve_size.Text.Trim() != "" ? Convert.ToSingle(tb_curve_size.Text.Trim()) : -1,
@@ -187,7 +192,7 @@ namespace OptimalControl.Forms
             try
             {
 
-                if (cb_curve_name.Text.Length < 1)
+                if (cb_curve_variablename.Text.Length < 1)
                 {
                     MessageBox.Show("请输入变量名！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -268,7 +273,7 @@ namespace OptimalControl.Forms
 
         private void cb_curve_name_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_variableCollection[cb_curve_name.SelectedIndex].DeviceID <= 0)
+            if (_variableCollection[cb_curve_variablename.SelectedIndex].DeviceID <= 0)
             {
                 cb_curve_device.Text = "0 服务器";
             }
@@ -276,15 +281,15 @@ namespace OptimalControl.Forms
             {
                 Device device =
                     _deviceManager.GetDeviceInfoById(
-                        Convert.ToInt32(_variableCollection[cb_curve_name.SelectedIndex].DeviceID));
+                        Convert.ToInt32(_variableCollection[cb_curve_variablename.SelectedIndex].DeviceID));
                 cb_curve_device.Text = string.Format("{0} {1}", Convert.ToString(device.Id),
                     Convert.ToString(device.Name));
             }
-
+            cb_curve_variablecode.Text = _variableCollection[cb_curve_variablename.SelectedIndex].Code;
             ntb_curve_address.Text =
-                _variableCollection[cb_curve_name.SelectedIndex].Address.ToString(CultureInfo.InvariantCulture);
+                _variableCollection[cb_curve_variablename.SelectedIndex].Address.ToString(CultureInfo.InvariantCulture);
             tb_curve_xtitle.Text = "时间/(秒)";
-            tb_curve_ytitle.Text = cb_curve_name.Text;
+            tb_curve_ytitle.Text = cb_curve_variablename.Text;
         }
 
         private void cb_curve_name_DrawItem(object sender, DrawItemEventArgs e)
@@ -296,7 +301,7 @@ namespace OptimalControl.Forms
             e.DrawBackground();
             StringFormat strFmt = new System.Drawing.StringFormat {Alignment = StringAlignment.Center};
             e.DrawFocusRectangle();
-            e.Graphics.DrawString(cb_curve_name.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor),
+            e.Graphics.DrawString(cb_curve_variablename.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor),
                 e.Bounds.X, e.Bounds.Y + 3);
         }
 

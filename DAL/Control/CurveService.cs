@@ -52,6 +52,7 @@ namespace DAL.Control
                         //将数据集转换成实体集合
                         tmpCurve.Id = Convert.ToInt32(myReader["Id"]);
                         tmpCurve.Name = Convert.ToString(myReader["Name"]);
+                        tmpCurve.VariableCode = Convert.ToString(myReader["VariableCode"]);
                         tmpCurve.DeviceID = Convert.ToInt32(myReader["DeviceID"]);
                         tmpCurve.Address = Convert.ToUInt16(myReader["Address"]);
                         tmpCurve.LineColor = string.IsNullOrEmpty(Convert.ToString(myReader["LineColor"]))
@@ -120,15 +121,15 @@ namespace DAL.Control
         public bool AddCurve(Curve addCurve)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "INSERT INTO Curve (Name,DeviceID,Address,LineColor,LineType,LineWidth,SymbolType,SymbolSize,XTitle,YTitle,YMax,YMin) VALUES " +
-                "(@Name,@DeviceID,@Address,@LineColor,@LineType,@LineWidth,@SymbolType,@SymbolSize,@XTitle,@YTitle,@YMax,@YMin)";
+            const string sqlTxt = "INSERT INTO Curve (VariableCode,Name,DeviceID,Address,LineColor,LineType,LineWidth,SymbolType,SymbolSize,XTitle,YTitle,YMax,YMin) VALUES " +
+                                  "(@VariableCode,@Name,@DeviceID,@Address,@LineColor,@LineType,@LineWidth,@SymbolType,@SymbolSize,@XTitle,@YTitle,@YMax,@YMin)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
+                SqlParameter prm0 = new SqlParameter("@VariableCode", SqlDbType.NVarChar, 16) { Value = addCurve.VariableCode };
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addCurve.Name };
                 SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = addCurve.DeviceID };
                 SqlParameter prm3 = new SqlParameter("@Address", SqlDbType.Int) { Value = addCurve.Address };
@@ -143,7 +144,7 @@ namespace DAL.Control
                 SqlParameter prm12 = new SqlParameter("@YMin", SqlDbType.Real) { Value = addCurve.YMin };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
-                {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12});
+                {prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12});
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -182,8 +183,7 @@ namespace DAL.Control
         public bool ModifyCurve(Curve currentCurve)
         {
             // 拼接 SQL 命令
-            string sqlTxt =
-                "UPDATE Curve SET Name=@Name,DeviceID=@DeviceID,Address=@Address,LineColor=@LineColor,LineType=@LineType,LineWidth=@LineWidth,SymbolType=@SymbolType,SymbolSize=@SymbolSize,XTitle=@XTitle,YTitle=@YTitle,YMax=@YMax,YMin=@YMin WHERE Id=@Id";
+            const string sqlTxt = "UPDATE Curve SET VariableCode=@VariableCode,Name=@Name,DeviceID=@DeviceID,Address=@Address,LineColor=@LineColor,LineType=@LineType,LineWidth=@LineWidth,SymbolType=@SymbolType,SymbolSize=@SymbolSize,XTitle=@XTitle,YTitle=@YTitle,YMax=@YMax,YMin=@YMin WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -191,6 +191,7 @@ namespace DAL.Control
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(sqlTxt, conn);
+                SqlParameter prm0 = new SqlParameter("@VariableCode", SqlDbType.NVarChar, 16) { Value = currentCurve.VariableCode };
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentCurve.Name };
                 SqlParameter prm2 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentCurve.DeviceID };
                 SqlParameter prm3 = new SqlParameter("@Address", SqlDbType.Int) { Value = currentCurve.Address };
@@ -206,7 +207,7 @@ namespace DAL.Control
                 SqlParameter prm13 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentCurve.Id };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
-                {prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12, prm13});
+                {prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12, prm13});
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -223,7 +224,7 @@ namespace DAL.Control
         public List<Curve> GetAllCurveInfo()
         {
             //SQL命令
-            string sqltxt = "SELECT * FROM Curve";
+            const string sqltxt = "SELECT * FROM Curve";
             //创建曲线实体集合
             List<Curve> curveCollection = new List<Curve>();
             //定义曲线实体
@@ -246,6 +247,7 @@ namespace DAL.Control
                         Curve tmpCurve = new Curve();
                         //将数据集转换成实体集合
                         tmpCurve.Id = Convert.ToInt32(myReader["Id"]);
+                        tmpCurve.VariableCode = Convert.ToString(myReader["VariableCode"]);
                         tmpCurve.Name = Convert.ToString(myReader["Name"]);
                         tmpCurve.DeviceID = Convert.ToInt32(myReader["DeviceID"]);
                         tmpCurve.Address = Convert.ToUInt16(myReader["Address"]);
@@ -344,6 +346,11 @@ namespace DAL.Control
             else return parameter;
         }
 
+        /// <summary>
+        /// Determines whether [the specified parameter] [is string null].
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>result(null for "")</returns>
         private object IsStringNull(object parameter)
         {
             if (Convert.ToString(parameter).Equals(""))
@@ -351,6 +358,11 @@ namespace DAL.Control
             else return parameter;
         }
 
+        /// <summary>
+        /// Determines whether [the specified symbol] [is symbol null].
+        /// </summary>
+        /// <param name="symbol">The symbol.</param>
+        /// <returns>result(DBNull.Value for SymbolType.UserDefined)</returns>
         private object IsSymbolNull(SymbolType symbol)
         {
             if (symbol.Equals(SymbolType.UserDefined))
@@ -358,6 +370,11 @@ namespace DAL.Control
             else return symbol;
         }
 
+        /// <summary>
+        /// Determines whether [the specified color] [is color null].
+        /// </summary>
+        /// <param name="color">The color.</param>
+        /// <returns>result(DBNull.Value for Color.FromArgb(0))</returns>
         private object IsColorNull(Color color)
         {
             if (color.Equals(Color.FromArgb(0)))
