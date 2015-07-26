@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using IBLL.Control;
 using Model.Control;
 using Model.Modbus;
-using Utility;
 
 namespace OptimalControl.Forms
 {
@@ -60,6 +58,22 @@ namespace OptimalControl.Forms
                 tb_para_ratio.Enabled = (mode != DataOperateMode.Delete);
                 cb_para_isdisplayed.Checked = parameter.IsDisplayed;
                 cb_para_isdisplayed.Enabled = (mode != DataOperateMode.Delete);
+                cb_para_issaved.Checked = parameter.IsSaved;
+                cb_para_issaved.Enabled = (mode != DataOperateMode.Delete);
+                cb_para_isfiltered.Checked = parameter.IsFiltered;
+                cb_para_isfiltered.Enabled = (mode != DataOperateMode.Delete);
+                tb_trend_length.Text = parameter.TrendLength.ToString(CultureInfo.InvariantCulture);
+                tb_trend_length.Enabled = (mode != DataOperateMode.Delete);
+                tb_trend_interval.Text = parameter.TrendInterval.ToString(CultureInfo.InvariantCulture);
+                tb_trend_interval.Enabled = (mode != DataOperateMode.Delete);
+                tb_trend_highter.Text = parameter.TrendHigherLimit.ToString(CultureInfo.InvariantCulture);
+                tb_trend_highter.Enabled = (mode != DataOperateMode.Delete);
+                tb_trend_lower.Text = parameter.TrendLowerLimit.ToString(CultureInfo.InvariantCulture);
+                tb_trend_lower.Enabled = (mode != DataOperateMode.Delete);
+                tb_trend_listlength.Text = parameter.TrendListLength.ToString(CultureInfo.InvariantCulture);
+                tb_trend_listlength.Enabled = (mode != DataOperateMode.Delete);
+                tb_history_listlength.Text = parameter.HistoryListLength.ToString(CultureInfo.InvariantCulture);
+                tb_history_listlength.Enabled = (mode != DataOperateMode.Delete);
 
                 if (!parameter.ControlPeriod.Equals(-1))
                 {
@@ -72,9 +86,9 @@ namespace OptimalControl.Forms
                 }
                 ntb_para_delay.Enabled = (mode != DataOperateMode.Delete);
 
-                if (!parameter.Limit.UpperLimit.Equals(-1))
+                if (!parameter.Limit.HigherLimit.Equals(-1))
                 {
-                    tb_para_upperlimit.Text = parameter.Limit.UpperLimit.ToString(CultureInfo.InvariantCulture);
+                    tb_para_upperlimit.Text = parameter.Limit.HigherLimit.ToString(CultureInfo.InvariantCulture);
                 }
                 tb_para_upperlimit.Enabled = (mode != DataOperateMode.Delete);
                 if (!parameter.Limit.LowerLimit.Equals(-1))
@@ -82,9 +96,9 @@ namespace OptimalControl.Forms
                     tb_para_lowerlimit.Text = parameter.Limit.LowerLimit.ToString(CultureInfo.InvariantCulture);
                 }
                 tb_para_lowerlimit.Enabled = (mode != DataOperateMode.Delete);
-                if (!parameter.Limit.UltimateUpperLimit.Equals(-1))
+                if (!parameter.Limit.UltimateHigherLimit.Equals(-1))
                 {
-                    tb_para_uulimit.Text = parameter.Limit.UltimateUpperLimit.ToString(CultureInfo.InvariantCulture);
+                    tb_para_uulimit.Text = parameter.Limit.UltimateHigherLimit.ToString(CultureInfo.InvariantCulture);
                 }
                 tb_para_uulimit.Enabled = (mode != DataOperateMode.Delete);
                 if (!parameter.Limit.UltimateLowerLimit.Equals(-1))
@@ -105,16 +119,24 @@ namespace OptimalControl.Forms
                 Address = Convert.ToInt32(ntb_para_address.Text.Trim()),
                 Ratio = Convert.ToDouble(tb_para_ratio.Text.Trim()),
                 IsDisplayed = cb_para_isdisplayed.Checked,
+                IsSaved = cb_para_issaved.Checked,
                 Limit = new Variable.VariableLimit()
                 {
-                    UpperLimit = tb_para_upperlimit.Text != "" ? Convert.ToDouble(tb_para_upperlimit.Text.Trim()) : -1,
+                    HigherLimit = tb_para_upperlimit.Text != "" ? Convert.ToDouble(tb_para_upperlimit.Text.Trim()) : -1,
                     LowerLimit = tb_para_lowerlimit.Text != "" ? Convert.ToDouble(tb_para_lowerlimit.Text.Trim()) : -1,
-                    UltimateUpperLimit = tb_para_uulimit.Text != "" ? Convert.ToDouble(tb_para_uulimit.Text.Trim()) : -1,
+                    UltimateHigherLimit = tb_para_uulimit.Text != "" ? Convert.ToDouble(tb_para_uulimit.Text.Trim()) : -1,
                     UltimateLowerLimit = tb_para_ullimit.Text != "" ? Convert.ToDouble(tb_para_ullimit.Text.Trim()) : -1,
                 },
                 ControlPeriod = ntb_para_period.Text != "" ? Convert.ToInt32(ntb_para_period.Text.Trim()) : -1,
                 OperateDelay = ntb_para_delay.Text != "" ? Convert.ToInt32(ntb_para_delay.Text.Trim()) : -1,
                 DeviceID = Convert.ToUInt32(cb_para_device.Text.Split(' ')[0]),
+                IsFiltered = cb_para_isfiltered.Checked,
+                TrendLength = Convert.ToInt32(tb_trend_length.Text),
+                TrendInterval = Convert.ToInt32(tb_trend_interval.Text),
+                TrendHigherLimit = Convert.ToDouble(tb_trend_highter.Text),
+                TrendLowerLimit = Convert.ToDouble(tb_trend_lower.Text),
+                TrendListLength = Convert.ToInt32(tb_trend_listlength.Text),
+                HistoryListLength = Convert.ToInt32(tb_history_listlength.Text),
             };
             return variable;
         }

@@ -134,6 +134,49 @@ namespace OptimalControl.Forms
                 HeaderText = "显示变量",
                 DataPropertyName = "IsDisplayed"
             };
+            DataGridViewCheckBoxColumn dgvIsSaved = new DataGridViewCheckBoxColumn
+            {
+                Name = "IsSaved",
+                HeaderText = "保存变量",
+                DataPropertyName = "IsSaved"
+            };
+            DataGridViewCheckBoxColumn dgvIsFiltered = new DataGridViewCheckBoxColumn
+            {
+                Name = "IsFiltered",
+                HeaderText = "是否滤波",
+                DataPropertyName = "IsFiltered"
+            };
+            DataGridViewTextBoxColumn dgvHistoryListLength = new DataGridViewTextBoxColumn
+            {
+                Name = "HistoryListLength",
+                HeaderText = "历史数据长度",
+                DataPropertyName = "HistoryListLength"
+            }; DataGridViewTextBoxColumn dgvTrendLength = new DataGridViewTextBoxColumn
+            {
+                Name = "TrendLength",
+                HeaderText = "趋势计算点数",
+                DataPropertyName = "TrendLength"
+            }; DataGridViewTextBoxColumn dgvTrendInterval = new DataGridViewTextBoxColumn
+            {
+                Name = "TrendInterval",
+                HeaderText = "趋势计算间隔",
+                DataPropertyName = "TrendInterval"
+            }; DataGridViewTextBoxColumn dgvTrendHigherLimit = new DataGridViewTextBoxColumn
+            {
+                Name = "TrendHigherLimit",
+                HeaderText = "趋势判断上限",
+                DataPropertyName = "TrendHigherLimit"
+            }; DataGridViewTextBoxColumn dgvTrendLowerLimit = new DataGridViewTextBoxColumn
+            {
+                Name = "TrendLowerLimit",
+                HeaderText = "趋势判断下限",
+                DataPropertyName = "TrendLowerLimit"
+            }; DataGridViewTextBoxColumn dgvTrendListLength = new DataGridViewTextBoxColumn
+            {
+                Name = "TrendListLength",
+                HeaderText = "趋势判断点数",
+                DataPropertyName = "TrendListLength"
+            };
 
             // 添加新建的列
             dataGridView_parameters.Columns.AddRange(new DataGridViewColumn[]
@@ -151,6 +194,14 @@ namespace OptimalControl.Forms
                 dgvOperateDelay,
                 dgvDeviceId,
                 dgvIsDisplayed,
+                dgvIsSaved,
+                dgvIsFiltered,
+                dgvHistoryListLength,
+                dgvTrendLength,
+                dgvTrendInterval,
+                dgvTrendHigherLimit,
+                dgvTrendLowerLimit,
+                dgvTrendListLength
             });
 
             for (int index = 0; index < variables.Count; index++)
@@ -161,11 +212,11 @@ namespace OptimalControl.Forms
                 dataGridView_parameters.Rows[index].Cells["Name"].Value = variables[index].Name;
                 dataGridView_parameters.Rows[index].Cells["Address"].Value = variables[index].Address;
                 dataGridView_parameters.Rows[index].Cells["Ratio"].Value = variables[index].Ratio;
-                if (!variables[index].Limit.UltimateUpperLimit.Equals(-1))
+                if (!variables[index].Limit.UltimateHigherLimit.Equals(-1))
                     dataGridView_parameters.Rows[index].Cells["UltimateUpperLimit"].Value =
-                        variables[index].Limit.UltimateUpperLimit;
-                if (!variables[index].Limit.UpperLimit.Equals(-1))
-                    dataGridView_parameters.Rows[index].Cells["UpperLimit"].Value = variables[index].Limit.UpperLimit;
+                        variables[index].Limit.UltimateHigherLimit;
+                if (!variables[index].Limit.HigherLimit.Equals(-1))
+                    dataGridView_parameters.Rows[index].Cells["UpperLimit"].Value = variables[index].Limit.HigherLimit;
                 if (!variables[index].Limit.LowerLimit.Equals(-1))
                     dataGridView_parameters.Rows[index].Cells["LowerLimit"].Value = variables[index].Limit.LowerLimit;
                 if (!variables[index].Limit.UltimateLowerLimit.Equals(-1))
@@ -177,6 +228,15 @@ namespace OptimalControl.Forms
                     dataGridView_parameters.Rows[index].Cells["OperateDelay"].Value = variables[index].OperateDelay;
                 dataGridView_parameters.Rows[index].Cells["DeviceID"].Value = variables[index].DeviceID;
                 dataGridView_parameters.Rows[index].Cells["IsDisplayed"].Value = variables[index].IsDisplayed;
+                dataGridView_parameters.Rows[index].Cells["IsSaved"].Value = variables[index].IsSaved;
+
+                dataGridView_parameters.Rows[index].Cells["IsFiltered"].Value = variables[index].IsFiltered;
+                dataGridView_parameters.Rows[index].Cells["HistoryListLength"].Value = variables[index].HistoryListLength;
+                dataGridView_parameters.Rows[index].Cells["TrendLength"].Value = variables[index].TrendLength;
+                dataGridView_parameters.Rows[index].Cells["TrendInterval"].Value = variables[index].TrendInterval;
+                dataGridView_parameters.Rows[index].Cells["TrendHigherLimit"].Value = variables[index].TrendHigherLimit;
+                dataGridView_parameters.Rows[index].Cells["TrendLowerLimit"].Value = variables[index].TrendLowerLimit;
+                dataGridView_parameters.Rows[index].Cells["TrendListLength"].Value = variables[index].TrendListLength;
             }
             tssl_parameters_manager.Text = string.Format("查询到 {0} 行数据", variables.Count);
         }
@@ -215,13 +275,13 @@ namespace OptimalControl.Forms
                     Ratio = Math.Round(Convert.ToDouble(dataGridView_parameters.Rows[selectRowIndex].Cells["Ratio"].Value), 2),
                     Limit = new Variable.VariableLimit()
                     {
-                        UpperLimit = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["UpperLimit"].Value) != ""
+                        HigherLimit = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["UpperLimit"].Value) != ""
                             ? Math.Round(Convert.ToDouble(dataGridView_parameters.Rows[selectRowIndex].Cells["UpperLimit"].Value), 2)
                             : -1,
                         LowerLimit = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["LowerLimit"].Value) != ""
                             ? Math.Round(Convert.ToDouble(dataGridView_parameters.Rows[selectRowIndex].Cells["LowerLimit"].Value), 2)
                             : -1,
-                        UltimateUpperLimit = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["UltimateUpperLimit"].Value) != ""
+                        UltimateHigherLimit = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["UltimateUpperLimit"].Value) != ""
                             ? Math.Round(Convert.ToDouble(dataGridView_parameters.Rows[selectRowIndex].Cells["UltimateUpperLimit"].Value), 2)
                             : -1,
                         UltimateLowerLimit = Convert.ToString(dataGridView_parameters.Rows[selectRowIndex].Cells["UltimateLowerLimit"].Value) != ""
@@ -235,7 +295,15 @@ namespace OptimalControl.Forms
                     ? Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["OperateDelay"].Value)
                     : -1,
                     DeviceID = Convert.ToUInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["DeviceID"].Value),
-                    IsDisplayed = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsDisplayed"].Value)
+                    IsDisplayed = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsDisplayed"].Value),
+                    IsSaved = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsSaved"].Value),
+                    IsFiltered = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsFiltered"].Value),
+                    HistoryListLength = Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["HistoryListLength"].Value),
+                    TrendLength = Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["TrendLength"].Value),
+                    TrendInterval = Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["TrendInterval"].Value),
+                    TrendHigherLimit = Convert.ToDouble(dataGridView_parameters.Rows[selectRowIndex].Cells["TrendHigherLimit"].Value),
+                    TrendLowerLimit = Convert.ToDouble(dataGridView_parameters.Rows[selectRowIndex].Cells["TrendLowerLimit"].Value),
+                    TrendListLength = Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["TrendListLength"].Value),
                 };
                 return parameter;
             }

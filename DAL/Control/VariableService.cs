@@ -52,13 +52,13 @@ namespace DAL.Control
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
                         tmpVariable.Limit = new Variable.VariableLimit()
                         {
-                            UpperLimit = Convert.ToString(myReader["UpperLimit"]) != ""
+                            HigherLimit = Convert.ToString(myReader["UpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UpperLimit"]), 2)
                                 : -1,
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateUpperLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
                             UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
@@ -73,6 +73,16 @@ namespace DAL.Control
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
+                        tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);
+
+                        tmpVariable.IsFiltered = Convert.ToBoolean(myReader["IsFiltered"]);
+                        tmpVariable.HistoryListLength = Convert.ToInt32(myReader["HistoryListLength"]);
+                        tmpVariable.TrendLength = Convert.ToInt32(myReader["TrendLength"]);
+                        tmpVariable.TrendInterval = Convert.ToInt32(myReader["TrendInterval"]);
+
+                        tmpVariable.TrendHigherLimit = Convert.ToDouble(myReader["TrendHigherLimit"]);
+                        tmpVariable.TrendLowerLimit = Convert.ToDouble(myReader["TrendLowerLimit"]);
+                        tmpVariable.TrendListLength = Convert.ToInt32(myReader["TrendListLength"]);
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -120,13 +130,13 @@ namespace DAL.Control
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
                         tmpVariable.Limit = new Variable.VariableLimit()
                         {
-                            UpperLimit = Convert.ToString(myReader["UpperLimit"]) != ""
+                            HigherLimit = Convert.ToString(myReader["UpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UpperLimit"]), 2)
                                 : -1,
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateUpperLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
                             UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
@@ -141,6 +151,16 @@ namespace DAL.Control
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
+                        tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);
+
+                        tmpVariable.IsFiltered = Convert.ToBoolean(myReader["IsFiltered"]);
+                        tmpVariable.HistoryListLength = Convert.ToInt32(myReader["HistoryListLength"]);
+                        tmpVariable.TrendLength = Convert.ToInt32(myReader["TrendLength"]);
+                        tmpVariable.TrendInterval = Convert.ToInt32(myReader["TrendInterval"]);
+
+                        tmpVariable.TrendHigherLimit = Convert.ToDouble(myReader["TrendHigherLimit"]);
+                        tmpVariable.TrendLowerLimit = Convert.ToDouble(myReader["TrendLowerLimit"]);
+                        tmpVariable.TrendListLength = Convert.ToInt32(myReader["TrendListLength"]);
                     }
                     else
                         //如果没有读取到内容则抛出异常
@@ -159,8 +179,8 @@ namespace DAL.Control
         public bool AddVariable(Variable addVariable)
         {
             // 拼接 SQL 命令
-            const string sqlTxt = "INSERT INTO Variable (Code,Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID,IsDisplayed) VALUES " +
-                                  "(@Code,@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID,@IsDisplayed)";
+            const string sqlTxt = "INSERT INTO Variable (Code,Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID,IsDisplayed,IsFiltered,HistoryListLength,TrendLength,TrendInterval,TrendHigherLimit,TrendLowerLimit,TrendListLength) VALUES " +
+                                  "(@Code,@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID,@IsDisplayed,@IsFiltered,@HistoryListLength,@TrendLength,@TrendInterval,@TrendHigherLimit,@TrendLowerLimit,@TrendListLength)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -171,16 +191,29 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = addVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = addVariable.Ratio };
-                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateUpperLimit) };
-                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UpperLimit) };
+                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateHigherLimit) };
+                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.HigherLimit) };
                 SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.LowerLimit) };
                 SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateLowerLimit) };
                 SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(addVariable.ControlPeriod) };
                 SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(addVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = addVariable.DeviceID };
                 SqlParameter prm11 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = addVariable.IsDisplayed };
+                SqlParameter prm12 = new SqlParameter("@IsSaved", SqlDbType.Bit) { Value = addVariable.IsSaved };
 
-                cmd.Parameters.AddRange(new SqlParameter[] { prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11 });
+                SqlParameter prm13 = new SqlParameter("@IsFiltered", SqlDbType.Bit) { Value = addVariable.IsFiltered };
+                SqlParameter prm14 = new SqlParameter("@HistoryListLength", SqlDbType.Int) { Value = addVariable.HistoryListLength };
+                SqlParameter prm15 = new SqlParameter("@TrendLength", SqlDbType.Int) { Value = addVariable.TrendLength };
+                SqlParameter prm16 = new SqlParameter("@TrendInterval", SqlDbType.Int) { Value = addVariable.TrendInterval };
+                SqlParameter prm17 = new SqlParameter("@TrendHigherLimit", SqlDbType.Real) { Value = addVariable.TrendHigherLimit };
+                SqlParameter prm18 = new SqlParameter("@TrendLowerLimit", SqlDbType.Real) { Value = addVariable.TrendLowerLimit };
+                SqlParameter prm19 = new SqlParameter("@TrendListLength", SqlDbType.Int) { Value = addVariable.TrendListLength };
+
+                cmd.Parameters.AddRange(new SqlParameter[]
+                {
+                    prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12, prm13, prm14, prm15,
+                    prm16, prm17, prm18, prm19
+                });
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -240,7 +273,7 @@ namespace DAL.Control
         public bool ModifyVariable(Variable currentVariable)
         {
             // 拼接 SQL 命令
-            const string sqlTxt = "UPDATE Variable SET Code=@Code,Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID,IsDisplayed=@IsDisplayed WHERE Id=@Id";
+            const string sqlTxt = "UPDATE Variable SET Code=@Code,Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID,IsDisplayed=@IsDisplayed,IsFiltered=@IsFiltered,HistoryListLength=@HistoryListLength,TrendLength=@TrendLength,TrendInterval=@TrendInterval,TrendHigherLimit=@TrendHigherLimit,TrendLowerLimit=@TrendLowerLimit,TrendListLength=@TrendListLength WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -252,18 +285,31 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = currentVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = currentVariable.Ratio };
-                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateUpperLimit) };
-                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UpperLimit) };
+                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateHigherLimit) };
+                SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.HigherLimit) };
                 SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.LowerLimit) };
                 SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateLowerLimit) };
                 SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(currentVariable.ControlPeriod) };
                 SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(currentVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentVariable.DeviceID };
                 SqlParameter prm11 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = currentVariable.IsDisplayed };
-                SqlParameter prm12 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentVariable.Id };
+                SqlParameter prm12 = new SqlParameter("@IsSaved", SqlDbType.Bit) { Value = currentVariable.IsSaved };
+
+                SqlParameter prm13 = new SqlParameter("@IsFiltered", SqlDbType.Bit) { Value = currentVariable.IsFiltered };
+                SqlParameter prm14 = new SqlParameter("@HistoryListLength", SqlDbType.Int) { Value = currentVariable.HistoryListLength };
+                SqlParameter prm15 = new SqlParameter("@TrendLength", SqlDbType.Int) { Value = currentVariable.TrendLength };
+                SqlParameter prm16 = new SqlParameter("@TrendInterval", SqlDbType.Int) { Value = currentVariable.TrendInterval };
+                SqlParameter prm17 = new SqlParameter("@TrendHigherLimit", SqlDbType.Real) { Value = currentVariable.TrendHigherLimit };
+                SqlParameter prm18 = new SqlParameter("@TrendLowerLimit", SqlDbType.Real) { Value = currentVariable.TrendLowerLimit };
+                SqlParameter prm19 = new SqlParameter("@TrendListLength", SqlDbType.Int) { Value = currentVariable.TrendListLength };
+                
+                SqlParameter prm20 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentVariable.Id };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
-                {prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12});
+                {
+                    prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12, prm13, prm14, prm15,
+                    prm16, prm17, prm18, prm19, prm20
+                });
                 conn.Open();
 
                 if (cmd.ExecuteNonQuery() >= 1)
@@ -307,13 +353,13 @@ namespace DAL.Control
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
                         tmpVariable.Limit = new Variable.VariableLimit()
                         {
-                            UpperLimit = Convert.ToString(myReader["UpperLimit"]) != ""
+                            HigherLimit = Convert.ToString(myReader["UpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UpperLimit"]), 2)
                                 : -1,
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateUpperLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
                             UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
@@ -328,6 +374,17 @@ namespace DAL.Control
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
+                        tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);
+
+                        tmpVariable.IsFiltered = Convert.ToBoolean(myReader["IsFiltered"]);
+                        tmpVariable.HistoryListLength = Convert.ToInt32(myReader["HistoryListLength"]);
+                        tmpVariable.TrendLength = Convert.ToInt32(myReader["TrendLength"]);
+                        tmpVariable.TrendInterval = Convert.ToInt32(myReader["TrendInterval"]);
+
+                        tmpVariable.TrendHigherLimit = Convert.ToDouble(myReader["TrendHigherLimit"]);
+                        tmpVariable.TrendLowerLimit = Convert.ToDouble(myReader["TrendLowerLimit"]);
+                        tmpVariable.TrendListLength = Convert.ToInt32(myReader["TrendListLength"]);
+
                         // 添加到变量实体集合
                         VariableCollection.Add(tmpVariable);
                     }
@@ -372,13 +429,13 @@ namespace DAL.Control
                         tmpVariable.Ratio = Math.Round(Convert.ToDouble(myReader["Ratio"]), 2);
                         tmpVariable.Limit = new Variable.VariableLimit()
                         {
-                            UpperLimit = Convert.ToString(myReader["UpperLimit"]) != ""
+                            HigherLimit = Convert.ToString(myReader["UpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UpperLimit"]), 2)
                                 : -1,
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateUpperLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
                             UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
@@ -393,6 +450,17 @@ namespace DAL.Control
                             : -1;
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
+                        tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);
+
+                        tmpVariable.IsFiltered = Convert.ToBoolean(myReader["IsFiltered"]);
+                        tmpVariable.HistoryListLength = Convert.ToInt32(myReader["HistoryListLength"]);
+                        tmpVariable.TrendLength = Convert.ToInt32(myReader["TrendLength"]);
+                        tmpVariable.TrendInterval = Convert.ToInt32(myReader["TrendInterval"]);
+
+                        tmpVariable.TrendHigherLimit = Convert.ToDouble(myReader["TrendHigherLimit"]);
+                        tmpVariable.TrendLowerLimit = Convert.ToDouble(myReader["TrendLowerLimit"]);
+                        tmpVariable.TrendListLength = Convert.ToInt32(myReader["TrendListLength"]);
+
                         // 添加到变量实体集合
                         variableCollection.Add(tmpVariable);
                     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Modbus.Device;
 using Model.Modbus;
 using Utility;
@@ -11,16 +12,27 @@ namespace Model.Control
     [Serializable]
     public class Variable : ModelBase
     {
+        # region Struct and Enum
         /// <summary>
         /// 变量状态
         /// </summary>
         public enum VariableState
         {
-            正常 = 0,
-            超上限 = 1,
-            超下限 = 2,
-            超上上限 = 3,
-            超下下限 = 4,
+            LL = -2,
+            L = -1,
+            N = 0,
+            H = 1,
+            HH = 2,
+        }
+
+        /// <summary>
+        /// 变量趋势
+        /// </summary>
+        public enum VariableTrend
+        {
+            Uptrend = 1,
+            Stable = 0,
+            Downtrend = -1,
         }
 
         /// <summary>
@@ -31,7 +43,7 @@ namespace Model.Control
             /// <summary>
             /// 变量上限
             /// </summary>
-            public double UpperLimit;
+            public double HigherLimit;
 
             /// <summary>
             /// 变量下限
@@ -41,7 +53,7 @@ namespace Model.Control
             /// <summary>
             /// 变量上上限
             /// </summary>
-            public double UltimateUpperLimit;
+            public double UltimateHigherLimit;
 
             /// <summary>
             /// 变量下下限
@@ -49,19 +61,39 @@ namespace Model.Control
             public double UltimateLowerLimit;
         }
 
+        #endregion
+
         #region Private Members
 
         private string _code;
         private double _value;
-        private double _historyValue;
-        private double _initialValue;
         private double _ratio;
-        private VariableLimit _limit;
+        private VariableLimit _limit = new VariableLimit();
         private int _controlPeriod;
         private int _operateDelay;
         private uint _deviceId;
         private int _address;
         private bool _isDisplayed;
+        private bool _isSaved;
+
+        private bool _isFiltered;
+        private double _currentValue;
+        private double _historyValue;
+        private double _initialValue;
+        private List<double> _historyValues = new List<double>();
+        private int _historyListLength;
+
+        private VariableState _state = new VariableState();
+        private VariableTrend _trend = new VariableTrend();
+        private double _trendValue;
+        private int _trendInterval;
+        private int _trendLength;
+        private List<double> _trendHigherList = new List<double>();
+        private List<double> _trendLowerList = new List<double>();
+        private int _trendListLength;
+        private double _trendHigherLimit;
+        private double _trendLowerLimit;
+
         #endregion
 
         #region Public Properties
@@ -73,10 +105,10 @@ namespace Model.Control
             get { return _value; }
             set
             {
-                if (_ratio != 0)
+                if (Math.Abs(_ratio) > 1E-06)
                 {
                     if (((value > _limit.UltimateLowerLimit/_ratio) || (_limit.UltimateLowerLimit <= 0))
-                        && ((value < _limit.UltimateUpperLimit/_ratio) || (_limit.UltimateUpperLimit <= 0)))
+                        && ((value < _limit.UltimateHigherLimit/_ratio) || (_limit.UltimateHigherLimit <= 0)))
                     {
                         _value = value;
                     }
@@ -93,7 +125,7 @@ namespace Model.Control
             set
             {
                 if (((value > _limit.UltimateLowerLimit) || (_limit.UltimateLowerLimit <= 0))
-                    && ((value < _limit.UltimateUpperLimit) || (_limit.UltimateUpperLimit <= 0)))
+                    && ((value < _limit.UltimateHigherLimit) || (_limit.UltimateHigherLimit <= 0)))
                 {
                     if (_ratio != 0)
                     {
@@ -162,12 +194,19 @@ namespace Model.Control
         }
 
         /// <summary>
+        /// 当前值
+        /// </summary>
+        public double CurrentValue
+        {
+            get { return _currentValue; }
+        }
+
+        /// <summary>
         /// 历史值
         /// </summary>
         public double HistoryValue
         {
             get { return _historyValue; }
-            set { _historyValue = value; }
         }
 
         /// <summary>
@@ -197,86 +236,247 @@ namespace Model.Control
             set { _isDisplayed = value; }
         }
 
+        /// <summary>
+        /// 是否保存.
+        /// </summary>
+        public bool IsSaved
+        {
+            get { return _isSaved; }
+            set { _isSaved = value; }
+        }
+
+        /// <summary>
+        /// 变量状态(HH=-2、H=-1、N=0、L=1、LL=2).
+        /// </summary>
+        public VariableState State
+        {
+            get { return _state; }
+        }
+
+        /// <summary>
+        /// 变量趋势(Uptrend=1、Stable=0、Downtrend=-1).
+        /// </summary>
+        public VariableTrend Trend
+        {
+            get { return _trend; }
+        }
+
+        /// <summary>
+        /// 变量趋势值.
+        /// </summary>
+        public double TrendValue
+        {
+            get { return _trendValue; }
+        }
+
+        /// <summary>
+        /// 历史数据数度长组
+        /// </summary>
+        public int HistoryListLength
+        {
+            get { return _historyListLength; }
+            set { _historyListLength = value; }
+        }
+
+        /// <summary>
+        /// 趋势计算间隔.
+        /// </summary>
+        public int TrendInterval
+        {
+            get { return _trendInterval; }
+            set { _trendInterval = value; }
+        }
+
+        /// <summary>
+        /// 计算趋势时选择的数据点个数.
+        /// </summary>
+        public int TrendLength
+        {
+            get { return _trendLength; }
+            set { _trendLength = value; }
+        }
+
+        /// <summary>
+        /// 是否滤波.
+        /// </summary>
+        public bool IsFiltered
+        {
+            get { return _isFiltered; }
+            set { _isFiltered = value; }
+        }
+
+        /// <summary>
+        /// 计算趋势时超过判断限的点的个数.
+        /// </summary>
+        public int TrendListLength
+        {
+            get { return _trendListLength; }
+            set { _trendListLength = value; }
+        }
+
+        /// <summary>
+        /// 趋势判断下限.
+        /// </summary>
+        public double TrendLowerLimit
+        {
+            get { return _trendLowerLimit; }
+            set { _trendLowerLimit = value; }
+        }
+
+        /// <summary>
+        /// 趋势判断上限.
+        /// </summary>
+        public double TrendHigherLimit
+        {
+            get { return _trendHigherLimit; }
+            set { _trendHigherLimit = value; }
+        }
+
         #endregion
 
         #region Public Methods
 
         /// <summary>
-        /// 无参构造
-        /// </summary>
-        public Variable()
-        {
-        }
-
-        /// <summary>
-        /// 带参构造
-        /// </summary>
-        public Variable(
-            int variableId,
-            string variableName,
-            double variableValue,
-            double variableRatio,
-            VariableLimit variableLimit,
-            int variableControlPeriod,
-            int variableOperateDelay,
-            uint variableDeviceID,
-            int variableAddress,
-            double historyValue,
-            double initialValue, 
-            string code, 
-            bool isDisplayed)
-            : base(variableId, variableName)
-        {
-            Value = variableValue;
-            Ratio = variableRatio;
-            Limit = variableLimit;
-            ControlPeriod = variableControlPeriod;
-            OperateDelay = variableOperateDelay;
-            DeviceID = variableDeviceID;
-            Address = variableAddress;
-            HistoryValue = historyValue;
-            InitialValue = initialValue;
-            Code = code;
-            IsDisplayed = isDisplayed;
-        }
-
-        /// <summary>
         /// 检测变量状态
         /// </summary>
         /// <returns>变量状态</returns>
-        public VariableState CheckVariableState()
+        private void CheckVariableState()
         {
-            double tmpValue = _value * _ratio;
-            if (_limit.UltimateUpperLimit > 0 && tmpValue > _limit.UltimateUpperLimit)
+            double tmpValue = RealValue;
+            if (_isFiltered)
             {
-                return VariableState.超上上限;
+                tmpValue = CurrentValue;
             }
-            else if (_limit.UpperLimit > 0 && tmpValue > _limit.UpperLimit &&
-                     (tmpValue < _limit.UltimateUpperLimit || _limit.UltimateUpperLimit <= 0))
+            if (_limit.UltimateHigherLimit > 0 && tmpValue > _limit.UltimateHigherLimit)
             {
-                return VariableState.超上限;
+                _state = VariableState.HH;
+            }
+            else if (_limit.HigherLimit > 0 && tmpValue > _limit.HigherLimit &&
+                     (tmpValue < _limit.UltimateHigherLimit || _limit.UltimateHigherLimit <= 0))
+            {
+                _state = VariableState.H;
             }
             else if (_limit.UltimateLowerLimit >= 0 && tmpValue < _limit.UltimateLowerLimit)
             {
-                return VariableState.超下下限;
+                _state = VariableState.LL;
             }
             else if (_limit.LowerLimit >= 0 && tmpValue < _limit.LowerLimit &&
                      (tmpValue > _limit.UltimateLowerLimit || _limit.UltimateLowerLimit <= 0))
             {
-                return VariableState.超下限;
+                _state = VariableState.L;
             }
             else
             {
-                return VariableState.正常;
+                _state = VariableState.N;
             }
         }
 
         /// <summary>
-        /// 更新历史值
+        /// 检查变量趋势.
         /// </summary>
-        public void UpdateHistoryValue()
+        private void CheckVariableTrand()
         {
-            _historyValue = _value;
+            if (_trendHigherList.Count > TrendListLength)
+            {
+                _trend = VariableTrend.Uptrend;
+                _trendValue = LeastSquareMethod(_trendHigherList);
+            }
+            else if (_trendLowerList.Count > TrendListLength)
+            {
+                _trend = VariableTrend.Downtrend;
+                _trendValue = LeastSquareMethod(_trendLowerList);
+            }
+            else
+            {
+                _trend = VariableTrend.Stable;
+                _trendValue = 0;
+            }
+        }
+
+        /// <summary>
+        /// 最小二乗法
+        /// </summary>
+        /// <param name="dataList">数据.</param>
+        /// <returns></returns>
+        private double LeastSquareMethod(List<double> dataList)
+        {
+            int listlength = dataList.Count;
+            double sumX = 0;
+            double sumY = 0;
+            double sumXY = 0;
+            double sumXX = 0;
+
+            if (listlength < 2)
+            {
+                return 0;
+            }
+
+            for (int index = 0; index <= listlength - 1; index++)
+            {
+                //X和
+                sumX += index;
+                //Y和
+                sumY += dataList[index];
+                //XY和
+                sumXY += index * dataList[index];
+                //XX和
+                sumXX += index * index;
+            }
+
+            //nΣxx-(Σx)2
+            double divisor = listlength * sumXX - sumX * sumX;
+            if (Math.Abs(divisor) > 1E-06)
+            {
+                //(nΣxy - ΣxΣy)/[nΣx2-(Σx)2]
+                return ((listlength*sumXY - sumX*sumY)/divisor);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 计算变量状态和变化趋势
+        /// </summary>
+        public void ProcessValueData()
+        {
+            _historyValues.Add(RealValue);
+
+            if (_historyValues.Count > HistoryListLength)
+            {
+                _historyValues.RemoveAt(0);
+            }
+
+            if (_historyValues.Count >= TrendLength*2 + TrendInterval)
+            {
+                double sum1 = 0;
+                double sum2 = 0;
+                for (int index = 0; index < TrendLength; index++)
+                {
+                    sum1 += _historyValues[index];
+                    sum2 += _historyValues[TrendLength + TrendInterval + index];
+                }
+                _currentValue = sum2;
+                _historyValue = sum1;
+
+                double trendValue = (sum2 - sum1)/_trendLength;
+                if (trendValue > TrendHigherLimit)
+                {
+                    _trendHigherList.Add(trendValue);
+                    _trendLowerList.Clear();
+                }
+                else if (trendValue < _trendLowerLimit)
+                {
+                    _trendLowerList.Add(trendValue);
+                    _trendHigherList.Clear();
+                }
+                else
+                {
+                    _trendHigherList.Clear();
+                    _trendLowerList.Clear();
+                }
+            }
+
+            CheckVariableState();
+            CheckVariableTrand();
         }
         
         /// <summary>
@@ -388,6 +588,68 @@ namespace Model.Control
                 return false;
             }
         }
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// 无参构造
+        /// </summary>
+        public Variable()
+        {
+            _historyListLength = 24;
+            _trendInterval = 12;
+            _trendLength = 6;
+            _trendListLength = 6;
+        }
+
+        /// <summary>
+        /// 带参构造
+        /// </summary>
+        public Variable(
+            int variableId,
+            string variableName,
+            double variableValue,
+            double variableRatio,
+            VariableLimit variableLimit,
+            int variableControlPeriod,
+            int variableOperateDelay,
+            uint variableDeviceID,
+            int variableAddress,
+            double initialValue,
+            string code,
+            bool isDisplayed,
+            bool isSaved,
+            int historyListLength,
+            int trendInterval,
+            int trendLength,
+            bool isFiltered,
+            double trendHigherLimit,
+            double trendLowerLimit)
+            : base(variableId, variableName)
+        {
+            _historyListLength = 24;
+            _trendInterval = 12;
+            _trendLength = 6;
+            _trendListLength = 6;
+            Value = variableValue;
+            Ratio = variableRatio;
+            Limit = variableLimit;
+            ControlPeriod = variableControlPeriod;
+            OperateDelay = variableOperateDelay;
+            DeviceID = variableDeviceID;
+            Address = variableAddress;
+            InitialValue = initialValue;
+            Code = code;
+            IsDisplayed = isDisplayed;
+            IsSaved = isSaved;
+            HistoryListLength = historyListLength;
+            TrendInterval = trendInterval;
+            TrendLength = trendLength;
+            IsFiltered = isFiltered;
+            TrendHigherLimit = trendHigherLimit;
+            TrendLowerLimit = trendLowerLimit;
+        }
+
         #endregion
 
     }

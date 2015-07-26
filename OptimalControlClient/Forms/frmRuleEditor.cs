@@ -12,10 +12,23 @@ namespace OptimalControl.Forms
 {
     public partial class frmRuleEditor : Form
     {
+        public enum GetValueType
+        {
+            RealValue = 0,
+            CurrentValue = 1,
+            HistoryValue = 2,
+            InitialValue = 3,
+            State = 4,
+            Trend = 5,
+            TrendValue = 6,
+            Default = 0,
+        }
+
         private readonly DataOperateMode _mode;
         private Rule _rule;
         private List<Variable> _parameters;
         private BLLFactory.BLLFactory _bllFactory = new BLLFactory.BLLFactory();
+        private string[] _typeStrings = Enum.GetNames(typeof (GetValueType));
         public bool Result { get; private set; }
 
         public frmRuleEditor(DataOperateMode mode, Rule rule)
@@ -24,6 +37,10 @@ namespace OptimalControl.Forms
             _mode = mode;
             _rule = rule;
             _parameters = variableManager.GetAllVariableInfo();
+            for (int index = 0; index < _typeStrings.Length; index++)
+            {
+                _typeStrings[index] = string.Format(".{0}", _typeStrings[index]);
+            }
             InitializeComponent();
         }
 
@@ -38,8 +55,9 @@ namespace OptimalControl.Forms
             cb_operator.Items.Clear();
             cb_operator.Items.AddRange(new object[]
             {
-                "(", ")", "*", "/", "%", "+", "-", "<", "<=", ">", ">=", "=", "<>", "!", "&", "|", "tan", "atan",".history"
+                "(", ")", "*", "/", "%", "+", "-", "<", "<=", ">", ">=", "=", "<>", "!", "&", "|", "tan", "atan"
             });
+            cb_operator.Items.AddRange(_typeStrings);
 
             Text = formText;
             if (mode != DataOperateMode.Insert)
@@ -206,11 +224,14 @@ namespace OptimalControl.Forms
             {
                 if (cb_operator.Text.Length > 0)
                 {
-                    if (cb_operator.Text == ".history")
+                    if (_typeStrings.Contains(cb_operator.Text))
                     {
-                        tb_rule_expression.Text = tb_rule_expression.Text.TrimEnd(']');
-                        tb_rule_expression.Text += cb_operator.Text;
-                        tb_rule_expression.Text += "]";
+                        if (tb_rule_expression.Text.EndsWith("]"))
+                        {
+                            tb_rule_expression.Text = tb_rule_expression.Text.TrimEnd(']');
+                            tb_rule_expression.Text += cb_operator.Text;
+                            tb_rule_expression.Text += "]";
+                        }
                     }
                     else
                     {

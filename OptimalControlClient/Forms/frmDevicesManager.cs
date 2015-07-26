@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using IBLL.Control;
@@ -21,7 +20,6 @@ namespace OptimalControl.Forms
 
     public partial class frmDevicesManager : Form
     {
-
         public frmDevicesManager()
         {
             InitializeComponent();
@@ -188,7 +186,6 @@ namespace OptimalControl.Forms
                 UpdateUI();
             }
         }
-
 
         private void tsbtn_device_delete_Click(object sender, EventArgs e)
         {

@@ -25,6 +25,7 @@ using System.Net.Sockets;
 using System.Timers;
 using IBLL;
 using IBLL.Control;
+using log4net.Appender;
 using Modbus.Device;
 using Modbus.Data;
 using Model.Control;
@@ -45,6 +46,13 @@ namespace OptimalControl.Forms
         Normal = 0,
         First = 1,
         Last = 2,
+    }
+
+    public struct DisplayedParameter
+    {
+        public int TextboxID;
+        public int DeviceID;
+        public string VariableCode;
     }
 
     #endregion
@@ -173,26 +181,67 @@ namespace OptimalControl.Forms
         /// </summary>
         private int _dataListLength = 720;
 
-        private int[] _displayedParaVariableId = new int[]
+        private List<DisplayedParameter> _displayedParas = new List<DisplayedParameter>();
+
+        private List<DisplayedParameter> _displayedStatus = new List<DisplayedParameter>();
+
+        private string[] _displayedParaVariableCode = new string[]
         {
-            10, 9, 6,
-            16, 15, 7,
-            23, 22, 8,
-            18, 43, 20, 13, 12, 12, 19, 24, 31, 29, 32
+            "CS010100020101","CS010100020201","CS010100020301","CS060100040201","CS060100050201",
+            "CS040100020101","CS040100020201","CS040100020301","CS060100040202","CS060100050202",
+            "CS040200020101","CS040200020201","CS040200020301","CS060100040203","CS060100050203",
+            "CS040200030101","CS060200030104","CS060200030102",
+            "CS060100030111","CS060100030112","CS060100030113",
+            "CS060100030103","CS060100030105","CS060200030101",
+            "CS020200080111","CS020200070111","CS060200030112",
+            "CS020200080121","CS020200070121","CS060200030122"
         };
 
         private int[] _displayedParaDeviceId = new int[]
         {
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 3, 0,
             0, 0, 0,
             0, 0, 0,
             0, 0, 0,
-            0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            0, 0, 0
         };
 
+        private int[] _displayedParaTextboxId = new int[]
+        {
+            101,102,103,104,105,
+            111,112,113,114,115,
+            121,122,123,124,125,
+            301,302,303,
+            311,312,313,
+            321,322,323,
+            331,332,333,
+            341,342,343
+        };
 
+        private string[] _displayedStausVariableCode = new string[]
+        {
+            "CS060100030102", "CS040100030103", "CS010100060101", "CS060100030104"
+        };
+
+        private int[] _displayedStausDeviceId = new int[]
+        {
+            0, 0, 0, 2
+        };
+
+        private int[] _displayedStausTextboxId = new int[]
+        {
+            201,202,203,204,205,
+            211,212,213,214,215,
+            221,222,223,224,225,
+            231,232,233,234,235
+        };
 
         private string _optimalControlEnabledVariable;
         private string _optimalControlEnabledClientVariable;
+        private string _workStatusVariable;
 
         #endregion
 
@@ -461,6 +510,7 @@ namespace OptimalControl.Forms
 
                 _optimalControlEnabledVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
                 _optimalControlEnabledClientVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledClientVariable", "").Trim();
+                _workStatusVariable = ConfigExeSettings.GetSettingString("WorkStatusVariable", "").Trim();
 
                 _masterPaneGraphRealtime.Title.Text = ConfigExeSettings.GetSettingString("MasterTitle", "My MasterPane Title");
                 _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigExeSettings.GetSettingSingle("MasterTitleSize", 12);
@@ -490,8 +540,20 @@ namespace OptimalControl.Forms
                 _dataListLength = ConfigExeSettings.GetSettingInt("DataListLength", 720);
 
                 ICurveManager curveManager = _bllFactory.BuildCurveManager();
+                _curves.Clear();
                 _curves = curveManager.GetAllCurveInfo();
-                UpdateRulesGrid();
+
+                for (int index = 0; index < _displayedParaTextboxId.Length; index++)
+                {
+                    DisplayedParameter displayedParameter = new DisplayedParameter()
+                    {
+                        TextboxID = _displayedParaTextboxId[index],
+                        DeviceID = _displayedParaDeviceId[index],
+                        VariableCode = _displayedParaVariableCode[index],
+                    };
+                    _displayedParas.Add(displayedParameter);
+                }
+                 
             }
             catch (Exception ex)
             {
@@ -577,8 +639,8 @@ namespace OptimalControl.Forms
                             byteString[2*j + 1] = tempByte[1];
                         }
                         float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
-                        variable.UpdateHistoryValue();
                         variable.Value = value;
+                        variable.ProcessValueData();
                     }
                     if (_devices.Count > 0)
                     {
@@ -615,8 +677,8 @@ namespace OptimalControl.Forms
                                         byteString[2*j + 1] = tempByte[1];
                                     }
                                     float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
-                                    variable.UpdateHistoryValue();
-                                    variable.Value = value;
+                                    variable.Value = value; 
+                                    variable.ProcessValueData();
                                 }
                             }
                         }
@@ -755,7 +817,7 @@ namespace OptimalControl.Forms
             //zedGraphControl.MasterPane.PaneList.Clear(); //清波形图
             //zedGraphControl.MasterPane.GraphObjList.Clear();
             zgc_realtime.Invalidate(); //清空zedgraph信息
-            zgc_history.Invalidate();
+            //zgc_history.Invalidate();
         }
 
         private delegate void UpdateGraphDelegate(ref MasterPane masterPane, ref ZedGraphControl zgc, List<Curve> curves);
@@ -917,139 +979,7 @@ namespace OptimalControl.Forms
             return graphPane;
         }
 
-        private delegate void UpdateRulesGridDelegate();
 
-        private void UpdateRulesGrid()
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new UpdateRulesGridDelegate(UpdateRulesGrid));
-                return;
-            }
-            try
-            {
-                // 创建权限组管理类实例
-                IRuleManager ruleManager = _bllFactory.BuildRuleManager();
-                // 调用实例方法
-                List<Rule> ruleCollection = ruleManager.GetAllRuleInfo();
-
-                // 清除原有的列
-                dgv_oc_rules.Columns.Clear();
-
-                // 手动创建数据列
-                DataGridViewTextBoxColumn dgvId = new DataGridViewTextBoxColumn
-                {
-                    Name = "Id",
-                    HeaderText = "序号",
-                    DataPropertyName = "ID",
-                    MinimumWidth = 50,
-                    FillWeight = 100,
-                    Visible = false,
-                };
-                DataGridViewTextBoxColumn dgvPriority = new DataGridViewTextBoxColumn
-                {
-                    Name = "Priority",
-                    HeaderText = "优先级",
-                    DataPropertyName = "Priority",
-                    MinimumWidth = 50,
-                    FillWeight = 100,
-                };
-                DataGridViewTextBoxColumn dgvName = new DataGridViewTextBoxColumn
-                {
-                    Name = "Name",
-                    HeaderText = "名称",
-                    DataPropertyName = "Name",
-                    MinimumWidth = 50,
-                    FillWeight = 200,
-                };
-                DataGridViewTextBoxColumn dgvExpression = new DataGridViewTextBoxColumn
-                {
-                    Name = "Expression",
-                    HeaderText = "控制规则",
-                    DataPropertyName = "Expression",
-                    MinimumWidth = 100,
-                    FillWeight = 400,
-                };
-                dgvExpression.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                DataGridViewTextBoxColumn dgvOperation = new DataGridViewTextBoxColumn
-                {
-                    Name = "Operation",
-                    HeaderText = "执行动作",
-                    DataPropertyName = "Operation",
-                    MinimumWidth = 100,
-                    FillWeight = 400,
-                };
-                dgvOperation.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                DataGridViewTextBoxColumn dgvPeriod = new DataGridViewTextBoxColumn
-                {
-                    Name = "Period",
-                    HeaderText = "控制周期",
-                    DataPropertyName = "Period",
-                    MinimumWidth = 50,
-                    FillWeight = 100,
-                };
-                DataGridViewCheckBoxColumn dgvState = new DataGridViewCheckBoxColumn
-                {
-                    Name = "State",
-                    HeaderText = "启用",
-                    DataPropertyName = "State",
-                    MinimumWidth = 50,
-                    FillWeight = 100,
-                };
-                DataGridViewCheckBoxColumn dgvType = new DataGridViewCheckBoxColumn
-                {
-                    Name = "Type",
-                    HeaderText = "类型",
-                    DataPropertyName = "Type",
-                    MinimumWidth = 50,
-                    FillWeight = 100,
-                };
-                DataGridViewCheckBoxColumn dgvIsLogged = new DataGridViewCheckBoxColumn
-                {
-                    Name = "IsLogged",
-                    HeaderText = "写入日志",
-                    DataPropertyName = "IsLogged",
-                    MinimumWidth = 50,
-                    FillWeight = 100,
-                };
-
-                dgv_oc_rules.Columns.AddRange(new DataGridViewColumn[]
-            {
-                dgvPriority,
-                dgvName,
-                dgvExpression,
-                dgvOperation,
-                dgvPeriod,
-                dgvState,
-                dgvType,
-                dgvIsLogged,
-                dgvId,
-            });
-
-                for (int index = 0; index < ruleCollection.Count; index++)
-                {
-                    dgv_oc_rules.Rows.Add();
-                    dgv_oc_rules.Rows[index].Cells["Id"].Value = ruleCollection[index].Id;
-                    dgv_oc_rules.Rows[index].Cells["Priority"].Value = ruleCollection[index].Priority;
-                    dgv_oc_rules.Rows[index].Cells["Name"].Value = ruleCollection[index].Name;
-                    dgv_oc_rules.Rows[index].Cells["Expression"].Value = ruleCollection[index].Expression;
-                    dgv_oc_rules.Rows[index].Cells["Operation"].Value = ruleCollection[index].Operation;
-                    if (!ruleCollection[index].Period.Equals(-1))
-                        dgv_oc_rules.Rows[index].Cells["Period"].Value = ruleCollection[index].Period;
-                    dgv_oc_rules.Rows[index].Cells["State"].Value = ruleCollection[index].State;
-                    dgv_oc_rules.Rows[index].Cells["Type"].Value = ruleCollection[index].Type;
-                    dgv_oc_rules.Rows[index].Cells["IsLogged"].Value = ruleCollection[index].IsLogged;
-                }
-
-                status_Label.Text = string.Format("查询到 {0} 行数据", ruleCollection.Count);
-
-            }
-            catch (Exception ex)
-            {
-                RecordLog.WriteLogFile("UpdateRulesGrid", ex.Message); 
-            }
-
-        }
 
         /// <summary>
         /// Loads the history data.
@@ -1152,37 +1082,6 @@ namespace OptimalControl.Forms
             return curves;
         }
 
-        private Rule GetSelectedRule()
-        {
-            try
-            {
-                if (dgv_oc_rules.CurrentRow != null)
-                {
-                    int selectRowIndex = dgv_oc_rules.CurrentRow.Index;
-                    Rule rule = new Rule
-                    {
-                        Id = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells["Id"].Value),
-                        Name = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells["Name"].Value),
-                        Expression = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells["Expression"].Value),
-                        Operation = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells["Operation"].Value),
-                        Period = Convert.ToString(dgv_oc_rules.Rows[selectRowIndex].Cells["Period"].Value) != ""
-                            ? Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells["Period"].Value)
-                            : -1,
-                        State = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells["State"].Value),
-                        Priority = Convert.ToInt32(dgv_oc_rules.Rows[selectRowIndex].Cells["Priority"].Value),
-                        Type = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells["Type"].Value),
-                        IsLogged = Convert.ToBoolean(dgv_oc_rules.Rows[selectRowIndex].Cells["IsLogged"].Value),
-                    };
-                    return rule;
-                }
-            }
-            catch (Exception ex)
-            {
-                RecordLog.WriteLogFile("GetSelectedRule", ex.Message);
-            }
-            return new Rule();
-        }
-
         private delegate void UpdateOcTextBoxDelegate();
 
         private void UpdateOcTextBox()
@@ -1194,17 +1093,21 @@ namespace OptimalControl.Forms
             }
             try
             {
-                for (int i = 0; i < _displayedParaVariableId.Length; i++)
+                foreach (DisplayedParameter displayedPara in _displayedParas)
                 {
-                    if (_displayedParaDeviceId[i] == 0)
+                    if (displayedPara.DeviceID == 0)
                     {
                         foreach (Variable parameter in _modbusTcpVariables)
                         {
-                            if (parameter.Id == _displayedParaVariableId[i])
+                            if (parameter.Code == displayedPara.VariableCode)
                             {
-                                Control[] controls = this.Controls.Find(string.Format("tb_oc_{0}", i + 1), true);
+                                Control[] controls =
+                                    this.Controls.Find(string.Format("tb_oc_{0}", displayedPara.TextboxID), true);
                                 if (controls.Length > 0)
+                                {
                                     controls[0].Text = parameter.RealValue.ToString("F");
+                                }
+                                break;
                             }
                         }
                     }
@@ -1212,19 +1115,238 @@ namespace OptimalControl.Forms
                     {
                         foreach (Device device in _devices)
                         {
-                            if (device.Id == _displayedParaDeviceId[i])
+                            if (device.Id == displayedPara.DeviceID)
                             {
                                 foreach (Variable variable in device.Variables)
                                 {
-                                    if (variable.Id == _displayedParaVariableId[i])
+                                    if (variable.Code == displayedPara.VariableCode)
                                     {
-                                        Control[] controls = this.Controls.Find(string.Format("tb_oc_{0}", i + 1), true);
+                                        Control[] controls =
+                                            this.Controls.Find(string.Format("tb_oc_{0}", displayedPara.TextboxID), true);
                                         if (controls.Length > 0)
+                                        {
                                             controls[0].Text = variable.RealValue.ToString("F");
+                                        }
+                                        break;
                                     }
                                 }
                             }
                         }
+                    }
+                }
+
+                for (int i = 0; i < _displayedStausVariableCode.Length; i++)
+                {
+                    if (_displayedStausDeviceId[i] == 0)
+                    {
+                        foreach (Variable parameter in _modbusTcpVariables)
+                        {
+                            if (parameter.Code == _displayedStausVariableCode[i])
+                            {
+                                Control[] controls =
+                                    this.Controls.Find(string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 0]),
+                                        true);
+                                if (controls.Length > 0)
+                                {
+                                    controls[0].Text = parameter.RealValue.ToString("F");
+                                }
+                                controls =
+                                    this.Controls.Find(string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 1]),
+                                        true);
+                                if (controls.Length > 0)
+                                {
+                                    controls[0].Text = parameter.Limit.HigherLimit.ToString("F");
+                                }
+                                controls =
+                                    this.Controls.Find(string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 2]),
+                                        true);
+                                if (controls.Length > 0)
+                                {
+                                    controls[0].Text = parameter.Limit.LowerLimit.ToString("F");
+                                }
+                                controls =
+                                    this.Controls.Find(string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 3]),
+                                        true);
+                                if (controls.Length > 0)
+                                {
+                                    switch (parameter.State)
+                                    {
+                                        case Variable.VariableState.HH:
+                                            controls[0].BackColor = Color.Red;
+                                            controls[0].Text = "HH";
+                                            break;
+                                        case Variable.VariableState.H:
+                                            controls[0].BackColor = Color.Red;
+                                            controls[0].Text = "H";
+                                            break;
+                                        case Variable.VariableState.N:
+                                            controls[0].BackColor = Color.Green;
+                                            controls[0].Text = "N";
+                                            break;
+                                        case Variable.VariableState.L:
+                                            controls[0].BackColor = Color.Blue;
+                                            controls[0].Text = "L";
+                                            break;
+                                        case Variable.VariableState.LL:
+                                            controls[0].BackColor = Color.Blue;
+                                            controls[0].Text = "LL";
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                controls =
+                                    this.Controls.Find(string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 4]),
+                                        true);
+                                if (controls.Length > 0)
+                                {
+                                    switch (parameter.Trend)
+                                    {
+                                        case Variable.VariableTrend.Uptrend:
+                                            controls[0].BackColor = Color.Red;
+                                            break;
+                                        case Variable.VariableTrend.Stable:
+                                            controls[0].BackColor = Color.Green;
+                                            break;
+                                        case Variable.VariableTrend.Downtrend:
+                                            controls[0].BackColor = Color.Blue;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    controls[0].Text = parameter.TrendValue.ToString("F");
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Device device in _devices)
+                        {
+                            if (device.Id == _displayedStausDeviceId[i])
+                            {
+                                foreach (Variable parameter in device.Variables)
+                                {
+                                    if (parameter.Code == _displayedStausVariableCode[i])
+                                    {
+                                        Control[] controls =
+                                            this.Controls.Find(
+                                                string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 0]),
+                                                true);
+                                        if (controls.Length > 0)
+                                        {
+                                            controls[0].Text = parameter.RealValue.ToString("F");
+                                        }
+                                        controls =
+                                            this.Controls.Find(
+                                                string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 1]),
+                                                true);
+                                        if (controls.Length > 0)
+                                        {
+                                            controls[0].Text = parameter.Limit.HigherLimit.ToString("F");
+                                        }
+                                        controls =
+                                            this.Controls.Find(
+                                                string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 2]),
+                                                true);
+                                        if (controls.Length > 0)
+                                        {
+                                            controls[0].Text = parameter.Limit.LowerLimit.ToString("F");
+                                        }
+                                        controls =
+                                            this.Controls.Find(
+                                                string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 3]),
+                                                true);
+                                        if (controls.Length > 0)
+                                        {
+                                            switch (parameter.State)
+                                            {
+                                                case Variable.VariableState.HH:
+                                                    controls[0].BackColor = Color.Red;
+                                                    controls[0].Text = "HH";
+                                                    break;
+                                                case Variable.VariableState.H:
+                                                    controls[0].BackColor = Color.Red;
+                                                    controls[0].Text = "H";
+                                                    break;
+                                                case Variable.VariableState.N:
+                                                    controls[0].BackColor = Color.Green;
+                                                    controls[0].Text = "N";
+                                                    break;
+                                                case Variable.VariableState.L:
+                                                    controls[0].BackColor = Color.Blue;
+                                                    controls[0].Text = "L";
+                                                    break;
+                                                case Variable.VariableState.LL:
+                                                    controls[0].BackColor = Color.Blue;
+                                                    controls[0].Text = "LL";
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        controls =
+                                            this.Controls.Find(
+                                                string.Format("tb_oc_{0}", _displayedStausTextboxId[5*i + 4]),
+                                                true);
+                                        if (controls.Length > 0)
+                                        {
+                                            switch (parameter.Trend)
+                                            {
+                                                case Variable.VariableTrend.Uptrend:
+                                                    controls[0].BackColor = Color.Red;
+                                                    break;
+                                                case Variable.VariableTrend.Stable:
+                                                    controls[0].BackColor = Color.Green;
+                                                    break;
+                                                case Variable.VariableTrend.Downtrend:
+                                                    controls[0].BackColor = Color.Blue;
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            controls[0].Text = parameter.TrendValue.ToString("F");
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                pb_status_1.BackColor = SystemColors.Control;//Color.Red;//
+                pb_status_2.BackColor = SystemColors.Control; //Color.Orange;//
+                pb_status_3.BackColor = SystemColors.Control; //Color.Green;//
+                pb_status_4.BackColor = SystemColors.Control; //Color.LightBlue;//
+                pb_status_5.BackColor = SystemColors.Control; //Color.Blue;//
+
+                foreach (Variable variable in _modbusTcpVariables)
+                {
+                    if (variable.Code == _workStatusVariable)
+                    {
+                        switch ((int)variable.RealValue)
+                        {
+                            case -2:
+                                pb_status_1.BackColor = Color.Red;
+                                break;
+                            case -1:
+                                pb_status_2.BackColor = Color.Orange;
+                                break;
+                            case 0:
+                                pb_status_3.BackColor = Color.Green;
+                                break;
+                            case 1:
+                                pb_status_4.BackColor = Color.LightBlue;
+                                break;
+                            case 2:
+                                pb_status_5.BackColor = Color.Blue;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     }
                 }
             }
@@ -1277,13 +1399,13 @@ namespace OptimalControl.Forms
                     dgv_oc_logs.Columns["Content"].HeaderText = "内容";
                     dgv_oc_logs.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv_oc_logs.Columns["Content"].DisplayIndex = 3;
-                    dgv_oc_logs.Columns["Content"].MinimumWidth = 300;
-                    dgv_oc_logs.Columns["Content"].MinimumWidth = 1200;
+                    dgv_oc_logs.Columns["Content"].MinimumWidth = 200;
+                    dgv_oc_logs.Columns["Content"].FillWeight = 1200;
 
                     dgv_oc_logs.Columns["State"].HeaderText = "状态";
                     dgv_oc_logs.Columns["State"].DisplayIndex = 4;
                     dgv_oc_logs.Columns["State"].MinimumWidth = 50;
-                    dgv_oc_logs.Columns["State"].MinimumWidth = 100;
+                    dgv_oc_logs.Columns["State"].FillWeight = 100;
 
                 }
             }
@@ -1326,7 +1448,7 @@ namespace OptimalControl.Forms
                         {
                             if (parameter.Address != curve.Address) continue;
                             //curve.Name = parameter.Name;
-                            curve.DataList.Add(tmpTime, parameter.Value);
+                            curve.DataList.Add(tmpTime, parameter.RealValue);
                             break;
                         }
                     }
@@ -1339,7 +1461,7 @@ namespace OptimalControl.Forms
                             {
                                 if (parameter.Address != curve.Address) continue;
                                 //curve.Name = parameter.Name;
-                                curve.DataList.Add(tmpTime, parameter.Value);
+                                curve.DataList.Add(tmpTime, parameter.RealValue);
                                 break;
                             }
                         }
@@ -2032,6 +2154,12 @@ namespace OptimalControl.Forms
             parametersForm.ShowDialog();
         }
 
+        private void menu_config_rules_Click(object sender, EventArgs e)
+        {
+            frmRulesManager rulesForm = new frmRulesManager();
+            rulesForm.ShowDialog();
+        }
+
         /// <summary>
         /// Handles the Click event of the menu_help_about control.
         /// </summary>
@@ -2063,68 +2191,6 @@ namespace OptimalControl.Forms
                 }
             }
         }
-
-        private void tsbtn_rule_add_Click(object sender, EventArgs e)
-        {
-            Rule rule = GetSelectedRule();
-            if (rule.Name == "") return;
-            frmRuleEditor addRuleForm = new frmRuleEditor(DataOperateMode.Insert, rule);
-            if (addRuleForm.ShowDialog() == DialogResult.OK)
-            {
-                if (addRuleForm.Result)
-                {
-                    status_Label.Text = "插入数据成功";
-                    UpdateRulesGrid();
-                }
-            }
-        }
-
-        private void tsbtn_rule_edit_Click(object sender, EventArgs e)
-        {
-            Rule rule = GetSelectedRule();
-            if (rule.Name == null) return;
-            frmRuleEditor editParameterForm = new frmRuleEditor(DataOperateMode.Edit, rule);
-            if (editParameterForm.ShowDialog() == DialogResult.OK)
-            {
-                if (editParameterForm.Result)
-                {
-                    status_Label.Text = "编辑数据成功";
-                    UpdateRulesGrid();
-                }
-            }
-        }
-
-        private void tsbtn_rule_delete_Click(object sender, EventArgs e)
-        {
-            Rule rule = GetSelectedRule();
-            if (rule.Name == null) return;
-            frmRuleEditor deleteParameterForm = new frmRuleEditor(DataOperateMode.Delete, rule);
-            if (deleteParameterForm.ShowDialog() == DialogResult.OK)
-            {
-                if (deleteParameterForm.Result)
-                {
-                    status_Label.Text = "删除数据成功";
-                    UpdateRulesGrid();
-                }
-            }
-        }
-
-        private void tsbtn_rule_update_Click(object sender, EventArgs e)
-        {
-            UpdateRulesGrid();
-        }
-
-        private void tsbtn_rule_paras_Click(object sender, EventArgs e)
-        {
-            frmParametersManager parametersForm = new frmParametersManager();
-            parametersForm.ShowDialog();
-        }
-
-        private void dgv_oc_rules_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            tsbtn_rule_edit_Click(sender, e);
-        }
-
 
         private void tsbtn_rule_run_Click(object sender, EventArgs e)
         {
@@ -2198,8 +2264,8 @@ namespace OptimalControl.Forms
                 }
             }
         }
-        #endregion
 
+        #endregion
 
     }
 }

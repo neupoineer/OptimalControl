@@ -13,6 +13,9 @@ namespace Model.Control
         private DateTime _timeValue;
         private double _value;
         private int _deviceID;
+        private Variable.VariableState _state;
+        private Variable.VariableTrend _trend;
+        private double _trendValue;
         #endregion
 
         #region Public Properties
@@ -53,6 +56,33 @@ namespace Model.Control
             set { _variableCode = value; }
         }
 
+        /// <summary>
+        /// 变量状态
+        /// </summary>
+        public Variable.VariableState State
+        {
+            get { return _state; }
+            set { _state = value; }
+        }
+
+        /// <summary>
+        /// 变量趋势
+        /// </summary>
+        public Variable.VariableTrend Trend
+        {
+            get { return _trend; }
+            set { _trend = value; }
+        }
+
+        /// <summary>
+        /// 变量趋势值
+        /// </summary>
+        public double TrendValue
+        {
+            get { return _trendValue; }
+            set { _trendValue = value; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -71,12 +101,18 @@ namespace Model.Control
             string variableCode,
             DateTime timeValue,
             double value,
-            int deviceId)
+            int deviceId, 
+            Variable.VariableState state, 
+            Variable.VariableTrend trend, 
+            double trendValue)
         {
             VariableCode = variableCode;
             TimeValue = timeValue;
             Value = value;
             DeviceID = deviceId;
+            State = state;
+            Trend = trend;
+            TrendValue = trendValue;
         }
 
         #endregion

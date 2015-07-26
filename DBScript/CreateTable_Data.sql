@@ -23,6 +23,15 @@ Create Table [Data]
 	[Value] real Not Null,
 
 	-- 设备ID
-	[DeviceID] int Not Null
+	[DeviceID] int Not Null,
+
+	-- 状态
+	[State] int Not Null,
+
+	-- 趋势
+	[Trend] int Not Null,
+
+	-- 趋势值
+	[TrendValue] real Not Null
 )
 Go

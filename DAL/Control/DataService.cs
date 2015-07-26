@@ -55,7 +55,9 @@ namespace DAL.Control
                         //将数据集转换成实体集合
                         tmpData.TimeValue = Convert.ToDateTime(myReader["TimeValue"]);
                         tmpData.Value = Convert.ToDouble(myReader["Value"]);
-
+                        tmpData.State = (Variable.VariableState)(Convert.ToInt32(myReader["State"]));
+                        tmpData.Trend = (Variable.VariableTrend)(Convert.ToInt32(myReader["Trend"]));
+                        tmpData.TrendValue = Convert.ToDouble(myReader["TrendValue"]);
                         // 添加到数据实体集合
                         dataCollection.Add(tmpData);
                     }
@@ -100,7 +102,10 @@ namespace DAL.Control
                         data = new Data
                         {
                             TimeValue = Convert.ToDateTime(myReader["TimeValue"]),
-                            Value = Convert.ToDouble(myReader["Value"])
+                            Value = Convert.ToDouble(myReader["Value"]),
+                            State = (Variable.VariableState) (Convert.ToInt32(myReader["State"])),
+                            Trend = (Variable.VariableTrend) (Convert.ToInt32(myReader["Trend"])),
+                            TrendValue = Convert.ToDouble(myReader["TrendValue"]),
                         };
                     }
                 }
@@ -127,8 +132,8 @@ namespace DAL.Control
             {
                 foreach (Data data in dataCollection)
                 {
-                    const string sql = "INSERT INTO Data (VariableCode, TimeValue, Value, DeviceID) VALUES " +
-                                       "(@VariableCode, @TimeValue, @Value, @DeviceID)";
+                    const string sql = "INSERT INTO Data (VariableCode, TimeValue, Value, DeviceID, State, Trend, TrendValue) VALUES " +
+                                       "(@VariableCode, @TimeValue, @Value, @DeviceID, @State, @Trend, @TrendValue)";
 
                     SqlCommand cmd = new SqlCommand(sql, conn, tran);
 
@@ -138,6 +143,9 @@ namespace DAL.Control
                         new SqlParameter("@TimeValue", data.TimeValue),
                         new SqlParameter("@Value", data.Value),
                         new SqlParameter("@DeviceID", data.DeviceID),
+                        new SqlParameter("@State", data.State),
+                        new SqlParameter("@Trend", data.Trend),
+                        new SqlParameter("@TrendValue", data.TrendValue),
                     };
 
                     cmd.Parameters.AddRange(parameters);

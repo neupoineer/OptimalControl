@@ -40,7 +40,31 @@ Create Table [Variable]
 	-- 设备ID
 	[DeviceID] int Not Null,
 
-	-- 显示变量
+	-- 是否显示变量
 	[IsDisplayed] bit Not Null,
+	
+	-- 是否保存变量
+	[IsSaved] bit Not Null,
+
+	-- 是否滤波
+	[IsFiltered] bit Not Null,
+
+	-- 历史数据长度
+	[HistoryListLength] int Not Null,
+
+	-- 趋势计算点数
+	[TrendLength] int Not Null,
+	
+	-- 趋势计算间隔
+	[TrendInterval] int Not Null,
+	
+	-- 趋势判断上限
+	[TrendHigherLimit] real Not Null,
+	
+	-- 趋势判断下限
+	[TrendLowerLimit] real Not Null,
+
+	-- 趋势判断点数
+	[TrendListLength] int Not Null,
 )
 Go
