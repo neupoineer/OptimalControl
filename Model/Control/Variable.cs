@@ -342,28 +342,27 @@ namespace Model.Control
         /// <returns>变量状态</returns>
         private void CheckVariableState()
         {
-            double tmpValue = RealValue;
+            double tmpValue = _value*_ratio;
             if (_isFiltered)
             {
                 tmpValue = CurrentValue;
             }
-            if (_limit.UltimateHigherLimit > 0 && tmpValue > _limit.UltimateHigherLimit)
-            {
-                _state = VariableState.HH;
-            }
-            else if (_limit.HigherLimit > 0 && tmpValue > _limit.HigherLimit &&
-                     (tmpValue < _limit.UltimateHigherLimit || _limit.UltimateHigherLimit <= 0))
-            {
-                _state = VariableState.H;
-            }
-            else if (_limit.UltimateLowerLimit >= 0 && tmpValue < _limit.UltimateLowerLimit)
+
+            if (_limit.UltimateLowerLimit >= 0 && tmpValue < _limit.UltimateLowerLimit)
             {
                 _state = VariableState.LL;
             }
-            else if (_limit.LowerLimit >= 0 && tmpValue < _limit.LowerLimit &&
-                     (tmpValue > _limit.UltimateLowerLimit || _limit.UltimateLowerLimit <= 0))
+            else if (_limit.UltimateHigherLimit > 0 && tmpValue > _limit.UltimateHigherLimit)
+            {
+                _state = VariableState.HH;
+            }
+            else if (_limit.LowerLimit > 0 && tmpValue < _limit.LowerLimit)
             {
                 _state = VariableState.L;
+            } 
+            else if (_limit.HigherLimit > 0 && tmpValue > _limit.HigherLimit)
+            {
+                _state = VariableState.H;
             }
             else
             {
@@ -379,12 +378,12 @@ namespace Model.Control
             if (_trendHigherList.Count > TrendListLength)
             {
                 _trend = VariableTrend.Uptrend;
-                _trendValue = LeastSquareMethod(_trendHigherList);
+                _trendValue = LeastSquareMethod(_historyValues);
             }
             else if (_trendLowerList.Count > TrendListLength)
             {
                 _trend = VariableTrend.Downtrend;
-                _trendValue = LeastSquareMethod(_trendLowerList);
+                _trendValue = LeastSquareMethod(_historyValues);
             }
             else
             {
@@ -454,8 +453,6 @@ namespace Model.Control
                     sum1 += _historyValues[index];
                     sum2 += _historyValues[TrendLength + TrendInterval + index];
                 }
-                _currentValue = sum2;
-                _historyValue = sum1;
 
                 double trendValue = (sum2 - sum1)/_trendLength;
                 if (trendValue > TrendHigherLimit)
@@ -473,6 +470,28 @@ namespace Model.Control
                     _trendHigherList.Clear();
                     _trendLowerList.Clear();
                 }
+
+                _currentValue = sum2 / _trendLength;
+
+                if (_isFiltered)
+                {
+                    _historyValue = sum1/_trendLength;
+                }
+                else
+                {
+                    if (_historyValues.Count > 1)
+                    {
+                        _historyValue = _historyValues[_historyValues.Count - 2];
+                    }
+                }
+            }
+            else
+            {
+                if (_historyValues.Count > 1)
+                {
+                    _historyValue = _historyValues[_historyValues.Count - 2];
+                }
+                _currentValue = _value*_ratio;
             }
 
             CheckVariableState();

@@ -26,7 +26,7 @@ namespace DAL.Control
         public List<Data> GetDataByVariableCode(string variableCode, int deviceID, DateTime starTime, DateTime endTime)
         {
             //SQL命令
-            const string sqltxt = "SELECT TimeValue, Value FROM Data WHERE " +
+            const string sqltxt = "SELECT TimeValue, Value, State, Trend, TrendValue FROM Data WHERE " +
                                   "VariableCode=@VariableCode AND DeviceID=@DeviceID AND TimeValue >= @StartTime AND TimeValue < @EndTime";
             //创建数据实体集合
             List<Data> dataCollection = new List<Data>();
@@ -76,7 +76,7 @@ namespace DAL.Control
         public Data GetLastDataByVariableCode(string variableCode, int deviceID)
         {
             //SQL命令
-            const string sqltxt = "SELECT TOP 1 TimeValue, Value FROM Data WHERE " +
+            const string sqltxt = "SELECT TOP 1 TimeValue, Value, State, Trend, TrendValue FROM Data WHERE " +
                                   "VariableCode=@VariableCode AND DeviceID=@DeviceID ORDER BY id DESC";
             //创建数据实体集合
             Data data = new Data();

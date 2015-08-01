@@ -352,7 +352,6 @@ namespace OptimalControlService
                         }
                         float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
                         variable.Value = value;
-                        variable.ProcessValueData();
                     }
                 }
             }
@@ -490,7 +489,6 @@ namespace OptimalControlService
                         }
                         float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
                         variable.Value = value;
-                        variable.ProcessValueData();
                     }
                 }
             }
@@ -532,184 +530,195 @@ namespace OptimalControlService
                 List<int> periods = new List<int>();
                 foreach (Rule rule in rules)
                 {
-                    if (_isRuleTriggered)
+                    if (rule.Priority == 0 || _execteRulesFlag)
                     {
-                        if (!rule.Type)
+                        if (_isRuleTriggered)
                         {
-                            continue;
-                        }
-                    }
-
-                    bool isTure = false;
-                    string expString = rule.Expression;
-                    if (expString.ToLower() == "true" || expString == "1")
-                    {
-                        isTure = true;
-                    }
-                    else
-                    {
-                        StringBuilder expStringBuilder = new StringBuilder();
-                        foreach (string s in expString.Trim(new char[] {'[', ']'}).Split(new char[] {'[', ']'}))
-                        {
-                            if (s.StartsWith("@"))
+                            if (!rule.Type)
                             {
-                                double value = GetValueByName(s.TrimStart('@'));
-                                if (value < 0)
-                                {
-                                    if (Math.Abs(value - (-0.123456789)) < 0.000000001)
-                                    {
-                                        continue;
-                                    }
-                                    expStringBuilder.Append(string.Format("(0{0})", value));
-                                }
-                                else
-                                {
-                                    expStringBuilder.Append(value);
-                                }
-                            }
-                            else
-                            {
-                                expStringBuilder.Append(s);
+                                continue;
                             }
                         }
 
-                        if (expStringBuilder.Length == 0) continue;
-
-                        RPN expRPN = new RPN();
-                        if (expRPN.Parse(expStringBuilder.ToString()))
+                        bool isTure = false;
+                        string expString = rule.Expression;
+                        if (expString.ToLower() == "true" || expString == "1")
                         {
-                            bool.TryParse(expRPN.Evaluate().ToString(), out isTure);
+                            isTure = true;
                         }
-                    }
-                    if (isTure)
-                    {
-                        string[] operationString = rule.Operation.Split(';');
-                        List<Variable> opVariables = new List<Variable>();
-                        foreach (string opString in operationString)
+                        else
                         {
-                            StringBuilder opStringBuilder = new StringBuilder();
-                            string[] op = opString.Trim(new char[] { '[', ']' }).Split(new char[] { '[', ']' });
-                            if (op.Length > 1 && op[0].StartsWith("@") && op[1].StartsWith("="))
+                            StringBuilder expStringBuilder = new StringBuilder();
+                            foreach (string s in expString.Trim(new char[] {'[', ']'}).Split(new char[] {'[', ']'}))
                             {
-                                op[1] = op[1].TrimStart('=');
-                                for (int index = 1; index < op.Length; index++)
+                                if (s.StartsWith("@"))
                                 {
-                                    if (op[index].StartsWith("@"))
+                                    double value = GetValueByName(s.TrimStart('@'));
+                                    if (value < 0)
                                     {
-                                        double value = GetValueByName(op[index].TrimStart('@'));
-                                        if (value < 0)
+                                        if (Math.Abs(value - (-0.123456789)) < 0.000000001)
                                         {
-                                            if (Math.Abs(value - (-0.123456789)) < 0.000000001)
-                                            {
-                                                continue;
-                                            }
-                                            opStringBuilder.Append(string.Format("(0{0})", value));
+                                            continue;
                                         }
-                                        else
-                                        {
-                                            opStringBuilder.Append(value);
-                                        }
+                                        expStringBuilder.Append(string.Format("(0{0})", value));
                                     }
                                     else
                                     {
-                                        opStringBuilder.Append(op[index]);
+                                        expStringBuilder.Append(value);
                                     }
                                 }
-                                if (opStringBuilder.Length == 0) continue;
-                                RPN opRPN = new RPN();
-                                if (opRPN.Parse(opStringBuilder.ToString()))
+                                else
                                 {
-                                    opVariables.Add(new Variable()
-                                    {
-                                        Name = op[0].TrimStart('@'),
-                                        RealValue = Convert.ToDouble(opRPN.Evaluate()),
-                                    });
+                                    expStringBuilder.Append(s);
                                 }
+                            }
+
+                            if (expStringBuilder.Length == 0) continue;
+
+                            RPN expRPN = new RPN();
+                            if (expRPN.Parse(expStringBuilder.ToString()))
+                            {
+                                bool.TryParse(expRPN.Evaluate().ToString(), out isTure);
                             }
                         }
-
-                        if (opVariables.Count > 0)
+                        if (isTure)
                         {
-                            StringBuilder tempString =
-                                new StringBuilder(string.Format("触发规则\"{0}\",执行操作\"",
-                                    rule.Expression.Replace("@", "")));
-                            foreach (Variable opVariable in opVariables)
+                            string[] operationString = rule.Operation.Split(';');
+                            List<Variable> opVariables = new List<Variable>();
+                            foreach (string opString in operationString)
                             {
-                                foreach (Variable parameter in _modbusRtuParameters)
+                                StringBuilder opStringBuilder = new StringBuilder();
+                                string[] op = opString.Trim(new char[] {'[', ']'}).Split(new char[] {'[', ']'});
+                                if (op.Length > 1 && op[0].StartsWith("@") && op[1].StartsWith("="))
                                 {
-                                    if (parameter.Name == opVariable.Name)
+                                    op[1] = op[1].TrimStart('=');
+                                    for (int index = 1; index < op.Length; index++)
                                     {
-                                        if (parameter.Name == _optimalControlFeedVariable)
+                                        if (op[index].StartsWith("@"))
                                         {
-                                            double value = GetValueByCode(_feedVariable);
-                                            double max = value + GetValueByCode(_optimalControlFeedMax);
-                                            double min = value + GetValueByCode(_optimalControlFeedMin);
-                                            if (opVariable.RealValue > max)
-                                                opVariable.RealValue = max;
-                                            if (opVariable.RealValue < min)
-                                                opVariable.RealValue = min;
+                                            double value = GetValueByName(op[index].TrimStart('@'));
+                                            if (value < 0)
+                                            {
+                                                if (Math.Abs(value - (-0.123456789)) < 0.000000001)
+                                                {
+                                                    continue;
+                                                }
+                                                opStringBuilder.Append(string.Format("(0{0})", value));
+                                            }
+                                            else
+                                            {
+                                                opStringBuilder.Append(value);
+                                            }
                                         }
-                                        else if (parameter.Name == _optimalControlFeedWaterVariable)
+                                        else
                                         {
-                                            double value = GetValueByCode(_feedWaterVariable);
-                                            double max = value + GetValueByCode(_optimalControlFeedWaterMax);
-                                            double min = value + GetValueByCode(_optimalControlFeedWaterMin);
-                                            if (opVariable.RealValue > max)
-                                                opVariable.RealValue = max;
-                                            if (opVariable.RealValue < min)
-                                                opVariable.RealValue = min;
-                                        }
-                                        else if (parameter.Name == _optimalControlSupWaterVariable)
-                                        {
-                                            double value = GetValueByCode(_supWaterVariable);
-                                            double max = value + GetValueByCode(_optimalControlSupWaterMax);
-                                            double min = value + GetValueByCode(_optimalControlSupWaterMin);
-                                            if (opVariable.RealValue > max)
-                                                opVariable.RealValue = max;
-                                            if (opVariable.RealValue < min)
-                                                opVariable.RealValue = min;
-                                        }
-                                        parameter.RealValue = opVariable.RealValue;
-                                        if (_isModbusRtuSlaveCreated)
-                                        {
-                                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                                            opStringBuilder.Append(op[index]);
                                         }
                                     }
+                                    if (opStringBuilder.Length == 0) continue;
+                                    RPN opRPN = new RPN();
+                                    if (opRPN.Parse(opStringBuilder.ToString()))
+                                    {
+                                        opVariables.Add(new Variable()
+                                        {
+                                            Name = op[0].TrimStart('@'),
+                                            RealValue = Convert.ToDouble(opRPN.Evaluate()),
+                                            Ratio = 1,
+                                        });
+                                    }
                                 }
-                                tempString.Append(string.Format("{0}={1}; ", opVariable.Name, opVariable.RealValue));
                             }
 
-                            tempString.Append("\"");
-                            if (rule.IsLogged)
+                            if (opVariables.Count > 0)
                             {
-                                Log addLog = new Log()
+                                StringBuilder tempString =
+                                    new StringBuilder(string.Format("触发规则\"{0}\",执行操作\"",
+                                        rule.Expression.Replace("@", "")));
+                                foreach (Variable opVariable in opVariables)
                                 {
-                                    LogTime = DateTime.Now,
-                                    Content = tempString.ToString(),
-                                    State = true,
-                                };
-                                switch (rule.Priority)
-                                {
-                                    case 1:
-                                        addLog.Type = Log.LogType.严重;
-                                        break;
-                                    case 2:
-                                        addLog.Type = Log.LogType.建议;
-                                        break;
-                                    case 3:
-                                        addLog.Type = Log.LogType.提示;
-                                        break;
-                                    default:
-                                        addLog.Type = Log.LogType.提示;
-                                        break;
+                                    foreach (Variable parameter in _modbusRtuParameters)
+                                    {
+                                        if (parameter.Name == opVariable.Name)
+                                        {
+                                            if (parameter.Name == _optimalControlFeedVariable)
+                                            {
+                                                double value = GetValueByCode(_feedVariable);
+                                                double max = value + GetValueByCode(_optimalControlFeedMax);
+                                                double min = value + GetValueByCode(_optimalControlFeedMin);
+                                                if (opVariable.RealValue > max)
+                                                    opVariable.RealValue = max;
+                                                if (opVariable.RealValue < min)
+                                                    opVariable.RealValue = min;
+                                            }
+                                            else if (parameter.Name == _optimalControlFeedWaterVariable)
+                                            {
+                                                double value = GetValueByCode(_feedWaterVariable);
+                                                double max = value + GetValueByCode(_optimalControlFeedWaterMax);
+                                                double min = value + GetValueByCode(_optimalControlFeedWaterMin);
+                                                if (opVariable.RealValue > max)
+                                                    opVariable.RealValue = max;
+                                                if (opVariable.RealValue < min)
+                                                    opVariable.RealValue = min;
+                                            }
+                                            else if (parameter.Name == _optimalControlSupWaterVariable)
+                                            {
+                                                double value = GetValueByCode(_supWaterVariable);
+                                                double max = value + GetValueByCode(_optimalControlSupWaterMax);
+                                                double min = value + GetValueByCode(_optimalControlSupWaterMin);
+                                                if (opVariable.RealValue > max)
+                                                    opVariable.RealValue = max;
+                                                if (opVariable.RealValue < min)
+                                                    opVariable.RealValue = min;
+                                            }
+                                            parameter.RealValue = opVariable.RealValue;
+                                            if (_isModbusRtuSlaveCreated)
+                                            {
+                                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                                            }
+                                            foreach (Device device in _devices)
+                                            {
+                                                if (device.ModbusTcpMasterCreated)
+                                                {
+                                                    parameter.SetValueToModbusTcpMaster(ref device.ModbusTcpDevice);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    tempString.Append(string.Format("{0}={1}; ", opVariable.Name, opVariable.RealValue));
                                 }
-                                AddLogInfo(addLog);
-                            }
-                            if (rule.Priority != 0)
-                            {
-                                _isRuleTriggered = true;
-                                int period = rule.Period > 0 ? rule.Period * 1000 : _defaultControlPeriod * 1000;
-                                periods.Add(period);
+
+                                tempString.Append("\"");
+                                if (rule.IsLogged)
+                                {
+                                    Log addLog = new Log()
+                                    {
+                                        LogTime = DateTime.Now,
+                                        Content = tempString.ToString(),
+                                        State = true,
+                                    };
+                                    switch (rule.Priority)
+                                    {
+                                        case 1:
+                                            addLog.Type = Log.LogType.严重;
+                                            break;
+                                        case 2:
+                                            addLog.Type = Log.LogType.建议;
+                                            break;
+                                        case 3:
+                                            addLog.Type = Log.LogType.提示;
+                                            break;
+                                        default:
+                                            addLog.Type = Log.LogType.提示;
+                                            break;
+                                    }
+                                    AddLogInfo(addLog);
+                                }
+                                if (rule.Priority != 0)
+                                {
+                                    _isRuleTriggered = true;
+                                    int period = rule.Period > 0 ? rule.Period*1000 : _defaultControlPeriod*1000;
+                                    periods.Add(period);
+                                }
                             }
                         }
                     }
@@ -1000,7 +1009,7 @@ namespace OptimalControlService
                 foreach (Variable parameter in _modbusRtuParameters)
                 {
                     Variable.VariableState state = parameter.State;
-                    if (state != Variable.VariableState.N)
+                    if (state == Variable.VariableState.HH || state == Variable.VariableState.LL)
                     {
                         Log addLog = new Log()
                         {
@@ -1023,7 +1032,7 @@ namespace OptimalControlService
                         foreach (Variable parameter in device.Variables)
                         {
                             Variable.VariableState state = parameter.State;
-                            if (state != Variable.VariableState.N)
+                            if (state == Variable.VariableState.HH || state == Variable.VariableState.LL)
                             {
                                 Log addLog = new Log()
                                 {
@@ -1115,7 +1124,7 @@ namespace OptimalControlService
                                 Content =
                                     string.Format("{0}由{1}修改为{2}",
                                         parameter.Name,
-                                        parameter.HistoryValue*parameter.Ratio,
+                                        parameter.HistoryValue,
                                         parameter.RealValue),
                                 State = false,
                             };
@@ -1134,8 +1143,12 @@ namespace OptimalControlService
                             {
                                 parameter.RealValue = tmpValue;
                                 parameter.InitialValue = tmpValue;
-                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
                             }
+                            else
+                            {
+                                parameter.RealValue = parameter.Limit.LowerLimit;
+                            }
+                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
                         }
                         else if (parameter.Code == _optimalControlFeedWaterVariable)
                         {
@@ -1144,8 +1157,12 @@ namespace OptimalControlService
                             {
                                 parameter.RealValue = tmpValue;
                                 parameter.InitialValue = tmpValue;
-                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
                             }
+                            else
+                            {
+                                parameter.RealValue = parameter.Limit.LowerLimit;
+                            }
+                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
                         }
                         else if (parameter.Code == _optimalControlSupWaterVariable)
                         {
@@ -1154,16 +1171,28 @@ namespace OptimalControlService
                             {
                                 parameter.RealValue = tmpValue;
                                 parameter.InitialValue = tmpValue;
-                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
                             }
+                            else
+                            {
+                                parameter.RealValue = parameter.Limit.LowerLimit;
+                            }
+                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
                         }
                     }
                     _isFirstRound = false;
                 }
-                if (_execteRulesFlag)
+                _rules = _ruleManager.GetRuleInfoEnabled();
+                ExecuteRules(_rules);
+                foreach (Variable variable in _modbusRtuParameters)
                 {
-                    _rules = _ruleManager.GetRuleInfoEnabled();
-                    ExecuteRules(_rules);
+                    variable.ProcessValueData();
+                }
+                foreach (Device device in _devices)
+                {
+                    foreach (Variable variable in device.Variables)
+                    {
+                        variable.ProcessValueData();
+                    }
                 }
                 CheckParameterState();
                 SaveParameters();

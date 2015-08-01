@@ -190,7 +190,7 @@ namespace OptimalControl.Forms
             "CS010100020101","CS010100020201","CS010100020301","CS060100040201","CS060100050201",
             "CS040100020101","CS040100020201","CS040100020301","CS060100040202","CS060100050202",
             "CS040200020101","CS040200020201","CS040200020301","CS060100040203","CS060100050203",
-            "CS040200030101","CS060200030104","CS060200030102",
+            "CS040200030103","CS060200030104","CS060200030102",
             "CS060100030111","CS060100030112","CS060100030113",
             "CS060100030103","CS060100030105","CS060200030101",
             "CS020200080111","CS020200070111","CS060200030112",
@@ -553,7 +553,73 @@ namespace OptimalControl.Forms
                     };
                     _displayedParas.Add(displayedParameter);
                 }
-                 
+
+                tempString = ConfigExeSettings.GetValue("DisplayedParaVariableCode").Trim();
+                if (tempString.Length > 0)
+                {
+                    string[] tempstrings = tempString.Split(',');
+                    _displayedParaVariableCode = new string[tempstrings.Length];
+                    for (int index = 0; index < tempstrings.Length; index++)
+                    {
+                        _displayedParaVariableCode[index] = tempstrings[index];
+                    }
+                }
+
+                tempString = ConfigExeSettings.GetValue("DisplayedParaDeviceId").Trim();
+                if (tempString.Length > 0)
+                {
+                    string[] tempstrings = tempString.Split(',');
+                    _displayedParaDeviceId = new int[tempstrings.Length];
+                    for (int index = 0; index < tempstrings.Length; index++)
+                    {
+                        _displayedParaDeviceId[index] = Convert.ToInt32(tempstrings[index]);
+                    }
+                }
+
+                tempString = ConfigExeSettings.GetValue("DisplayedParaTextboxId").Trim();
+                if (tempString.Length > 0)
+                {
+                    string[] tempstrings = tempString.Split(',');
+                    _displayedParaTextboxId = new int[tempstrings.Length];
+                    for (int index = 0; index < tempstrings.Length; index++)
+                    {
+                        _displayedParaTextboxId[index] = Convert.ToInt32(tempstrings[index]);
+                    }
+                }
+
+                tempString = ConfigExeSettings.GetValue("DisplayedStausVariableCode").Trim();
+                if (tempString.Length > 0)
+                {
+                    string[] tempstrings = tempString.Split(',');
+                    _displayedStausVariableCode = new string[tempstrings.Length];
+                    for (int index = 0; index < tempstrings.Length; index++)
+                    {
+                        _displayedStausVariableCode[index] = tempstrings[index];
+                    }
+                }
+
+                tempString = ConfigExeSettings.GetValue("DisplayedStausDeviceId").Trim();
+                if (tempString.Length > 0)
+                {
+                    string[] tempstrings = tempString.Split(',');
+                    _displayedStausDeviceId = new int[tempstrings.Length];
+                    for (int index = 0; index < tempstrings.Length; index++)
+                    {
+                        _displayedStausDeviceId[index] = Convert.ToInt32(tempstrings[index]);
+                    }
+                }
+
+                tempString = ConfigExeSettings.GetValue("DisplayedStausTextboxId").Trim();
+                if (tempString.Length > 0)
+                {
+                    string[] tempstrings = tempString.Split(',');
+                    _displayedStausTextboxId = new int[tempstrings.Length];
+                    for (int index = 0; index < tempstrings.Length; index++)
+                    {
+                        _displayedStausTextboxId[index] = Convert.ToInt32(tempstrings[index]);
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -1173,22 +1239,27 @@ namespace OptimalControl.Forms
                                     {
                                         case Variable.VariableState.HH:
                                             controls[0].BackColor = Color.Red;
+                                            controls[0].ForeColor = Color.Yellow;
                                             controls[0].Text = "HH";
                                             break;
                                         case Variable.VariableState.H:
                                             controls[0].BackColor = Color.Red;
+                                            controls[0].ForeColor = Color.Yellow;
                                             controls[0].Text = "H";
                                             break;
                                         case Variable.VariableState.N:
                                             controls[0].BackColor = Color.Green;
+                                            controls[0].ResetForeColor();
                                             controls[0].Text = "N";
                                             break;
                                         case Variable.VariableState.L:
                                             controls[0].BackColor = Color.Blue;
+                                            controls[0].ForeColor = Color.Yellow;
                                             controls[0].Text = "L";
                                             break;
                                         case Variable.VariableState.LL:
                                             controls[0].BackColor = Color.Blue;
+                                            controls[0].ForeColor = Color.Yellow;
                                             controls[0].Text = "LL";
                                             break;
                                         default:
@@ -1204,17 +1275,20 @@ namespace OptimalControl.Forms
                                     {
                                         case Variable.VariableTrend.Uptrend:
                                             controls[0].BackColor = Color.Red;
+                                            controls[0].ForeColor = Color.Yellow;
                                             break;
                                         case Variable.VariableTrend.Stable:
                                             controls[0].BackColor = Color.Green;
+                                            controls[0].ResetForeColor();
                                             break;
                                         case Variable.VariableTrend.Downtrend:
                                             controls[0].BackColor = Color.Blue;
+                                            controls[0].ForeColor = Color.Yellow;
                                             break;
                                         default:
                                             break;
                                     }
-                                    controls[0].Text = parameter.TrendValue.ToString("F");
+                                    controls[0].Text = parameter.TrendValue.ToString("F4");
                                 }
                                 break;
                             }
@@ -1264,22 +1338,27 @@ namespace OptimalControl.Forms
                                             {
                                                 case Variable.VariableState.HH:
                                                     controls[0].BackColor = Color.Red;
+                                                    controls[0].ForeColor = Color.Yellow;
                                                     controls[0].Text = "HH";
                                                     break;
                                                 case Variable.VariableState.H:
                                                     controls[0].BackColor = Color.Red;
+                                                    controls[0].ForeColor = Color.Yellow;
                                                     controls[0].Text = "H";
                                                     break;
                                                 case Variable.VariableState.N:
                                                     controls[0].BackColor = Color.Green;
+                                                    controls[0].ResetForeColor();
                                                     controls[0].Text = "N";
                                                     break;
                                                 case Variable.VariableState.L:
                                                     controls[0].BackColor = Color.Blue;
+                                                    controls[0].ForeColor = Color.Yellow;
                                                     controls[0].Text = "L";
                                                     break;
                                                 case Variable.VariableState.LL:
                                                     controls[0].BackColor = Color.Blue;
+                                                    controls[0].ForeColor = Color.Yellow;
                                                     controls[0].Text = "LL";
                                                     break;
                                                 default:
@@ -1296,17 +1375,20 @@ namespace OptimalControl.Forms
                                             {
                                                 case Variable.VariableTrend.Uptrend:
                                                     controls[0].BackColor = Color.Red;
+                                                    controls[0].ForeColor = Color.Yellow;
                                                     break;
                                                 case Variable.VariableTrend.Stable:
                                                     controls[0].BackColor = Color.Green;
+                                                    controls[0].ResetForeColor();
                                                     break;
                                                 case Variable.VariableTrend.Downtrend:
                                                     controls[0].BackColor = Color.Blue;
+                                                    controls[0].ForeColor = Color.Yellow;
                                                     break;
                                                 default:
                                                     break;
                                             }
-                                            controls[0].Text = parameter.TrendValue.ToString("F");
+                                            controls[0].Text = parameter.TrendValue.ToString("F4");
                                         }
                                         break;
                                     }
@@ -1328,19 +1410,19 @@ namespace OptimalControl.Forms
                     {
                         switch ((int)variable.RealValue)
                         {
-                            case -2:
+                            case 2:
                                 pb_status_1.BackColor = Color.Red;
                                 break;
-                            case -1:
+                            case 1:
                                 pb_status_2.BackColor = Color.Orange;
                                 break;
                             case 0:
                                 pb_status_3.BackColor = Color.Green;
                                 break;
-                            case 1:
+                            case -1:
                                 pb_status_4.BackColor = Color.LightBlue;
                                 break;
-                            case 2:
+                            case -2:
                                 pb_status_5.BackColor = Color.Blue;
                                 break;
                             default:
