@@ -35,12 +35,10 @@ namespace OptimalControl.Forms
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cb_para_isfiltered = new System.Windows.Forms.CheckBox();
             this.cb_para_issaved = new System.Windows.Forms.CheckBox();
-            this.tb_history_listlength = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tb_trend_highter = new System.Windows.Forms.TextBox();
             this.cb_para_isdisplayed = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
             this.tb_trend_lower = new System.Windows.Forms.TextBox();
             this.tb_para_code = new System.Windows.Forms.TextBox();
             this.tb_trend_listlength = new System.Windows.Forms.TextBox();
@@ -70,12 +68,16 @@ namespace OptimalControl.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.ntb_para_address = new Utility.NumbericTextbox();
             this.tb_para_name = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tb_history_listlength = new System.Windows.Forms.TextBox();
+            this.cb_para_isoutput = new System.Windows.Forms.CheckBox();
+            this.cb_para_isenabled = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_ok
             // 
-            this.btn_ok.Location = new System.Drawing.Point(149, 305);
+            this.btn_ok.Location = new System.Drawing.Point(170, 350);
             this.btn_ok.Name = "btn_ok";
             this.btn_ok.Size = new System.Drawing.Size(75, 23);
             this.btn_ok.TabIndex = 6;
@@ -86,7 +88,7 @@ namespace OptimalControl.Forms
             // btn_cancel
             // 
             this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btn_cancel.Location = new System.Drawing.Point(329, 305);
+            this.btn_cancel.Location = new System.Drawing.Point(350, 350);
             this.btn_cancel.Name = "btn_cancel";
             this.btn_cancel.Size = new System.Drawing.Size(75, 23);
             this.btn_cancel.TabIndex = 6;
@@ -96,6 +98,8 @@ namespace OptimalControl.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_para_isoutput);
+            this.groupBox1.Controls.Add(this.cb_para_isenabled);
             this.groupBox1.Controls.Add(this.cb_para_isfiltered);
             this.groupBox1.Controls.Add(this.cb_para_issaved);
             this.groupBox1.Controls.Add(this.tb_history_listlength);
@@ -135,7 +139,7 @@ namespace OptimalControl.Forms
             this.groupBox1.Controls.Add(this.tb_para_name);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(556, 276);
+            this.groupBox1.Size = new System.Drawing.Size(580, 315);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "变量信息";
@@ -143,34 +147,27 @@ namespace OptimalControl.Forms
             // cb_para_isfiltered
             // 
             this.cb_para_isfiltered.AutoSize = true;
-            this.cb_para_isfiltered.Location = new System.Drawing.Point(497, 79);
+            this.cb_para_isfiltered.Location = new System.Drawing.Point(489, 199);
             this.cb_para_isfiltered.Name = "cb_para_isfiltered";
-            this.cb_para_isfiltered.Size = new System.Drawing.Size(48, 16);
+            this.cb_para_isfiltered.Size = new System.Drawing.Size(72, 16);
             this.cb_para_isfiltered.TabIndex = 36;
-            this.cb_para_isfiltered.Text = "滤波";
+            this.cb_para_isfiltered.Text = "是否滤波";
             this.cb_para_isfiltered.UseVisualStyleBackColor = true;
             // 
             // cb_para_issaved
             // 
             this.cb_para_issaved.AutoSize = true;
-            this.cb_para_issaved.Location = new System.Drawing.Point(438, 79);
+            this.cb_para_issaved.Location = new System.Drawing.Point(384, 119);
             this.cb_para_issaved.Name = "cb_para_issaved";
-            this.cb_para_issaved.Size = new System.Drawing.Size(48, 16);
+            this.cb_para_issaved.Size = new System.Drawing.Size(96, 16);
             this.cb_para_issaved.TabIndex = 35;
-            this.cb_para_issaved.Text = "保存";
+            this.cb_para_issaved.Text = "是否保存变量";
             this.cb_para_issaved.UseVisualStyleBackColor = true;
-            // 
-            // tb_history_listlength
-            // 
-            this.tb_history_listlength.Location = new System.Drawing.Point(269, 237);
-            this.tb_history_listlength.Name = "tb_history_listlength";
-            this.tb_history_listlength.Size = new System.Drawing.Size(70, 21);
-            this.tb_history_listlength.TabIndex = 39;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(370, 120);
+            this.label13.Location = new System.Drawing.Point(198, 240);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(77, 12);
             this.label13.TabIndex = 30;
@@ -178,7 +175,7 @@ namespace OptimalControl.Forms
             // 
             // tb_trend_highter
             // 
-            this.tb_trend_highter.Location = new System.Drawing.Point(453, 117);
+            this.tb_trend_highter.Location = new System.Drawing.Point(281, 237);
             this.tb_trend_highter.Name = "tb_trend_highter";
             this.tb_trend_highter.Size = new System.Drawing.Size(70, 21);
             this.tb_trend_highter.TabIndex = 31;
@@ -186,48 +183,39 @@ namespace OptimalControl.Forms
             // cb_para_isdisplayed
             // 
             this.cb_para_isdisplayed.AutoSize = true;
-            this.cb_para_isdisplayed.Location = new System.Drawing.Point(372, 79);
+            this.cb_para_isdisplayed.Location = new System.Drawing.Point(384, 159);
             this.cb_para_isdisplayed.Name = "cb_para_isdisplayed";
-            this.cb_para_isdisplayed.Size = new System.Drawing.Size(48, 16);
+            this.cb_para_isdisplayed.Size = new System.Drawing.Size(96, 16);
             this.cb_para_isdisplayed.TabIndex = 34;
-            this.cb_para_isdisplayed.Text = "显示";
+            this.cb_para_isdisplayed.Text = "是否显示变量";
             this.cb_para_isdisplayed.UseVisualStyleBackColor = true;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(370, 160);
+            this.label14.Location = new System.Drawing.Point(198, 280);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(77, 12);
             this.label14.TabIndex = 32;
             this.label14.Text = "趋势判断下限";
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(186, 240);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(77, 12);
-            this.label17.TabIndex = 38;
-            this.label17.Text = "历史数据点数";
-            // 
             // tb_trend_lower
             // 
-            this.tb_trend_lower.Location = new System.Drawing.Point(453, 157);
+            this.tb_trend_lower.Location = new System.Drawing.Point(281, 277);
             this.tb_trend_lower.Name = "tb_trend_lower";
             this.tb_trend_lower.Size = new System.Drawing.Size(70, 21);
             this.tb_trend_lower.TabIndex = 33;
             // 
             // tb_para_code
             // 
-            this.tb_para_code.Location = new System.Drawing.Point(81, 37);
+            this.tb_para_code.Location = new System.Drawing.Point(93, 37);
             this.tb_para_code.Name = "tb_para_code";
             this.tb_para_code.Size = new System.Drawing.Size(110, 21);
             this.tb_para_code.TabIndex = 33;
             // 
             // tb_trend_listlength
             // 
-            this.tb_trend_listlength.Location = new System.Drawing.Point(269, 197);
+            this.tb_trend_listlength.Location = new System.Drawing.Point(281, 197);
             this.tb_trend_listlength.Name = "tb_trend_listlength";
             this.tb_trend_listlength.Size = new System.Drawing.Size(70, 21);
             this.tb_trend_listlength.TabIndex = 37;
@@ -244,7 +232,7 @@ namespace OptimalControl.Forms
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(186, 200);
+            this.label16.Location = new System.Drawing.Point(198, 200);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(77, 12);
             this.label16.TabIndex = 36;
@@ -252,21 +240,21 @@ namespace OptimalControl.Forms
             // 
             // tb_para_ullimit
             // 
-            this.tb_para_ullimit.Location = new System.Drawing.Point(81, 237);
+            this.tb_para_ullimit.Location = new System.Drawing.Point(93, 237);
             this.tb_para_ullimit.Name = "tb_para_ullimit";
             this.tb_para_ullimit.Size = new System.Drawing.Size(70, 21);
             this.tb_para_ullimit.TabIndex = 31;
             // 
             // ntb_para_delay
             // 
-            this.ntb_para_delay.Location = new System.Drawing.Point(453, 237);
+            this.ntb_para_delay.Location = new System.Drawing.Point(441, 277);
             this.ntb_para_delay.Name = "ntb_para_delay";
             this.ntb_para_delay.Size = new System.Drawing.Size(70, 21);
             this.ntb_para_delay.TabIndex = 23;
             // 
             // tb_trend_interval
             // 
-            this.tb_trend_interval.Location = new System.Drawing.Point(269, 157);
+            this.tb_trend_interval.Location = new System.Drawing.Point(281, 157);
             this.tb_trend_interval.Name = "tb_trend_interval";
             this.tb_trend_interval.Size = new System.Drawing.Size(70, 21);
             this.tb_trend_interval.TabIndex = 35;
@@ -274,11 +262,11 @@ namespace OptimalControl.Forms
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(370, 240);
+            this.label6.Location = new System.Drawing.Point(382, 280);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(173, 12);
+            this.label6.Size = new System.Drawing.Size(149, 12);
             this.label6.TabIndex = 22;
-            this.label6.Text = "动作延时                  秒";
+            this.label6.Text = "动作延时              秒";
             // 
             // label10
             // 
@@ -291,7 +279,7 @@ namespace OptimalControl.Forms
             // 
             // ntb_para_period
             // 
-            this.ntb_para_period.Location = new System.Drawing.Point(453, 197);
+            this.ntb_para_period.Location = new System.Drawing.Point(441, 237);
             this.ntb_para_period.Name = "ntb_para_period";
             this.ntb_para_period.Size = new System.Drawing.Size(70, 21);
             this.ntb_para_period.TabIndex = 21;
@@ -299,7 +287,7 @@ namespace OptimalControl.Forms
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(186, 160);
+            this.label15.Location = new System.Drawing.Point(198, 160);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(77, 12);
             this.label15.TabIndex = 34;
@@ -307,7 +295,7 @@ namespace OptimalControl.Forms
             // 
             // tb_para_lowerlimit
             // 
-            this.tb_para_lowerlimit.Location = new System.Drawing.Point(81, 197);
+            this.tb_para_lowerlimit.Location = new System.Drawing.Point(93, 197);
             this.tb_para_lowerlimit.Name = "tb_para_lowerlimit";
             this.tb_para_lowerlimit.Size = new System.Drawing.Size(70, 21);
             this.tb_para_lowerlimit.TabIndex = 29;
@@ -315,11 +303,11 @@ namespace OptimalControl.Forms
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(370, 200);
+            this.label5.Location = new System.Drawing.Point(382, 240);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(173, 12);
+            this.label5.Size = new System.Drawing.Size(149, 12);
             this.label5.TabIndex = 20;
-            this.label5.Text = "控制周期                  秒";
+            this.label5.Text = "控制周期              秒";
             // 
             // label9
             // 
@@ -332,7 +320,7 @@ namespace OptimalControl.Forms
             // 
             // tb_para_upperlimit
             // 
-            this.tb_para_upperlimit.Location = new System.Drawing.Point(81, 157);
+            this.tb_para_upperlimit.Location = new System.Drawing.Point(93, 157);
             this.tb_para_upperlimit.Name = "tb_para_upperlimit";
             this.tb_para_upperlimit.Size = new System.Drawing.Size(70, 21);
             this.tb_para_upperlimit.TabIndex = 27;
@@ -348,14 +336,14 @@ namespace OptimalControl.Forms
             // 
             // tb_para_uulimit
             // 
-            this.tb_para_uulimit.Location = new System.Drawing.Point(81, 117);
+            this.tb_para_uulimit.Location = new System.Drawing.Point(93, 117);
             this.tb_para_uulimit.Name = "tb_para_uulimit";
             this.tb_para_uulimit.Size = new System.Drawing.Size(70, 21);
             this.tb_para_uulimit.TabIndex = 25;
             // 
             // tb_trend_length
             // 
-            this.tb_trend_length.Location = new System.Drawing.Point(269, 117);
+            this.tb_trend_length.Location = new System.Drawing.Point(281, 117);
             this.tb_trend_length.Name = "tb_trend_length";
             this.tb_trend_length.Size = new System.Drawing.Size(70, 21);
             this.tb_trend_length.TabIndex = 29;
@@ -363,7 +351,7 @@ namespace OptimalControl.Forms
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(186, 120);
+            this.label12.Location = new System.Drawing.Point(198, 120);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 12);
             this.label12.TabIndex = 28;
@@ -380,7 +368,7 @@ namespace OptimalControl.Forms
             // 
             // tb_para_ratio
             // 
-            this.tb_para_ratio.Location = new System.Drawing.Point(269, 77);
+            this.tb_para_ratio.Location = new System.Drawing.Point(281, 77);
             this.tb_para_ratio.Name = "tb_para_ratio";
             this.tb_para_ratio.Size = new System.Drawing.Size(70, 21);
             this.tb_para_ratio.TabIndex = 19;
@@ -389,7 +377,7 @@ namespace OptimalControl.Forms
             // 
             this.cb_para_device.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_para_device.FormattingEnabled = true;
-            this.cb_para_device.Location = new System.Drawing.Point(429, 37);
+            this.cb_para_device.Location = new System.Drawing.Point(441, 37);
             this.cb_para_device.Name = "cb_para_device";
             this.cb_para_device.Size = new System.Drawing.Size(120, 20);
             this.cb_para_device.TabIndex = 18;
@@ -397,7 +385,7 @@ namespace OptimalControl.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(210, 40);
+            this.label2.Location = new System.Drawing.Point(222, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 15;
@@ -406,7 +394,7 @@ namespace OptimalControl.Forms
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(210, 80);
+            this.label4.Location = new System.Drawing.Point(222, 80);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 14;
@@ -415,7 +403,7 @@ namespace OptimalControl.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(370, 40);
+            this.label3.Location = new System.Drawing.Point(382, 40);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 17;
@@ -432,17 +420,53 @@ namespace OptimalControl.Forms
             // 
             // ntb_para_address
             // 
-            this.ntb_para_address.Location = new System.Drawing.Point(269, 37);
+            this.ntb_para_address.Location = new System.Drawing.Point(281, 37);
             this.ntb_para_address.Name = "ntb_para_address";
             this.ntb_para_address.Size = new System.Drawing.Size(70, 21);
             this.ntb_para_address.TabIndex = 10;
             // 
             // tb_para_name
             // 
-            this.tb_para_name.Location = new System.Drawing.Point(81, 77);
+            this.tb_para_name.Location = new System.Drawing.Point(93, 77);
             this.tb_para_name.Name = "tb_para_name";
             this.tb_para_name.Size = new System.Drawing.Size(110, 21);
             this.tb_para_name.TabIndex = 9;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(10, 280);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(77, 12);
+            this.label17.TabIndex = 38;
+            this.label17.Text = "历史数组点数";
+            // 
+            // tb_history_listlength
+            // 
+            this.tb_history_listlength.Location = new System.Drawing.Point(93, 277);
+            this.tb_history_listlength.Name = "tb_history_listlength";
+            this.tb_history_listlength.Size = new System.Drawing.Size(70, 21);
+            this.tb_history_listlength.TabIndex = 39;
+            // 
+            // cb_para_isoutput
+            // 
+            this.cb_para_isoutput.AutoSize = true;
+            this.cb_para_isoutput.Location = new System.Drawing.Point(384, 199);
+            this.cb_para_isoutput.Name = "cb_para_isoutput";
+            this.cb_para_isoutput.Size = new System.Drawing.Size(72, 16);
+            this.cb_para_isoutput.TabIndex = 41;
+            this.cb_para_isoutput.Text = "是否输出";
+            this.cb_para_isoutput.UseVisualStyleBackColor = true;
+            // 
+            // cb_para_isenabled
+            // 
+            this.cb_para_isenabled.AutoSize = true;
+            this.cb_para_isenabled.Location = new System.Drawing.Point(384, 79);
+            this.cb_para_isenabled.Name = "cb_para_isenabled";
+            this.cb_para_isenabled.Size = new System.Drawing.Size(96, 16);
+            this.cb_para_isenabled.TabIndex = 40;
+            this.cb_para_isenabled.Text = "是否启用变量";
+            this.cb_para_isenabled.UseVisualStyleBackColor = true;
             // 
             // frmParameterEditor
             // 
@@ -450,7 +474,7 @@ namespace OptimalControl.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
-            this.ClientSize = new System.Drawing.Size(580, 340);
+            this.ClientSize = new System.Drawing.Size(600, 390);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_cancel);
@@ -507,8 +531,10 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox tb_trend_listlength;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.CheckBox cb_para_isfiltered;
+        private System.Windows.Forms.CheckBox cb_para_isoutput;
+        private System.Windows.Forms.CheckBox cb_para_isenabled;
         private System.Windows.Forms.TextBox tb_history_listlength;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.CheckBox cb_para_isfiltered;
     }
 }

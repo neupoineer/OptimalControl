@@ -1290,6 +1290,17 @@ namespace OptimalControl.Forms
                                     }
                                     controls[0].Text = parameter.TrendValue.ToString("F4");
                                 }
+
+                                controls = this.Controls.Find(string.Format("cb_oc_2{0}1", i), true);
+                                if (controls.Length > 0)
+                                {
+                                    ((CheckBox) controls[0]).Checked = parameter.IsEnabled;
+                                }
+                                controls = this.Controls.Find(string.Format("pb_oc_2{0}1", i), true);
+                                if (controls.Length > 0)
+                                {
+                                    controls[0].BackColor = parameter.IsValid ? Color.Green : Color.Red;
+                                }
                                 break;
                             }
                         }
@@ -1390,6 +1401,17 @@ namespace OptimalControl.Forms
                                             }
                                             controls[0].Text = parameter.TrendValue.ToString("F4");
                                         }
+
+                                        controls = this.Controls.Find(string.Format("cb_oc_2{0}1", i), true);
+                                        if (controls.Length > 0)
+                                        {
+                                            ((CheckBox)controls[0]).Checked = parameter.IsEnabled;
+                                        }
+                                        controls = this.Controls.Find(string.Format("pb_oc_2{0}1", i), true);
+                                        if (controls.Length > 0)
+                                        {
+                                            controls[0].BackColor = parameter.IsValid ? Color.Green : Color.Red;
+                                        }
                                         break;
                                     }
                                 }
@@ -1428,7 +1450,20 @@ namespace OptimalControl.Forms
                             default:
                                 break;
                         }
-                        break;
+                        continue;
+                    }
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (variable.Code == _displayedParaVariableCode[2 + 5 * i])
+                        {
+                            Control[] controls =
+                                this.Controls.Find(string.Format("pb_oc_{0}", _displayedParaTextboxId[5 * i]), true);
+                            if (controls.Length > 0)
+                            {
+                                ((CheckBox)controls[0]).Checked = variable.IsOutput;
+                            }
+                            break;
+                        }
                     }
                 }
             }
@@ -1452,43 +1487,81 @@ namespace OptimalControl.Forms
                 // 创建权限组管理类实例
                 ILogManager logManager = _bllFactory.BuildLogManager();
                 // 调用实例方法
-                List<Log> logCollection = logManager.GetLastLogInfos(100);
+                List<Log> logCollectionTrue = logManager.GetLastLogInfos(6, true);
 
                 // 如果包含权限组信息
-                if (logCollection.Count > 0)
+                if (logCollectionTrue.Count > 0)
                 {
                     // 绑定权限组数据显示
                     BindingSource source = new BindingSource();
-                    source.DataSource = logCollection;
-                    dgv_oc_logs.DataSource = source;
+                    source.DataSource = logCollectionTrue;
+                    dgv_logs_true.DataSource = source;
 
                     // 设置中文列名
-                    dgv_oc_logs.Columns["Id"].HeaderText = "编号";
-                    dgv_oc_logs.Columns["Id"].DisplayIndex = 0;
-                    dgv_oc_logs.Columns["Id"].Visible = false;
+                    dgv_logs_true.Columns["Id"].HeaderText = "编号";
+                    dgv_logs_true.Columns["Id"].DisplayIndex = 0;
+                    dgv_logs_true.Columns["Id"].Visible = false;
 
-                    dgv_oc_logs.Columns["LogTime"].HeaderText = "时间";
-                    dgv_oc_logs.Columns["LogTime"].DisplayIndex = 1;
-                    dgv_oc_logs.Columns["LogTime"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
-                    dgv_oc_logs.Columns["LogTime"].MinimumWidth = 100;
-                    dgv_oc_logs.Columns["LogTime"].FillWeight = 200;
+                    dgv_logs_true.Columns["LogTime"].HeaderText = "时间";
+                    dgv_logs_true.Columns["LogTime"].DisplayIndex = 1;
+                    dgv_logs_true.Columns["LogTime"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
+                    dgv_logs_true.Columns["LogTime"].MinimumWidth = 100;
+                    dgv_logs_true.Columns["LogTime"].FillWeight = 200;
 
-                    dgv_oc_logs.Columns["Type"].HeaderText = "等级";
-                    dgv_oc_logs.Columns["Type"].DisplayIndex = 2;
-                    dgv_oc_logs.Columns["Type"].MinimumWidth = 50;
-                    dgv_oc_logs.Columns["Type"].FillWeight = 100;
+                    dgv_logs_true.Columns["Type"].HeaderText = "等级";
+                    dgv_logs_true.Columns["Type"].DisplayIndex = 2;
+                    dgv_logs_true.Columns["Type"].MinimumWidth = 50;
+                    dgv_logs_true.Columns["Type"].FillWeight = 100;
 
-                    dgv_oc_logs.Columns["Content"].HeaderText = "内容";
-                    dgv_oc_logs.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                    dgv_oc_logs.Columns["Content"].DisplayIndex = 3;
-                    dgv_oc_logs.Columns["Content"].MinimumWidth = 200;
-                    dgv_oc_logs.Columns["Content"].FillWeight = 1200;
+                    dgv_logs_true.Columns["Content"].HeaderText = "内容";
+                    dgv_logs_true.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv_logs_true.Columns["Content"].DisplayIndex = 3;
+                    dgv_logs_true.Columns["Content"].MinimumWidth = 200;
+                    dgv_logs_true.Columns["Content"].FillWeight = 1200;
 
-                    dgv_oc_logs.Columns["State"].HeaderText = "状态";
-                    dgv_oc_logs.Columns["State"].DisplayIndex = 4;
-                    dgv_oc_logs.Columns["State"].MinimumWidth = 50;
-                    dgv_oc_logs.Columns["State"].FillWeight = 100;
+                    dgv_logs_true.Columns["State"].HeaderText = "状态";
+                    dgv_logs_true.Columns["State"].DisplayIndex = 4;
+                    dgv_logs_true.Columns["State"].MinimumWidth = 50;
+                    dgv_logs_true.Columns["State"].FillWeight = 100;
+                }
 
+                // 调用实例方法
+                List<Log> logCollectionFalse = logManager.GetLastLogInfos(6, false);
+
+                // 如果包含权限组信息
+                if (logCollectionFalse.Count > 0)
+                {
+                    // 绑定权限组数据显示
+                    BindingSource source = new BindingSource();
+                    source.DataSource = logCollectionFalse;
+                    dgv_logs_false.DataSource = source;
+
+                    // 设置中文列名
+                    dgv_logs_false.Columns["Id"].HeaderText = "编号";
+                    dgv_logs_false.Columns["Id"].DisplayIndex = 0;
+                    dgv_logs_false.Columns["Id"].Visible = false;
+
+                    dgv_logs_false.Columns["LogTime"].HeaderText = "时间";
+                    dgv_logs_false.Columns["LogTime"].DisplayIndex = 1;
+                    dgv_logs_false.Columns["LogTime"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
+                    dgv_logs_false.Columns["LogTime"].MinimumWidth = 100;
+                    dgv_logs_false.Columns["LogTime"].FillWeight = 200;
+
+                    dgv_logs_false.Columns["Type"].HeaderText = "等级";
+                    dgv_logs_false.Columns["Type"].DisplayIndex = 2;
+                    dgv_logs_false.Columns["Type"].MinimumWidth = 50;
+                    dgv_logs_false.Columns["Type"].FillWeight = 100;
+
+                    dgv_logs_false.Columns["Content"].HeaderText = "内容";
+                    dgv_logs_false.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv_logs_false.Columns["Content"].DisplayIndex = 3;
+                    dgv_logs_false.Columns["Content"].MinimumWidth = 200;
+                    dgv_logs_false.Columns["Content"].FillWeight = 1200;
+
+                    dgv_logs_false.Columns["State"].HeaderText = "状态";
+                    dgv_logs_false.Columns["State"].DisplayIndex = 4;
+                    dgv_logs_false.Columns["State"].MinimumWidth = 50;
+                    dgv_logs_false.Columns["State"].FillWeight = 100;
                 }
             }
             catch (Exception ex)
@@ -2347,7 +2420,60 @@ namespace OptimalControl.Forms
             }
         }
 
-        #endregion
 
+        private void cb_oc_2x1_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox) sender;
+            string variableCode = "";
+            switch (checkBox.Name)
+            {
+                case "cb_oc_201":
+                    variableCode = _displayedStausVariableCode[0];
+                    break;
+                case "cb_oc_211":
+                    variableCode = _displayedStausVariableCode[1];
+                    break;
+                case "cb_oc_221":
+                    variableCode = _displayedStausVariableCode[2];
+                    break;
+                case "cb_oc_231":
+                    variableCode = _displayedStausVariableCode[3];
+                    break;
+                default:
+                    break;
+            }
+
+            foreach (Variable parameter in _modbusTcpVariables)
+            {
+                if (parameter.Code == variableCode)
+                {
+                    parameter.IsEnabled = checkBox.Checked;
+                    IVariableManager variableManager = _bllFactory.BuildIVariableManager();
+                    variableManager.ModifyVariable(parameter);
+                }
+            }
+        }
+
+        private void cb_oc_1x1_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+
+            switch (checkBox.Name)
+            {
+                case "cb_oc_101":
+
+                    break;
+                case "cb_oc_111":
+
+                    break;
+                case "cb_oc_121":
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
     }
 }

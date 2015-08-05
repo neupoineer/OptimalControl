@@ -40,6 +40,12 @@ Create Table [Variable]
 	-- 设备ID
 	[DeviceID] int Not Null,
 
+	-- 是否保存变量
+	[IsEnabled] bit Not Null,
+
+	-- 是否滤波
+	[IsOutput] bit Not Null,
+
 	-- 是否显示变量
 	[IsDisplayed] bit Not Null,
 	

@@ -172,13 +172,15 @@ namespace DAL
         /// 获取最新的日志信息
         /// </summary>
         /// <param name="logCount">日志条数.</param>
+        /// <param name="state">日志类型.</param>
         /// <returns>
         /// 日志实体集合
         /// </returns>
-        public List<Log> GetLastLogInfos(int logCount)
+        public List<Log> GetLastLogInfos(int logCount, bool state)
         {
             //SQL命令
-            string sqltxt = string.Format("SELECT TOP {0} * FROM Log ORDER BY LogTime DESC", logCount);
+            string sqltxt = string.Format("SELECT TOP {0} * FROM Log WHERE State = '{1}' ORDER BY LogTime DESC",
+                logCount, state);
             //创建日志实体集合
             List<Log> LogCollection = new List<Log>();
             //定义日志实体

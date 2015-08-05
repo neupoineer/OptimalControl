@@ -56,6 +56,12 @@ namespace OptimalControl.Forms
                 cb_para_device.Enabled = (mode != DataOperateMode.Delete);
                 tb_para_ratio.Text = parameter.Ratio.ToString(CultureInfo.InvariantCulture);
                 tb_para_ratio.Enabled = (mode != DataOperateMode.Delete);
+
+                cb_para_isenabled.Checked = parameter.IsEnabled;
+                cb_para_isenabled.Enabled = (mode != DataOperateMode.Delete);
+                cb_para_isoutput.Checked = parameter.IsOutput;
+                cb_para_isoutput.Enabled = (mode != DataOperateMode.Delete);
+
                 cb_para_isdisplayed.Checked = parameter.IsDisplayed;
                 cb_para_isdisplayed.Enabled = (mode != DataOperateMode.Delete);
                 cb_para_issaved.Checked = parameter.IsSaved;
@@ -118,6 +124,8 @@ namespace OptimalControl.Forms
                 Name = tb_para_name.Text.Trim(),
                 Address = Convert.ToInt32(ntb_para_address.Text.Trim()),
                 Ratio = Convert.ToDouble(tb_para_ratio.Text.Trim()),
+                IsEnabled = cb_para_isenabled.Checked,
+                IsOutput = cb_para_isoutput.Checked,
                 IsDisplayed = cb_para_isdisplayed.Checked,
                 IsSaved = cb_para_issaved.Checked,
                 Limit = new Variable.VariableLimit()

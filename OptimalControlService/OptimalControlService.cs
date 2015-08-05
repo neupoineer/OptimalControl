@@ -22,7 +22,7 @@ namespace OptimalControlService
 {
     public partial class OptimalControlService : ServiceBase
     {
-      
+
         public enum GetValueType
         {
             RealValue = 0,
@@ -32,6 +32,12 @@ namespace OptimalControlService
             State = 4,
             Trend = 5,
             TrendValue = 6,
+            HigherLimit = 7,
+            LowerLimit = 8,
+            UltimateHigherLimit = 9,
+            UltimateLowerLimit = 10,
+            IsOutput = 11,
+            IsValid = 12,
             Default = 0,
         }
 
@@ -139,6 +145,8 @@ namespace OptimalControlService
 
         private string _optimalControlEnabledClientVariable;
         private string _clientName;
+
+        private int _errorValue = -8888888;
         #endregion
 
         #region 构造函数
@@ -523,13 +531,28 @@ namespace OptimalControlService
         /// <summary>
         /// Exectes the rules.
         /// </summary>
-        private void ExecuteRules(List<Rule> rules)
+        private void ExecuteRules(List<Rule> rules, bool isPriorityZero)
         {
             try
             {
                 List<int> periods = new List<int>();
                 foreach (Rule rule in rules)
                 {
+                    if (isPriorityZero)
+                    {
+                        if (rule.Priority != 0)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        if (rule.Priority == 0)
+                        {
+                            continue;
+                        }
+                    }
+
                     if (rule.Priority == 0 || _execteRulesFlag)
                     {
                         if (_isRuleTriggered)
@@ -553,18 +576,29 @@ namespace OptimalControlService
                             {
                                 if (s.StartsWith("@"))
                                 {
-                                    double value = GetValueByName(s.TrimStart('@'));
-                                    if (value < 0)
+                                    string valueString = GetValueByName(s.TrimStart('@')).ToString().ToLower();
+                                    if (valueString != "true" && valueString != "false")
                                     {
-                                        if (Math.Abs(value - (-0.123456789)) < 0.000000001)
+                                        double value = 0;
+                                        if (double.TryParse(valueString, out value))
                                         {
-                                            continue;
+                                            if (value < 0)
+                                            {
+                                                if (Math.Abs(value - _errorValue) < 1E-06)
+                                                {
+                                                    continue;
+                                                }
+                                                expStringBuilder.Append(string.Format("(0{0})", value));
+                                            }
+                                            else
+                                            {
+                                                expStringBuilder.Append(valueString);
+                                            }
                                         }
-                                        expStringBuilder.Append(string.Format("(0{0})", value));
                                     }
                                     else
                                     {
-                                        expStringBuilder.Append(value);
+                                        expStringBuilder.Append(valueString);
                                     }
                                 }
                                 else
@@ -596,18 +630,29 @@ namespace OptimalControlService
                                     {
                                         if (op[index].StartsWith("@"))
                                         {
-                                            double value = GetValueByName(op[index].TrimStart('@'));
-                                            if (value < 0)
+                                            string valueString = GetValueByName(op[index].TrimStart('@')).ToString().ToLower();
+                                            if (valueString != "true" && valueString != "false")
                                             {
-                                                if (Math.Abs(value - (-0.123456789)) < 0.000000001)
+                                                double value = 0;
+                                                if (double.TryParse(valueString, out value))
                                                 {
-                                                    continue;
+                                                    if (value < 0)
+                                                    {
+                                                        if (Math.Abs(value - _errorValue) < 1E-06)
+                                                        {
+                                                            continue;
+                                                        }
+                                                        opStringBuilder.Append(string.Format("(0{0})", value));
+                                                    }
+                                                    else
+                                                    {
+                                                        opStringBuilder.Append(valueString);
+                                                    }
                                                 }
-                                                opStringBuilder.Append(string.Format("(0{0})", value));
                                             }
                                             else
                                             {
-                                                opStringBuilder.Append(value);
+                                                opStringBuilder.Append(valueString);
                                             }
                                         }
                                         else
@@ -619,12 +664,25 @@ namespace OptimalControlService
                                     RPN opRPN = new RPN();
                                     if (opRPN.Parse(opStringBuilder.ToString()))
                                     {
-                                        opVariables.Add(new Variable()
+                                        string resultString = opRPN.Evaluate().ToString().ToLower();
+                                        if (resultString != "true" && resultString != "false")
                                         {
-                                            Name = op[0].TrimStart('@'),
-                                            RealValue = Convert.ToDouble(opRPN.Evaluate()),
-                                            Ratio = 1,
-                                        });
+                                            opVariables.Add(new Variable()
+                                            {
+                                                Name = op[0].TrimStart('@'),
+                                                Value = Convert.ToDouble(resultString),
+                                                Ratio = 1,
+                                            });
+                                        }
+                                        else
+                                        {
+                                            opVariables.Add(new Variable()
+                                            {
+                                                Name = op[0].TrimStart('@'),
+                                                IsValid = Convert.ToBoolean(resultString),
+                                                Ratio = 0,
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -632,59 +690,159 @@ namespace OptimalControlService
                             if (opVariables.Count > 0)
                             {
                                 StringBuilder tempString =
-                                    new StringBuilder(string.Format("触发规则\"{0}\",执行操作\"",
-                                        rule.Expression.Replace("@", "")));
+                                    new StringBuilder(string.Format("触发规则\"{0}\",执行操作\"", rule.Name));
                                 foreach (Variable opVariable in opVariables)
                                 {
+                                    tempString.Append(string.Format("{0}={1}; ", opVariable.Name, opVariable.Value));
+
+                                    GetValueType getValueType = GetValueType.RealValue;
+                                    foreach (string name in Enum.GetNames(typeof(GetValueType)))
+                                    {
+                                        if (opVariable.Name.EndsWith(name))
+                                        {
+                                            opVariable.Name = opVariable.Name.Replace(string.Format(".{0}", name), "");
+                                            getValueType = (GetValueType)Enum.Parse(typeof(GetValueType), name, true);
+                                            break;
+                                        }
+                                    }
+
                                     foreach (Variable parameter in _modbusRtuParameters)
                                     {
                                         if (parameter.Name == opVariable.Name)
                                         {
-                                            if (parameter.Name == _optimalControlFeedVariable)
+                                            IVariableManager variableManager = _bllFactory.BuildIVariableManager();
+                                            switch (getValueType)
                                             {
-                                                double value = GetValueByCode(_feedVariable);
-                                                double max = value + GetValueByCode(_optimalControlFeedMax);
-                                                double min = value + GetValueByCode(_optimalControlFeedMin);
-                                                if (opVariable.RealValue > max)
-                                                    opVariable.RealValue = max;
-                                                if (opVariable.RealValue < min)
-                                                    opVariable.RealValue = min;
-                                            }
-                                            else if (parameter.Name == _optimalControlFeedWaterVariable)
-                                            {
-                                                double value = GetValueByCode(_feedWaterVariable);
-                                                double max = value + GetValueByCode(_optimalControlFeedWaterMax);
-                                                double min = value + GetValueByCode(_optimalControlFeedWaterMin);
-                                                if (opVariable.RealValue > max)
-                                                    opVariable.RealValue = max;
-                                                if (opVariable.RealValue < min)
-                                                    opVariable.RealValue = min;
-                                            }
-                                            else if (parameter.Name == _optimalControlSupWaterVariable)
-                                            {
-                                                double value = GetValueByCode(_supWaterVariable);
-                                                double max = value + GetValueByCode(_optimalControlSupWaterMax);
-                                                double min = value + GetValueByCode(_optimalControlSupWaterMin);
-                                                if (opVariable.RealValue > max)
-                                                    opVariable.RealValue = max;
-                                                if (opVariable.RealValue < min)
-                                                    opVariable.RealValue = min;
-                                            }
-                                            parameter.RealValue = opVariable.RealValue;
-                                            if (_isModbusRtuSlaveCreated)
-                                            {
-                                                parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
-                                            }
-                                            foreach (Device device in _devices)
-                                            {
-                                                if (device.ModbusTcpMasterCreated)
-                                                {
-                                                    parameter.SetValueToModbusTcpMaster(ref device.ModbusTcpDevice);
-                                                }
+                                                case GetValueType.RealValue:
+
+                                                    if (parameter.Name == _optimalControlFeedVariable)
+                                                    {
+                                                        double value = GetValueByCode(_feedVariable);
+                                                        double max = GetValueByCode(_optimalControlFeedMax);
+                                                        double min = GetValueByCode(_optimalControlFeedMin);
+                                                        if ((Math.Abs(value - _errorValue) > 1E-06) &&
+                                                            (Math.Abs(max - _errorValue) > 1E-06) &&
+                                                            (Math.Abs(min - _errorValue) > 1E-06))
+                                                        {
+                                                            double maxValue = value + max;
+                                                            double minValue = value + min;
+                                                            if (opVariable.Value > maxValue)
+                                                                opVariable.Value = maxValue;
+                                                            if (opVariable.Value < minValue)
+                                                                opVariable.Value = minValue;
+                                                        }
+                                                    }
+                                                    else if (parameter.Name == _optimalControlFeedWaterVariable)
+                                                    {
+                                                        double value = GetValueByCode(_feedWaterVariable);
+                                                        double max = GetValueByCode(_optimalControlFeedWaterMax);
+                                                        double min = GetValueByCode(_optimalControlFeedWaterMin);
+                                                        if ((Math.Abs(value - _errorValue) > 1E-06) &&
+                                                            (Math.Abs(max - _errorValue) > 1E-06) &&
+                                                            (Math.Abs(min - _errorValue) > 1E-06))
+                                                        {
+                                                            double maxValue = value + max;
+                                                            double minValue = value + min;
+                                                            if (opVariable.Value > maxValue)
+                                                                opVariable.Value = maxValue;
+                                                            if (opVariable.Value < minValue)
+                                                                opVariable.Value = minValue;
+                                                        }
+                                                    }
+                                                    else if (parameter.Name == _optimalControlSupWaterVariable)
+                                                    {
+                                                        double value = GetValueByCode(_supWaterVariable);
+                                                        double max = GetValueByCode(_optimalControlSupWaterMax);
+                                                        double min = GetValueByCode(_optimalControlSupWaterMin);
+                                                        if ((Math.Abs(value - _errorValue) > 1E-06) &&
+                                                            (Math.Abs(max - _errorValue) > 1E-06) &&
+                                                            (Math.Abs(min - _errorValue) > 1E-06))
+                                                        {
+                                                            double maxValue = value + max;
+                                                            double minValue = value + min;
+                                                            if (opVariable.Value > maxValue)
+                                                                opVariable.Value = maxValue;
+                                                            if (opVariable.Value < minValue)
+                                                                opVariable.Value = minValue;
+                                                        }
+                                                    }
+                                                    parameter.RealValue = opVariable.Value;
+                                                    if (_isModbusRtuSlaveCreated)
+                                                    {
+                                                        parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                                                    }
+                                                    foreach (Device device in _devices)
+                                                    {
+                                                        if (device.ModbusTcpMasterCreated)
+                                                        {
+                                                            parameter.SetValueToModbusTcpMaster(ref device.ModbusTcpDevice);
+                                                        }
+                                                    }
+                                                    break;
+                                                case GetValueType.InitialValue:
+                                                    parameter.InitialValue = opVariable.Value;
+                                                    break;
+                                                case GetValueType.HigherLimit:
+                                                    parameter.Limit = new Variable.VariableLimit()
+                                                    {
+                                                        HigherLimit = opVariable.Value,
+                                                        LowerLimit = parameter.Limit.LowerLimit,
+                                                        UltimateHigherLimit = parameter.Limit.UltimateHigherLimit,
+                                                        UltimateLowerLimit = parameter.Limit.UltimateLowerLimit,
+                                                    };
+                                                    variableManager.ModifyVariable(parameter);
+                                                    break;
+                                                case GetValueType.LowerLimit:
+                                                    parameter.Limit = new Variable.VariableLimit()
+                                                    {
+                                                        HigherLimit = parameter.Limit.HigherLimit,
+                                                        LowerLimit = opVariable.Value,
+                                                        UltimateHigherLimit = parameter.Limit.UltimateHigherLimit,
+                                                        UltimateLowerLimit = parameter.Limit.UltimateLowerLimit,
+                                                    };
+                                                    variableManager.ModifyVariable(parameter);
+                                                    break;
+                                                case GetValueType.UltimateHigherLimit:
+                                                    parameter.Limit = new Variable.VariableLimit()
+                                                    {
+                                                        HigherLimit = parameter.Limit.HigherLimit,
+                                                        LowerLimit = parameter.Limit.LowerLimit,
+                                                        UltimateHigherLimit = opVariable.Value,
+                                                        UltimateLowerLimit = parameter.Limit.UltimateLowerLimit,
+                                                    };
+                                                    variableManager.ModifyVariable(parameter);
+                                                    break;
+                                                case GetValueType.UltimateLowerLimit:
+                                                    parameter.Limit = new Variable.VariableLimit()
+                                                    {
+                                                        HigherLimit = parameter.Limit.HigherLimit,
+                                                        LowerLimit = parameter.Limit.LowerLimit,
+                                                        UltimateHigherLimit = parameter.Limit.UltimateHigherLimit,
+                                                        UltimateLowerLimit = opVariable.Value,
+                                                    };
+                                                    variableManager.ModifyVariable(parameter);
+                                                    break;
+                                                case GetValueType.IsValid:
+                                                    parameter.IsValid = opVariable.IsValid;
+                                                    break;
+                                                case GetValueType.IsOutput:
+                                                    parameter.IsOutput = opVariable.IsValid;
+                                                    break;
+                                                case GetValueType.CurrentValue:
+                                                    break;
+                                                case GetValueType.HistoryValue:
+                                                    break;
+                                                case GetValueType.State:
+                                                    break;
+                                                case GetValueType.Trend:
+                                                    break;
+                                                case GetValueType.TrendValue:
+                                                    break;
+                                                default:
+                                                    break;
                                             }
                                         }
                                     }
-                                    tempString.Append(string.Format("{0}={1}; ", opVariable.Name, opVariable.RealValue));
                                 }
 
                                 tempString.Append("\"");
@@ -738,14 +896,11 @@ namespace OptimalControlService
         /// Gets the value of the variable by name.
         /// </summary>
         /// <param name="variableName">Name of the variable.</param>
-        /// <returns>
-        /// value(-0.123456789 for error)
-        /// </returns>
-        private double GetValueByName(string variableName)
+        private object GetValueByName(string variableName)
         {
             try
             {
-                GetValueType getValueType = new GetValueType();
+                GetValueType getValueType = GetValueType.RealValue;
                 foreach (string name in Enum.GetNames(typeof(GetValueType)))
                 {
                     if (variableName.EndsWith(name))
@@ -778,10 +933,28 @@ namespace OptimalControlService
                                 return (double) parameter.State;
                                 break;
                             case GetValueType.Trend:
-                                return (double)parameter.Trend;
+                                return (double) parameter.Trend;
                                 break;
                             case GetValueType.TrendValue:
                                 return parameter.TrendValue;
+                                break;
+                            case GetValueType.HigherLimit:
+                                return parameter.Limit.HigherLimit;
+                                break;
+                            case GetValueType.LowerLimit:
+                                return parameter.Limit.LowerLimit;
+                                break;
+                            case GetValueType.UltimateHigherLimit:
+                                return parameter.Limit.UltimateHigherLimit;
+                                break;
+                            case GetValueType.UltimateLowerLimit:
+                                return parameter.Limit.UltimateLowerLimit;
+                                break;
+                            case GetValueType.IsOutput:
+                                return parameter.IsOutput;
+                                break;
+                            case GetValueType.IsValid:
+                                return parameter.IsValid;
                                 break;
                             default:
                                 return parameter.RealValue;
@@ -819,6 +992,12 @@ namespace OptimalControlService
                                 case GetValueType.TrendValue:
                                     return parameter.TrendValue;
                                     break;
+                                case GetValueType.IsOutput:
+                                    return parameter.IsOutput;
+                                    break;
+                                case GetValueType.IsValid:
+                                    return parameter.IsValid;
+                                    break;
                                 default:
                                     return parameter.RealValue;
                                     break;
@@ -831,16 +1010,13 @@ namespace OptimalControlService
             {
                 RecordLog.WriteLogFile("GetValueByName", ex.Message);
             }
-            return -0.123456789;
+            return _errorValue;
         }
 
         /// <summary>
         /// Gets the value of the variable by name.
         /// </summary>
         /// <param name="variableCode">Code of the variable.</param>
-        /// <returns>
-        /// value(-0.123456789 for error)
-        /// </returns>
         private double GetValueByCode(string variableCode)
         {
             try
@@ -873,13 +1049,12 @@ namespace OptimalControlService
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 RecordLog.WriteLogFile("GetValueByCode", ex.Message);
             }
-            return -0.123456789;
+            return _errorValue;
         }
 
         /// <summary>
@@ -1093,7 +1268,7 @@ namespace OptimalControlService
                                         }
                                         if (_isModbusRtuSlaveCreated)
                                         {
-                                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
                                         }
                                         break;
                                     }
@@ -1115,8 +1290,9 @@ namespace OptimalControlService
                         || (parameter.Code == _feedWaterVariable)
                         || (parameter.Code == _supWaterVariable))
                     {
-                        if (Math.Abs(parameter.HistoryValue - parameter.RealValue) > 0)
+                        if (Math.Abs(parameter.HistoryValue - parameter.RealValue) > 1E-06)
                         {
+                            _isFirstRound = true;
                             Log addLog = new Log()
                             {
                                 LogTime = DateTime.Now,
@@ -1134,12 +1310,13 @@ namespace OptimalControlService
                 }
                 if (_isFirstRound)
                 {
+                    long period = 300000; 
                     foreach (Variable parameter in _modbusRtuParameters)
                     {
                         if (parameter.Code == _optimalControlFeedVariable)
                         {
                             double tmpValue = GetValueByCode(_feedVariable);
-                            if (Math.Abs(tmpValue - 0.123456789) > 0.000000001)
+                            if (Math.Abs(tmpValue - _errorValue) > 1E-06)
                             {
                                 parameter.RealValue = tmpValue;
                                 parameter.InitialValue = tmpValue;
@@ -1148,12 +1325,16 @@ namespace OptimalControlService
                             {
                                 parameter.RealValue = parameter.Limit.LowerLimit;
                             }
-                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            if (parameter.ControlPeriod > 0)
+                            {
+                                period = parameter.ControlPeriod*1000;
+                            }
                         }
                         else if (parameter.Code == _optimalControlFeedWaterVariable)
                         {
                             double tmpValue = GetValueByCode(_feedWaterVariable);
-                            if (Math.Abs(tmpValue - 0.123456789) > 0.000000001)
+                            if (Math.Abs(tmpValue - _errorValue) > 1E-06)
                             {
                                 parameter.RealValue = tmpValue;
                                 parameter.InitialValue = tmpValue;
@@ -1162,12 +1343,16 @@ namespace OptimalControlService
                             {
                                 parameter.RealValue = parameter.Limit.LowerLimit;
                             }
-                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            if (parameter.ControlPeriod > 0)
+                            {
+                                period = parameter.ControlPeriod * 1000;
+                            }
                         }
                         else if (parameter.Code == _optimalControlSupWaterVariable)
                         {
                             double tmpValue = GetValueByCode(_supWaterVariable);
-                            if (Math.Abs(tmpValue - 0.123456789) > 0.000000001)
+                            if (Math.Abs(tmpValue - _errorValue) > 1E-06)
                             {
                                 parameter.RealValue = tmpValue;
                                 parameter.InitialValue = tmpValue;
@@ -1176,13 +1361,23 @@ namespace OptimalControlService
                             {
                                 parameter.RealValue = parameter.Limit.LowerLimit;
                             }
-                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            if (parameter.ControlPeriod > 0)
+                            {
+                                period = parameter.ControlPeriod * 1000;
+                            }
                         }
                     }
+                    if (_isRuleTriggered)
+                    {
+                        _timerRuleDelay.Dispose();
+                    }
+                    _timerRuleDelay = new System.Threading.Timer(TimerRuleDelayElapsed, null, period, 0);
+                    _isRuleTriggered = true;
                     _isFirstRound = false;
                 }
                 _rules = _ruleManager.GetRuleInfoEnabled();
-                ExecuteRules(_rules);
+                ExecuteRules(_rules, true);
                 foreach (Variable variable in _modbusRtuParameters)
                 {
                     variable.ProcessValueData();
@@ -1194,10 +1389,20 @@ namespace OptimalControlService
                         variable.ProcessValueData();
                     }
                 }
+                ExecuteRules(_rules, false);
+                foreach (Variable variable in _modbusRtuParameters)
+                {
+                    variable.UpdateHistoryValue();
+                }
+                foreach (Device device in _devices)
+                {
+                    foreach (Variable variable in device.Variables)
+                    {
+                        variable.UpdateHistoryValue();
+                    }
+                }
                 CheckParameterState();
                 SaveParameters();
-
-                //Console.WriteLine(string.Format("2:{0}", DateTime.Now));
             }
             catch (Exception ex)
             {
@@ -1216,7 +1421,7 @@ namespace OptimalControlService
                         parameter.Value = 1;
                         if (_isModbusRtuSlaveCreated)
                         {
-                            parameter.SetValueToModbusSalve(ref _modbusRtuSlave);
+                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
                         }
                     }
                 }

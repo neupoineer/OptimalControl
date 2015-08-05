@@ -21,6 +21,12 @@ namespace OptimalControl.Forms
             State = 4,
             Trend = 5,
             TrendValue = 6,
+            HigherLimit = 7,
+            LowerLimit = 8,
+            UltimateHigherLimit = 9,
+            UltimateLowerLimit = 10,
+            IsOutput = 11,
+            IsValid = 12,
             Default = 0,
         }
 
@@ -55,7 +61,7 @@ namespace OptimalControl.Forms
             cb_operator.Items.Clear();
             cb_operator.Items.AddRange(new object[]
             {
-                "(", ")", "*", "/", "%", "+", "-", "<", "<=", ">", ">=", "=", "<>", "!", "&", "|", "tan", "atan"
+                "(", ")", "*", "/", "%", "+", "-", "<", "<=", ">", ">=", "=", "<>", "!", "&", "|", "tan", "atan", ";"
             });
             cb_operator.Items.AddRange(_typeStrings);
 

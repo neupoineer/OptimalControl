@@ -32,16 +32,19 @@ namespace OptimalControl.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             this.statusStrip_main = new System.Windows.Forms.StatusStrip();
             this.status_Label = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip_main = new System.Windows.Forms.ToolStrip();
@@ -205,6 +208,19 @@ namespace OptimalControl.Forms
             this.label111 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.cb_oc_121 = new System.Windows.Forms.CheckBox();
+            this.cb_oc_111 = new System.Windows.Forms.CheckBox();
+            this.cb_oc_101 = new System.Windows.Forms.CheckBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.pb_oc_231 = new System.Windows.Forms.PictureBox();
+            this.pb_oc_221 = new System.Windows.Forms.PictureBox();
+            this.pb_oc_211 = new System.Windows.Forms.PictureBox();
+            this.pb_oc_201 = new System.Windows.Forms.PictureBox();
+            this.cb_oc_231 = new System.Windows.Forms.CheckBox();
+            this.cb_oc_221 = new System.Windows.Forms.CheckBox();
+            this.cb_oc_211 = new System.Windows.Forms.CheckBox();
+            this.cb_oc_201 = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -221,7 +237,9 @@ namespace OptimalControl.Forms
             this.pb_status_3 = new System.Windows.Forms.PictureBox();
             this.pb_status_2 = new System.Windows.Forms.PictureBox();
             this.pb_status_1 = new System.Windows.Forms.PictureBox();
-            this.dgv_oc_logs = new System.Windows.Forms.DataGridView();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.dgv_logs_true = new System.Windows.Forms.DataGridView();
+            this.dgv_logs_false = new System.Windows.Forms.DataGridView();
             this.tabPage_realtime_data = new System.Windows.Forms.TabPage();
             this.splitContainerH1_2H2_1V1_2V2 = new System.Windows.Forms.SplitContainer();
             this.listview_parainfo = new Utility.DoubleBufferListView();
@@ -252,7 +270,7 @@ namespace OptimalControl.Forms
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.dgv_data = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dvg_log = new System.Windows.Forms.DataGridView();
+            this.dvg_log_history = new System.Windows.Forms.DataGridView();
             this.splitContainerH1 = new System.Windows.Forms.SplitContainer();
             this.pictureBox_main = new System.Windows.Forms.PictureBox();
             this.statusStrip_main.SuspendLayout();
@@ -297,6 +315,12 @@ namespace OptimalControl.Forms
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox14.SuspendLayout();
+            this.groupBox10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_231)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_221)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_211)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_201)).BeginInit();
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -308,7 +332,12 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.pb_status_3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_status_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_status_1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_logs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_logs_true)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_logs_false)).BeginInit();
             this.tabPage_realtime_data.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1_2H2_1V1_2V2)).BeginInit();
             this.splitContainerH1_2H2_1V1_2V2.Panel1.SuspendLayout();
@@ -335,7 +364,7 @@ namespace OptimalControl.Forms
             this.splitContainer5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_data)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dvg_log)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dvg_log_history)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).BeginInit();
             this.splitContainerH1.Panel2.SuspendLayout();
             this.splitContainerH1.SuspendLayout();
@@ -750,10 +779,10 @@ namespace OptimalControl.Forms
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.dgv_oc_logs);
+            this.splitContainer2.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer2.Panel2MinSize = 1;
             this.splitContainer2.Size = new System.Drawing.Size(1539, 683);
-            this.splitContainer2.SplitterDistance = 635;
+            this.splitContainer2.SplitterDistance = 625;
             this.splitContainer2.TabIndex = 2;
             // 
             // splitContainer3
@@ -771,7 +800,7 @@ namespace OptimalControl.Forms
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer3.Size = new System.Drawing.Size(1539, 635);
+            this.splitContainer3.Size = new System.Drawing.Size(1539, 625);
             this.splitContainer3.SplitterDistance = 1200;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -791,8 +820,8 @@ namespace OptimalControl.Forms
             // 
             this.splitContainer4.Panel2.Controls.Add(this.panel1);
             this.splitContainer4.Panel2MinSize = 0;
-            this.splitContainer4.Size = new System.Drawing.Size(1200, 635);
-            this.splitContainer4.SplitterDistance = 32;
+            this.splitContainer4.Size = new System.Drawing.Size(1200, 625);
+            this.splitContainer4.SplitterDistance = 31;
             this.splitContainer4.SplitterWidth = 1;
             this.splitContainer4.TabIndex = 5;
             // 
@@ -841,7 +870,7 @@ namespace OptimalControl.Forms
             this.panel1.Controls.Add(this.groupBox03);
             this.panel1.Controls.Add(this.groupBox01);
             this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Location = new System.Drawing.Point(38, 0);
+            this.panel1.Location = new System.Drawing.Point(38, -2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1125, 615);
             this.panel1.TabIndex = 18;
@@ -1959,13 +1988,171 @@ namespace OptimalControl.Forms
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.groupBox14);
+            this.groupBox3.Controls.Add(this.groupBox10);
             this.groupBox3.Controls.Add(this.groupBox9);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(335, 635);
+            this.groupBox3.Size = new System.Drawing.Size(335, 625);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.cb_oc_121);
+            this.groupBox14.Controls.Add(this.cb_oc_111);
+            this.groupBox14.Controls.Add(this.cb_oc_101);
+            this.groupBox14.Location = new System.Drawing.Point(180, 410);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(115, 170);
+            this.groupBox14.TabIndex = 15;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "控制变量输出";
+            // 
+            // cb_oc_121
+            // 
+            this.cb_oc_121.AutoSize = true;
+            this.cb_oc_121.Checked = true;
+            this.cb_oc_121.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_oc_121.Location = new System.Drawing.Point(25, 104);
+            this.cb_oc_121.Name = "cb_oc_121";
+            this.cb_oc_121.Size = new System.Drawing.Size(60, 16);
+            this.cb_oc_121.TabIndex = 2;
+            this.cb_oc_121.Text = "补加水";
+            this.cb_oc_121.UseVisualStyleBackColor = true;
+            this.cb_oc_121.CheckedChanged += new System.EventHandler(this.cb_oc_1x1_CheckedChanged);
+            // 
+            // cb_oc_111
+            // 
+            this.cb_oc_111.AutoSize = true;
+            this.cb_oc_111.Checked = true;
+            this.cb_oc_111.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_oc_111.Location = new System.Drawing.Point(25, 70);
+            this.cb_oc_111.Name = "cb_oc_111";
+            this.cb_oc_111.Size = new System.Drawing.Size(60, 16);
+            this.cb_oc_111.TabIndex = 1;
+            this.cb_oc_111.Text = "给水量";
+            this.cb_oc_111.UseVisualStyleBackColor = true;
+            this.cb_oc_111.CheckedChanged += new System.EventHandler(this.cb_oc_1x1_CheckedChanged);
+            // 
+            // cb_oc_101
+            // 
+            this.cb_oc_101.AutoSize = true;
+            this.cb_oc_101.Checked = true;
+            this.cb_oc_101.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_oc_101.Location = new System.Drawing.Point(25, 35);
+            this.cb_oc_101.Name = "cb_oc_101";
+            this.cb_oc_101.Size = new System.Drawing.Size(60, 16);
+            this.cb_oc_101.TabIndex = 0;
+            this.cb_oc_101.Text = "给矿量";
+            this.cb_oc_101.UseVisualStyleBackColor = true;
+            this.cb_oc_101.CheckedChanged += new System.EventHandler(this.cb_oc_1x1_CheckedChanged);
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.pb_oc_231);
+            this.groupBox10.Controls.Add(this.pb_oc_221);
+            this.groupBox10.Controls.Add(this.pb_oc_211);
+            this.groupBox10.Controls.Add(this.pb_oc_201);
+            this.groupBox10.Controls.Add(this.cb_oc_231);
+            this.groupBox10.Controls.Add(this.cb_oc_221);
+            this.groupBox10.Controls.Add(this.cb_oc_211);
+            this.groupBox10.Controls.Add(this.cb_oc_201);
+            this.groupBox10.Location = new System.Drawing.Point(24, 410);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(115, 170);
+            this.groupBox10.TabIndex = 14;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "状态变量控制";
+            // 
+            // pb_oc_231
+            // 
+            this.pb_oc_231.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pb_oc_231.Location = new System.Drawing.Point(80, 143);
+            this.pb_oc_231.Name = "pb_oc_231";
+            this.pb_oc_231.Size = new System.Drawing.Size(10, 10);
+            this.pb_oc_231.TabIndex = 8;
+            this.pb_oc_231.TabStop = false;
+            // 
+            // pb_oc_221
+            // 
+            this.pb_oc_221.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pb_oc_221.Location = new System.Drawing.Point(80, 108);
+            this.pb_oc_221.Name = "pb_oc_221";
+            this.pb_oc_221.Size = new System.Drawing.Size(10, 10);
+            this.pb_oc_221.TabIndex = 7;
+            this.pb_oc_221.TabStop = false;
+            // 
+            // pb_oc_211
+            // 
+            this.pb_oc_211.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pb_oc_211.Location = new System.Drawing.Point(80, 73);
+            this.pb_oc_211.Name = "pb_oc_211";
+            this.pb_oc_211.Size = new System.Drawing.Size(10, 10);
+            this.pb_oc_211.TabIndex = 6;
+            this.pb_oc_211.TabStop = false;
+            // 
+            // pb_oc_201
+            // 
+            this.pb_oc_201.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pb_oc_201.Location = new System.Drawing.Point(80, 38);
+            this.pb_oc_201.Name = "pb_oc_201";
+            this.pb_oc_201.Size = new System.Drawing.Size(10, 10);
+            this.pb_oc_201.TabIndex = 5;
+            this.pb_oc_201.TabStop = false;
+            // 
+            // cb_oc_231
+            // 
+            this.cb_oc_231.AutoSize = true;
+            this.cb_oc_231.Checked = true;
+            this.cb_oc_231.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_oc_231.Location = new System.Drawing.Point(25, 140);
+            this.cb_oc_231.Name = "cb_oc_231";
+            this.cb_oc_231.Size = new System.Drawing.Size(48, 16);
+            this.cb_oc_231.TabIndex = 3;
+            this.cb_oc_231.Text = "负荷";
+            this.cb_oc_231.UseVisualStyleBackColor = true;
+            this.cb_oc_231.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
+            // 
+            // cb_oc_221
+            // 
+            this.cb_oc_221.AutoSize = true;
+            this.cb_oc_221.Checked = true;
+            this.cb_oc_221.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_oc_221.Location = new System.Drawing.Point(25, 105);
+            this.cb_oc_221.Name = "cb_oc_221";
+            this.cb_oc_221.Size = new System.Drawing.Size(48, 16);
+            this.cb_oc_221.TabIndex = 2;
+            this.cb_oc_221.Text = "顽石";
+            this.cb_oc_221.UseVisualStyleBackColor = true;
+            this.cb_oc_221.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
+            // 
+            // cb_oc_211
+            // 
+            this.cb_oc_211.AutoSize = true;
+            this.cb_oc_211.Checked = true;
+            this.cb_oc_211.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_oc_211.Location = new System.Drawing.Point(25, 70);
+            this.cb_oc_211.Name = "cb_oc_211";
+            this.cb_oc_211.Size = new System.Drawing.Size(48, 16);
+            this.cb_oc_211.TabIndex = 1;
+            this.cb_oc_211.Text = "功率";
+            this.cb_oc_211.UseVisualStyleBackColor = true;
+            this.cb_oc_211.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
+            // 
+            // cb_oc_201
+            // 
+            this.cb_oc_201.AutoSize = true;
+            this.cb_oc_201.Checked = true;
+            this.cb_oc_201.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_oc_201.Location = new System.Drawing.Point(25, 35);
+            this.cb_oc_201.Name = "cb_oc_201";
+            this.cb_oc_201.Size = new System.Drawing.Size(48, 16);
+            this.cb_oc_201.TabIndex = 0;
+            this.cb_oc_201.Text = "轴压";
+            this.cb_oc_201.UseVisualStyleBackColor = true;
+            this.cb_oc_201.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
             // 
             // groupBox9
             // 
@@ -1981,7 +2168,7 @@ namespace OptimalControl.Forms
             this.groupBox9.Controls.Add(this.pb_status_1);
             this.groupBox9.Location = new System.Drawing.Point(24, 31);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(275, 400);
+            this.groupBox9.Size = new System.Drawing.Size(275, 350);
             this.groupBox9.TabIndex = 13;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "半自磨机工况状态";
@@ -1989,7 +2176,7 @@ namespace OptimalControl.Forms
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.label9);
-            this.groupBox8.Location = new System.Drawing.Point(97, 290);
+            this.groupBox8.Location = new System.Drawing.Point(94, 271);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(150, 50);
             this.groupBox8.TabIndex = 11;
@@ -2008,7 +2195,7 @@ namespace OptimalControl.Forms
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.label8);
-            this.groupBox7.Location = new System.Drawing.Point(97, 230);
+            this.groupBox7.Location = new System.Drawing.Point(94, 211);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(150, 50);
             this.groupBox7.TabIndex = 11;
@@ -2027,7 +2214,7 @@ namespace OptimalControl.Forms
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.label7);
-            this.groupBox6.Location = new System.Drawing.Point(97, 170);
+            this.groupBox6.Location = new System.Drawing.Point(94, 151);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(150, 50);
             this.groupBox6.TabIndex = 12;
@@ -2046,7 +2233,7 @@ namespace OptimalControl.Forms
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Location = new System.Drawing.Point(97, 110);
+            this.groupBox5.Location = new System.Drawing.Point(94, 91);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(150, 50);
             this.groupBox5.TabIndex = 11;
@@ -2065,7 +2252,7 @@ namespace OptimalControl.Forms
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(97, 50);
+            this.groupBox2.Location = new System.Drawing.Point(94, 31);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(150, 50);
             this.groupBox2.TabIndex = 10;
@@ -2084,7 +2271,7 @@ namespace OptimalControl.Forms
             // pb_status_5
             // 
             this.pb_status_5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_status_5.Location = new System.Drawing.Point(38, 294);
+            this.pb_status_5.Location = new System.Drawing.Point(35, 275);
             this.pb_status_5.Name = "pb_status_5";
             this.pb_status_5.Size = new System.Drawing.Size(50, 50);
             this.pb_status_5.TabIndex = 4;
@@ -2093,7 +2280,7 @@ namespace OptimalControl.Forms
             // pb_status_4
             // 
             this.pb_status_4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_status_4.Location = new System.Drawing.Point(38, 234);
+            this.pb_status_4.Location = new System.Drawing.Point(35, 215);
             this.pb_status_4.Name = "pb_status_4";
             this.pb_status_4.Size = new System.Drawing.Size(50, 50);
             this.pb_status_4.TabIndex = 3;
@@ -2102,7 +2289,7 @@ namespace OptimalControl.Forms
             // pb_status_3
             // 
             this.pb_status_3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_status_3.Location = new System.Drawing.Point(38, 174);
+            this.pb_status_3.Location = new System.Drawing.Point(35, 155);
             this.pb_status_3.Name = "pb_status_3";
             this.pb_status_3.Size = new System.Drawing.Size(50, 50);
             this.pb_status_3.TabIndex = 2;
@@ -2111,7 +2298,7 @@ namespace OptimalControl.Forms
             // pb_status_2
             // 
             this.pb_status_2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_status_2.Location = new System.Drawing.Point(38, 114);
+            this.pb_status_2.Location = new System.Drawing.Point(35, 95);
             this.pb_status_2.Name = "pb_status_2";
             this.pb_status_2.Size = new System.Drawing.Size(50, 50);
             this.pb_status_2.TabIndex = 1;
@@ -2120,57 +2307,122 @@ namespace OptimalControl.Forms
             // pb_status_1
             // 
             this.pb_status_1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pb_status_1.Location = new System.Drawing.Point(38, 54);
+            this.pb_status_1.Location = new System.Drawing.Point(35, 35);
             this.pb_status_1.Name = "pb_status_1";
             this.pb_status_1.Size = new System.Drawing.Size(50, 50);
             this.pb_status_1.TabIndex = 0;
             this.pb_status_1.TabStop = false;
             // 
-            // dgv_oc_logs
+            // splitContainer6
             // 
-            this.dgv_oc_logs.AllowUserToAddRows = false;
-            this.dgv_oc_logs.AllowUserToDeleteRows = false;
-            this.dgv_oc_logs.AllowUserToResizeColumns = false;
-            this.dgv_oc_logs.AllowUserToResizeRows = false;
-            this.dgv_oc_logs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgv_oc_logs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_oc_logs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
-            this.dgv_oc_logs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_oc_logs.ColumnHeadersVisible = false;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_oc_logs.DefaultCellStyle = dataGridViewCellStyle12;
-            this.dgv_oc_logs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_oc_logs.Location = new System.Drawing.Point(0, 0);
-            this.dgv_oc_logs.MultiSelect = false;
-            this.dgv_oc_logs.Name = "dgv_oc_logs";
-            this.dgv_oc_logs.ReadOnly = true;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_oc_logs.RowHeadersDefaultCellStyle = dataGridViewCellStyle13;
-            this.dgv_oc_logs.RowHeadersVisible = false;
-            this.dgv_oc_logs.RowTemplate.Height = 23;
-            this.dgv_oc_logs.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dgv_oc_logs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_oc_logs.Size = new System.Drawing.Size(1539, 44);
-            this.dgv_oc_logs.TabIndex = 2;
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.dgv_logs_true);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.dgv_logs_false);
+            this.splitContainer6.Size = new System.Drawing.Size(1539, 54);
+            this.splitContainer6.SplitterDistance = 25;
+            this.splitContainer6.SplitterWidth = 1;
+            this.splitContainer6.TabIndex = 0;
+            // 
+            // dgv_logs_true
+            // 
+            this.dgv_logs_true.AllowUserToAddRows = false;
+            this.dgv_logs_true.AllowUserToDeleteRows = false;
+            this.dgv_logs_true.AllowUserToResizeColumns = false;
+            this.dgv_logs_true.AllowUserToResizeRows = false;
+            this.dgv_logs_true.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_logs_true.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_logs_true.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv_logs_true.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_logs_true.ColumnHeadersVisible = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_logs_true.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgv_logs_true.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_logs_true.Location = new System.Drawing.Point(0, 0);
+            this.dgv_logs_true.MultiSelect = false;
+            this.dgv_logs_true.Name = "dgv_logs_true";
+            this.dgv_logs_true.ReadOnly = true;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_logs_true.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgv_logs_true.RowHeadersVisible = false;
+            this.dgv_logs_true.RowTemplate.Height = 23;
+            this.dgv_logs_true.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgv_logs_true.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_logs_true.Size = new System.Drawing.Size(1539, 25);
+            this.dgv_logs_true.TabIndex = 3;
+            // 
+            // dgv_logs_false
+            // 
+            this.dgv_logs_false.AllowUserToAddRows = false;
+            this.dgv_logs_false.AllowUserToDeleteRows = false;
+            this.dgv_logs_false.AllowUserToResizeColumns = false;
+            this.dgv_logs_false.AllowUserToResizeRows = false;
+            this.dgv_logs_false.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_logs_false.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_logs_false.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgv_logs_false.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_logs_false.ColumnHeadersVisible = false;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_logs_false.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgv_logs_false.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_logs_false.Location = new System.Drawing.Point(0, 0);
+            this.dgv_logs_false.MultiSelect = false;
+            this.dgv_logs_false.Name = "dgv_logs_false";
+            this.dgv_logs_false.ReadOnly = true;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_logs_false.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.dgv_logs_false.RowHeadersVisible = false;
+            this.dgv_logs_false.RowTemplate.Height = 23;
+            this.dgv_logs_false.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgv_logs_false.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_logs_false.Size = new System.Drawing.Size(1539, 28);
+            this.dgv_logs_false.TabIndex = 4;
             // 
             // tabPage_realtime_data
             // 
@@ -2550,37 +2802,37 @@ namespace OptimalControl.Forms
             // 
             this.dgv_data.AllowUserToAddRows = false;
             this.dgv_data.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
-            this.dgv_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            this.dgv_data.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             this.dgv_data.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("宋体", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_data.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("宋体", 8F);
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_data.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("宋体", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_data.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 8F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_data.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgv_data.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_data.Location = new System.Drawing.Point(0, 0);
             this.dgv_data.Name = "dgv_data";
             this.dgv_data.ReadOnly = true;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_data.RowHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_data.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dgv_data.RowHeadersVisible = false;
             this.dgv_data.RowTemplate.Height = 23;
             this.dgv_data.Size = new System.Drawing.Size(1539, 513);
@@ -2588,7 +2840,7 @@ namespace OptimalControl.Forms
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dvg_log);
+            this.groupBox1.Controls.Add(this.dvg_log_history);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
@@ -2597,47 +2849,47 @@ namespace OptimalControl.Forms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "日志记录";
             // 
-            // dvg_log
+            // dvg_log_history
             // 
-            this.dvg_log.AllowUserToAddRows = false;
-            this.dvg_log.AllowUserToDeleteRows = false;
-            this.dvg_log.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dvg_log.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dvg_log.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle18;
-            this.dvg_log.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dvg_log.DefaultCellStyle = dataGridViewCellStyle19;
-            this.dvg_log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dvg_log.Location = new System.Drawing.Point(3, 17);
-            this.dvg_log.MultiSelect = false;
-            this.dvg_log.Name = "dvg_log";
-            this.dvg_log.ReadOnly = true;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dvg_log.RowHeadersDefaultCellStyle = dataGridViewCellStyle20;
-            this.dvg_log.RowHeadersVisible = false;
-            this.dvg_log.RowTemplate.Height = 23;
-            this.dvg_log.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dvg_log.Size = new System.Drawing.Size(1533, 107);
-            this.dvg_log.TabIndex = 1;
+            this.dvg_log_history.AllowUserToAddRows = false;
+            this.dvg_log_history.AllowUserToDeleteRows = false;
+            this.dvg_log_history.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dvg_log_history.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dvg_log_history.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            this.dvg_log_history.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dvg_log_history.DefaultCellStyle = dataGridViewCellStyle12;
+            this.dvg_log_history.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dvg_log_history.Location = new System.Drawing.Point(3, 17);
+            this.dvg_log_history.MultiSelect = false;
+            this.dvg_log_history.Name = "dvg_log_history";
+            this.dvg_log_history.ReadOnly = true;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dvg_log_history.RowHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            this.dvg_log_history.RowHeadersVisible = false;
+            this.dvg_log_history.RowTemplate.Height = 23;
+            this.dvg_log_history.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dvg_log_history.Size = new System.Drawing.Size(1533, 107);
+            this.dvg_log_history.TabIndex = 1;
             // 
             // splitContainerH1
             // 
@@ -2746,6 +2998,14 @@ namespace OptimalControl.Forms
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox14.ResumeLayout(false);
+            this.groupBox14.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_231)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_221)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_211)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_oc_201)).EndInit();
             this.groupBox9.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
@@ -2762,7 +3022,12 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.pb_status_3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_status_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_status_1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_logs)).EndInit();
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
+            this.splitContainer6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_logs_true)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_logs_false)).EndInit();
             this.tabPage_realtime_data.ResumeLayout(false);
             this.splitContainerH1_2H2_1V1_2V2.Panel1.ResumeLayout(false);
             this.splitContainerH1_2H2_1V1_2V2.Panel2.ResumeLayout(false);
@@ -2792,7 +3057,7 @@ namespace OptimalControl.Forms
             this.splitContainer5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_data)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dvg_log)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dvg_log_history)).EndInit();
             this.splitContainerH1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).EndInit();
             this.splitContainerH1.ResumeLayout(false);
@@ -2875,7 +3140,7 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.DataGridView dgv_data;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dvg_log;
+        private System.Windows.Forms.DataGridView dvg_log_history;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.SplitContainer splitContainer4;
@@ -3000,7 +3265,6 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.Label label111;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.DataGridView dgv_oc_logs;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pb_status_5;
         private System.Windows.Forms.PictureBox pb_status_4;
@@ -3017,6 +3281,22 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.SplitContainer splitContainer6;
+        private System.Windows.Forms.DataGridView dgv_logs_true;
+        private System.Windows.Forms.DataGridView dgv_logs_false;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.CheckBox cb_oc_121;
+        private System.Windows.Forms.CheckBox cb_oc_111;
+        private System.Windows.Forms.CheckBox cb_oc_101;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.PictureBox pb_oc_231;
+        private System.Windows.Forms.PictureBox pb_oc_221;
+        private System.Windows.Forms.PictureBox pb_oc_211;
+        private System.Windows.Forms.PictureBox pb_oc_201;
+        private System.Windows.Forms.CheckBox cb_oc_231;
+        private System.Windows.Forms.CheckBox cb_oc_221;
+        private System.Windows.Forms.CheckBox cb_oc_211;
+        private System.Windows.Forms.CheckBox cb_oc_201;
     }
 }
 

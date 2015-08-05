@@ -31,10 +31,11 @@ namespace IDAL
         /// 获取最新的日志信息
         /// </summary>
         /// <param name="logCount">日志条数.</param>
+        /// <param name="state">日志类型.</param>
         /// <returns>
         /// 日志实体集合
         /// </returns>
-        List<Log> GetLastLogInfos(int logCount);
+        List<Log> GetLastLogInfos(int logCount, bool state);
 
         /// <summary>
         /// 添加日志

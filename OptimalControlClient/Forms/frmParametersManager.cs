@@ -128,22 +128,34 @@ namespace OptimalControl.Forms
                 HeaderText = "设备序号",
                 DataPropertyName = "DeviceID"
             };
+            DataGridViewCheckBoxColumn dgvIsEnabled = new DataGridViewCheckBoxColumn
+            {
+                Name = "IsEnabled",
+                HeaderText = "启用",
+                DataPropertyName = "IsEnabled"
+            };
+            DataGridViewCheckBoxColumn dgvIsOutput = new DataGridViewCheckBoxColumn
+            {
+                Name = "IsOutput",
+                HeaderText = "输出",
+                DataPropertyName = "IsOutput"
+            };
             DataGridViewCheckBoxColumn dgvIsDisplayed = new DataGridViewCheckBoxColumn
             {
                 Name = "IsDisplayed",
-                HeaderText = "显示变量",
+                HeaderText = "显示",
                 DataPropertyName = "IsDisplayed"
             };
             DataGridViewCheckBoxColumn dgvIsSaved = new DataGridViewCheckBoxColumn
             {
                 Name = "IsSaved",
-                HeaderText = "保存变量",
+                HeaderText = "保存",
                 DataPropertyName = "IsSaved"
             };
             DataGridViewCheckBoxColumn dgvIsFiltered = new DataGridViewCheckBoxColumn
             {
                 Name = "IsFiltered",
-                HeaderText = "是否滤波",
+                HeaderText = "滤波",
                 DataPropertyName = "IsFiltered"
             };
             DataGridViewTextBoxColumn dgvHistoryListLength = new DataGridViewTextBoxColumn
@@ -193,6 +205,8 @@ namespace OptimalControl.Forms
                 dgvControlPeriod,
                 dgvOperateDelay,
                 dgvDeviceId,
+                dgvIsEnabled,
+                dgvIsOutput,
                 dgvIsDisplayed,
                 dgvIsSaved,
                 dgvIsFiltered,
@@ -227,6 +241,9 @@ namespace OptimalControl.Forms
                 if (!variables[index].OperateDelay.Equals(-1))
                     dataGridView_parameters.Rows[index].Cells["OperateDelay"].Value = variables[index].OperateDelay;
                 dataGridView_parameters.Rows[index].Cells["DeviceID"].Value = variables[index].DeviceID;
+
+                dataGridView_parameters.Rows[index].Cells["IsEnabled"].Value = variables[index].IsEnabled;
+                dataGridView_parameters.Rows[index].Cells["IsOutput"].Value = variables[index].IsOutput;
                 dataGridView_parameters.Rows[index].Cells["IsDisplayed"].Value = variables[index].IsDisplayed;
                 dataGridView_parameters.Rows[index].Cells["IsSaved"].Value = variables[index].IsSaved;
 
@@ -295,6 +312,8 @@ namespace OptimalControl.Forms
                     ? Convert.ToInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["OperateDelay"].Value)
                     : -1,
                     DeviceID = Convert.ToUInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["DeviceID"].Value),
+                    IsEnabled = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsEnabled"].Value),
+                    IsOutput = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsOutput"].Value),
                     IsDisplayed = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsDisplayed"].Value),
                     IsSaved = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsSaved"].Value),
                     IsFiltered = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsFiltered"].Value),

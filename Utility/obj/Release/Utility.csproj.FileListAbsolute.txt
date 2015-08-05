@@ -12,6 +12,5 @@ E:\Work\OptimalControl\Utility\obj\Release\Utility.dll
 E:\Work\OptimalControl\Utility\obj\Release\Utility.pdb
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Utility\bin\Release\Utility.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Utility\bin\Release\Utility.pdb
-E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Utility\obj\Release\Utility.csprojResolveAssemblyReference.cache
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Utility\obj\Release\Utility.dll
 E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\Utility\obj\Release\Utility.pdb

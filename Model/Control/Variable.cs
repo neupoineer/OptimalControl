@@ -73,6 +73,10 @@ namespace Model.Control
         private int _operateDelay;
         private uint _deviceId;
         private int _address;
+
+        private bool _isEnabled;
+        private bool _isOutput;
+        private bool _isValid;
         private bool _isDisplayed;
         private bool _isSaved;
 
@@ -80,7 +84,7 @@ namespace Model.Control
         private double _currentValue;
         private double _historyValue;
         private double _initialValue;
-        private List<double> _historyValues = new List<double>();
+        private List<double> _historyValuesList = new List<double>();
         private int _historyListLength;
 
         private VariableState _state = new VariableState();
@@ -97,23 +101,14 @@ namespace Model.Control
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// 变量值
         /// </summary>
         public double Value
         {
             get { return _value; }
-            set
-            {
-                if (Math.Abs(_ratio) > 1E-06)
-                {
-                    if (((value > _limit.UltimateLowerLimit/_ratio) || (_limit.UltimateLowerLimit <= 0))
-                        && ((value < _limit.UltimateHigherLimit/_ratio) || (_limit.UltimateHigherLimit <= 0)))
-                    {
-                        _value = value;
-                    }
-                }
-            }
+            set { _value = value; }
         }
 
         /// <summary>
@@ -124,17 +119,13 @@ namespace Model.Control
             get { return _value*_ratio; }
             set
             {
-                if (((value > _limit.UltimateLowerLimit) || (_limit.UltimateLowerLimit <= 0))
-                    && ((value < _limit.UltimateHigherLimit) || (_limit.UltimateHigherLimit <= 0)))
+                if (Math.Abs(_ratio) > 1E-06)
                 {
-                    if (_ratio != 0)
-                    {
-                        _value = value/_ratio;
-                    }
-                    else
-                    {
-                        _value = value;
-                    }
+                    _value = value/_ratio;
+                }
+                else
+                {
+                    _value = value;
                 }
             }
         }
@@ -332,6 +323,24 @@ namespace Model.Control
             set { _trendHigherLimit = value; }
         }
 
+        public bool IsValid
+        {
+            get { return _isValid; }
+            set { _isValid = value; }
+        }
+
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set { _isEnabled = value; }
+        }
+
+        public bool IsOutput
+        {
+            get { return _isOutput; }
+            set { _isOutput = value; }
+        }
+
         #endregion
 
         #region Public Methods
@@ -375,20 +384,35 @@ namespace Model.Control
         /// </summary>
         private void CheckVariableTrand()
         {
-            if (_trendHigherList.Count > TrendListLength)
+            if (_trendHigherList.Count >= _trendListLength)
             {
                 _trend = VariableTrend.Uptrend;
-                _trendValue = LeastSquareMethod(_historyValues);
+                _trendValue = LeastSquareMethod(_trendHigherList);
             }
-            else if (_trendLowerList.Count > TrendListLength)
+            else if (_trendLowerList.Count >= _trendListLength)
             {
                 _trend = VariableTrend.Downtrend;
-                _trendValue = LeastSquareMethod(_historyValues);
+                _trendValue = LeastSquareMethod(_trendLowerList);
             }
             else
             {
                 _trend = VariableTrend.Stable;
-                _trendValue = 0;
+                _trendValue = LeastSquareMethod(_historyValuesList);
+            }
+        }
+
+        /// <summary>
+        /// 检查变量是否有效
+        /// </summary>
+        public void CheckVariableValid()
+        {
+            if (_isEnabled)
+            {
+                _isValid = true;
+            }
+            else
+            {
+                _isValid = false;
             }
         }
 
@@ -437,32 +461,33 @@ namespace Model.Control
         /// </summary>
         public void ProcessValueData()
         {
-            _historyValues.Add(RealValue);
-
-            if (_historyValues.Count > HistoryListLength)
+            _historyValuesList.Add(RealValue);
+            if (_historyValuesList.Count > _historyListLength)
             {
-                _historyValues.RemoveAt(0);
+                _historyValuesList.RemoveAt(0);
             }
 
-            if (_historyValues.Count >= TrendLength*2 + TrendInterval)
+            int historyListRealCount = _historyValuesList.Count;
+            if (historyListRealCount >= _trendLength*2 + _trendInterval)
             {
                 double sum1 = 0;
                 double sum2 = 0;
-                for (int index = 0; index < TrendLength; index++)
-                {
-                    sum1 += _historyValues[index];
-                    sum2 += _historyValues[TrendLength + TrendInterval + index];
-                }
 
+                for (int index = 0; index < _trendLength; index++)
+                {
+                    sum1 += _historyValuesList[historyListRealCount - 1 - _trendLength - _trendInterval - index];
+                    sum2 += _historyValuesList[historyListRealCount - 1 - index];
+                }
                 double trendValue = (sum2 - sum1)/_trendLength;
+
                 if (trendValue > TrendHigherLimit)
                 {
-                    _trendHigherList.Add(trendValue);
+                    _trendHigherList.Add(RealValue);
                     _trendLowerList.Clear();
                 }
                 else if (trendValue < _trendLowerLimit)
                 {
-                    _trendLowerList.Add(trendValue);
+                    _trendLowerList.Add(RealValue);
                     _trendHigherList.Clear();
                 }
                 else
@@ -471,33 +496,48 @@ namespace Model.Control
                     _trendLowerList.Clear();
                 }
 
-                _currentValue = sum2 / _trendLength;
-
-                if (_isFiltered)
-                {
-                    _historyValue = sum1/_trendLength;
-                }
-                else
-                {
-                    if (_historyValues.Count > 1)
-                    {
-                        _historyValue = _historyValues[_historyValues.Count - 2];
-                    }
-                }
+                _currentValue = sum2/_trendLength;
             }
             else
             {
-                if (_historyValues.Count > 1)
-                {
-                    _historyValue = _historyValues[_historyValues.Count - 2];
-                }
                 _currentValue = _value*_ratio;
             }
 
             CheckVariableState();
             CheckVariableTrand();
         }
-        
+
+        public void UpdateHistoryValue()
+        {
+            int historyListRealCount = _historyValuesList.Count;
+            if (_isFiltered)
+            {
+                if (historyListRealCount >= _trendLength + 1)
+                {
+                    double sum = 0;
+                    for (int index = 0; index < _trendLength; index++)
+                    {
+                        sum += _historyValuesList[historyListRealCount - 2 - index];
+                    }
+                    _historyValue = sum/_trendLength;
+                }
+            }
+            else
+            {
+                if (historyListRealCount > 0)
+                {
+                    _historyValue = _historyValuesList[historyListRealCount - 1];
+                }
+            }
+        }
+
+        public void ResetTrend()
+        {
+            _trend = VariableTrend.Stable;
+            _trendHigherList.Clear();
+            _trendLowerList.Clear();
+        }
+
         /// <summary>
         /// Gets the value from modbus TCP master.
         /// </summary>
@@ -537,16 +577,20 @@ namespace Model.Control
         {
             try
             {
-                byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
-                modbusTcpDevice.ModbusTcpMaster.WriteMultipleRegisters(
-                    modbusTcpDevice.UnitID,
-                    (ushort) (_address - 1),
-                    new ushort[]
-                    {
-                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]),
-                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2])
-                    }
-                    );
+                if (((_value > _limit.UltimateLowerLimit) || (_limit.UltimateLowerLimit <= 0))
+                    && ((_value < _limit.UltimateHigherLimit) || (_limit.UltimateHigherLimit <= 0)))
+                {
+                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
+                    modbusTcpDevice.ModbusTcpMaster.WriteMultipleRegisters(
+                        modbusTcpDevice.UnitID,
+                        (ushort) (_address - 1),
+                        new ushort[]
+                        {
+                            Convert.ToUInt16(tempByte[1]*256 + tempByte[0]),
+                            Convert.ToUInt16(tempByte[3]*256 + tempByte[2])
+                        }
+                        );
+                }
                 return true;
             }
             catch (Exception ex)
@@ -557,11 +601,11 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Gets the value from modbus salve.
+        /// Gets the value from modbus slave.
         /// </summary>
         /// <param name="modbusSlave">The modbus slave.</param>
         /// <returns></returns>
-        public bool GetValueFromModbusSalve(ref ModbusSlave modbusSlave)
+        public bool GetValueFromModbusSlave(ref ModbusSlave modbusSlave)
         {
             ushort[] register = new ushort[2];
             try
@@ -588,17 +632,24 @@ namespace Model.Control
         }
 
         /// <summary>
-        /// Sets the value to modbus salve.
+        /// Sets the value to modbus slave.
         /// </summary>
         /// <param name="modbusSlave">The modbus slave.</param>
         /// <returns></returns>
-        public bool SetValueToModbusSalve(ref ModbusSlave modbusSlave)
+        public bool SetValueToModbusSlave(ref ModbusSlave modbusSlave)
         {
             try
             {
-                byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
-                modbusSlave.DataStore.HoldingRegisters[_address] = Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
-                modbusSlave.DataStore.HoldingRegisters[_address + 1] = Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
+                if (_isOutput)
+                {
+                    if (((_value > _limit.UltimateLowerLimit) || (_limit.UltimateLowerLimit <= 0))
+                        && ((_value < _limit.UltimateHigherLimit) || (_limit.UltimateHigherLimit <= 0)))
+                    {
+                        byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
+                        modbusSlave.DataStore.HoldingRegisters[_address] = Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
+                        modbusSlave.DataStore.HoldingRegisters[_address + 1] = Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
+                    }
+                }
                 return true;
             }
             catch (Exception ex)
@@ -615,6 +666,11 @@ namespace Model.Control
         /// </summary>
         public Variable()
         {
+            _ratio = 1;
+            _isValid = true;
+            _isOutput = true;
+            _isEnabled = true;
+            _isFiltered = false;
             _historyListLength = 24;
             _trendInterval = 12;
             _trendLength = 6;
@@ -643,9 +699,17 @@ namespace Model.Control
             int trendLength,
             bool isFiltered,
             double trendHigherLimit,
-            double trendLowerLimit)
+            double trendLowerLimit,
+            bool isValid, 
+            bool isOutput, 
+            bool isEnabled)
             : base(variableId, variableName)
         {
+            _ratio = 1;
+            _isValid = true;
+            _isOutput = true;
+            _isEnabled = true;
+            _isFiltered = false;
             _historyListLength = 24;
             _trendInterval = 12;
             _trendLength = 6;
@@ -667,6 +731,9 @@ namespace Model.Control
             IsFiltered = isFiltered;
             TrendHigherLimit = trendHigherLimit;
             TrendLowerLimit = trendLowerLimit;
+            IsValid = isValid;
+            IsOutput = isOutput;
+            IsEnabled = isEnabled;
         }
 
         #endregion
