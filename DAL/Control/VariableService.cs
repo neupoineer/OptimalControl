@@ -74,6 +74,7 @@ namespace DAL.Control
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
 
                         tmpVariable.IsEnabled = Convert.ToBoolean(myReader["IsEnabled"]);
+                        tmpVariable.IsRead = Convert.ToBoolean(myReader["IsRead"]);
                         tmpVariable.IsOutput = Convert.ToBoolean(myReader["IsOutput"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                         tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);
@@ -155,6 +156,7 @@ namespace DAL.Control
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
 
                         tmpVariable.IsEnabled = Convert.ToBoolean(myReader["IsEnabled"]);
+                        tmpVariable.IsRead = Convert.ToBoolean(myReader["IsRead"]);
                         tmpVariable.IsOutput = Convert.ToBoolean(myReader["IsOutput"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                         tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);
@@ -185,8 +187,8 @@ namespace DAL.Control
         public bool AddVariable(Variable addVariable)
         {
             // 拼接 SQL 命令
-            const string sqlTxt = "INSERT INTO Variable (Code,Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID,IsEnabled,IsOutput,IsDisplayed,IsFiltered,HistoryListLength,TrendLength,TrendInterval,TrendHigherLimit,TrendLowerLimit,TrendListLength) VALUES " +
-                                  "(@Code,@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID,@IsEnabled,@IsOutput,@IsDisplayed,@IsFiltered,@HistoryListLength,@TrendLength,@TrendInterval,@TrendHigherLimit,@TrendLowerLimit,@TrendListLength)";
+            const string sqlTxt = "INSERT INTO Variable (Code,Name,Address,Ratio,UpperLimit,LowerLimit,UltimateUpperLimit,UltimateLowerLimit,ControlPeriod,OperateDelay,DeviceID,IsEnabled,IsRead,IsOutput,IsDisplayed,IsFiltered,HistoryListLength,TrendLength,TrendInterval,TrendHigherLimit,TrendLowerLimit,TrendListLength) VALUES " +
+                                  "(@Code,@Name,@Address,@Ratio,@UpperLimit,@LowerLimit,@UltimateUpperLimit,@UltimateLowerLimit,@ControlPeriod,@OperateDelay,@DeviceID,@IsEnabled,@IsRead,@IsOutput,@IsDisplayed,@IsFiltered,@HistoryListLength,@TrendLength,@TrendInterval,@TrendHigherLimit,@TrendLowerLimit,@TrendListLength)";
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
             // 执行 SQL 命令
@@ -206,22 +208,23 @@ namespace DAL.Control
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = addVariable.DeviceID };
 
                 SqlParameter prm11 = new SqlParameter("@IsEnabled", SqlDbType.Bit) { Value = addVariable.IsEnabled };
-                SqlParameter prm12 = new SqlParameter("@IsOutput", SqlDbType.Bit) { Value = addVariable.IsOutput };
-                SqlParameter prm13 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = addVariable.IsDisplayed };
-                SqlParameter prm14 = new SqlParameter("@IsSaved", SqlDbType.Bit) { Value = addVariable.IsSaved };
+                SqlParameter prm12 = new SqlParameter("@IsRead", SqlDbType.Bit) { Value = addVariable.IsRead };
+                SqlParameter prm13 = new SqlParameter("@IsOutput", SqlDbType.Bit) { Value = addVariable.IsOutput };
+                SqlParameter prm14 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = addVariable.IsDisplayed };
+                SqlParameter prm15 = new SqlParameter("@IsSaved", SqlDbType.Bit) { Value = addVariable.IsSaved };
 
-                SqlParameter prm15 = new SqlParameter("@IsFiltered", SqlDbType.Bit) { Value = addVariable.IsFiltered };
-                SqlParameter prm16 = new SqlParameter("@HistoryListLength", SqlDbType.Int) { Value = addVariable.HistoryListLength };
-                SqlParameter prm17 = new SqlParameter("@TrendLength", SqlDbType.Int) { Value = addVariable.TrendLength };
-                SqlParameter prm18 = new SqlParameter("@TrendInterval", SqlDbType.Int) { Value = addVariable.TrendInterval };
-                SqlParameter prm19 = new SqlParameter("@TrendHigherLimit", SqlDbType.Real) { Value = addVariable.TrendHigherLimit };
-                SqlParameter prm20 = new SqlParameter("@TrendLowerLimit", SqlDbType.Real) { Value = addVariable.TrendLowerLimit };
-                SqlParameter prm21 = new SqlParameter("@TrendListLength", SqlDbType.Int) { Value = addVariable.TrendListLength };
+                SqlParameter prm16 = new SqlParameter("@IsFiltered", SqlDbType.Bit) { Value = addVariable.IsFiltered };
+                SqlParameter prm17 = new SqlParameter("@HistoryListLength", SqlDbType.Int) { Value = addVariable.HistoryListLength };
+                SqlParameter prm18 = new SqlParameter("@TrendLength", SqlDbType.Int) { Value = addVariable.TrendLength };
+                SqlParameter prm19 = new SqlParameter("@TrendInterval", SqlDbType.Int) { Value = addVariable.TrendInterval };
+                SqlParameter prm20 = new SqlParameter("@TrendHigherLimit", SqlDbType.Real) { Value = addVariable.TrendHigherLimit };
+                SqlParameter prm21 = new SqlParameter("@TrendLowerLimit", SqlDbType.Real) { Value = addVariable.TrendLowerLimit };
+                SqlParameter prm22 = new SqlParameter("@TrendListLength", SqlDbType.Int) { Value = addVariable.TrendListLength };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
                 {
                     prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12, prm13, prm14, prm15,
-                    prm16, prm17, prm18, prm19, prm20, prm21
+                    prm16, prm17, prm18, prm19, prm20, prm21, prm22
                 });
                 conn.Open();
 
@@ -282,7 +285,7 @@ namespace DAL.Control
         public bool ModifyVariable(Variable currentVariable)
         {
             // 拼接 SQL 命令
-            const string sqlTxt = "UPDATE Variable SET Code=@Code,Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID,IsEnabled=@IsEnabled,IsOutput=@IsOutput,IsDisplayed=@IsDisplayed,IsFiltered=@IsFiltered,HistoryListLength=@HistoryListLength,TrendLength=@TrendLength,TrendInterval=@TrendInterval,TrendHigherLimit=@TrendHigherLimit,TrendLowerLimit=@TrendLowerLimit,TrendListLength=@TrendListLength WHERE Id=@Id";
+            const string sqlTxt = "UPDATE Variable SET Code=@Code,Name=@Name,Address=@Address,Ratio=@Ratio,UpperLimit=@UpperLimit,LowerLimit=@LowerLimit,UltimateUpperLimit=@UltimateUpperLimit,UltimateLowerLimit=@UltimateLowerLimit,ControlPeriod=@ControlPeriod,OperateDelay=@OperateDelay,DeviceID=@DeviceID,IsRead=@IsRead,IsEnabled=@IsEnabled,IsOutput=@IsOutput,IsDisplayed=@IsDisplayed,IsFiltered=@IsFiltered,HistoryListLength=@HistoryListLength,TrendLength=@TrendLength,TrendInterval=@TrendInterval,TrendHigherLimit=@TrendHigherLimit,TrendLowerLimit=@TrendLowerLimit,TrendListLength=@TrendListLength WHERE Id=@Id";
 
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
@@ -303,24 +306,25 @@ namespace DAL.Control
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentVariable.DeviceID };
 
                 SqlParameter prm11 = new SqlParameter("@IsEnabled", SqlDbType.Bit) { Value = currentVariable.IsEnabled };
-                SqlParameter prm12 = new SqlParameter("@IsOutput", SqlDbType.Bit) { Value = currentVariable.IsOutput };
-                SqlParameter prm13 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = currentVariable.IsDisplayed };
-                SqlParameter prm14 = new SqlParameter("@IsSaved", SqlDbType.Bit) { Value = currentVariable.IsSaved };
+                SqlParameter prm12 = new SqlParameter("@IsRead", SqlDbType.Bit) { Value = currentVariable.IsRead };
+                SqlParameter prm13 = new SqlParameter("@IsOutput", SqlDbType.Bit) { Value = currentVariable.IsOutput };
+                SqlParameter prm14 = new SqlParameter("@IsDisplayed", SqlDbType.Bit) { Value = currentVariable.IsDisplayed };
+                SqlParameter prm15 = new SqlParameter("@IsSaved", SqlDbType.Bit) { Value = currentVariable.IsSaved };
 
-                SqlParameter prm15 = new SqlParameter("@IsFiltered", SqlDbType.Bit) { Value = currentVariable.IsFiltered };
-                SqlParameter prm16 = new SqlParameter("@HistoryListLength", SqlDbType.Int) { Value = currentVariable.HistoryListLength };
-                SqlParameter prm17 = new SqlParameter("@TrendLength", SqlDbType.Int) { Value = currentVariable.TrendLength };
-                SqlParameter prm18 = new SqlParameter("@TrendInterval", SqlDbType.Int) { Value = currentVariable.TrendInterval };
-                SqlParameter prm19 = new SqlParameter("@TrendHigherLimit", SqlDbType.Real) { Value = currentVariable.TrendHigherLimit };
-                SqlParameter prm20 = new SqlParameter("@TrendLowerLimit", SqlDbType.Real) { Value = currentVariable.TrendLowerLimit };
-                SqlParameter prm21 = new SqlParameter("@TrendListLength", SqlDbType.Int) { Value = currentVariable.TrendListLength };
+                SqlParameter prm16 = new SqlParameter("@IsFiltered", SqlDbType.Bit) { Value = currentVariable.IsFiltered };
+                SqlParameter prm17 = new SqlParameter("@HistoryListLength", SqlDbType.Int) { Value = currentVariable.HistoryListLength };
+                SqlParameter prm18 = new SqlParameter("@TrendLength", SqlDbType.Int) { Value = currentVariable.TrendLength };
+                SqlParameter prm19 = new SqlParameter("@TrendInterval", SqlDbType.Int) { Value = currentVariable.TrendInterval };
+                SqlParameter prm20 = new SqlParameter("@TrendHigherLimit", SqlDbType.Real) { Value = currentVariable.TrendHigherLimit };
+                SqlParameter prm21 = new SqlParameter("@TrendLowerLimit", SqlDbType.Real) { Value = currentVariable.TrendLowerLimit };
+                SqlParameter prm22 = new SqlParameter("@TrendListLength", SqlDbType.Int) { Value = currentVariable.TrendListLength };
 
-                SqlParameter prm22 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentVariable.Id };
+                SqlParameter prm23 = new SqlParameter("@Id", SqlDbType.Int) { Value = currentVariable.Id };
 
                 cmd.Parameters.AddRange(new SqlParameter[]
                 {
                     prm0, prm1, prm2, prm3, prm4, prm5, prm6, prm7, prm8, prm9, prm10, prm11, prm12, prm13, prm14, prm15,
-                    prm16, prm17, prm18, prm19, prm20, prm21, prm22
+                    prm16, prm17, prm18, prm19, prm20, prm21, prm22, prm23
                 });
                 conn.Open();
 
@@ -387,6 +391,7 @@ namespace DAL.Control
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
 
                         tmpVariable.IsEnabled = Convert.ToBoolean(myReader["IsEnabled"]);
+                        tmpVariable.IsRead = Convert.ToBoolean(myReader["IsRead"]);
                         tmpVariable.IsOutput = Convert.ToBoolean(myReader["IsOutput"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                         tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);
@@ -466,6 +471,7 @@ namespace DAL.Control
                         tmpVariable.DeviceID = Convert.ToUInt32(myReader["DeviceID"]);
 
                         tmpVariable.IsEnabled = Convert.ToBoolean(myReader["IsEnabled"]);
+                        tmpVariable.IsRead = Convert.ToBoolean(myReader["IsRead"]);
                         tmpVariable.IsOutput = Convert.ToBoolean(myReader["IsOutput"]);
                         tmpVariable.IsDisplayed = Convert.ToBoolean(myReader["IsDisplayed"]);
                         tmpVariable.IsSaved = Convert.ToBoolean(myReader["IsSaved"]);

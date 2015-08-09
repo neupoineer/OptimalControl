@@ -75,6 +75,7 @@ namespace Model.Control
         private int _address;
 
         private bool _isEnabled;
+        private bool _isRead;
         private bool _isOutput;
         private bool _isValid;
         private bool _isDisplayed;
@@ -323,22 +324,40 @@ namespace Model.Control
             set { _trendHigherLimit = value; }
         }
 
+        /// <summary>
+        /// 是否有效.
+        /// </summary>
         public bool IsValid
         {
             get { return _isValid; }
             set { _isValid = value; }
         }
 
+        /// <summary>
+        /// 是否启用.
+        /// </summary>
         public bool IsEnabled
         {
             get { return _isEnabled; }
             set { _isEnabled = value; }
         }
 
+        /// <summary>
+        /// 是否输出.
+        /// </summary>
         public bool IsOutput
         {
             get { return _isOutput; }
             set { _isOutput = value; }
+        }
+
+        /// <summary>
+        /// 是否读取.
+        /// </summary>
+        public bool IsRead
+        {
+            get { return _isRead; }
+            set { _isRead = value; }
         }
 
         #endregion
@@ -388,11 +407,19 @@ namespace Model.Control
             {
                 _trend = VariableTrend.Uptrend;
                 _trendValue = LeastSquareMethod(_trendHigherList);
+                if (_trendHigherList.Count >= _trendListLength)
+                {
+                    _trendHigherList.RemoveAt(0);
+                }
             }
             else if (_trendLowerList.Count >= _trendListLength)
             {
                 _trend = VariableTrend.Downtrend;
                 _trendValue = LeastSquareMethod(_trendLowerList);
+                if (_trendLowerList.Count >= _trendListLength)
+                {
+                    _trendLowerList.RemoveAt(0);
+                }
             }
             else
             {
@@ -404,7 +431,7 @@ namespace Model.Control
         /// <summary>
         /// 检查变量是否有效
         /// </summary>
-        public void CheckVariableValid()
+        private void CheckVariableValid()
         {
             if (_isEnabled)
             {
@@ -461,6 +488,7 @@ namespace Model.Control
         /// </summary>
         public void ProcessValueData()
         {
+            CheckVariableValid();
             _historyValuesList.Add(RealValue);
             if (_historyValuesList.Count > _historyListLength)
             {
@@ -468,7 +496,7 @@ namespace Model.Control
             }
 
             int historyListRealCount = _historyValuesList.Count;
-            if (historyListRealCount >= _trendLength*2 + _trendInterval)
+            if ((historyListRealCount >= _trendLength*2 + _trendInterval) && (_trendLength > 0))
             {
                 double sum1 = 0;
                 double sum2 = 0;
@@ -555,8 +583,8 @@ namespace Model.Control
                 for (int j = 0; j < 2; j++)
                 {
                     byte[] tempByte = BitConverter.GetBytes(register[j]);
-                    byteString[2 * j] = tempByte[0];
-                    byteString[2 * j + 1] = tempByte[1];
+                    byteString[2*j] = tempByte[0];
+                    byteString[2*j + 1] = tempByte[1];
                 }
                 _value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
                 return true;
@@ -610,18 +638,21 @@ namespace Model.Control
             ushort[] register = new ushort[2];
             try
             {
-                //读寄存器
-                register[0] = modbusSlave.DataStore.HoldingRegisters[_address];
-                register[1] = modbusSlave.DataStore.HoldingRegisters[_address + 1];
-
-                byte[] byteString = new byte[4];
-                for (int j = 0; j < 2; j++)
+                if (_isRead)
                 {
-                    byte[] tempByte = BitConverter.GetBytes(register[j]);
-                    byteString[2*j] = tempByte[0];
-                    byteString[2*j + 1] = tempByte[1];
+                    //读寄存器
+                    register[0] = modbusSlave.DataStore.HoldingRegisters[_address];
+                    register[1] = modbusSlave.DataStore.HoldingRegisters[_address + 1];
+
+                    byte[] byteString = new byte[4];
+                    for (int j = 0; j < 2; j++)
+                    {
+                        byte[] tempByte = BitConverter.GetBytes(register[j]);
+                        byteString[2*j] = tempByte[0];
+                        byteString[2*j + 1] = tempByte[1];
+                    }
+                    _value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
                 }
-                _value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
                 return true;
             }
             catch (Exception ex)
@@ -669,6 +700,7 @@ namespace Model.Control
             _ratio = 1;
             _isValid = true;
             _isOutput = true;
+            _isRead = true;
             _isEnabled = true;
             _isFiltered = false;
             _historyListLength = 24;
@@ -683,14 +715,12 @@ namespace Model.Control
         public Variable(
             int variableId,
             string variableName,
-            double variableValue,
             double variableRatio,
             VariableLimit variableLimit,
             int variableControlPeriod,
             int variableOperateDelay,
             uint variableDeviceID,
             int variableAddress,
-            double initialValue,
             string code,
             bool isDisplayed,
             bool isSaved,
@@ -700,13 +730,16 @@ namespace Model.Control
             bool isFiltered,
             double trendHigherLimit,
             double trendLowerLimit,
+            int trendListLength,
             bool isValid, 
             bool isOutput, 
-            bool isEnabled)
+            bool isEnabled,
+            bool isRead)
             : base(variableId, variableName)
         {
             _ratio = 1;
             _isValid = true;
+            _isRead = true;
             _isOutput = true;
             _isEnabled = true;
             _isFiltered = false;
@@ -714,26 +747,27 @@ namespace Model.Control
             _trendInterval = 12;
             _trendLength = 6;
             _trendListLength = 6;
-            Value = variableValue;
-            Ratio = variableRatio;
-            Limit = variableLimit;
-            ControlPeriod = variableControlPeriod;
-            OperateDelay = variableOperateDelay;
-            DeviceID = variableDeviceID;
+            
             Address = variableAddress;
-            InitialValue = initialValue;
             Code = code;
-            IsDisplayed = isDisplayed;
-            IsSaved = isSaved;
+            ControlPeriod = variableControlPeriod;
+            DeviceID = variableDeviceID;
             HistoryListLength = historyListLength;
+            IsDisplayed = isDisplayed;
+            IsEnabled = isEnabled;
+            IsFiltered = isFiltered;
+            IsOutput = isOutput;
+            IsRead = isRead;
+            IsSaved = isSaved;
+            IsValid = isValid;
+            Limit = variableLimit;
+            OperateDelay = variableOperateDelay;
+            Ratio = variableRatio;
+            TrendHigherLimit = trendHigherLimit;
             TrendInterval = trendInterval;
             TrendLength = trendLength;
-            IsFiltered = isFiltered;
-            TrendHigherLimit = trendHigherLimit;
+            TrendListLength = trendListLength;
             TrendLowerLimit = trendLowerLimit;
-            IsValid = isValid;
-            IsOutput = isOutput;
-            IsEnabled = isEnabled;
         }
 
         #endregion

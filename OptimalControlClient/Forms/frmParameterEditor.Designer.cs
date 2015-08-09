@@ -33,12 +33,16 @@ namespace OptimalControl.Forms
             this.btn_ok = new System.Windows.Forms.Button();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cb_para_isoutput = new System.Windows.Forms.CheckBox();
+            this.cb_para_isenabled = new System.Windows.Forms.CheckBox();
             this.cb_para_isfiltered = new System.Windows.Forms.CheckBox();
             this.cb_para_issaved = new System.Windows.Forms.CheckBox();
+            this.tb_history_listlength = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tb_trend_highter = new System.Windows.Forms.TextBox();
             this.cb_para_isdisplayed = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.tb_trend_lower = new System.Windows.Forms.TextBox();
             this.tb_para_code = new System.Windows.Forms.TextBox();
             this.tb_trend_listlength = new System.Windows.Forms.TextBox();
@@ -68,10 +72,7 @@ namespace OptimalControl.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.ntb_para_address = new Utility.NumbericTextbox();
             this.tb_para_name = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.tb_history_listlength = new System.Windows.Forms.TextBox();
-            this.cb_para_isoutput = new System.Windows.Forms.CheckBox();
-            this.cb_para_isenabled = new System.Windows.Forms.CheckBox();
+            this.cb_para_isread = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -98,6 +99,7 @@ namespace OptimalControl.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_para_isread);
             this.groupBox1.Controls.Add(this.cb_para_isoutput);
             this.groupBox1.Controls.Add(this.cb_para_isenabled);
             this.groupBox1.Controls.Add(this.cb_para_isfiltered);
@@ -144,10 +146,30 @@ namespace OptimalControl.Forms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "变量信息";
             // 
+            // cb_para_isoutput
+            // 
+            this.cb_para_isoutput.AutoSize = true;
+            this.cb_para_isoutput.Location = new System.Drawing.Point(489, 199);
+            this.cb_para_isoutput.Name = "cb_para_isoutput";
+            this.cb_para_isoutput.Size = new System.Drawing.Size(72, 16);
+            this.cb_para_isoutput.TabIndex = 41;
+            this.cb_para_isoutput.Text = "是否输出";
+            this.cb_para_isoutput.UseVisualStyleBackColor = true;
+            // 
+            // cb_para_isenabled
+            // 
+            this.cb_para_isenabled.AutoSize = true;
+            this.cb_para_isenabled.Location = new System.Drawing.Point(384, 79);
+            this.cb_para_isenabled.Name = "cb_para_isenabled";
+            this.cb_para_isenabled.Size = new System.Drawing.Size(96, 16);
+            this.cb_para_isenabled.TabIndex = 40;
+            this.cb_para_isenabled.Text = "是否启用变量";
+            this.cb_para_isenabled.UseVisualStyleBackColor = true;
+            // 
             // cb_para_isfiltered
             // 
             this.cb_para_isfiltered.AutoSize = true;
-            this.cb_para_isfiltered.Location = new System.Drawing.Point(489, 199);
+            this.cb_para_isfiltered.Location = new System.Drawing.Point(489, 159);
             this.cb_para_isfiltered.Name = "cb_para_isfiltered";
             this.cb_para_isfiltered.Size = new System.Drawing.Size(72, 16);
             this.cb_para_isfiltered.TabIndex = 36;
@@ -163,6 +185,13 @@ namespace OptimalControl.Forms
             this.cb_para_issaved.TabIndex = 35;
             this.cb_para_issaved.Text = "是否保存变量";
             this.cb_para_issaved.UseVisualStyleBackColor = true;
+            // 
+            // tb_history_listlength
+            // 
+            this.tb_history_listlength.Location = new System.Drawing.Point(93, 277);
+            this.tb_history_listlength.Name = "tb_history_listlength";
+            this.tb_history_listlength.Size = new System.Drawing.Size(70, 21);
+            this.tb_history_listlength.TabIndex = 39;
             // 
             // label13
             // 
@@ -185,9 +214,9 @@ namespace OptimalControl.Forms
             this.cb_para_isdisplayed.AutoSize = true;
             this.cb_para_isdisplayed.Location = new System.Drawing.Point(384, 159);
             this.cb_para_isdisplayed.Name = "cb_para_isdisplayed";
-            this.cb_para_isdisplayed.Size = new System.Drawing.Size(96, 16);
+            this.cb_para_isdisplayed.Size = new System.Drawing.Size(72, 16);
             this.cb_para_isdisplayed.TabIndex = 34;
-            this.cb_para_isdisplayed.Text = "是否显示变量";
+            this.cb_para_isdisplayed.Text = "是否显示";
             this.cb_para_isdisplayed.UseVisualStyleBackColor = true;
             // 
             // label14
@@ -198,6 +227,15 @@ namespace OptimalControl.Forms
             this.label14.Size = new System.Drawing.Size(77, 12);
             this.label14.TabIndex = 32;
             this.label14.Text = "趋势判断下限";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(10, 280);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(77, 12);
+            this.label17.TabIndex = 38;
+            this.label17.Text = "历史数据长度";
             // 
             // tb_trend_lower
             // 
@@ -432,41 +470,15 @@ namespace OptimalControl.Forms
             this.tb_para_name.Size = new System.Drawing.Size(110, 21);
             this.tb_para_name.TabIndex = 9;
             // 
-            // label17
+            // cb_para_isread
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(10, 280);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(77, 12);
-            this.label17.TabIndex = 38;
-            this.label17.Text = "历史数组点数";
-            // 
-            // tb_history_listlength
-            // 
-            this.tb_history_listlength.Location = new System.Drawing.Point(93, 277);
-            this.tb_history_listlength.Name = "tb_history_listlength";
-            this.tb_history_listlength.Size = new System.Drawing.Size(70, 21);
-            this.tb_history_listlength.TabIndex = 39;
-            // 
-            // cb_para_isoutput
-            // 
-            this.cb_para_isoutput.AutoSize = true;
-            this.cb_para_isoutput.Location = new System.Drawing.Point(384, 199);
-            this.cb_para_isoutput.Name = "cb_para_isoutput";
-            this.cb_para_isoutput.Size = new System.Drawing.Size(72, 16);
-            this.cb_para_isoutput.TabIndex = 41;
-            this.cb_para_isoutput.Text = "是否输出";
-            this.cb_para_isoutput.UseVisualStyleBackColor = true;
-            // 
-            // cb_para_isenabled
-            // 
-            this.cb_para_isenabled.AutoSize = true;
-            this.cb_para_isenabled.Location = new System.Drawing.Point(384, 79);
-            this.cb_para_isenabled.Name = "cb_para_isenabled";
-            this.cb_para_isenabled.Size = new System.Drawing.Size(96, 16);
-            this.cb_para_isenabled.TabIndex = 40;
-            this.cb_para_isenabled.Text = "是否启用变量";
-            this.cb_para_isenabled.UseVisualStyleBackColor = true;
+            this.cb_para_isread.AutoSize = true;
+            this.cb_para_isread.Location = new System.Drawing.Point(384, 199);
+            this.cb_para_isread.Name = "cb_para_isread";
+            this.cb_para_isread.Size = new System.Drawing.Size(72, 16);
+            this.cb_para_isread.TabIndex = 42;
+            this.cb_para_isread.Text = "是否读取";
+            this.cb_para_isread.UseVisualStyleBackColor = true;
             // 
             // frmParameterEditor
             // 
@@ -474,7 +486,7 @@ namespace OptimalControl.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
-            this.ClientSize = new System.Drawing.Size(600, 390);
+            this.ClientSize = new System.Drawing.Size(596, 386);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_cancel);
@@ -536,5 +548,6 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.CheckBox cb_para_isenabled;
         private System.Windows.Forms.TextBox tb_history_listlength;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.CheckBox cb_para_isread;
     }
 }

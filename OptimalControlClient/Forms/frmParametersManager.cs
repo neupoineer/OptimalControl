@@ -134,6 +134,12 @@ namespace OptimalControl.Forms
                 HeaderText = "启用",
                 DataPropertyName = "IsEnabled"
             };
+            DataGridViewCheckBoxColumn dgvIsRead = new DataGridViewCheckBoxColumn
+            {
+                Name = "IsRead",
+                HeaderText = "读取",
+                DataPropertyName = "IsRead"
+            };
             DataGridViewCheckBoxColumn dgvIsOutput = new DataGridViewCheckBoxColumn
             {
                 Name = "IsOutput",
@@ -206,6 +212,7 @@ namespace OptimalControl.Forms
                 dgvOperateDelay,
                 dgvDeviceId,
                 dgvIsEnabled,
+                dgvIsRead,
                 dgvIsOutput,
                 dgvIsDisplayed,
                 dgvIsSaved,
@@ -243,6 +250,7 @@ namespace OptimalControl.Forms
                 dataGridView_parameters.Rows[index].Cells["DeviceID"].Value = variables[index].DeviceID;
 
                 dataGridView_parameters.Rows[index].Cells["IsEnabled"].Value = variables[index].IsEnabled;
+                dataGridView_parameters.Rows[index].Cells["IsRead"].Value = variables[index].IsRead;
                 dataGridView_parameters.Rows[index].Cells["IsOutput"].Value = variables[index].IsOutput;
                 dataGridView_parameters.Rows[index].Cells["IsDisplayed"].Value = variables[index].IsDisplayed;
                 dataGridView_parameters.Rows[index].Cells["IsSaved"].Value = variables[index].IsSaved;
@@ -313,6 +321,7 @@ namespace OptimalControl.Forms
                     : -1,
                     DeviceID = Convert.ToUInt32(dataGridView_parameters.Rows[selectRowIndex].Cells["DeviceID"].Value),
                     IsEnabled = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsEnabled"].Value),
+                    IsRead = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsRead"].Value),
                     IsOutput = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsOutput"].Value),
                     IsDisplayed = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsDisplayed"].Value),
                     IsSaved = Convert.ToBoolean(dataGridView_parameters.Rows[selectRowIndex].Cells["IsSaved"].Value),

@@ -59,9 +59,10 @@ namespace OptimalControl.Forms
 
                 cb_para_isenabled.Checked = parameter.IsEnabled;
                 cb_para_isenabled.Enabled = (mode != DataOperateMode.Delete);
+                cb_para_isread.Checked = parameter.IsRead;
+                cb_para_isread.Enabled = (mode != DataOperateMode.Delete);
                 cb_para_isoutput.Checked = parameter.IsOutput;
                 cb_para_isoutput.Enabled = (mode != DataOperateMode.Delete);
-
                 cb_para_isdisplayed.Checked = parameter.IsDisplayed;
                 cb_para_isdisplayed.Enabled = (mode != DataOperateMode.Delete);
                 cb_para_issaved.Checked = parameter.IsSaved;
@@ -125,6 +126,7 @@ namespace OptimalControl.Forms
                 Address = Convert.ToInt32(ntb_para_address.Text.Trim()),
                 Ratio = Convert.ToDouble(tb_para_ratio.Text.Trim()),
                 IsEnabled = cb_para_isenabled.Checked,
+                IsRead = cb_para_isread.Checked,
                 IsOutput = cb_para_isoutput.Checked,
                 IsDisplayed = cb_para_isdisplayed.Checked,
                 IsSaved = cb_para_issaved.Checked,

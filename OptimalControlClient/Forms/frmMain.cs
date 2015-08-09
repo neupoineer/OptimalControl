@@ -1196,6 +1196,7 @@ namespace OptimalControl.Forms
                                         break;
                                     }
                                 }
+                                break;
                             }
                         }
                     }
@@ -1415,6 +1416,7 @@ namespace OptimalControl.Forms
                                         break;
                                     }
                                 }
+                                break;
                             }
                         }
                     }
@@ -1452,6 +1454,7 @@ namespace OptimalControl.Forms
                         }
                         continue;
                     }
+
                     for (int i = 0; i < 3; i++)
                     {
                         if (variable.Code == _displayedParaVariableCode[2 + 5 * i])
@@ -1570,6 +1573,63 @@ namespace OptimalControl.Forms
             }
         }
 
+        private delegate void UpdateHistoryLogGridDelegate(DateTime starTime, DateTime endTime);
+
+        private void UpdateHistoryLogGrid(DateTime starTime, DateTime endTime)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new UpdateHistoryLogGridDelegate(UpdateHistoryLogGrid));
+                return;
+            }
+            try
+            {
+                // 创建权限组管理类实例
+                ILogManager logManager = _bllFactory.BuildLogManager();
+                // 调用实例方法
+                List<Log> logCollectionTrue = logManager.GetLogInfoByTime(starTime, endTime);
+
+                // 如果包含权限组信息
+                if (logCollectionTrue.Count > 0)
+                {
+                    // 绑定权限组数据显示
+                    BindingSource source = new BindingSource();
+                    source.DataSource = logCollectionTrue;
+                    dgv_log_history.DataSource = source;
+
+                    // 设置中文列名
+                    dgv_log_history.Columns["Id"].HeaderText = "编号";
+                    dgv_log_history.Columns["Id"].DisplayIndex = 0;
+                    dgv_log_history.Columns["Id"].Visible = false;
+
+                    dgv_log_history.Columns["LogTime"].HeaderText = "时间";
+                    dgv_log_history.Columns["LogTime"].DisplayIndex = 1;
+                    dgv_log_history.Columns["LogTime"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
+                    dgv_log_history.Columns["LogTime"].MinimumWidth = 100;
+                    dgv_log_history.Columns["LogTime"].FillWeight = 200;
+
+                    dgv_log_history.Columns["Type"].HeaderText = "等级";
+                    dgv_log_history.Columns["Type"].DisplayIndex = 2;
+                    dgv_log_history.Columns["Type"].MinimumWidth = 50;
+                    dgv_log_history.Columns["Type"].FillWeight = 100;
+
+                    dgv_log_history.Columns["Content"].HeaderText = "内容";
+                    dgv_log_history.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv_log_history.Columns["Content"].DisplayIndex = 3;
+                    dgv_log_history.Columns["Content"].MinimumWidth = 200;
+                    dgv_log_history.Columns["Content"].FillWeight = 1200;
+
+                    dgv_log_history.Columns["State"].HeaderText = "状态";
+                    dgv_log_history.Columns["State"].DisplayIndex = 4;
+                    dgv_log_history.Columns["State"].MinimumWidth = 50;
+                    dgv_log_history.Columns["State"].FillWeight = 100;
+                }
+                }
+            catch (Exception ex)
+            {
+                RecordLog.WriteLogFile("UpdateHistoryLogGrid", ex.Message);
+            }
+        }
 
         /// <summary>
         /// 从Modbus更新所有变量
@@ -1611,12 +1671,15 @@ namespace OptimalControl.Forms
                     {
                         foreach (Device device in _devices)
                         {
-                            if (device.Id != curve.DeviceID) continue;
-                            foreach (Variable parameter in device.Variables)
+                            if (device.Id == curve.DeviceID)
                             {
-                                if (parameter.Address != curve.Address) continue;
-                                //curve.Name = parameter.Name;
-                                curve.DataList.Add(tmpTime, parameter.RealValue);
+                                foreach (Variable parameter in device.Variables)
+                                {
+                                    if (parameter.Address != curve.Address) continue;
+                                    //curve.Name = parameter.Name;
+                                    curve.DataList.Add(tmpTime, parameter.RealValue);
+                                    break;
+                                }
                                 break;
                             }
                         }
@@ -1703,10 +1766,11 @@ namespace OptimalControl.Forms
 
                 foreach (Variable variable in _modbusTcpVariables)
                 {
-                    if(variable.Code == _optimalControlEnabledVariable)
+                    if (variable.Code == _optimalControlEnabledVariable)
+                    {
                         if (variable.Value > 0)
                         {
-                            this.Invoke((EventHandler)(delegate
+                            this.Invoke((EventHandler) (delegate
                             {
                                 tsbtn_rule_run.Enabled = false;
                                 tsbtn_rule_stop.Enabled = true;
@@ -1714,13 +1778,14 @@ namespace OptimalControl.Forms
                         }
                         else
                         {
-                            this.Invoke((EventHandler)(delegate
+                            this.Invoke((EventHandler) (delegate
                             {
                                 tsbtn_rule_run.Enabled = true;
                                 tsbtn_rule_stop.Enabled = false;
                             }));
                         }
-                    break;
+                        break;
+                    }
                 }
 
                 if (_updateGraphFlag)
@@ -1860,6 +1925,7 @@ namespace OptimalControl.Forms
                                     break;
                                 }
                             }
+                            break;
                         }
                     }
 
@@ -2066,6 +2132,7 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
+                UpdateHistoryLogGrid(startTime, endTime);
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
                     startTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
@@ -2086,6 +2153,7 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
+                UpdateHistoryLogGrid(startTime, endTime);
                 dtp_data_start.Value = startTime;
                 dtp_data_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
@@ -2108,6 +2176,7 @@ namespace OptimalControl.Forms
             {
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
+                UpdateHistoryLogGrid(startTime, endTime);
                 dtp_data_start.Value = startTime;
                 dtp_data_end.Value = endTime;
                 status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
@@ -2371,6 +2440,7 @@ namespace OptimalControl.Forms
                             break;
                         }
                     }
+                    break;
                 }
             }
         }
@@ -2399,6 +2469,7 @@ namespace OptimalControl.Forms
                             break;
                         }
                     }
+                    break;
                 }
             }
         }
@@ -2423,6 +2494,7 @@ namespace OptimalControl.Forms
 
         private void cb_oc_2x1_CheckedChanged(object sender, EventArgs e)
         {
+            /*
             CheckBox checkBox = (CheckBox) sender;
             string variableCode = "";
             switch (checkBox.Name)
@@ -2442,7 +2514,6 @@ namespace OptimalControl.Forms
                 default:
                     break;
             }
-
             foreach (Variable parameter in _modbusTcpVariables)
             {
                 if (parameter.Code == variableCode)
@@ -2450,28 +2521,58 @@ namespace OptimalControl.Forms
                     parameter.IsEnabled = checkBox.Checked;
                     IVariableManager variableManager = _bllFactory.BuildIVariableManager();
                     variableManager.ModifyVariable(parameter);
+                    parameter.SetValueToModbusTcpMaster(ref _modbusTcpDevice);
+                    return;
                 }
             }
+            foreach (Device device in _devices)
+            {
+                foreach (Variable variable in device.Variables)
+                {
+                    if (variable.Code == variableCode)
+                    {
+                        variable.IsEnabled = checkBox.Checked;
+                        IVariableManager variableManager = _bllFactory.BuildIVariableManager();
+                        variableManager.ModifyVariable(variable);
+                        variable.SetValueToModbusTcpMaster(ref _modbusTcpDevice);
+                        return;
+                    }
+                }
+            }
+             * */
         }
 
         private void cb_oc_1x1_CheckedChanged(object sender, EventArgs e)
         {
+            /*
             CheckBox checkBox = (CheckBox)sender;
-
+            string variableCode = "";
             switch (checkBox.Name)
             {
                 case "cb_oc_101":
-
+                    variableCode = _displayedParaVariableCode[2];
                     break;
                 case "cb_oc_111":
-
+                    variableCode = _displayedParaVariableCode[7];
                     break;
                 case "cb_oc_121":
-
+                    variableCode = _displayedParaVariableCode[12];
                     break;
                 default:
                     break;
             }
+            foreach (Variable parameter in _modbusTcpVariables)
+            {
+                if (parameter.Code == variableCode)
+                {
+                    parameter.IsOutput = checkBox.Checked;
+                    IVariableManager variableManager = _bllFactory.BuildIVariableManager();
+                    variableManager.ModifyVariable(parameter);
+                    parameter.SetValueToModbusTcpMaster(ref _modbusTcpDevice);
+                    return;
+                }
+            }
+            * */
         }
 
         #endregion
