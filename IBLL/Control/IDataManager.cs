@@ -45,5 +45,13 @@ namespace IBLL.Control
         /// <returns>数据表DataTable</returns>
         DataTable GetAllDataInfoByTime(DateTime starTime, DateTime endTime);
 
+        /// <summary>
+        /// 统计投用率
+        /// </summary>
+        /// <param name="variableCode">使能变量名</param>
+        /// <param name="starTime">起始时间</param>
+        /// <param name="endTime">截止时间</param>
+        /// <returns></returns>
+        double GetUseRateByTime(string variableCode, DateTime starTime, DateTime endTime);
     }
 }

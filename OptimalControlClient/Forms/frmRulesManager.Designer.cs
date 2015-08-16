@@ -41,12 +41,12 @@
             this.tsbtn_rule_update = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbtn_rule_paras = new System.Windows.Forms.ToolStripButton();
-            this.dgv_oc_rules = new System.Windows.Forms.DataGridView();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.status_Label = new System.Windows.Forms.ToolStripStatusLabel();
+            this.dgv_oc_rules = new System.Windows.Forms.DataGridView();
             this.toolStrip_oc.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).BeginInit();
             this.statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip_oc
@@ -78,7 +78,7 @@
             this.tsbtn_rule_add.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_add.Image")));
             this.tsbtn_rule_add.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_add.Name = "tsbtn_rule_add";
-            this.tsbtn_rule_add.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_add.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_add.Text = "增加规则";
             this.tsbtn_rule_add.ToolTipText = "增加规则";
             this.tsbtn_rule_add.Click += new System.EventHandler(this.tsbtn_rule_add_Click);
@@ -88,7 +88,7 @@
             this.tsbtn_rule_edit.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_edit.Image")));
             this.tsbtn_rule_edit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_edit.Name = "tsbtn_rule_edit";
-            this.tsbtn_rule_edit.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_edit.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_edit.Text = "编辑规则";
             this.tsbtn_rule_edit.Click += new System.EventHandler(this.tsbtn_rule_edit_Click);
             // 
@@ -97,7 +97,7 @@
             this.tsbtn_rule_delete.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_delete.Image")));
             this.tsbtn_rule_delete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_delete.Name = "tsbtn_rule_delete";
-            this.tsbtn_rule_delete.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_delete.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_delete.Text = "删除规则";
             this.tsbtn_rule_delete.Click += new System.EventHandler(this.tsbtn_rule_delete_Click);
             // 
@@ -111,7 +111,7 @@
             this.tsbtn_rule_update.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_update.Image")));
             this.tsbtn_rule_update.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_update.Name = "tsbtn_rule_update";
-            this.tsbtn_rule_update.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_update.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_update.Text = "刷新列表";
             this.tsbtn_rule_update.Click += new System.EventHandler(this.tsbtn_rule_update_Click);
             // 
@@ -125,9 +125,24 @@
             this.tsbtn_rule_paras.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_paras.Image")));
             this.tsbtn_rule_paras.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtn_rule_paras.Name = "tsbtn_rule_paras";
-            this.tsbtn_rule_paras.Size = new System.Drawing.Size(84, 42);
+            this.tsbtn_rule_paras.Size = new System.Drawing.Size(85, 42);
             this.tsbtn_rule_paras.Text = "管理变量";
             this.tsbtn_rule_paras.Click += new System.EventHandler(this.tsbtn_rule_paras_Click);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.status_Label});
+            this.statusStrip.Location = new System.Drawing.Point(0, 706);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1004, 22);
+            this.statusStrip.TabIndex = 7;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // status_Label
+            // 
+            this.status_Label.Name = "status_Label";
+            this.status_Label.Size = new System.Drawing.Size(0, 17);
             // 
             // dgv_oc_rules
             // 
@@ -169,39 +184,18 @@
             this.dgv_oc_rules.RowHeadersVisible = false;
             this.dgv_oc_rules.RowTemplate.Height = 23;
             this.dgv_oc_rules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_oc_rules.ShowCellErrors = false;
-            this.dgv_oc_rules.ShowCellToolTips = false;
-            this.dgv_oc_rules.ShowEditingIcon = false;
-            this.dgv_oc_rules.ShowRowErrors = false;
-            this.dgv_oc_rules.Size = new System.Drawing.Size(1004, 683);
-            this.dgv_oc_rules.TabIndex = 6;
+            this.dgv_oc_rules.Size = new System.Drawing.Size(1004, 661);
+            this.dgv_oc_rules.TabIndex = 8;
             this.dgv_oc_rules.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_oc_rules_CellDoubleClick);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.status_Label});
-            this.statusStrip.Location = new System.Drawing.Point(0, 706);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1004, 22);
-            this.statusStrip.TabIndex = 7;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // status_Label
-            // 
-            this.status_Label.Name = "status_Label";
-            this.status_Label.Size = new System.Drawing.Size(0, 17);
             // 
             // frmRulesManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1004, 728);
-            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.dgv_oc_rules);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStrip_oc);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmRulesManager";
             this.ShowIcon = false;
@@ -210,9 +204,9 @@
             this.Text = "规则管理";
             this.toolStrip_oc.ResumeLayout(false);
             this.toolStrip_oc.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_oc_rules)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -229,8 +223,8 @@
         private System.Windows.Forms.ToolStripButton tsbtn_rule_update;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton tsbtn_rule_paras;
-        private System.Windows.Forms.DataGridView dgv_oc_rules;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel status_Label;
+        private System.Windows.Forms.DataGridView dgv_oc_rules;
     }
 }

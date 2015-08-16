@@ -26,8 +26,9 @@ namespace DAL
         {
             List<Log> logList = new List<Log>();
             //SQL命令
-            string sqltxt = string.Format("Select * From Log Where Time >= '{0}' & Time <= '{1}'", startTime, endTime);
-
+            string sqltxt = "Select * From Log Where LogTime >= '@StartTime' AND LogTime < '@EndTime'";
+            sqltxt = sqltxt.Replace("@StartTime", startTime.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("@EndTime", endTime.ToString("yyyy-MM-dd HH:mm:ss"));
             // 从配置文件读取连接字符串
             string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
 

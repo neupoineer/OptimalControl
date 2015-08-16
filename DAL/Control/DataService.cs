@@ -210,7 +210,50 @@ namespace DAL.Control
             }
             return dataset.Tables[0];
         }
-        
+
+        /// <summary>
+        /// 统计投用率
+        /// </summary>
+        /// <param name="variableCode">使能变量名</param>
+        /// <param name="startTime">起始时间</param>
+        /// <param name="endTime">截止时间</param>
+        /// <returns></returns>
+        public double GetUseRateByTime(string variableCode, DateTime startTime, DateTime endTime)
+        {
+            //SQL命令
+            string sqltxt = "SELECT SUM(Value)/COUNT(Value) AS 'UseRate' FROM Data WHERE " +
+                                  "VariableCode=@VariableCode AND TimeValue >= '@StartTime' AND TimeValue < '@EndTime'";
+
+            sqltxt = sqltxt.Replace("@StartTime", startTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
+                .Replace("@EndTime", endTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+
+            double useRate = 0;
+
+            // 从配置文件读取连接字符串
+            string connectionString = ConfigurationManager.ConnectionStrings["SQLSERVER"].ConnectionString;
+            // 执行 SQL 命令
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(sqltxt, conn);
+                SqlParameter prm1 = new SqlParameter("@VariableCode", SqlDbType.NVarChar, 16) {Value = variableCode};
+                cmd.Parameters.AddRange(new SqlParameter[] {prm1});
+                conn.Open();
+
+                using (SqlDataReader myReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                {
+                    if (myReader.Read())
+                    {
+                        useRate = Convert.ToDouble(myReader["UseRate"]);
+                    }
+                    else
+                        //如果没有读取到内容则抛出异常
+                        throw new Exception("查询错误！");
+                }
+            }
+            // 返回结果
+            return useRate;
+        }
+
         #endregion
     }
 }

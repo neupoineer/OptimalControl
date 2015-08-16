@@ -74,5 +74,21 @@ namespace BLL.Control
             //调用实例方法
             return dataService.GetAllDataInfoByTime(starTime, endTime);
         }
+
+        /// <summary>
+        /// 统计投用率
+        /// </summary>
+        /// <param name="variableCode">使能变量名</param>
+        /// <param name="startTime">起始时间</param>
+        /// <param name="endTime">截止时间</param>
+        /// <returns></returns>
+        public double GetUseRateByTime(string variableCode, DateTime startTime, DateTime endTime)
+        {
+            DALFactory.AbstractDALFactory absDALFactory = DALFactory.AbstractDALFactory.Instance();
+            //调用工厂方法生成实例
+            IDataService dataService = absDALFactory.BuildDataService();
+            //调用实例方法
+            return dataService.GetUseRateByTime(variableCode, startTime, endTime);
+        }
     }
 }

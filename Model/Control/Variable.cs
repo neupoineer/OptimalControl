@@ -199,6 +199,7 @@ namespace Model.Control
         public double HistoryValue
         {
             get { return _historyValue; }
+            set { _historyValue = value; }
         }
 
         /// <summary>
@@ -370,31 +371,38 @@ namespace Model.Control
         /// <returns>变量状态</returns>
         private void CheckVariableState()
         {
-            double tmpValue = _value*_ratio;
-            if (_isFiltered)
+            try
             {
-                tmpValue = CurrentValue;
-            }
+                double tmpValue = _value*_ratio;
+                if (_isFiltered)
+                {
+                    tmpValue = CurrentValue;
+                }
 
-            if (_limit.UltimateLowerLimit >= 0 && tmpValue < _limit.UltimateLowerLimit)
-            {
-                _state = VariableState.LL;
+                if (_limit.UltimateLowerLimit >= 0 && tmpValue < _limit.UltimateLowerLimit)
+                {
+                    _state = VariableState.LL;
+                }
+                else if (_limit.UltimateHigherLimit > 0 && tmpValue > _limit.UltimateHigherLimit)
+                {
+                    _state = VariableState.HH;
+                }
+                else if (_limit.LowerLimit > 0 && tmpValue < _limit.LowerLimit)
+                {
+                    _state = VariableState.L;
+                }
+                else if (_limit.HigherLimit > 0 && tmpValue > _limit.HigherLimit)
+                {
+                    _state = VariableState.H;
+                }
+                else
+                {
+                    _state = VariableState.N;
+                }
             }
-            else if (_limit.UltimateHigherLimit > 0 && tmpValue > _limit.UltimateHigherLimit)
+            catch (Exception ex)
             {
-                _state = VariableState.HH;
-            }
-            else if (_limit.LowerLimit > 0 && tmpValue < _limit.LowerLimit)
-            {
-                _state = VariableState.L;
-            } 
-            else if (_limit.HigherLimit > 0 && tmpValue > _limit.HigherLimit)
-            {
-                _state = VariableState.H;
-            }
-            else
-            {
-                _state = VariableState.N;
+                RecordLog.WriteLogFile("CheckVariableState", ex.Message);
             }
         }
 
@@ -403,28 +411,36 @@ namespace Model.Control
         /// </summary>
         private void CheckVariableTrand()
         {
-            if (_trendHigherList.Count >= _trendListLength)
+            try
             {
-                _trend = VariableTrend.Uptrend;
-                _trendValue = LeastSquareMethod(_trendHigherList);
                 if (_trendHigherList.Count >= _trendListLength)
                 {
-                    _trendHigherList.RemoveAt(0);
+                    _trend = VariableTrend.Uptrend;
+                    _trendValue = LeastSquareMethod(_trendHigherList);
+                    if (_trendHigherList.Count > _trendListLength)
+                    {
+                        _trendHigherList.RemoveAt(0);
+                    }
                 }
-            }
-            else if (_trendLowerList.Count >= _trendListLength)
-            {
-                _trend = VariableTrend.Downtrend;
-                _trendValue = LeastSquareMethod(_trendLowerList);
-                if (_trendLowerList.Count >= _trendListLength)
+                else if (_trendLowerList.Count >= _trendListLength)
                 {
-                    _trendLowerList.RemoveAt(0);
+                    _trend = VariableTrend.Downtrend;
+                    _trendValue = LeastSquareMethod(_trendLowerList);
+                    if (_trendLowerList.Count > _trendListLength)
+                    {
+                        _trendLowerList.RemoveAt(0);
+                    }
                 }
+                else
+                {
+                    _trend = VariableTrend.Stable;
+                    _trendValue = LeastSquareMethod(_historyValuesList);
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                _trend = VariableTrend.Stable;
-                _trendValue = LeastSquareMethod(_historyValuesList);
+                RecordLog.WriteLogFile("CheckVariableTrand", ex.Message);
             }
         }
 
@@ -450,35 +466,42 @@ namespace Model.Control
         /// <returns></returns>
         private double LeastSquareMethod(List<double> dataList)
         {
-            int listlength = dataList.Count;
-            double sumX = 0;
-            double sumY = 0;
-            double sumXY = 0;
-            double sumXX = 0;
-
-            if (listlength < 2)
+            try
             {
-                return 0;
+                int listlength = dataList.Count;
+                double sumX = 0;
+                double sumY = 0;
+                double sumXY = 0;
+                double sumXX = 0;
+
+                if (listlength < 2)
+                {
+                    return 0;
+                }
+
+                for (int index = 0; index <= listlength - 1; index++)
+                {
+                    //X和
+                    sumX += index;
+                    //Y和
+                    sumY += dataList[index];
+                    //XY和
+                    sumXY += index*dataList[index];
+                    //XX和
+                    sumXX += index*index;
+                }
+
+                //nΣxx-(Σx)2
+                double divisor = listlength*sumXX - sumX*sumX;
+                if (Math.Abs(divisor) > 1E-06)
+                {
+                    //(nΣxy - ΣxΣy)/[nΣx2-(Σx)2]
+                    return ((listlength*sumXY - sumX*sumY)/divisor);
+                }
             }
-
-            for (int index = 0; index <= listlength - 1; index++)
+            catch (Exception ex)
             {
-                //X和
-                sumX += index;
-                //Y和
-                sumY += dataList[index];
-                //XY和
-                sumXY += index * dataList[index];
-                //XX和
-                sumXX += index * index;
-            }
-
-            //nΣxx-(Σx)2
-            double divisor = listlength * sumXX - sumX * sumX;
-            if (Math.Abs(divisor) > 1E-06)
-            {
-                //(nΣxy - ΣxΣy)/[nΣx2-(Σx)2]
-                return ((listlength*sumXY - sumX*sumY)/divisor);
+                RecordLog.WriteLogFile("LeastSquareMethod", ex.Message);
             }
             return 0;
         }
@@ -488,74 +511,85 @@ namespace Model.Control
         /// </summary>
         public void ProcessValueData()
         {
-            CheckVariableValid();
-            _historyValuesList.Add(RealValue);
-            if (_historyValuesList.Count > _historyListLength)
+            try
             {
-                _historyValuesList.RemoveAt(0);
-            }
-
-            int historyListRealCount = _historyValuesList.Count;
-            if ((historyListRealCount >= _trendLength*2 + _trendInterval) && (_trendLength > 0))
-            {
-                double sum1 = 0;
-                double sum2 = 0;
-
-                for (int index = 0; index < _trendLength; index++)
+                CheckVariableValid();
+                _historyValuesList.Add(RealValue);
+                if (_historyValuesList.Count > _historyListLength)
                 {
-                    sum1 += _historyValuesList[historyListRealCount - 1 - _trendLength - _trendInterval - index];
-                    sum2 += _historyValuesList[historyListRealCount - 1 - index];
+                    _historyValuesList.RemoveAt(0);
                 }
-                double trendValue = (sum2 - sum1)/_trendLength;
 
-                if (trendValue > TrendHigherLimit)
+                int historyListRealCount = _historyValuesList.Count;
+                if ((historyListRealCount >= _trendLength*2 + _trendInterval) && (_trendLength > 0))
                 {
-                    _trendHigherList.Add(RealValue);
-                    _trendLowerList.Clear();
-                }
-                else if (trendValue < _trendLowerLimit)
-                {
-                    _trendLowerList.Add(RealValue);
-                    _trendHigherList.Clear();
+                    double sum1 = 0;
+                    double sum2 = 0;
+                    for (int index = 0; index < _trendLength; index++)
+                    {
+                        sum1 += _historyValuesList[historyListRealCount - 1 - _trendLength - _trendInterval - index];
+                        sum2 += _historyValuesList[historyListRealCount - 1 - index];
+                    }
+                    double trendValue = (sum2 - sum1)/_trendLength;
+                    if (trendValue > TrendHigherLimit)
+                    {
+                        _trendHigherList.Add(RealValue);
+                        _trendLowerList.Clear();
+                    }
+                    else if (trendValue < _trendLowerLimit)
+                    {
+                        _trendLowerList.Add(RealValue);
+                        _trendHigherList.Clear();
+                    }
+                    else
+                    {
+                        _trendHigherList.Clear();
+                        _trendLowerList.Clear();
+                    }
+
+                    _currentValue = sum2/_trendLength;
                 }
                 else
                 {
-                    _trendHigherList.Clear();
-                    _trendLowerList.Clear();
+                    _currentValue = _value*_ratio;
                 }
-
-                _currentValue = sum2/_trendLength;
+                CheckVariableState();
+                CheckVariableTrand();
             }
-            else
+            catch (Exception ex)
             {
-                _currentValue = _value*_ratio;
+                RecordLog.WriteLogFile("ProcessValueData", ex.Message);
             }
-
-            CheckVariableState();
-            CheckVariableTrand();
         }
 
         public void UpdateHistoryValue()
         {
-            int historyListRealCount = _historyValuesList.Count;
-            if (_isFiltered)
+            try
             {
-                if (historyListRealCount >= _trendLength + 1)
+                int historyListRealCount = _historyValuesList.Count;
+                if (_isFiltered)
                 {
-                    double sum = 0;
-                    for (int index = 0; index < _trendLength; index++)
+                    if (historyListRealCount >= _trendLength + 1)
                     {
-                        sum += _historyValuesList[historyListRealCount - 2 - index];
+                        double sum = 0;
+                        for (int index = 0; index < _trendLength; index++)
+                        {
+                            sum += _historyValuesList[historyListRealCount - 2 - index];
+                        }
+                        _historyValue = sum/_trendLength;
                     }
-                    _historyValue = sum/_trendLength;
+                }
+                else
+                {
+                    if (historyListRealCount > 0)
+                    {
+                        _historyValue = _historyValuesList[historyListRealCount - 1];
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (historyListRealCount > 0)
-                {
-                    _historyValue = _historyValuesList[historyListRealCount - 1];
-                }
+                RecordLog.WriteLogFile("UpdateHistoryValue", ex.Message);
             }
         }
 

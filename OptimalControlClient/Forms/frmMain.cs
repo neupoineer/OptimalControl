@@ -25,7 +25,6 @@ using System.Net.Sockets;
 using System.Timers;
 using IBLL;
 using IBLL.Control;
-using log4net.Appender;
 using Modbus.Device;
 using Modbus.Data;
 using Model.Control;
@@ -223,7 +222,7 @@ namespace OptimalControl.Forms
 
         private string[] _displayedStausVariableCode = new string[]
         {
-            "CS060100030102", "CS040100030103", "CS010100060101", "CS060100030104"
+            "CS060100030101", "CS040100030103", "CS010100060101", "CS060100030104"
         };
 
         private int[] _displayedStausDeviceId = new int[]
@@ -275,6 +274,26 @@ namespace OptimalControl.Forms
 
                 _masterPaneGraphHistory = zgc_history.MasterPane;
                 zgc_history.ContextMenuBuilder += ZgcContextMenuBuilder;
+
+                _clientName = ConfigExeSettings.GetSettingString("ClientName", "管理端");
+
+                // 创建类实例
+                IDeviceManager deviceManager = _bllFactory.BuildDeviceManager();
+                _devices = deviceManager.GetAllDeviceInfo();
+                IVariableManager variableManager = _bllFactory.BuildIVariableManager();
+                foreach (Device device in _devices)
+                {
+                    device.Variables = variableManager.GetVariableByDeviceId(device.Id);
+                    if (device.Name == _clientName)
+                    {
+                        _modbusTcpDevice = new ModbusTcpDevice()
+                        {
+                            IP = device.ModbusTcpDevice.IP,
+                            Port = device.ModbusTcpDevice.Port,
+                            UnitID = device.ModbusTcpDevice.UnitID,
+                        };
+                    }
+                }
 
                 LoadSettings();
 
@@ -475,24 +494,16 @@ namespace OptimalControl.Forms
                 _clientName = ConfigExeSettings.GetSettingString("ClientName", "管理端");
 
                 // 创建类实例
-                IDeviceManager deviceManager = _bllFactory.BuildDeviceManager();
-                _devices = deviceManager.GetAllDeviceInfo();
                 IVariableManager variableManager = _bllFactory.BuildIVariableManager();
 
                 foreach (Device device in _devices)
                 {
-                    //device.ModbusTcpDevice.TcpClient = new TcpClient();
-                    //device.ModbusTcpMasterCreated = false;
-                    //device.ModbusTcpMasterUpdated = false;
                     device.Variables = variableManager.GetVariableByDeviceId(device.Id);
                     if (device.Name == _clientName)
                     {
-                        _modbusTcpDevice = new ModbusTcpDevice()
-                        {
-                            IP = device.ModbusTcpDevice.IP,
-                            Port = device.ModbusTcpDevice.Port,
-                            UnitID = device.ModbusTcpDevice.UnitID,
-                        };
+                        _modbusTcpDevice.IP = device.ModbusTcpDevice.IP;
+                        _modbusTcpDevice.Port = device.ModbusTcpDevice.Port;
+                        _modbusTcpDevice.UnitID = device.ModbusTcpDevice.UnitID;
                     }
                 }
 
@@ -514,6 +525,13 @@ namespace OptimalControl.Forms
 
                 _masterPaneGraphRealtime.Title.Text = ConfigExeSettings.GetSettingString("MasterTitle", "My MasterPane Title");
                 _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigExeSettings.GetSettingSingle("MasterTitleSize", 12);
+
+                tb_oc_104.Text = ConfigExeSettings.GetSettingString("FeedMax", "");
+                tb_oc_105.Text = ConfigExeSettings.GetSettingString("FeedMin", "");
+                tb_oc_114.Text = ConfigExeSettings.GetSettingString("FeedWaterMax", "");
+                tb_oc_115.Text = ConfigExeSettings.GetSettingString("FeedWaterMin", "");
+                tb_oc_124.Text = ConfigExeSettings.GetSettingString("SupWaterMax", "");
+                tb_oc_125.Text = ConfigExeSettings.GetSettingString("SupWaterMin", "");
 
                 tempString = ConfigExeSettings.GetValue("CurveList").Trim();
                 if (tempString.Length > 0)
@@ -694,7 +712,7 @@ namespace OptimalControl.Forms
                         catch (Exception)
                         {
                             ModbusTcpStopComm(); //处理连接错误，重试连接
-                            ModbusTcpCreateListener(ref _modbusTcpDevice);
+                            _modbusTcpSlaveCreated = ModbusTcpCreateListener(ref _modbusTcpDevice);
                             continue;
                         }
                         byte[] byteString = new byte[4];
@@ -732,7 +750,7 @@ namespace OptimalControl.Forms
                                     catch (Exception)
                                     {
                                         ModbusTcpStopComm(); //处理连接错误，重试连接
-                                        ModbusTcpCreateListener(ref _modbusTcpDevice);
+                                        _modbusTcpSlaveCreated = ModbusTcpCreateListener(ref _modbusTcpDevice);
                                         continue;
                                     }
                                     byte[] byteString = new byte[4];
@@ -815,7 +833,10 @@ namespace OptimalControl.Forms
                 ListViewGroup[] listGroups = new ListViewGroup[_devices.Count + 1];
                 for (int index = 0; index < (_devices.Count); index++)
                 {
-                    listGroups[index] = new ListViewGroup(_devices[index].Name, HorizontalAlignment.Center);
+                    if (_devices[index].State)
+                    {
+                        listGroups[index] = new ListViewGroup(_devices[index].Name, HorizontalAlignment.Center);
+                    }
                 }
                 listGroups[_devices.Count] = new ListViewGroup(_dcsName, HorizontalAlignment.Center);
                 listview_parainfo.Groups.AddRange(listGroups);
@@ -826,19 +847,29 @@ namespace OptimalControl.Forms
                     {
                         if (_devices[deviceIndex].State)
                         {
-                            ListViewItem[] listViewItems = new ListViewItem[_devices[deviceIndex].Variables.Count];
+                            List<ListViewItem> listViewItems = new List<ListViewItem>();
                             for (int paraIndex = 0; paraIndex < _devices[deviceIndex].Variables.Count; paraIndex++)
                             {
-                                listViewItems[paraIndex] =
-                                    new ListViewItem(
-                                        new string[]
-                                    {
-                                        _devices[deviceIndex].Variables[paraIndex].Name,
-                                        _devices[deviceIndex].Variables[paraIndex].Value.ToString("F02")
-                                    },
-                                        listGroups[deviceIndex]) { BackColor = (paraIndex % 2 == 0 ? Color.White : Color.Cyan) };
+                                if (_devices[deviceIndex].Variables[paraIndex].IsEnabled &&
+                                    _devices[deviceIndex].Variables[paraIndex].IsDisplayed)
+                                {
+                                    listViewItems.Add(
+                                        new ListViewItem(
+                                            new string[]
+                                            {
+                                                _devices[deviceIndex].Variables[paraIndex].Name,
+                                                _devices[deviceIndex].Variables[paraIndex].Value.ToString("F02")
+                                            },
+                                            listGroups[deviceIndex])
+                                        {
+                                            BackColor = (paraIndex%2 == 0 ? Color.White : Color.Cyan)
+                                        });
+                                }
                             }
-                            listview_parainfo.Items.AddRange(listViewItems);
+                            if (listViewItems.Count > 0)
+                            {
+                                listview_parainfo.Items.AddRange(listViewItems.ToArray());
+                            }
                         }
                     }
 
@@ -871,7 +902,7 @@ namespace OptimalControl.Forms
             }
             catch (Exception ex)
             {
-                RecordLog.WriteLogFile("RefreshRegisterList", ex.Message);
+                RecordLog.WriteLogFile("UpdateRegisterList", ex.Message);
             }
         }
 
@@ -1763,6 +1794,7 @@ namespace OptimalControl.Forms
                 UpdateCurveData();
                 UpdateOcTextBox();
                 UpdateLogGrid();
+                IDataManager dataManager = _bllFactory.BuildDataManager();
 
                 foreach (Variable variable in _modbusTcpVariables)
                 {
@@ -1784,9 +1816,123 @@ namespace OptimalControl.Forms
                                 tsbtn_rule_stop.Enabled = false;
                             }));
                         }
+                        continue;
+                    }
+                }
+
+                foreach (Device device in _devices)
+                {
+                    if (device.Name == _clientName)
+                    {
+                        foreach (Variable variable in device.Variables)
+                        {
+                            if (variable.Code == _displayedParaVariableCode[3])
+                            {
+                                double tmpValue;
+                                if (double.TryParse(tb_oc_104.Text.Trim(), out tmpValue))
+                                {
+                                    variable.RealValue = tmpValue;
+                                }
+                                if (_modbusTcpSlaveCreated)
+                                {
+                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                }
+                                continue;
+                            }
+                            if (variable.Code == _displayedParaVariableCode[4])
+                            {
+                                double tmpValue;
+                                if (double.TryParse(tb_oc_105.Text.Trim(), out tmpValue))
+                                {
+                                    variable.RealValue = tmpValue;
+                                }
+                                if (_modbusTcpSlaveCreated)
+                                {
+                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                }
+                                continue;
+                            }
+                            if (variable.Code == _displayedParaVariableCode[8])
+                            {
+                                double tmpValue;
+                                if (double.TryParse(tb_oc_114.Text.Trim(), out tmpValue))
+                                {
+                                    variable.RealValue = tmpValue;
+                                }
+                                if (_modbusTcpSlaveCreated)
+                                {
+                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                }
+                                continue;
+                            }
+                            if (variable.Code == _displayedParaVariableCode[9])
+                            {
+                                double tmpValue;
+                                if (double.TryParse(tb_oc_115.Text.Trim(), out tmpValue))
+                                {
+                                    variable.RealValue = tmpValue;
+                                }
+                                if (_modbusTcpSlaveCreated)
+                                {
+                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                }
+                                continue;
+                            }
+                            if (variable.Code == _displayedParaVariableCode[13])
+                            {
+                                double tmpValue;
+                                if (double.TryParse(tb_oc_124.Text.Trim(), out tmpValue))
+                                {
+                                    variable.RealValue = tmpValue;
+                                }
+                                if (_modbusTcpSlaveCreated)
+                                {
+                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                }
+                                continue;
+                            }
+                            if (variable.Code == _displayedParaVariableCode[14])
+                            {
+                                double tmpValue;
+                                if (double.TryParse(tb_oc_125.Text.Trim(), out tmpValue))
+                                {
+                                    variable.RealValue = tmpValue;
+                                }
+                                if (_modbusTcpSlaveCreated)
+                                {
+                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
+                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                }
+                                continue;
+                            }
+                        }
                         break;
                     }
                 }
+
 
                 if (_updateGraphFlag)
                     UpdateGraph(ref _masterPaneGraphRealtime, ref zgc_realtime, _curves);
@@ -1900,7 +2046,10 @@ namespace OptimalControl.Forms
                     }
                 }
 
-                _modbusTcpSlaveCreated = ModbusTcpCreateListener(ref _modbusTcpDevice);
+                if (!_modbusTcpSlaveCreated)
+                {
+                    _modbusTcpSlaveCreated = ModbusTcpCreateListener(ref _modbusTcpDevice);
+                }
                 if (_modbusTcpSlaveCreated)
                 {
                     _realTimerFlag = true;
@@ -1936,7 +2085,6 @@ namespace OptimalControl.Forms
                     menu_config_config.Enabled = false;
                     menu_config_user.Enabled = false;
                     menu_config_devices.Enabled = false;
-                    menu_config_parameters.Enabled = false;
                     menu_file_quit.Enabled = false;
                     menu_file_login.Enabled = false;
                     menu_file_logoff.Enabled = true;
@@ -1973,7 +2121,7 @@ namespace OptimalControl.Forms
             SynchroButton();
 
             ClearGraph();
-            ModbusTcpStopComm();
+            //ModbusTcpStopComm();
             //listview_parainfo.Items.Clear();
             status_Label.Text = "停止.";
             _isRunning = false;
@@ -2183,6 +2331,47 @@ namespace OptimalControl.Forms
                     startTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
                     dataTable.Rows.Count);
+            }
+        }
+
+
+        private void btn_use_rate_Click(object sender, EventArgs e)
+        {
+            DateTime startTime = dtp_data_start.Value; //查询起始时间
+            DateTime endTime = dtp_data_end.Value; //查询截止时间
+            if (endTime > startTime)
+            {
+                IDataManager dataManager = _bllFactory.BuildDataManager();
+                double useRate = dataManager.GetUseRateByTime(_optimalControlEnabledVariable, startTime, endTime);
+                tb_use_rate.Text = useRate.ToString("P");
+            }
+        }
+
+        private void btn_use_prev_Click(object sender, EventArgs e)
+        {
+            DateTime endTime = dtp_data_start.Value; //查询截止时间
+            DateTime startTime = dtp_data_start.Value - (dtp_data_end.Value - dtp_data_start.Value); //查询起始时间
+            if (endTime > startTime)
+            {
+                IDataManager dataManager = _bllFactory.BuildDataManager();
+                double useRate = dataManager.GetUseRateByTime(_optimalControlEnabledVariable, startTime, endTime);
+                tb_use_rate.Text = useRate.ToString("P");
+                dtp_data_start.Value = startTime;
+                dtp_data_end.Value = endTime;
+            }
+        }
+
+        private void btn_use_next_Click(object sender, EventArgs e)
+        {
+            DateTime startTime = dtp_data_end.Value; //查询起始时间
+            DateTime endTime = dtp_data_end.Value + (dtp_data_end.Value - dtp_data_start.Value); //查询截止时间
+            if (endTime > startTime)
+            {
+                IDataManager dataManager = _bllFactory.BuildDataManager();
+                double useRate = dataManager.GetUseRateByTime(_optimalControlEnabledVariable, startTime, endTime);
+                tb_use_rate.Text = useRate.ToString("P");
+                dtp_data_start.Value = startTime;
+                dtp_data_end.Value = endTime;
             }
         }
 
@@ -2576,5 +2765,6 @@ namespace OptimalControl.Forms
         }
 
         #endregion
+
     }
 }
