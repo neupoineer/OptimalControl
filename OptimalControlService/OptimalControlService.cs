@@ -62,6 +62,7 @@ namespace OptimalControlService
         /// The real timer
         /// </summary>
         private System.Threading.Timer _timerRuleDelay;
+        private System.Threading.Timer _timerFirstRound;
 
         /// <summary>
         /// The real timer flag
@@ -467,7 +468,10 @@ namespace OptimalControlService
                     _modbusRtuSlave.ModbusSlaveRequestReceived -= ModbusRTU_Request_Event;
                     _modbusRtuSlave.DataStore.DataStoreWrittenTo -= ModbusRTU_DataStoreWriteTo_Event;
                     _modbusRtuDevice.SerialPortObject.Close();
-                    _modbusRtuSlave.Dispose();
+                    if (_modbusRtuSlave != null)
+                    {
+                        _modbusRtuSlave.Dispose();
+                    }
                     _modbusRtuSlaveThread.Abort();
                     _isModbusRtuSlaveCreated = false;
                 }
@@ -875,10 +879,20 @@ namespace OptimalControlService
                                                 && (Math.Abs(min - _errorValue) > 1E-06)
                                                 && (Math.Abs(min) > 1E-06))
                                             {
-                                                if (opVariable.Value > max)
-                                                    opVariable.Value = max;
-                                                if (opVariable.Value < min)
-                                                    opVariable.Value = min;
+                                                if (opVariable.Value > parameter.RealValue)
+                                                {
+                                                    if (opVariable.Value > max)
+                                                    {
+                                                        opVariable.Value = max;
+                                                    }
+                                                }
+                                                else if (opVariable.Value < parameter.RealValue)
+                                                {
+                                                    if (opVariable.Value < min)
+                                                    {
+                                                        opVariable.Value = min;
+                                                    }
+                                                }
                                             }
                                         }
                                         else if (parameter.Name == _optimalControlFeedWaterVariable)
@@ -890,10 +904,20 @@ namespace OptimalControlService
                                                 && (Math.Abs(min - _errorValue) > 1E-06)
                                                 && (Math.Abs(min) > 1E-06))
                                             {
-                                                if (opVariable.Value > max)
-                                                    opVariable.Value = max;
-                                                if (opVariable.Value < min)
-                                                    opVariable.Value = min;
+                                                if (opVariable.Value > parameter.RealValue)
+                                                {
+                                                    if (opVariable.Value > max)
+                                                    {
+                                                        opVariable.Value = max;
+                                                    }
+                                                }
+                                                else if (opVariable.Value < parameter.RealValue)
+                                                {
+                                                    if (opVariable.Value < min)
+                                                    {
+                                                        opVariable.Value = min;
+                                                    }
+                                                }
                                             }
                                         }
                                         else if (parameter.Name == _optimalControlSupWaterVariable)
@@ -905,10 +929,20 @@ namespace OptimalControlService
                                                 && (Math.Abs(min - _errorValue) > 1E-06)
                                                 && (Math.Abs(min) > 1E-06))
                                             {
-                                                if (opVariable.Value > max)
-                                                    opVariable.Value = max;
-                                                if (opVariable.Value < min)
-                                                    opVariable.Value = min;
+                                                if (opVariable.Value > parameter.RealValue)
+                                                {
+                                                    if (opVariable.Value > max)
+                                                    {
+                                                        opVariable.Value = max;
+                                                    }
+                                                }
+                                                else if (opVariable.Value < parameter.RealValue)
+                                                {
+                                                    if (opVariable.Value < min)
+                                                    {
+                                                        opVariable.Value = min;
+                                                    }
+                                                }
                                             }
                                         }
                                         parameter.RealValue = opVariable.Value;
@@ -1024,7 +1058,7 @@ namespace OptimalControlService
                             AddLogInfo(addLog);
                         }
                     }
-
+                    //
                     if (((rule.Priority != 0) && (rule.Priority != 3)) ||
                         ((!_isRuleTriggered) && (rule.Priority == 3)))
                     {
@@ -1417,16 +1451,17 @@ namespace OptimalControlService
                                 {
                                     if (variable.Code == _optimalControlEnabledClientVariable)
                                     {
-                                        if ((variable.Value == 1) && (variable.HistoryValue == 0))
-                                        {
-                                            parameter.Value = 1;
-                                            if (_isModbusRtuSlaveCreated)
-                                            {
-                                                parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
-                                            }
-                                            break;
-                                        }
-                                        else if ((variable.Value == 0) && (variable.HistoryValue == 1))
+                                        //if ((variable.Value == 1) && (variable.HistoryValue == 0))
+                                        //{
+                                        //    parameter.Value = 1;
+                                        //    if (_isModbusRtuSlaveCreated)
+                                        //    {
+                                        //        parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                                        //    }
+                                        //    break;
+                                        //}
+                                        //else 
+                                        if ((variable.Value == 0) && (variable.HistoryValue == 1))
                                         {
                                             parameter.Value = 0;
                                             if (_isModbusRtuSlaveCreated)
@@ -1454,20 +1489,159 @@ namespace OptimalControlService
                                             }
                                             break;
                                         }
-
                                     }
                                 }
                                 break;
                             }
                         }
-                        _execteRulesFlag = parameter.Value > 1E-06;
+
+                        double realValue = 0;
+                        double histroyValue = 0;
+                        foreach (Variable variable in _modbusRtuParameters)
+                        {
+                            if (variable.Code == _remoteStatusVariableCode)
+                            {
+                                realValue = variable.RealValue;
+                                histroyValue = variable.HistoryValue;
+                                break;
+                            }
+                        }
+                        if (realValue == 1 && ((histroyValue == 0) || (histroyValue == 2)))
+                        {
+                            parameter.Value = 1;
+                            if (_isModbusRtuSlaveCreated)
+                            {
+                                parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            }
+                        }
+                        else if (realValue == 0)
+                        {
+                            parameter.Value = 0;
+                            if (_isModbusRtuSlaveCreated)
+                            {
+                                parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            }
+                        }
+
                         if ((parameter.Value == 1) && (parameter.HistoryValue == 0))
                         {
+                            _isRuleTriggered = false;
+                            if (_timerRuleDelay != null)
+                            {
+                                _timerRuleDelay.Dispose();
+                            } _execteRulesFlag = false;
+                            _timerFirstRound = new System.Threading.Timer(TimerFirstRoundElapsed, null, 8, 0);
                             RecordLog.WriteLogFile("Start", "Optimal control started!");
                         }
-                        else if ((parameter.Value == 0) && (parameter.HistoryValue == 1))
+                        else if (parameter.Value == 0)
                         {
+                            _isRuleTriggered = false;
+                            if (_timerRuleDelay != null)
+                            {
+                                _timerRuleDelay.Dispose();
+                            } _execteRulesFlag = false;
                             RecordLog.WriteLogFile("Stop", "Optimal control stoped!");
+                        }
+                        continue;
+                    }
+
+                    if (!_execteRulesFlag)
+                    {
+                        if (parameter.Code == _optimalControlFeedVariable)
+                        {
+                            double tmpValue = GetValueByCode(_feedVariable);
+                            if (Math.Abs(tmpValue - _errorValue) > 1E-06)
+                            {
+                                parameter.RealValue = tmpValue;
+                                parameter.InitialValue = tmpValue;
+                            }
+                            else
+                            {
+                                parameter.RealValue = parameter.Limit.LowerLimit;
+                            }
+                            if (_isModbusRtuSlaveCreated)
+                            {
+                                parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            }
+                            continue;
+                        }
+                        if (parameter.Code == _optimalControlFeedWaterVariable)
+                        {
+                            double tmpValue = GetValueByCode(_feedWaterVariable);
+                            if (Math.Abs(tmpValue - _errorValue) > 1E-06)
+                            {
+                                parameter.RealValue = tmpValue;
+                                parameter.InitialValue = tmpValue;
+                            }
+                            else
+                            {
+                                parameter.RealValue = parameter.Limit.LowerLimit;
+                            }
+                            if (_isModbusRtuSlaveCreated)
+                            {
+                                parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            }
+                            continue;
+                        }
+                        if (parameter.Code == _optimalControlSupWaterVariable)
+                        {
+                            double tmpValue = GetValueByCode(_supWaterVariable);
+                            if (Math.Abs(tmpValue - _errorValue) > 1E-06)
+                            {
+                                parameter.RealValue = tmpValue;
+                                parameter.InitialValue = tmpValue;
+                            }
+                            else
+                            {
+                                parameter.RealValue = parameter.Limit.LowerLimit;
+                            }
+                            if (_isModbusRtuSlaveCreated)
+                            {
+                                parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                            }
+                            continue;
+                        }
+                    }
+                    if ((parameter.Code == _feedVariable)
+                        || (parameter.Code == _feedWaterVariable)
+                        || (parameter.Code == _supWaterVariable))
+                    {
+                        double stepThreshold = 1E-06;
+                        if (parameter.Code == _feedVariable)
+                            stepThreshold = 5;
+                        else if (parameter.Code == _feedWaterVariable)
+                            stepThreshold = 1;
+                        else if (parameter.Code == _supWaterVariable)
+                            stepThreshold = 10;
+
+                        if (Math.Abs(parameter.HistoryValue - parameter.RealValue) > stepThreshold)
+                        {
+                            //if (!_execteRulesFlag)
+                            //{
+                            //    long period = 300000;
+                            //    if (parameter.ControlPeriod > 0)
+                            //    {
+                            //        period = parameter.ControlPeriod*1000;
+                            //    }
+                            //    if (_isRuleTriggered)
+                            //    {
+                            //        _timerRuleDelay.Dispose();
+                            //    }
+                            //    _isRuleTriggered = true;
+                            //    _timerRuleDelay = new System.Threading.Timer(TimerRuleDelayElapsed, null, period, 0);
+                            //}
+                            Log addLog = new Log()
+                            {
+                                LogTime = DateTime.Now,
+                                Type = Log.LogType.提示,
+                                Content =
+                                    string.Format("{0}由{1}修改为{2}",
+                                        parameter.Name,
+                                        parameter.HistoryValue,
+                                        parameter.RealValue),
+                                State = false,
+                            };
+                            AddLogInfo(addLog);
                         }
                         continue;
                     }
@@ -1517,6 +1691,7 @@ namespace OptimalControlService
             {
                 if (_isModbusRtuSlaveCreated)
                 {
+
                     foreach (Variable variable in _modbusRtuParameters)
                     {
                         if (!variable.IsRead)
@@ -1524,11 +1699,7 @@ namespace OptimalControlService
                             continue;
                         }
 
-                        if (!((variable.Code == _feedVariable)
-                            || (variable.Code == _feedWaterVariable)
-                            || (variable.Code == _supWaterVariable)
-                            || (variable.Code == _remoteStatusVariableCode)
-                            ))
+                        if (variable.Code != _remoteStatusVariableCode)
                         {
                             continue;
                         }
@@ -1592,6 +1763,7 @@ namespace OptimalControlService
                             {
                                 realValue = variable.RealValue;
                                 histroyValue = variable.HistoryValue;
+                                break;
                             }
                         }
                         if (realValue == 1 && ((histroyValue == 0)||(histroyValue ==2)))
@@ -1602,7 +1774,7 @@ namespace OptimalControlService
                                 parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
                             }
                         }
-                        else if (realValue == 0 && ((histroyValue == 1) || (histroyValue == 2)))
+                        else if (realValue == 0)
                         {
                             parameter.Value = 0;
                             if (_isModbusRtuSlaveCreated)
@@ -1610,116 +1782,38 @@ namespace OptimalControlService
                                 parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
                             }
                         }
-                        _execteRulesFlag = parameter.Value > 1E-06;
-                        parameter.HistoryValue = parameter.Value;
-                        //foreach (Variable variable in _modbusRtuParameters)
-                        //{
-                        //    if (variable.Code == _remoteStatus)
-                        //    {
-                        //        variable.UpdateHistoryValue();
-                        //    }
-                        //}
-                        continue;
-                    }
 
-                    if (parameter.Code == _optimalControlFeedVariable)
-                    {
-                        double tmpValue = GetValueByCode(_feedVariable);
-                        if (Math.Abs(tmpValue - _errorValue) > 1E-06)
+                        if ((parameter.Value == 1) && (parameter.HistoryValue == 0))
                         {
-                            parameter.RealValue = tmpValue;
-                            parameter.InitialValue = tmpValue;
-                        }
-                        else
-                        {
-                            parameter.RealValue = parameter.Limit.LowerLimit;
-                        }
-                        if (_isModbusRtuSlaveCreated)
-                        {
-                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
-                        }
-                        parameter.HistoryValue = parameter.Value;
-                        continue;
-                    }
-                    if (parameter.Code == _optimalControlFeedWaterVariable)
-                    {
-                        double tmpValue = GetValueByCode(_feedWaterVariable);
-                        if (Math.Abs(tmpValue - _errorValue) > 1E-06)
-                        {
-                            parameter.RealValue = tmpValue;
-                            parameter.InitialValue = tmpValue;
-                        }
-                        else
-                        {
-                            parameter.RealValue = parameter.Limit.LowerLimit;
-                        }
-                        if (_isModbusRtuSlaveCreated)
-                        {
-                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
-                        }
-                        parameter.HistoryValue = parameter.Value;
-                        continue;
-                    }
-                    if (parameter.Code == _optimalControlSupWaterVariable)
-                    {
-                        double tmpValue = GetValueByCode(_supWaterVariable);
-                        if (Math.Abs(tmpValue - _errorValue) > 1E-06)
-                        {
-                            parameter.RealValue = tmpValue;
-                            parameter.InitialValue = tmpValue;
-                        }
-                        else
-                        {
-                            parameter.RealValue = parameter.Limit.LowerLimit;
-                        }
-                        if (_isModbusRtuSlaveCreated)
-                        {
-                            parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
-                        }
-                        parameter.HistoryValue = parameter.Value;
-                        continue;
-                    }
 
-                    if ((parameter.Code == _feedVariable)
-                        || (parameter.Code == _feedWaterVariable)
-                        || (parameter.Code == _supWaterVariable))
-                    {
-                        double stepThreshold = 1E-06;
-                        if (parameter.Code == _feedVariable)
-                            stepThreshold = 5;
-                        else if (parameter.Code == _feedWaterVariable)
-                            stepThreshold = 1;
-                        else if (parameter.Code == _supWaterVariable)
-                            stepThreshold = 10;
-
-                        if (Math.Abs(parameter.HistoryValue - parameter.RealValue) > stepThreshold)
-                        {
-                            long period = 300000;
-                            if (parameter.ControlPeriod > 0)
+                            _isRuleTriggered = false;
+                            if (_timerRuleDelay != null)
                             {
-                                period = parameter.ControlPeriod*1000;
-                            }
-                            if (_isRuleTriggered)
+                                _timerRuleDelay.Dispose();
+                            } _execteRulesFlag = false;
+                            _timerFirstRound = new System.Threading.Timer(TimerFirstRoundElapsed, null, 8, 0);
+                            RecordLog.WriteLogFile("Start", "Optimal control started!");
+                        }
+                        else if (parameter.Value == 0)
+                        {
+                            _isRuleTriggered = false;
+                            if (_timerRuleDelay != null)
                             {
                                 _timerRuleDelay.Dispose();
                             }
-                            _isRuleTriggered = true;
-                            _timerRuleDelay = new System.Threading.Timer(TimerRuleDelayElapsed, null, period, 0);
-
-                            Log addLog = new Log()
-                            {
-                                LogTime = DateTime.Now,
-                                Type = Log.LogType.提示,
-                                Content =
-                                    string.Format("{0}由{1}修改为{2}",
-                                        parameter.Name,
-                                        parameter.HistoryValue,
-                                        parameter.RealValue),
-                                State = false,
-                            };
-                            AddLogInfo(addLog);
+                            _execteRulesFlag = false;
+                            //RecordLog.WriteLogFile("Stop", "Optimal control stoped!");
                         }
+
                         parameter.HistoryValue = parameter.Value;
+                        foreach (Variable variable in _modbusRtuParameters)
+                        {
+                            if (variable.Code == _remoteStatusVariableCode)
+                            {
+                                variable.HistoryValue = variable.Value;
+                                break;
+                            }
+                        }
                         continue;
                     }
 
@@ -1733,7 +1827,6 @@ namespace OptimalControlService
                     //    continue;
                     //}
                 }
-                //Console.WriteLine(string.Format("1:{0}",DateTime.Now));
             }
             catch (Exception ex)
             {
@@ -1744,12 +1837,23 @@ namespace OptimalControlService
         private void TimerRuleDelayElapsed(object o)
         {
             _isRuleTriggered = false;
-            _timerRuleDelay.Dispose();
+            if (_timerRuleDelay != null)
+            {
+                _timerRuleDelay.Dispose();
+            }
+        }
+
+        private void TimerFirstRoundElapsed(object o)
+        {
+            _execteRulesFlag = true;
+            if (_timerFirstRound != null)
+            {
+                _timerFirstRound.Dispose();
+            }
         }
 
         protected override void OnStart(string[] args)
         {
-
             if (string.IsNullOrEmpty(_modbusRtuDevice.SerialPortObject.PortName))
             {
                 RecordLog.WriteLogFile("OnStart", "未设置Modbus RTU通讯端口！");
@@ -1769,6 +1873,79 @@ namespace OptimalControlService
                                 device.ModbusTcpMasterCreated = ModbusTCPCreateClient(ref device.ModbusTcpDevice);
                             }
                         }
+
+                        foreach (Variable parameter in _modbusRtuParameters)
+                        {
+                            if (parameter.Code == _optimalControlFeedVariable)
+                            {
+                                double tmpValue = GetValueByCode(_feedVariable);
+                                if (Math.Abs(tmpValue - _errorValue) > 1E-06)
+                                {
+                                    parameter.RealValue = tmpValue;
+                                    parameter.InitialValue = tmpValue;
+                                }
+                                else
+                                {
+                                    parameter.RealValue = parameter.Limit.LowerLimit;
+                                }
+                                if (_isModbusRtuSlaveCreated)
+                                {
+                                    parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                                }
+                                continue;
+                            }
+                            if (parameter.Code == _optimalControlFeedWaterVariable)
+                            {
+                                double tmpValue = GetValueByCode(_feedWaterVariable);
+                                if (Math.Abs(tmpValue - _errorValue) > 1E-06)
+                                {
+                                    parameter.RealValue = tmpValue;
+                                    parameter.InitialValue = tmpValue;
+                                }
+                                else
+                                {
+                                    parameter.RealValue = parameter.Limit.LowerLimit;
+                                }
+                                if (_isModbusRtuSlaveCreated)
+                                {
+                                    parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                                }
+                                continue;
+                            }
+                            if (parameter.Code == _optimalControlSupWaterVariable)
+                            {
+                                double tmpValue = GetValueByCode(_supWaterVariable);
+                                if (Math.Abs(tmpValue - _errorValue) > 1E-06)
+                                {
+                                    parameter.RealValue = tmpValue;
+                                    parameter.InitialValue = tmpValue;
+                                }
+                                else
+                                {
+                                    parameter.RealValue = parameter.Limit.LowerLimit;
+                                }
+                                if (_isModbusRtuSlaveCreated)
+                                {
+                                    parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                                }
+                                continue;
+                            }
+                            if (parameter.Code == _optimalControlEnabledVariable)
+                            {
+                                parameter.Value = 0;
+                                if (_isModbusRtuSlaveCreated)
+                                {
+                                    parameter.SetValueToModbusSlave(ref _modbusRtuSlave);
+                                }
+                                continue;
+                            }
+                            if (parameter.Code == _remoteStatusVariableCode)
+                            {
+                                parameter.HistoryValue = 1;
+                                continue;
+                            }
+                        }
+
                         _realTimerFlag = true;
                         _timerRealtime = new System.Threading.Timer(TimerRealtimeElapsed, null, _realTimerInterval, _realTimerInterval);
                         _timerUpdateVariable = new System.Threading.Timer(TimerUpdateVariableElapsed, null, _updateVariableTimerInterval, _updateVariableTimerInterval);
@@ -1789,17 +1966,19 @@ namespace OptimalControlService
 
         protected override void OnStop()
         {
-
-
             _rules.Clear();
             _execteRulesFlag = false;
             _isRuleTriggered = false;
 
             _realTimerFlag = false;
-
-            _timerUpdateVariable.Dispose();
-            _timerRealtime.Dispose();
-
+            if (_timerUpdateVariable != null)
+            {
+                _timerUpdateVariable.Dispose();
+            }
+            if (_timerRealtime != null)
+            {
+                _timerRealtime.Dispose();
+            }
             foreach (Device device in _devices)
             {
                 device.ModbusTcpMasterCreated =

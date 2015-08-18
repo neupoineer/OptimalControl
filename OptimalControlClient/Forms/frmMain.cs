@@ -786,7 +786,10 @@ namespace OptimalControl.Forms
                 {
                     //_modbusTcpDevice.ModbusTcpSlave.ModbusSlaveRequestReceived -= ModbusTcp_Request_Event;
                     //_modbusTcpDevice.ModbusTcpSlave.DataStore.DataStoreWrittenTo -= ModbusTcp_DataStoreWriteTo_Event;
-                    _modbusTcpDevice.ModbusTcpSlave.Dispose();
+                    if (_modbusTcpDevice.ModbusTcpSlave != null)
+                    {
+                        _modbusTcpDevice.ModbusTcpSlave.Dispose();
+                    }
                     _modbusTcpDevice.TcpListener.Stop();
                     _modbusTcpSlaveThread.Abort();
                     _modbusTcpSlaveCreated = false;
@@ -1804,7 +1807,7 @@ namespace OptimalControl.Forms
                         {
                             this.Invoke((EventHandler) (delegate
                             {
-                                tsbtn_rule_run.Enabled = false;
+                                //tsbtn_rule_run.Enabled = false;
                                 tsbtn_rule_stop.Enabled = true;
                             }));
                         }
@@ -1812,7 +1815,7 @@ namespace OptimalControl.Forms
                         {
                             this.Invoke((EventHandler) (delegate
                             {
-                                tsbtn_rule_run.Enabled = true;
+                                //tsbtn_rule_run.Enabled = true;
                                 tsbtn_rule_stop.Enabled = false;
                             }));
                         }
@@ -2000,7 +2003,10 @@ namespace OptimalControl.Forms
                 {
                     if (frmLogin.isPass && frmLogin.currentOperator.RightsCollection[menu_file_quit.Name].RightsState)
                     {
-                        _timerUpdateVariable.Dispose();
+                        if (_timerUpdateVariable != null)
+                        {
+                            _timerUpdateVariable.Dispose();
+                        }
                         ModbusTcpStopComm();
                         RecordLog.WriteLogFile("Closed", "Software Closed!");
                         Dispose(); //释放内存，退出程序
@@ -2034,17 +2040,17 @@ namespace OptimalControl.Forms
                 DateTime endTime = DateTime.Now;
                 DateTime startTime = endTime.AddSeconds((-1)*(_updateVariableTimerInterval/1000)*_dataListLength);
                 IDataManager dataManager = _bllFactory.BuildDataManager();
-                foreach (Curve curve in _curves)
-                {
-                    List<Data> dataCollection = dataManager.GetDataByVariableCode(curve.VariableCode,
-                        curve.DeviceID, startTime, endTime);
-                    foreach (Data tmpData in dataCollection)
-                    {
-                        curve.DataList.Add(
-                            new XDate(DateTime.Parse(tmpData.TimeValue.ToString())),
-                            Convert.ToDouble(tmpData.Value));
-                    }
-                }
+                //foreach (Curve curve in _curves)
+                //{
+                //    List<Data> dataCollection = dataManager.GetDataByVariableCode(curve.VariableCode,
+                //        curve.DeviceID, startTime, endTime);
+                //    foreach (Data tmpData in dataCollection)
+                //    {
+                //        curve.DataList.Add(
+                //            new XDate(DateTime.Parse(tmpData.TimeValue.ToString())),
+                //            Convert.ToDouble(tmpData.Value));
+                //    }
+                //}
 
                 if (!_modbusTcpSlaveCreated)
                 {
@@ -2065,13 +2071,17 @@ namespace OptimalControl.Forms
                                 if (variable.Code == _optimalControlEnabledClientVariable)
                                 {
                                     Data data = dataManager.GetLastDataByVariableCode(_optimalControlEnabledVariable, 0);
-                                    variable.Value = data.Value;
-                                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
-                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
-                                    _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
-                                    break;
+                                    if (data.TimeValue - DateTime.Now < TimeSpan.FromSeconds(10))
+                                    {
+                                        variable.Value = data.Value;
+                                        byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
+                                        _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
+                                            Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
+                                        _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1]
+                                            =
+                                            Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
+                                        break;
+                                    }
                                 }
                             }
                             break;
@@ -2100,7 +2110,6 @@ namespace OptimalControl.Forms
             {
                 RecordLog.WriteLogFile("Run_Click", ex.Message);
             }
-
         }
 
         /// <summary>
@@ -2111,7 +2120,10 @@ namespace OptimalControl.Forms
         private void btn_stop_Click(object sender, EventArgs e)
         {
             _realTimerFlag = false;
-            _timerUpdateVariable.Dispose();
+            if (_timerUpdateVariable != null)
+            {
+                _timerUpdateVariable.Dispose();
+            }
             // 加载权限菜单
             RightsMenuDataManager rmManager = new RightsMenuDataManager();
             rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
@@ -2607,7 +2619,7 @@ namespace OptimalControl.Forms
 
         private void tsbtn_rule_run_Click(object sender, EventArgs e)
         {
-            tsbtn_rule_run.Enabled = false;
+            //tsbtn_rule_run.Enabled = false;
             tsbtn_rule_stop.Enabled = true;
             foreach (Device device in _devices)
             {
@@ -2636,7 +2648,7 @@ namespace OptimalControl.Forms
 
         private void tsbtn_rule_stop_Click(object sender, EventArgs e)
         {
-            tsbtn_rule_run.Enabled = true;
+            //tsbtn_rule_run.Enabled = true;
             tsbtn_rule_stop.Enabled = false;
             foreach (Device device in _devices)
             {

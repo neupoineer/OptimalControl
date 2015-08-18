@@ -1,15 +1,2 @@
-15/06/01 15:21:29 OnStop: Software Closed!
-15/08/01 15:31:44 Start: Software started!
-15/08/01 15:37:15 SetValueToModbusTcpMaster: 未将对象引用设置到对象的实例。
-15/08/01 15:37:21 SetValueToModbusTcpMaster: 不允许对非连接的套接字执行此操作。
-15/08/01 15:37:21 SetValueToModbusTcpMaster: 未将对象引用设置到对象的实例。
-15/08/01 15:37:33 SetValueToModbusTcpMaster: 无法从传输连接中读取数据: 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。。
-15/08/01 15:37:33 SetValueToModbusTcpMaster: 未将对象引用设置到对象的实例。
-15/08/01 15:37:33 SetValueToModbusTcpMaster: 未将对象引用设置到对象的实例。
-15/08/01 15:37:39 SetValueToModbusTcpMaster: 不允许对非连接的套接字执行此操作。
-15/08/01 15:37:39 SetValueToModbusTcpMaster: 不允许对非连接的套接字执行此操作。
-15/08/01 15:37:39 SetValueToModbusTcpMaster: 不允许对非连接的套接字执行此操作。
-15/08/01 15:37:39 SetValueToModbusTcpMaster: 不允许对非连接的套接字执行此操作。
-15/08/01 15:37:39 SetValueToModbusTcpMaster: 未将对象引用设置到对象的实例。
-15/08/01 15:37:42 SetValueToModbusTcpMaster: 不允许对非连接的套接字执行此操作。
-15/08/05 14:31:42 OnStop: Software Closed!
+15/08/18 11:16:07 Start: Software started!
+15/08/18 11:16:22 OnStop: Software Closed!

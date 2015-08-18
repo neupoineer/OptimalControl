@@ -88,7 +88,6 @@ namespace OptimalControl.Forms
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.tsbtn_rule_run = new System.Windows.Forms.ToolStripButton();
             this.tsbtn_rule_stop = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox02 = new System.Windows.Forms.GroupBox();
@@ -835,7 +834,6 @@ namespace OptimalControl.Forms
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbtn_rule_run,
             this.tsbtn_rule_stop});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
@@ -844,16 +842,6 @@ namespace OptimalControl.Forms
             this.toolStrip.Stretch = true;
             this.toolStrip.TabIndex = 6;
             this.toolStrip.Text = "工具栏";
-            // 
-            // tsbtn_rule_run
-            // 
-            this.tsbtn_rule_run.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbtn_rule_run.Image = ((System.Drawing.Image)(resources.GetObject("tsbtn_rule_run.Image")));
-            this.tsbtn_rule_run.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbtn_rule_run.Name = "tsbtn_rule_run";
-            this.tsbtn_rule_run.Size = new System.Drawing.Size(28, 28);
-            this.tsbtn_rule_run.Text = "运行";
-            this.tsbtn_rule_run.Click += new System.EventHandler(this.tsbtn_rule_run_Click);
             // 
             // tsbtn_rule_stop
             // 
@@ -874,7 +862,7 @@ namespace OptimalControl.Forms
             this.panel1.Controls.Add(this.groupBox03);
             this.panel1.Controls.Add(this.groupBox01);
             this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Location = new System.Drawing.Point(38, 5);
+            this.panel1.Location = new System.Drawing.Point(38, 6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1125, 615);
             this.panel1.TabIndex = 18;
@@ -3205,7 +3193,6 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripButton tsbtn_rule_run;
         private System.Windows.Forms.ToolStripButton tsbtn_rule_stop;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox02;
