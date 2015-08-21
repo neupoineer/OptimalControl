@@ -238,6 +238,10 @@ namespace OptimalControl.Forms
                             tb_rule_expression.Text += cb_operator.Text;
                             tb_rule_expression.Text += "]";
                         }
+                        else
+                        {
+                            tb_rule_expression.Text += cb_operator.Text;
+                        }
                     }
                     else
                     {
@@ -249,11 +253,18 @@ namespace OptimalControl.Forms
             {
                 if (cb_operator.Text.Length > 0)
                 {
-                    if (cb_operator.Text == ".history")
+                    if (_typeStrings.Contains(cb_operator.Text))
                     {
-                        tb_rule_operation.Text = tb_rule_expression.Text.TrimEnd(']');
-                        tb_rule_operation.Text += cb_operator.Text;
-                        tb_rule_operation.Text += "]";
+                        if (tb_rule_operation.Text.EndsWith("]"))
+                        {
+                            tb_rule_operation.Text = tb_rule_operation.Text.TrimEnd(']');
+                            tb_rule_operation.Text += cb_operator.Text;
+                            tb_rule_operation.Text += "]";
+                        }
+                        else
+                        {
+                            tb_rule_operation.Text += cb_operator.Text;
+                        }
                     }
                     else
                     {

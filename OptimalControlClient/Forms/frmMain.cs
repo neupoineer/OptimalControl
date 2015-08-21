@@ -14,8 +14,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
@@ -100,6 +102,8 @@ namespace OptimalControl.Forms
         /// </summary>
         private System.Threading.Timer _timerUpdateVariable;
 
+        private System.Threading.Timer _timerFirstRound;
+
         /// <summary>
         /// The real timer flag
         /// </summary>
@@ -107,6 +111,7 @@ namespace OptimalControl.Forms
 
         private bool _updateGraphFlag;
 
+        private bool _isFirstRoundFlag = true;
         /// <summary>
         /// The MessageFilter
         /// </summary>
@@ -1664,6 +1669,81 @@ namespace OptimalControl.Forms
                 RecordLog.WriteLogFile("UpdateHistoryLogGrid", ex.Message);
             }
         }
+        /// <summary>
+        /// 更新变量列表
+        /// </summary>
+        private void UpdateVariableConfig()
+        {
+            try
+            {
+                IVariableManager variableManager = _bllFactory.BuildIVariableManager();
+                List<Variable> tmpVariables = variableManager.GetVariableByDeviceId(0);
+                foreach (Variable variable in _modbusTcpVariables)
+                {
+                    List<Variable> variablesSelected = tmpVariables.Where(v => v.Id == variable.Id).ToList();
+                    if (variablesSelected.Count > 0)
+                    {
+                        Variable tmpVariable = variablesSelected[0];
+                        variable.Name = tmpVariable.Name;
+                        variable.Address = tmpVariable.Address;
+                        variable.Code = tmpVariable.Code;
+                        variable.ControlPeriod = tmpVariable.ControlPeriod;
+                        variable.DeviceID = tmpVariable.DeviceID;
+                        variable.HistoryListLength = tmpVariable.HistoryListLength;
+                        variable.IsDisplayed = tmpVariable.IsDisplayed;
+                        variable.IsEnabled = tmpVariable.IsEnabled;
+                        variable.IsFiltered = tmpVariable.IsFiltered;
+                        variable.IsOutput = tmpVariable.IsOutput;
+                        variable.IsRead = tmpVariable.IsRead;
+                        variable.IsSaved = tmpVariable.IsSaved;
+                        variable.Limit = tmpVariable.Limit;
+                        variable.OperateDelay = tmpVariable.OperateDelay;
+                        variable.Ratio = tmpVariable.Ratio;
+                        variable.TrendHigherLimit = tmpVariable.TrendHigherLimit;
+                        variable.TrendInterval = tmpVariable.TrendInterval;
+                        variable.TrendLength = tmpVariable.TrendLength;
+                        variable.TrendListLength = tmpVariable.TrendListLength;
+                        variable.TrendLowerLimit = tmpVariable.TrendLowerLimit;
+                    }
+                }
+                foreach (Device device in _devices)
+                {
+                    List<Variable> variables = variableManager.GetVariableByDeviceId(device.Id);
+                    foreach (Variable variable in device.Variables)
+                    {
+                        List<Variable> variablesSelected = variables.Where(v => v.Id == variable.Id).ToList();
+                        if (variablesSelected.Count > 0)
+                        {
+                            Variable tmpVariable = variablesSelected[0];
+                            variable.Name = tmpVariable.Name;
+                            variable.Address = tmpVariable.Address;
+                            variable.Code = tmpVariable.Code;
+                            variable.ControlPeriod = tmpVariable.ControlPeriod;
+                            variable.DeviceID = tmpVariable.DeviceID;
+                            variable.HistoryListLength = tmpVariable.HistoryListLength;
+                            variable.IsDisplayed = tmpVariable.IsDisplayed;
+                            variable.IsEnabled = tmpVariable.IsEnabled;
+                            variable.IsFiltered = tmpVariable.IsFiltered;
+                            variable.IsOutput = tmpVariable.IsOutput;
+                            variable.IsRead = tmpVariable.IsRead;
+                            variable.IsSaved = tmpVariable.IsSaved;
+                            variable.Limit = tmpVariable.Limit;
+                            variable.OperateDelay = tmpVariable.OperateDelay;
+                            variable.Ratio = tmpVariable.Ratio;
+                            variable.TrendHigherLimit = tmpVariable.TrendHigherLimit;
+                            variable.TrendInterval = tmpVariable.TrendInterval;
+                            variable.TrendLength = tmpVariable.TrendLength;
+                            variable.TrendListLength = tmpVariable.TrendListLength;
+                            variable.TrendLowerLimit = tmpVariable.TrendLowerLimit;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                RecordLog.WriteLogFile("UpdateVariableConfig", ex.Message);
+            }
+        }
 
         /// <summary>
         /// 从Modbus更新所有变量
@@ -1684,6 +1764,10 @@ namespace OptimalControl.Forms
         {
             try
             {
+                if (_isFirstRoundFlag)
+                {
+                    return;
+                }
                 double tmpTime = new XDate(DateTime.Now);
                 foreach (Curve curve in _curves)
                 {
@@ -1780,6 +1864,24 @@ namespace OptimalControl.Forms
             }
         }
 
+
+        void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // 这里是后台线程， 是在另一个线程上完成的
+            // 这里是真正做事的工作线程
+            // 可以在这里做一些费时的，复杂的操作
+
+            //e.Result = e.Argument + "工作线程完成";
+        }
+
+        void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //这时后台线程已经完成，并返回了主线程，所以可以直接使用UI控件了 
+            //this.label4.Text = e.Result.ToString();
+        }
+
+
+
         #endregion 
 
         #region 控件响应
@@ -1792,6 +1894,7 @@ namespace OptimalControl.Forms
             if (!_realTimerFlag) return;
             try
             {
+                UpdateVariableConfig();
                 UpdateParameterValue();
                 UpdateRegisterList();
                 UpdateCurveData();
@@ -1968,6 +2071,20 @@ namespace OptimalControl.Forms
         }
 
         /// <summary>
+        /// Handles the Elapsed event of the LogoffTimer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Timers.ElapsedEventArgs" /> instance containing the event data.</param>
+        private void TimerFirstRoundElapsed(object sender)
+        {
+            if (_timerFirstRound != null)
+            {
+                _timerFirstRound.Dispose();
+            }
+            _isFirstRoundFlag = false;
+        }
+
+        /// <summary>
         /// Handles the Load event of the MainForm control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -2007,6 +2124,10 @@ namespace OptimalControl.Forms
                         {
                             _timerUpdateVariable.Dispose();
                         }
+                        if (_timerFirstRound != null)
+                        {
+                            _timerFirstRound.Dispose();
+                        }
                         ModbusTcpStopComm();
                         RecordLog.WriteLogFile("Closed", "Software Closed!");
                         Dispose(); //释放内存，退出程序
@@ -2037,9 +2158,12 @@ namespace OptimalControl.Forms
             LoadSettings();
             try
             {
-                DateTime endTime = DateTime.Now;
-                DateTime startTime = endTime.AddSeconds((-1)*(_updateVariableTimerInterval/1000)*_dataListLength);
                 IDataManager dataManager = _bllFactory.BuildDataManager();
+
+                //读取历史数据
+                //DateTime endTime = DateTime.Now;
+                //DateTime startTime = endTime.AddSeconds((-1) * (_updateVariableTimerInterval / 1000) * _dataListLength);
+                //IDataManager dataManager = _bllFactory.BuildDataManager();
                 //foreach (Curve curve in _curves)
                 //{
                 //    List<Data> dataCollection = dataManager.GetDataByVariableCode(curve.VariableCode,
@@ -2061,6 +2185,8 @@ namespace OptimalControl.Forms
                     _realTimerFlag = true;
                     _timerUpdateVariable = new System.Threading.Timer(TimerUpdateVariableElapsed, null, 0,
                         _updateVariableTimerInterval);
+
+                    _timerFirstRound = new System.Threading.Timer(TimerFirstRoundElapsed, null, 8, 0);
 
                     foreach (Device device in _devices)
                     {
@@ -2220,6 +2346,14 @@ namespace OptimalControl.Forms
             DateTime endTime = dtp_curve_end.Value; //查询截止时间
             if (endTime > startTime)
             {
+
+                //using (BackgroundWorker backgroundWorker = new BackgroundWorker())
+                //{
+                //    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+                //    backgroundWorker.DoWork += new DoWorkEventHandler(bw_DoWork);
+                //    backgroundWorker.RunWorkerAsync();
+                //} 
+
                 DataTable dataTable = LoadHistoryData(startTime, endTime);
                 dgv_data.DataSource = dataTable;
                 _hisoryCurves = LoadHistoryCurves(dataTable);
@@ -2776,7 +2910,38 @@ namespace OptimalControl.Forms
             * */
         }
 
+
+        private void tb_oc_104_TextChanged(object sender, EventArgs e)
+        {
+            ConfigExeSettings.SetSettingInt("FeedMax", tb_oc_104.Text.Trim());
+        }
+
+        private void tb_oc_105_TextChanged(object sender, EventArgs e)
+        {
+            ConfigExeSettings.SetSettingInt("FeedMin", tb_oc_105.Text.Trim());
+        }
+
+        private void tb_oc_114_TextChanged(object sender, EventArgs e)
+        {
+            ConfigExeSettings.SetSettingInt("FeedWaterMax", tb_oc_114.Text.Trim());
+        }
+
+        private void tb_oc_115_TextChanged(object sender, EventArgs e)
+        {
+            ConfigExeSettings.SetSettingInt("FeedWaterMin", tb_oc_115.Text.Trim());
+        }
+
+        private void tb_oc_124_TextChanged(object sender, EventArgs e)
+        {
+            ConfigExeSettings.SetSettingInt("SupWaterMax", tb_oc_124.Text.Trim());
+        }
+
+        private void tb_oc_125_TextChanged(object sender, EventArgs e)
+        {
+            ConfigExeSettings.SetSettingInt("SupWaterMin", tb_oc_125.Text.Trim());
+        }
         #endregion
+
 
     }
 }

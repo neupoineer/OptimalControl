@@ -7,6 +7,7 @@ using System.Threading;
 using System.IO;
 using System.IO.Ports;
 using System.Net.Sockets;
+using System.Web.UI.WebControls;
 using ExpertSystem;
 using IBLL;
 using IBLL.Control;
@@ -870,23 +871,25 @@ namespace OptimalControlService
                                 switch (getValueType)
                                 {
                                     case GetValueType.RealValue:
-                                        if (parameter.Name == _optimalControlFeedVariable)
+                                        if (parameter.Code == _optimalControlFeedVariable)
                                         {
                                             double max = GetValueByCode(_optimalControlFeedMax);
                                             double min = GetValueByCode(_optimalControlFeedMin);
-                                            if ((Math.Abs(max - _errorValue) > 1E-06)
-                                                && (Math.Abs(max) > 1E-06)
-                                                && (Math.Abs(min - _errorValue) > 1E-06)
-                                                && (Math.Abs(min) > 1E-06))
+                                            if (opVariable.Value >= parameter.RealValue)
                                             {
-                                                if (opVariable.Value > parameter.RealValue)
+                                                if ((Math.Abs(max - _errorValue) > 1E-06)
+                                                    && (Math.Abs(max) > 1E-06))
                                                 {
                                                     if (opVariable.Value > max)
                                                     {
                                                         opVariable.Value = max;
                                                     }
                                                 }
-                                                else if (opVariable.Value < parameter.RealValue)
+                                            }
+                                            if (opVariable.Value <= parameter.RealValue)
+                                            {
+                                                if ((Math.Abs(min - _errorValue) > 1E-06)
+                                                    && (Math.Abs(min) > 1E-06))
                                                 {
                                                     if (opVariable.Value < min)
                                                     {
@@ -895,23 +898,25 @@ namespace OptimalControlService
                                                 }
                                             }
                                         }
-                                        else if (parameter.Name == _optimalControlFeedWaterVariable)
+                                        else if (parameter.Code == _optimalControlFeedWaterVariable)
                                         {
                                             double max = GetValueByCode(_optimalControlFeedWaterMax);
                                             double min = GetValueByCode(_optimalControlFeedWaterMin);
-                                            if ((Math.Abs(max - _errorValue) > 1E-06)
-                                                && (Math.Abs(max) > 1E-06)
-                                                && (Math.Abs(min - _errorValue) > 1E-06)
-                                                && (Math.Abs(min) > 1E-06))
+                                            if (opVariable.Value >= parameter.RealValue)
                                             {
-                                                if (opVariable.Value > parameter.RealValue)
+                                                if ((Math.Abs(max - _errorValue) > 1E-06)
+                                                    && (Math.Abs(max) > 1E-06))
                                                 {
                                                     if (opVariable.Value > max)
                                                     {
                                                         opVariable.Value = max;
                                                     }
                                                 }
-                                                else if (opVariable.Value < parameter.RealValue)
+                                            }
+                                            if (opVariable.Value <= parameter.RealValue)
+                                            {
+                                                if ((Math.Abs(min - _errorValue) > 1E-06)
+                                                    && (Math.Abs(min) > 1E-06))
                                                 {
                                                     if (opVariable.Value < min)
                                                     {
@@ -920,23 +925,26 @@ namespace OptimalControlService
                                                 }
                                             }
                                         }
-                                        else if (parameter.Name == _optimalControlSupWaterVariable)
+                                        else if (parameter.Code == _optimalControlSupWaterVariable)
                                         {
                                             double max = GetValueByCode(_optimalControlSupWaterMax);
                                             double min = GetValueByCode(_optimalControlSupWaterMin);
-                                            if ((Math.Abs(max - _errorValue) > 1E-06)
-                                                && (Math.Abs(max) > 1E-06)
-                                                && (Math.Abs(min - _errorValue) > 1E-06)
-                                                && (Math.Abs(min) > 1E-06))
+
+                                            if (opVariable.Value >= parameter.RealValue)
                                             {
-                                                if (opVariable.Value > parameter.RealValue)
+                                                if ((Math.Abs(max - _errorValue) > 1E-06)
+                                                    && (Math.Abs(max) > 1E-06))
                                                 {
                                                     if (opVariable.Value > max)
                                                     {
                                                         opVariable.Value = max;
                                                     }
                                                 }
-                                                else if (opVariable.Value < parameter.RealValue)
+                                            }
+                                            if (opVariable.Value <= parameter.RealValue)
+                                            {
+                                                if ((Math.Abs(min - _errorValue) > 1E-06)
+                                                    && (Math.Abs(min) > 1E-06))
                                                 {
                                                     if (opVariable.Value < min)
                                                     {
@@ -1540,7 +1548,7 @@ namespace OptimalControlService
                             {
                                 _timerRuleDelay.Dispose();
                             } _execteRulesFlag = false;
-                            RecordLog.WriteLogFile("Stop", "Optimal control stoped!");
+                            //RecordLog.WriteLogFile("Stop", "Optimal control stoped!");
                         }
                         continue;
                     }
@@ -1645,7 +1653,13 @@ namespace OptimalControlService
                         }
                         continue;
                     }
+                    if (parameter.Code == _workStatusVariableCode)
+                    {
+                        parameter.Value = 0;
+                        continue;
+                    }
                 }
+                
                 _rules = _ruleManager.GetRuleInfoEnabled();
 
                 ExecuteRules(_rules, true);
