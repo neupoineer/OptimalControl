@@ -6,7 +6,7 @@ UPDATE [dbo].[Variable]
    SET 
        --[UltimateUpperLimit] = 1300,
        --[UltimateLowerLimit] = 0,
-       [ControlPeriod] = 300
+       [ControlPeriod] = 120
  WHERE [Code] = 'CS010100020301'
 GO
 
@@ -24,7 +24,7 @@ UPDATE [dbo].[Variable]
    SET 
      --[UltimateUpperLimit] = 1500,
      --[UltimateLowerLimit] = 1000,
-       [ControlPeriod] = 120
+       [ControlPeriod] = 3
  WHERE [Code] = 'CS040200020301'
 GO
 
@@ -34,7 +34,7 @@ UPDATE [dbo].[Variable]
      --[UltimateUpperLimit] = 300,
      --[UltimateLowerLimit] = 50,
        [UpperLimit] = 200,
-       [LowerLimit] = 100
+       [LowerLimit] = 125
  WHERE [Code] = 'CS010100060101'
 GO
 
@@ -63,7 +63,7 @@ UPDATE [dbo].[Variable]
    SET 
      --[UltimateUpperLimit] = 10000,
      --[UltimateLowerLimit] = 6000,
-       [UpperLimit] = 8500,
+       [UpperLimit] = 8800,
        [LowerLimit] = 7500
  WHERE [Code] = 'CS040100030103'
 GO
@@ -73,8 +73,8 @@ UPDATE [dbo].[Variable]
    SET 
      --[UltimateUpperLimit] = 1200,
      --[UltimateLowerLimit] = 120,
-       [UpperLimit] = 350,
-       [LowerLimit] = 180
+       [UpperLimit] = 250,
+       [LowerLimit] = 150
  WHERE [Code] = 'CS060100030104'
 GO
 

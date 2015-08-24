@@ -1040,7 +1040,7 @@ namespace OptimalControlService
 
                     if (rule.IsLogged)
                     {
-                        if ((!_isRuleTriggered) || (rule.Priority != 3))
+                        if (!_isRuleTriggered)
                         {
                             Log addLog = new Log()
                             {

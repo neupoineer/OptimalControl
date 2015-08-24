@@ -246,6 +246,7 @@ namespace OptimalControl.Forms
         private string _optimalControlEnabledVariable;
         private string _optimalControlEnabledClientVariable;
         private string _workStatusVariable;
+        private string _feedTotalVariable;
 
         #endregion
 
@@ -523,10 +524,11 @@ namespace OptimalControl.Forms
                 _logoffTime = ConfigExeSettings.GetSettingInt("LogoffTime", _logoffTime);
                 _updateVariableTimerInterval = ConfigExeSettings.GetSettingInt("UpdateVariableTime", _updateVariableTimerInterval); //时间间隔
                 _realTimerInterval = ConfigExeSettings.GetSettingInt("RealTime", _realTimerInterval); //时间间隔
-
+                
                 _optimalControlEnabledVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
                 _optimalControlEnabledClientVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledClientVariable", "").Trim();
                 _workStatusVariable = ConfigExeSettings.GetSettingString("WorkStatusVariable", "").Trim();
+                _feedTotalVariable = ConfigExeSettings.GetSettingString("FeedTotalVariable", "").Trim();
 
                 _masterPaneGraphRealtime.Title.Text = ConfigExeSettings.GetSettingString("MasterTitle", "My MasterPane Title");
                 _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigExeSettings.GetSettingSingle("MasterTitleSize", 12);
@@ -1361,7 +1363,7 @@ namespace OptimalControl.Forms
                                                 true);
                                         if (controls.Length > 0)
                                         {
-                                            controls[0].Text = parameter.RealValue.ToString("F");
+                                            controls[0].Text = parameter.CurrentValue.ToString("F");
                                         }
                                         controls =
                                             this.Controls.Find(
@@ -1491,6 +1493,27 @@ namespace OptimalControl.Forms
                             default:
                                 break;
                         }
+                        continue;
+                    }
+
+                    if (variable.Code == _optimalControlEnabledVariable)
+                    {
+                        if (variable.Value > 0)
+                        {
+                            pb_status_enabled.BackColor = Color.GreenYellow;
+                            label_workstatus.Text = "优化控制开";
+                        }
+                        else
+                        {
+                            pb_status_enabled.BackColor = SystemColors.Control;
+                            label_workstatus.Text = "优化控制关";
+                        }
+                        continue;
+                    }
+
+                    if (variable.Code == _feedTotalVariable)
+                    {
+                        label_feed.Text = string.Format("{0} t/h",variable.CurrentValue.ToString("F"));
                         continue;
                     }
 
@@ -1901,30 +1924,6 @@ namespace OptimalControl.Forms
                 UpdateOcTextBox();
                 UpdateLogGrid();
                 IDataManager dataManager = _bllFactory.BuildDataManager();
-
-                foreach (Variable variable in _modbusTcpVariables)
-                {
-                    if (variable.Code == _optimalControlEnabledVariable)
-                    {
-                        if (variable.Value > 0)
-                        {
-                            this.Invoke((EventHandler) (delegate
-                            {
-                                //tsbtn_rule_run.Enabled = false;
-                                tsbtn_rule_stop.Enabled = true;
-                            }));
-                        }
-                        else
-                        {
-                            this.Invoke((EventHandler) (delegate
-                            {
-                                //tsbtn_rule_run.Enabled = true;
-                                tsbtn_rule_stop.Enabled = false;
-                            }));
-                        }
-                        continue;
-                    }
-                }
 
                 foreach (Device device in _devices)
                 {
@@ -2754,7 +2753,7 @@ namespace OptimalControl.Forms
         private void tsbtn_rule_run_Click(object sender, EventArgs e)
         {
             //tsbtn_rule_run.Enabled = false;
-            tsbtn_rule_stop.Enabled = true;
+            //tsbtn_rule_stop.Enabled = true;
             foreach (Device device in _devices)
             {
                 if (device.Name == _clientName)
@@ -2783,7 +2782,7 @@ namespace OptimalControl.Forms
         private void tsbtn_rule_stop_Click(object sender, EventArgs e)
         {
             //tsbtn_rule_run.Enabled = true;
-            tsbtn_rule_stop.Enabled = false;
+            //tsbtn_rule_stop.Enabled = false;
             foreach (Device device in _devices)
             {
                 if (device.Name == _clientName)
@@ -2911,37 +2910,77 @@ namespace OptimalControl.Forms
         }
 
 
-        private void tb_oc_104_TextChanged(object sender, EventArgs e)
+        private void tb_oc_104_Validated(object sender, EventArgs e)
         {
-            ConfigExeSettings.SetSettingInt("FeedMax", tb_oc_104.Text.Trim());
+            if (MessageBox.Show(string.Format("{0}{1}{2}", "给矿量优化上限设置为", tb_oc_104.Text,"t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ConfigExeSettings.SetSettingInt("FeedMax", tb_oc_104.Text.Trim());
+            }
+            else
+            {
+                tb_oc_104.Text = ConfigExeSettings.GetSettingString("FeedMax", "");
+            }
         }
 
-        private void tb_oc_105_TextChanged(object sender, EventArgs e)
+        private void tb_oc_105_Validated(object sender, EventArgs e)
         {
-            ConfigExeSettings.SetSettingInt("FeedMin", tb_oc_105.Text.Trim());
+            if (MessageBox.Show(string.Format("{0}{1}{2}", "给矿量优化下限设置为", tb_oc_105.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ConfigExeSettings.SetSettingInt("FeedMin", tb_oc_105.Text.Trim());
+            }
+            else
+            {
+                tb_oc_105.Text = ConfigExeSettings.GetSettingString("FeedMin", "");
+            }
         }
 
-        private void tb_oc_114_TextChanged(object sender, EventArgs e)
+        private void tb_oc_114_Validated(object sender, EventArgs e)
         {
-            ConfigExeSettings.SetSettingInt("FeedWaterMax", tb_oc_114.Text.Trim());
+            if (MessageBox.Show(string.Format("{0}{1}{2}", "给水量优化上限设置为", tb_oc_114.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ConfigExeSettings.SetSettingInt("FeedWaterMax", tb_oc_114.Text.Trim());
+            }
+            else
+            {
+                tb_oc_114.Text = ConfigExeSettings.GetSettingString("FeedWaterMax", "");
+            }
         }
 
-        private void tb_oc_115_TextChanged(object sender, EventArgs e)
+        private void tb_oc_115_Validated(object sender, EventArgs e)
         {
-            ConfigExeSettings.SetSettingInt("FeedWaterMin", tb_oc_115.Text.Trim());
+            if (MessageBox.Show(string.Format("{0}{1}{2}", "给水量优化下限设置为", tb_oc_115.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ConfigExeSettings.SetSettingInt("FeedWaterMin", tb_oc_115.Text.Trim());
+            }
+            else
+            {
+                tb_oc_115.Text = ConfigExeSettings.GetSettingString("FeedWaterMin", "");
+            }
         }
 
-        private void tb_oc_124_TextChanged(object sender, EventArgs e)
+        private void tb_oc_124_Validated(object sender, EventArgs e)
         {
-            ConfigExeSettings.SetSettingInt("SupWaterMax", tb_oc_124.Text.Trim());
+            if (MessageBox.Show(string.Format("{0}{1}{2}", "补加水量优化上限设置为", tb_oc_124.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ConfigExeSettings.SetSettingInt("SupWaterMax", tb_oc_124.Text.Trim());
+            }
+            else
+            {
+                tb_oc_124.Text = ConfigExeSettings.GetSettingString("SupWaterMax", "");
+            }
         }
 
-        private void tb_oc_125_TextChanged(object sender, EventArgs e)
+        private void tb_oc_125_Validated(object sender, EventArgs e)
         {
-            ConfigExeSettings.SetSettingInt("SupWaterMin", tb_oc_125.Text.Trim());
+            if (MessageBox.Show(string.Format("{0}{1}{2}", "补加水量优化下限设置为", tb_oc_125.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ConfigExeSettings.SetSettingInt("SupWaterMin", tb_oc_125.Text.Trim());
+            }
+            else
+            {
+                tb_oc_125.Text = ConfigExeSettings.GetSettingString("SupWaterMin", "");
+            }
         }
         #endregion
-
-
     }
 }
