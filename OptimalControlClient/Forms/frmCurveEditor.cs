@@ -108,7 +108,8 @@ namespace OptimalControl.Forms
                 //ntb_curve_address.Enabled = (mode != DataOperateMode.Delete);
                 if (curve.LineColor != Color.FromArgb(0))
                 {
-                    cb_curve_color.SelectedIndex = colorList.IndexOf(curve.LineColor.Name) + 1;
+                    string colorString = curve.LineColor.Name.Replace("Color [", "").Trim(']');
+                    cb_curve_color.SelectedIndex = colorList.IndexOf(colorString) + 1;
                     //cb_curve_color.Text = curve.LineColour.ToString();
                 }
                 cb_curve_color.Enabled = (mode != DataOperateMode.Delete);

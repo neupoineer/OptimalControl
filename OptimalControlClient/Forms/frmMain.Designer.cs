@@ -76,6 +76,8 @@ namespace OptimalControl.Forms
             this.menu_config_rules = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_help = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_help_about = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox_main = new System.Windows.Forms.PictureBox();
+            this.splitContainerH1 = new System.Windows.Forms.SplitContainer();
             this.splitContainerH1_2H2 = new System.Windows.Forms.SplitContainer();
             this.splitContainerH1_2H2_1V1 = new System.Windows.Forms.SplitContainer();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -84,7 +86,10 @@ namespace OptimalControl.Forms
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label_supwater = new System.Windows.Forms.Label();
+            this.label_feedwater = new System.Windows.Forms.Label();
             this.label_feed = new System.Windows.Forms.Label();
+            this.label_feedtotal = new System.Windows.Forms.Label();
             this.groupBox02 = new System.Windows.Forms.GroupBox();
             this.groupBox24 = new System.Windows.Forms.GroupBox();
             this.tb_oc_233 = new System.Windows.Forms.TextBox();
@@ -239,6 +244,7 @@ namespace OptimalControl.Forms
             this.dgv_logs_false = new System.Windows.Forms.DataGridView();
             this.tabPage_realtime_data = new System.Windows.Forms.TabPage();
             this.splitContainerH1_2H2_1V1_2V2 = new System.Windows.Forms.SplitContainer();
+            this.listview_parainfo = new Utility.DoubleBufferListView();
             this.splitContainerH1_2H2_1V1_2V2_2V3 = new System.Windows.Forms.SplitContainer();
             this.zgc_realtime = new ZedGraph.ZedGraphControl();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -271,13 +277,14 @@ namespace OptimalControl.Forms
             this.dgv_data = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgv_log_history = new System.Windows.Forms.DataGridView();
-            this.splitContainerH1 = new System.Windows.Forms.SplitContainer();
-            this.pictureBox_main = new System.Windows.Forms.PictureBox();
-            this.panel_size = new System.Windows.Forms.Panel();
-            this.listview_parainfo = new Utility.DoubleBufferListView();
+            this.label_density = new System.Windows.Forms.Label();
             this.statusStrip_main.SuspendLayout();
             this.toolStrip_main.SuspendLayout();
             this.msMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_main)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).BeginInit();
+            this.splitContainerH1.Panel2.SuspendLayout();
+            this.splitContainerH1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1_2H2)).BeginInit();
             this.splitContainerH1_2H2.Panel1.SuspendLayout();
             this.splitContainerH1_2H2.SuspendLayout();
@@ -367,19 +374,15 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.dgv_data)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_log_history)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).BeginInit();
-            this.splitContainerH1.Panel2.SuspendLayout();
-            this.splitContainerH1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_main)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip_main
             // 
             this.statusStrip_main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.status_Label});
-            this.statusStrip_main.Location = new System.Drawing.Point(0, 980);
+            this.statusStrip_main.Location = new System.Drawing.Point(0, 1020);
             this.statusStrip_main.Name = "statusStrip_main";
-            this.statusStrip_main.Size = new System.Drawing.Size(1870, 22);
+            this.statusStrip_main.Size = new System.Drawing.Size(1904, 22);
             this.statusStrip_main.TabIndex = 2;
             this.statusStrip_main.Text = "statusStrip1";
             // 
@@ -408,7 +411,7 @@ namespace OptimalControl.Forms
             this.toolStrip_main.Location = new System.Drawing.Point(0, 33);
             this.toolStrip_main.Name = "toolStrip_main";
             this.toolStrip_main.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip_main.Size = new System.Drawing.Size(1870, 44);
+            this.toolStrip_main.Size = new System.Drawing.Size(1904, 44);
             this.toolStrip_main.TabIndex = 15;
             // 
             // btn_run
@@ -518,7 +521,7 @@ namespace OptimalControl.Forms
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
             this.msMain.Padding = new System.Windows.Forms.Padding(3, 7, 1, 6);
-            this.msMain.Size = new System.Drawing.Size(1870, 33);
+            this.msMain.Size = new System.Drawing.Size(1904, 33);
             this.msMain.TabIndex = 41;
             // 
             // menu_file
@@ -707,6 +710,35 @@ namespace OptimalControl.Forms
             this.menu_help_about.Text = "关于软件(&A)";
             this.menu_help_about.Click += new System.EventHandler(this.menu_help_about_Click);
             // 
+            // pictureBox_main
+            // 
+            this.pictureBox_main.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox_main.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_main.Image")));
+            this.pictureBox_main.Location = new System.Drawing.Point(1832, 11);
+            this.pictureBox_main.Name = "pictureBox_main";
+            this.pictureBox_main.Size = new System.Drawing.Size(60, 60);
+            this.pictureBox_main.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox_main.TabIndex = 16;
+            this.pictureBox_main.TabStop = false;
+            // 
+            // splitContainerH1
+            // 
+            this.splitContainerH1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerH1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainerH1.IsSplitterFixed = true;
+            this.splitContainerH1.Location = new System.Drawing.Point(0, 77);
+            this.splitContainerH1.Name = "splitContainerH1";
+            this.splitContainerH1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainerH1.Panel1MinSize = 0;
+            // 
+            // splitContainerH1.Panel2
+            // 
+            this.splitContainerH1.Panel2.Controls.Add(this.splitContainerH1_2H2);
+            this.splitContainerH1.Panel2MinSize = 0;
+            this.splitContainerH1.Size = new System.Drawing.Size(1904, 943);
+            this.splitContainerH1.SplitterDistance = 25;
+            this.splitContainerH1.TabIndex = 43;
+            // 
             // splitContainerH1_2H2
             // 
             this.splitContainerH1_2H2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -719,9 +751,10 @@ namespace OptimalControl.Forms
             // splitContainerH1_2H2.Panel1
             // 
             this.splitContainerH1_2H2.Panel1.Controls.Add(this.splitContainerH1_2H2_1V1);
+            this.splitContainerH1_2H2.Panel1MinSize = 0;
             this.splitContainerH1_2H2.Panel2MinSize = 0;
-            this.splitContainerH1_2H2.Size = new System.Drawing.Size(1870, 892);
-            this.splitContainerH1_2H2.SplitterDistance = 872;
+            this.splitContainerH1_2H2.Size = new System.Drawing.Size(1904, 914);
+            this.splitContainerH1_2H2.SplitterDistance = 888;
             this.splitContainerH1_2H2.SplitterWidth = 1;
             this.splitContainerH1_2H2.TabIndex = 0;
             // 
@@ -737,7 +770,7 @@ namespace OptimalControl.Forms
             // splitContainerH1_2H2_1V1.Panel2
             // 
             this.splitContainerH1_2H2_1V1.Panel2.Controls.Add(this.tabControl);
-            this.splitContainerH1_2H2_1V1.Size = new System.Drawing.Size(1870, 872);
+            this.splitContainerH1_2H2_1V1.Size = new System.Drawing.Size(1904, 888);
             this.splitContainerH1_2H2_1V1.SplitterDistance = 30;
             this.splitContainerH1_2H2_1V1.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1.TabIndex = 44;
@@ -752,7 +785,7 @@ namespace OptimalControl.Forms
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1839, 872);
+            this.tabControl.Size = new System.Drawing.Size(1873, 888);
             this.tabControl.TabIndex = 0;
             // 
             // tabPage_optimal_control
@@ -762,14 +795,14 @@ namespace OptimalControl.Forms
             this.tabPage_optimal_control.Location = new System.Drawing.Point(4, 26);
             this.tabPage_optimal_control.Name = "tabPage_optimal_control";
             this.tabPage_optimal_control.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_optimal_control.Size = new System.Drawing.Size(1831, 842);
+            this.tabPage_optimal_control.Size = new System.Drawing.Size(1865, 858);
             this.tabPage_optimal_control.TabIndex = 3;
             this.tabPage_optimal_control.Text = "优化控制";
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(3, 3);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -783,8 +816,8 @@ namespace OptimalControl.Forms
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer2.Panel2MinSize = 1;
-            this.splitContainer2.Size = new System.Drawing.Size(1825, 836);
-            this.splitContainer2.SplitterDistance = 780;
+            this.splitContainer2.Size = new System.Drawing.Size(1859, 852);
+            this.splitContainer2.SplitterDistance = 790;
             this.splitContainer2.TabIndex = 2;
             // 
             // splitContainer3
@@ -805,7 +838,7 @@ namespace OptimalControl.Forms
             this.splitContainer3.Panel2.Controls.Add(this.groupBox14);
             this.splitContainer3.Panel2.Controls.Add(this.groupBox10);
             this.splitContainer3.Panel2.Controls.Add(this.groupBox9);
-            this.splitContainer3.Size = new System.Drawing.Size(1825, 780);
+            this.splitContainer3.Size = new System.Drawing.Size(1859, 790);
             this.splitContainer3.SplitterDistance = 1400;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -821,15 +854,19 @@ namespace OptimalControl.Forms
             // 
             this.splitContainer4.Panel2.Controls.Add(this.panel1);
             this.splitContainer4.Panel2MinSize = 0;
-            this.splitContainer4.Size = new System.Drawing.Size(1400, 780);
-            this.splitContainer4.SplitterDistance = 24;
+            this.splitContainer4.Size = new System.Drawing.Size(1400, 790);
+            this.splitContainer4.SplitterDistance = 25;
             this.splitContainer4.SplitterWidth = 1;
             this.splitContainer4.TabIndex = 5;
             // 
             // panel1
             // 
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.label_density);
+            this.panel1.Controls.Add(this.label_supwater);
+            this.panel1.Controls.Add(this.label_feedwater);
             this.panel1.Controls.Add(this.label_feed);
+            this.panel1.Controls.Add(this.label_feedtotal);
             this.panel1.Controls.Add(this.groupBox02);
             this.panel1.Controls.Add(this.groupBox03);
             this.panel1.Controls.Add(this.groupBox01);
@@ -837,16 +874,50 @@ namespace OptimalControl.Forms
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1400, 755);
+            this.panel1.Size = new System.Drawing.Size(1400, 764);
             this.panel1.TabIndex = 18;
+            // 
+            // label_supwater
+            // 
+            this.label_supwater.AutoSize = true;
+            this.label_supwater.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_supwater.ForeColor = System.Drawing.Color.Blue;
+            this.label_supwater.Location = new System.Drawing.Point(770, 390);
+            this.label_supwater.Name = "label_supwater";
+            this.label_supwater.Size = new System.Drawing.Size(17, 16);
+            this.label_supwater.TabIndex = 22;
+            this.label_supwater.Text = " ";
+            // 
+            // label_feedwater
+            // 
+            this.label_feedwater.AutoSize = true;
+            this.label_feedwater.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_feedwater.ForeColor = System.Drawing.Color.Blue;
+            this.label_feedwater.Location = new System.Drawing.Point(1000, 270);
+            this.label_feedwater.Name = "label_feedwater";
+            this.label_feedwater.Size = new System.Drawing.Size(17, 16);
+            this.label_feedwater.TabIndex = 21;
+            this.label_feedwater.Text = " ";
             // 
             // label_feed
             // 
             this.label_feed.AutoSize = true;
-            this.label_feed.Location = new System.Drawing.Point(740, 215);
+            this.label_feed.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_feed.Location = new System.Drawing.Point(870, 225);
             this.label_feed.Name = "label_feed";
-            this.label_feed.Size = new System.Drawing.Size(0, 16);
-            this.label_feed.TabIndex = 19;
+            this.label_feed.Size = new System.Drawing.Size(17, 16);
+            this.label_feed.TabIndex = 20;
+            this.label_feed.Text = " ";
+            // 
+            // label_feedtotal
+            // 
+            this.label_feedtotal.AutoSize = true;
+            this.label_feedtotal.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_feedtotal.Location = new System.Drawing.Point(725, 225);
+            this.label_feedtotal.Name = "label_feedtotal";
+            this.label_feedtotal.Size = new System.Drawing.Size(17, 16);
+            this.label_feedtotal.TabIndex = 19;
+            this.label_feedtotal.Text = " ";
             // 
             // groupBox02
             // 
@@ -1735,10 +1806,11 @@ namespace OptimalControl.Forms
             // 
             this.tb_oc_105.Location = new System.Drawing.Point(98, 155);
             this.tb_oc_105.Name = "tb_oc_105";
+            this.tb_oc_105.ReadOnly = true;
             this.tb_oc_105.Size = new System.Drawing.Size(70, 26);
             this.tb_oc_105.TabIndex = 2;
             this.tb_oc_105.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_oc_105.Validated += new System.EventHandler(this.tb_oc_105_Validated);
+            this.tb_oc_105.DoubleClick += new System.EventHandler(this.tb_oc_DoubleClick);
             // 
             // label105
             // 
@@ -1753,10 +1825,11 @@ namespace OptimalControl.Forms
             // 
             this.tb_oc_104.Location = new System.Drawing.Point(98, 27);
             this.tb_oc_104.Name = "tb_oc_104";
+            this.tb_oc_104.ReadOnly = true;
             this.tb_oc_104.Size = new System.Drawing.Size(70, 26);
             this.tb_oc_104.TabIndex = 1;
             this.tb_oc_104.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_oc_104.Validated += new System.EventHandler(this.tb_oc_104_Validated);
+            this.tb_oc_104.DoubleClick += new System.EventHandler(this.tb_oc_DoubleClick);
             // 
             // label104
             // 
@@ -1848,10 +1921,11 @@ namespace OptimalControl.Forms
             // 
             this.tb_oc_125.Location = new System.Drawing.Point(98, 155);
             this.tb_oc_125.Name = "tb_oc_125";
+            this.tb_oc_125.ReadOnly = true;
             this.tb_oc_125.Size = new System.Drawing.Size(70, 26);
             this.tb_oc_125.TabIndex = 6;
             this.tb_oc_125.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_oc_125.Validated += new System.EventHandler(this.tb_oc_125_Validated);
+            this.tb_oc_125.DoubleClick += new System.EventHandler(this.tb_oc_DoubleClick);
             // 
             // label125
             // 
@@ -1866,10 +1940,11 @@ namespace OptimalControl.Forms
             // 
             this.tb_oc_124.Location = new System.Drawing.Point(98, 27);
             this.tb_oc_124.Name = "tb_oc_124";
+            this.tb_oc_124.ReadOnly = true;
             this.tb_oc_124.Size = new System.Drawing.Size(70, 26);
             this.tb_oc_124.TabIndex = 5;
             this.tb_oc_124.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_oc_124.Validated += new System.EventHandler(this.tb_oc_124_Validated);
+            this.tb_oc_124.DoubleClick += new System.EventHandler(this.tb_oc_DoubleClick);
             // 
             // label124
             // 
@@ -1961,10 +2036,11 @@ namespace OptimalControl.Forms
             // 
             this.tb_oc_115.Location = new System.Drawing.Point(98, 155);
             this.tb_oc_115.Name = "tb_oc_115";
+            this.tb_oc_115.ReadOnly = true;
             this.tb_oc_115.Size = new System.Drawing.Size(70, 26);
             this.tb_oc_115.TabIndex = 4;
             this.tb_oc_115.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_oc_115.Validated += new System.EventHandler(this.tb_oc_115_Validated);
+            this.tb_oc_115.DoubleClick += new System.EventHandler(this.tb_oc_DoubleClick);
             // 
             // label115
             // 
@@ -1979,10 +2055,11 @@ namespace OptimalControl.Forms
             // 
             this.tb_oc_114.Location = new System.Drawing.Point(98, 27);
             this.tb_oc_114.Name = "tb_oc_114";
+            this.tb_oc_114.ReadOnly = true;
             this.tb_oc_114.Size = new System.Drawing.Size(70, 26);
             this.tb_oc_114.TabIndex = 3;
             this.tb_oc_114.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tb_oc_114.Validated += new System.EventHandler(this.tb_oc_114_Validated);
+            this.tb_oc_114.DoubleClick += new System.EventHandler(this.tb_oc_DoubleClick);
             // 
             // label114
             // 
@@ -2065,7 +2142,7 @@ namespace OptimalControl.Forms
             // 
             this.groupBox15.Controls.Add(this.groupBox16);
             this.groupBox15.Controls.Add(this.pb_status_enabled);
-            this.groupBox15.Location = new System.Drawing.Point(70, 41);
+            this.groupBox15.Location = new System.Drawing.Point(90, 40);
             this.groupBox15.Name = "groupBox15";
             this.groupBox15.Size = new System.Drawing.Size(275, 100);
             this.groupBox15.TabIndex = 16;
@@ -2105,7 +2182,7 @@ namespace OptimalControl.Forms
             this.groupBox14.Controls.Add(this.cb_oc_121);
             this.groupBox14.Controls.Add(this.cb_oc_111);
             this.groupBox14.Controls.Add(this.cb_oc_101);
-            this.groupBox14.Location = new System.Drawing.Point(225, 571);
+            this.groupBox14.Location = new System.Drawing.Point(245, 570);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Size = new System.Drawing.Size(120, 180);
             this.groupBox14.TabIndex = 15;
@@ -2125,7 +2202,6 @@ namespace OptimalControl.Forms
             this.cb_oc_121.TabStop = false;
             this.cb_oc_121.Text = "补加水";
             this.cb_oc_121.UseVisualStyleBackColor = true;
-            this.cb_oc_121.CheckedChanged += new System.EventHandler(this.cb_oc_1x1_CheckedChanged);
             // 
             // cb_oc_111
             // 
@@ -2140,7 +2216,6 @@ namespace OptimalControl.Forms
             this.cb_oc_111.TabStop = false;
             this.cb_oc_111.Text = "给水量";
             this.cb_oc_111.UseVisualStyleBackColor = true;
-            this.cb_oc_111.CheckedChanged += new System.EventHandler(this.cb_oc_1x1_CheckedChanged);
             // 
             // cb_oc_101
             // 
@@ -2155,7 +2230,6 @@ namespace OptimalControl.Forms
             this.cb_oc_101.TabStop = false;
             this.cb_oc_101.Text = "给矿量";
             this.cb_oc_101.UseVisualStyleBackColor = true;
-            this.cb_oc_101.CheckedChanged += new System.EventHandler(this.cb_oc_1x1_CheckedChanged);
             // 
             // groupBox10
             // 
@@ -2167,7 +2241,7 @@ namespace OptimalControl.Forms
             this.groupBox10.Controls.Add(this.cb_oc_221);
             this.groupBox10.Controls.Add(this.cb_oc_211);
             this.groupBox10.Controls.Add(this.cb_oc_201);
-            this.groupBox10.Location = new System.Drawing.Point(70, 571);
+            this.groupBox10.Location = new System.Drawing.Point(90, 570);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(120, 180);
             this.groupBox10.TabIndex = 14;
@@ -2223,7 +2297,6 @@ namespace OptimalControl.Forms
             this.cb_oc_231.TabStop = false;
             this.cb_oc_231.Text = "负荷";
             this.cb_oc_231.UseVisualStyleBackColor = true;
-            this.cb_oc_231.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
             // 
             // cb_oc_221
             // 
@@ -2238,7 +2311,6 @@ namespace OptimalControl.Forms
             this.cb_oc_221.TabStop = false;
             this.cb_oc_221.Text = "顽石";
             this.cb_oc_221.UseVisualStyleBackColor = true;
-            this.cb_oc_221.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
             // 
             // cb_oc_211
             // 
@@ -2253,7 +2325,6 @@ namespace OptimalControl.Forms
             this.cb_oc_211.TabStop = false;
             this.cb_oc_211.Text = "功率";
             this.cb_oc_211.UseVisualStyleBackColor = true;
-            this.cb_oc_211.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
             // 
             // cb_oc_201
             // 
@@ -2268,7 +2339,6 @@ namespace OptimalControl.Forms
             this.cb_oc_201.TabStop = false;
             this.cb_oc_201.Text = "轴压";
             this.cb_oc_201.UseVisualStyleBackColor = true;
-            this.cb_oc_201.CheckedChanged += new System.EventHandler(this.cb_oc_2x1_CheckedChanged);
             // 
             // groupBox9
             // 
@@ -2282,7 +2352,7 @@ namespace OptimalControl.Forms
             this.groupBox9.Controls.Add(this.pb_status_3);
             this.groupBox9.Controls.Add(this.pb_status_2);
             this.groupBox9.Controls.Add(this.pb_status_1);
-            this.groupBox9.Location = new System.Drawing.Point(70, 175);
+            this.groupBox9.Location = new System.Drawing.Point(90, 175);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(275, 350);
             this.groupBox9.TabIndex = 13;
@@ -2439,13 +2509,16 @@ namespace OptimalControl.Forms
             // splitContainer6.Panel1
             // 
             this.splitContainer6.Panel1.Controls.Add(this.dgv_logs_true);
+            this.splitContainer6.Panel1MinSize = 20;
             // 
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.dgv_logs_false);
-            this.splitContainer6.Size = new System.Drawing.Size(1825, 52);
-            this.splitContainer6.SplitterDistance = 26;
-            this.splitContainer6.SplitterWidth = 1;
+            this.splitContainer6.Panel2MinSize = 20;
+            this.splitContainer6.Size = new System.Drawing.Size(1859, 58);
+            this.splitContainer6.SplitterDistance = 27;
+            this.splitContainer6.SplitterIncrement = 2;
+            this.splitContainer6.SplitterWidth = 2;
             this.splitContainer6.TabIndex = 0;
             // 
             // dgv_logs_true
@@ -2483,7 +2556,7 @@ namespace OptimalControl.Forms
             this.dgv_logs_true.RowTemplate.Height = 23;
             this.dgv_logs_true.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgv_logs_true.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_logs_true.Size = new System.Drawing.Size(1825, 26);
+            this.dgv_logs_true.Size = new System.Drawing.Size(1859, 27);
             this.dgv_logs_true.TabIndex = 3;
             // 
             // dgv_logs_false
@@ -2521,7 +2594,7 @@ namespace OptimalControl.Forms
             this.dgv_logs_false.RowTemplate.Height = 23;
             this.dgv_logs_false.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgv_logs_false.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_logs_false.Size = new System.Drawing.Size(1825, 25);
+            this.dgv_logs_false.Size = new System.Drawing.Size(1859, 29);
             this.dgv_logs_false.TabIndex = 4;
             // 
             // tabPage_realtime_data
@@ -2530,7 +2603,7 @@ namespace OptimalControl.Forms
             this.tabPage_realtime_data.Location = new System.Drawing.Point(4, 22);
             this.tabPage_realtime_data.Name = "tabPage_realtime_data";
             this.tabPage_realtime_data.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_realtime_data.Size = new System.Drawing.Size(1831, 1224);
+            this.tabPage_realtime_data.Size = new System.Drawing.Size(1865, 859);
             this.tabPage_realtime_data.TabIndex = 0;
             this.tabPage_realtime_data.Text = "实时数据";
             this.tabPage_realtime_data.UseVisualStyleBackColor = true;
@@ -2551,11 +2624,21 @@ namespace OptimalControl.Forms
             // 
             this.splitContainerH1_2H2_1V1_2V2.Panel2.AllowDrop = true;
             this.splitContainerH1_2H2_1V1_2V2.Panel2.Controls.Add(this.splitContainerH1_2H2_1V1_2V2_2V3);
-            this.splitContainerH1_2H2_1V1_2V2.Size = new System.Drawing.Size(1825, 1218);
+            this.splitContainerH1_2H2_1V1_2V2.Size = new System.Drawing.Size(1859, 853);
             this.splitContainerH1_2H2_1V1_2V2.SplitterDistance = 255;
             this.splitContainerH1_2H2_1V1_2V2.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1_2V2.TabIndex = 14;
             this.splitContainerH1_2H2_1V1_2V2.TabStop = false;
+            // 
+            // listview_parainfo
+            // 
+            this.listview_parainfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listview_parainfo.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.listview_parainfo.Location = new System.Drawing.Point(0, 0);
+            this.listview_parainfo.Name = "listview_parainfo";
+            this.listview_parainfo.Size = new System.Drawing.Size(255, 853);
+            this.listview_parainfo.TabIndex = 0;
+            this.listview_parainfo.UseCompatibleStateImageBehavior = false;
             // 
             // splitContainerH1_2H2_1V1_2V2_2V3
             // 
@@ -2574,7 +2657,7 @@ namespace OptimalControl.Forms
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2.Controls.Add(this.groupBox4);
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2Collapsed = true;
             this.splitContainerH1_2H2_1V1_2V2_2V3.Panel2MinSize = 0;
-            this.splitContainerH1_2H2_1V1_2V2_2V3.Size = new System.Drawing.Size(1569, 1218);
+            this.splitContainerH1_2H2_1V1_2V2_2V3.Size = new System.Drawing.Size(1603, 853);
             this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterDistance = 506;
             this.splitContainerH1_2H2_1V1_2V2_2V3.SplitterWidth = 1;
             this.splitContainerH1_2H2_1V1_2V2_2V3.TabIndex = 0;
@@ -2597,7 +2680,7 @@ namespace OptimalControl.Forms
             this.zgc_realtime.ScrollMinX = 0D;
             this.zgc_realtime.ScrollMinY = 0D;
             this.zgc_realtime.ScrollMinY2 = 0D;
-            this.zgc_realtime.Size = new System.Drawing.Size(1569, 1218);
+            this.zgc_realtime.Size = new System.Drawing.Size(1603, 853);
             this.zgc_realtime.TabIndex = 12;
             this.zgc_realtime.TabStop = false;
             // 
@@ -2628,7 +2711,7 @@ namespace OptimalControl.Forms
             this.tabPage_history_curve.Location = new System.Drawing.Point(4, 22);
             this.tabPage_history_curve.Name = "tabPage_history_curve";
             this.tabPage_history_curve.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_history_curve.Size = new System.Drawing.Size(1831, 1224);
+            this.tabPage_history_curve.Size = new System.Drawing.Size(1865, 859);
             this.tabPage_history_curve.TabIndex = 1;
             this.tabPage_history_curve.Text = "历史曲线";
             this.tabPage_history_curve.UseVisualStyleBackColor = true;
@@ -2654,17 +2737,17 @@ namespace OptimalControl.Forms
             // splitContainer_child.Panel2
             // 
             this.splitContainer_child.Panel2.Controls.Add(this.zgc_history);
-            this.splitContainer_child.Size = new System.Drawing.Size(1825, 1218);
-            this.splitContainer_child.SplitterDistance = 67;
+            this.splitContainer_child.Size = new System.Drawing.Size(1859, 853);
+            this.splitContainer_child.SplitterDistance = 37;
             this.splitContainer_child.SplitterWidth = 1;
             this.splitContainer_child.TabIndex = 19;
             this.splitContainer_child.TabStop = false;
             // 
             // btn_curve_next
             // 
-            this.btn_curve_next.Location = new System.Drawing.Point(682, 15);
+            this.btn_curve_next.Location = new System.Drawing.Point(690, 8);
             this.btn_curve_next.Name = "btn_curve_next";
-            this.btn_curve_next.Size = new System.Drawing.Size(25, 23);
+            this.btn_curve_next.Size = new System.Drawing.Size(25, 26);
             this.btn_curve_next.TabIndex = 25;
             this.btn_curve_next.Text = ">";
             this.btn_curve_next.UseVisualStyleBackColor = true;
@@ -2672,9 +2755,9 @@ namespace OptimalControl.Forms
             // 
             // btn_curve_prev
             // 
-            this.btn_curve_prev.Location = new System.Drawing.Point(651, 15);
+            this.btn_curve_prev.Location = new System.Drawing.Point(659, 8);
             this.btn_curve_prev.Name = "btn_curve_prev";
-            this.btn_curve_prev.Size = new System.Drawing.Size(25, 23);
+            this.btn_curve_prev.Size = new System.Drawing.Size(25, 26);
             this.btn_curve_prev.TabIndex = 24;
             this.btn_curve_prev.Text = "<";
             this.btn_curve_prev.UseVisualStyleBackColor = true;
@@ -2682,9 +2765,9 @@ namespace OptimalControl.Forms
             // 
             // btn_curve_search
             // 
-            this.btn_curve_search.Location = new System.Drawing.Point(570, 15);
+            this.btn_curve_search.Location = new System.Drawing.Point(578, 8);
             this.btn_curve_search.Name = "btn_curve_search";
-            this.btn_curve_search.Size = new System.Drawing.Size(75, 23);
+            this.btn_curve_search.Size = new System.Drawing.Size(75, 26);
             this.btn_curve_search.TabIndex = 23;
             this.btn_curve_search.Text = "查询";
             this.btn_curve_search.UseVisualStyleBackColor = true;
@@ -2693,7 +2776,7 @@ namespace OptimalControl.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 18);
+            this.label1.Location = new System.Drawing.Point(10, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 16);
             this.label1.TabIndex = 21;
@@ -2703,24 +2786,24 @@ namespace OptimalControl.Forms
             // 
             this.dtp_curve_start.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtp_curve_start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_curve_start.Location = new System.Drawing.Point(85, 12);
+            this.dtp_curve_start.Location = new System.Drawing.Point(88, 8);
             this.dtp_curve_start.Name = "dtp_curve_start";
-            this.dtp_curve_start.Size = new System.Drawing.Size(180, 26);
+            this.dtp_curve_start.Size = new System.Drawing.Size(200, 26);
             this.dtp_curve_start.TabIndex = 19;
             // 
             // dtp_curve_end
             // 
             this.dtp_curve_end.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtp_curve_end.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_curve_end.Location = new System.Drawing.Point(366, 12);
+            this.dtp_curve_end.Location = new System.Drawing.Point(372, 8);
             this.dtp_curve_end.Name = "dtp_curve_end";
-            this.dtp_curve_end.Size = new System.Drawing.Size(180, 26);
+            this.dtp_curve_end.Size = new System.Drawing.Size(200, 26);
             this.dtp_curve_end.TabIndex = 20;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(290, 18);
+            this.label2.Location = new System.Drawing.Point(294, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 16);
             this.label2.TabIndex = 22;
@@ -2744,17 +2827,17 @@ namespace OptimalControl.Forms
             this.zgc_history.ScrollMinX = 0D;
             this.zgc_history.ScrollMinY = 0D;
             this.zgc_history.ScrollMinY2 = 0D;
-            this.zgc_history.Size = new System.Drawing.Size(1825, 1150);
+            this.zgc_history.Size = new System.Drawing.Size(1859, 815);
             this.zgc_history.TabIndex = 15;
             this.zgc_history.TabStop = false;
             // 
             // tabPage_history_data
             // 
             this.tabPage_history_data.Controls.Add(this.splitContainer1);
-            this.tabPage_history_data.Location = new System.Drawing.Point(4, 26);
+            this.tabPage_history_data.Location = new System.Drawing.Point(4, 22);
             this.tabPage_history_data.Name = "tabPage_history_data";
             this.tabPage_history_data.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_history_data.Size = new System.Drawing.Size(1831, 842);
+            this.tabPage_history_data.Size = new System.Drawing.Size(1865, 859);
             this.tabPage_history_data.TabIndex = 2;
             this.tabPage_history_data.Text = "历史数据";
             this.tabPage_history_data.UseVisualStyleBackColor = true;
@@ -2785,8 +2868,8 @@ namespace OptimalControl.Forms
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer5);
-            this.splitContainer1.Size = new System.Drawing.Size(1825, 836);
-            this.splitContainer1.SplitterDistance = 46;
+            this.splitContainer1.Size = new System.Drawing.Size(1859, 853);
+            this.splitContainer1.SplitterDistance = 37;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 20;
             this.splitContainer1.TabStop = false;
@@ -2794,7 +2877,7 @@ namespace OptimalControl.Forms
             // tb_use_rate
             // 
             this.tb_use_rate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.tb_use_rate.Location = new System.Drawing.Point(1360, 5);
+            this.tb_use_rate.Location = new System.Drawing.Point(1613, 6);
             this.tb_use_rate.Name = "tb_use_rate";
             this.tb_use_rate.ReadOnly = true;
             this.tb_use_rate.Size = new System.Drawing.Size(60, 26);
@@ -2803,9 +2886,9 @@ namespace OptimalControl.Forms
             // btn_use_next
             // 
             this.btn_use_next.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btn_use_next.Location = new System.Drawing.Point(1325, 5);
+            this.btn_use_next.Location = new System.Drawing.Point(1582, 6);
             this.btn_use_next.Name = "btn_use_next";
-            this.btn_use_next.Size = new System.Drawing.Size(25, 23);
+            this.btn_use_next.Size = new System.Drawing.Size(25, 26);
             this.btn_use_next.TabIndex = 29;
             this.btn_use_next.Text = ">";
             this.btn_use_next.UseVisualStyleBackColor = true;
@@ -2814,9 +2897,9 @@ namespace OptimalControl.Forms
             // btn_use_prev
             // 
             this.btn_use_prev.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btn_use_prev.Location = new System.Drawing.Point(1295, 5);
+            this.btn_use_prev.Location = new System.Drawing.Point(1551, 6);
             this.btn_use_prev.Name = "btn_use_prev";
-            this.btn_use_prev.Size = new System.Drawing.Size(25, 23);
+            this.btn_use_prev.Size = new System.Drawing.Size(25, 26);
             this.btn_use_prev.TabIndex = 28;
             this.btn_use_prev.Text = "<";
             this.btn_use_prev.UseVisualStyleBackColor = true;
@@ -2825,9 +2908,9 @@ namespace OptimalControl.Forms
             // btn_use_rate
             // 
             this.btn_use_rate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btn_use_rate.Location = new System.Drawing.Point(1215, 5);
+            this.btn_use_rate.Location = new System.Drawing.Point(1470, 6);
             this.btn_use_rate.Name = "btn_use_rate";
-            this.btn_use_rate.Size = new System.Drawing.Size(75, 23);
+            this.btn_use_rate.Size = new System.Drawing.Size(75, 26);
             this.btn_use_rate.TabIndex = 27;
             this.btn_use_rate.Text = "投用率";
             this.btn_use_rate.UseVisualStyleBackColor = true;
@@ -2836,9 +2919,9 @@ namespace OptimalControl.Forms
             // btn_data_export
             // 
             this.btn_data_export.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btn_data_export.Location = new System.Drawing.Point(1450, 5);
+            this.btn_data_export.Location = new System.Drawing.Point(1705, 6);
             this.btn_data_export.Name = "btn_data_export";
-            this.btn_data_export.Size = new System.Drawing.Size(95, 23);
+            this.btn_data_export.Size = new System.Drawing.Size(95, 26);
             this.btn_data_export.TabIndex = 26;
             this.btn_data_export.Text = "导出数据";
             this.btn_data_export.UseVisualStyleBackColor = true;
@@ -2846,9 +2929,9 @@ namespace OptimalControl.Forms
             // 
             // btn_data_next
             // 
-            this.btn_data_next.Location = new System.Drawing.Point(682, 15);
+            this.btn_data_next.Location = new System.Drawing.Point(690, 8);
             this.btn_data_next.Name = "btn_data_next";
-            this.btn_data_next.Size = new System.Drawing.Size(25, 23);
+            this.btn_data_next.Size = new System.Drawing.Size(25, 26);
             this.btn_data_next.TabIndex = 25;
             this.btn_data_next.Text = ">";
             this.btn_data_next.UseVisualStyleBackColor = true;
@@ -2856,9 +2939,9 @@ namespace OptimalControl.Forms
             // 
             // btn_data_prev
             // 
-            this.btn_data_prev.Location = new System.Drawing.Point(651, 15);
+            this.btn_data_prev.Location = new System.Drawing.Point(659, 8);
             this.btn_data_prev.Name = "btn_data_prev";
-            this.btn_data_prev.Size = new System.Drawing.Size(25, 23);
+            this.btn_data_prev.Size = new System.Drawing.Size(25, 26);
             this.btn_data_prev.TabIndex = 24;
             this.btn_data_prev.Text = "<";
             this.btn_data_prev.UseVisualStyleBackColor = true;
@@ -2866,9 +2949,9 @@ namespace OptimalControl.Forms
             // 
             // btn_data_search
             // 
-            this.btn_data_search.Location = new System.Drawing.Point(570, 15);
+            this.btn_data_search.Location = new System.Drawing.Point(578, 8);
             this.btn_data_search.Name = "btn_data_search";
-            this.btn_data_search.Size = new System.Drawing.Size(75, 23);
+            this.btn_data_search.Size = new System.Drawing.Size(75, 26);
             this.btn_data_search.TabIndex = 23;
             this.btn_data_search.Text = "查询";
             this.btn_data_search.UseVisualStyleBackColor = true;
@@ -2877,7 +2960,7 @@ namespace OptimalControl.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 18);
+            this.label3.Location = new System.Drawing.Point(10, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(72, 16);
             this.label3.TabIndex = 21;
@@ -2887,24 +2970,24 @@ namespace OptimalControl.Forms
             // 
             this.dtp_data_start.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtp_data_start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_data_start.Location = new System.Drawing.Point(85, 12);
+            this.dtp_data_start.Location = new System.Drawing.Point(88, 8);
             this.dtp_data_start.Name = "dtp_data_start";
-            this.dtp_data_start.Size = new System.Drawing.Size(180, 26);
+            this.dtp_data_start.Size = new System.Drawing.Size(200, 26);
             this.dtp_data_start.TabIndex = 19;
             // 
             // dtp_data_end
             // 
             this.dtp_data_end.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtp_data_end.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp_data_end.Location = new System.Drawing.Point(366, 12);
+            this.dtp_data_end.Location = new System.Drawing.Point(372, 8);
             this.dtp_data_end.Name = "dtp_data_end";
-            this.dtp_data_end.Size = new System.Drawing.Size(180, 26);
+            this.dtp_data_end.Size = new System.Drawing.Size(200, 26);
             this.dtp_data_end.TabIndex = 20;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(290, 18);
+            this.label4.Location = new System.Drawing.Point(294, 13);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(72, 16);
             this.label4.TabIndex = 22;
@@ -2924,8 +3007,8 @@ namespace OptimalControl.Forms
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer5.Size = new System.Drawing.Size(1825, 789);
-            this.splitContainer5.SplitterDistance = 627;
+            this.splitContainer5.Size = new System.Drawing.Size(1859, 815);
+            this.splitContainer5.SplitterDistance = 675;
             this.splitContainer5.SplitterWidth = 2;
             this.splitContainer5.TabIndex = 0;
             // 
@@ -2958,8 +3041,9 @@ namespace OptimalControl.Forms
             this.dgv_data.ReadOnly = true;
             this.dgv_data.RowHeadersVisible = false;
             this.dgv_data.RowTemplate.Height = 23;
-            this.dgv_data.Size = new System.Drawing.Size(1825, 627);
+            this.dgv_data.Size = new System.Drawing.Size(1859, 675);
             this.dgv_data.TabIndex = 2;
+            this.dgv_data.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgv_data_CellFormatting);
             // 
             // groupBox1
             // 
@@ -2967,7 +3051,7 @@ namespace OptimalControl.Forms
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1825, 160);
+            this.groupBox1.Size = new System.Drawing.Size(1859, 138);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "日志记录";
@@ -3003,76 +3087,32 @@ namespace OptimalControl.Forms
             this.dgv_log_history.RowHeadersVisible = false;
             this.dgv_log_history.RowTemplate.Height = 23;
             this.dgv_log_history.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_log_history.Size = new System.Drawing.Size(1819, 135);
+            this.dgv_log_history.Size = new System.Drawing.Size(1853, 113);
             this.dgv_log_history.TabIndex = 1;
             // 
-            // splitContainerH1
+            // label_density
             // 
-            this.splitContainerH1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerH1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainerH1.IsSplitterFixed = true;
-            this.splitContainerH1.Location = new System.Drawing.Point(0, 77);
-            this.splitContainerH1.Name = "splitContainerH1";
-            this.splitContainerH1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.splitContainerH1.Panel1MinSize = 0;
-            // 
-            // splitContainerH1.Panel2
-            // 
-            this.splitContainerH1.Panel2.Controls.Add(this.splitContainerH1_2H2);
-            this.splitContainerH1.Size = new System.Drawing.Size(1870, 903);
-            this.splitContainerH1.SplitterDistance = 10;
-            this.splitContainerH1.SplitterWidth = 1;
-            this.splitContainerH1.TabIndex = 42;
-            // 
-            // pictureBox_main
-            // 
-            this.pictureBox_main.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox_main.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_main.Image")));
-            this.pictureBox_main.Location = new System.Drawing.Point(4053, 929);
-            this.pictureBox_main.Name = "pictureBox_main";
-            this.pictureBox_main.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox_main.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox_main.TabIndex = 16;
-            this.pictureBox_main.TabStop = false;
-            // 
-            // panel_size
-            // 
-            this.panel_size.Location = new System.Drawing.Point(0, 0);
-            this.panel_size.Name = "panel_size";
-            this.panel_size.Size = new System.Drawing.Size(1870, 980);
-            this.panel_size.TabIndex = 43;
-            // 
-            // listview_parainfo
-            // 
-            this.listview_parainfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listview_parainfo.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.listview_parainfo.FullRowSelect = true;
-            this.listview_parainfo.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listview_parainfo.LabelWrap = false;
-            this.listview_parainfo.Location = new System.Drawing.Point(0, 0);
-            this.listview_parainfo.MultiSelect = false;
-            this.listview_parainfo.Name = "listview_parainfo";
-            this.listview_parainfo.Size = new System.Drawing.Size(255, 1218);
-            this.listview_parainfo.TabIndex = 2;
-            this.listview_parainfo.UseCompatibleStateImageBehavior = false;
-            this.listview_parainfo.View = System.Windows.Forms.View.Details;
+            this.label_density.AutoSize = true;
+            this.label_density.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_density.Location = new System.Drawing.Point(590, 130);
+            this.label_density.Name = "label_density";
+            this.label_density.Size = new System.Drawing.Size(17, 16);
+            this.label_density.TabIndex = 23;
+            this.label_density.Text = " ";
             // 
             // FrmMain
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.AutoScroll = true;
-            this.AutoSize = true;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1613, 893);
-            this.Controls.Add(this.splitContainerH1);
+            this.ClientSize = new System.Drawing.Size(1904, 1042);
             this.Controls.Add(this.pictureBox_main);
+            this.Controls.Add(this.splitContainerH1);
             this.Controls.Add(this.toolStrip_main);
             this.Controls.Add(this.statusStrip_main);
             this.Controls.Add(this.msMain);
-            this.Controls.Add(this.panel_size);
             this.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1598, 858);
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "半自磨优化系统";
@@ -3085,6 +3125,10 @@ namespace OptimalControl.Forms
             this.toolStrip_main.PerformLayout();
             this.msMain.ResumeLayout(false);
             this.msMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_main)).EndInit();
+            this.splitContainerH1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).EndInit();
+            this.splitContainerH1.ResumeLayout(false);
             this.splitContainerH1_2H2.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1_2H2)).EndInit();
             this.splitContainerH1_2H2.ResumeLayout(false);
@@ -3199,10 +3243,6 @@ namespace OptimalControl.Forms
             ((System.ComponentModel.ISupportInitialize)(this.dgv_data)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_log_history)).EndInit();
-            this.splitContainerH1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerH1)).EndInit();
-            this.splitContainerH1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_main)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3241,51 +3281,24 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.SplitContainer splitContainerH1_2H2;
-        private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1;
-        private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPage_realtime_data;
-        private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1_2V2;
-        private DoubleBufferListView listview_parainfo;
-        private System.Windows.Forms.TabPage tabPage_history_curve;
-        private System.Windows.Forms.SplitContainer splitContainerH1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton btn_curve_realtime;
         private System.Windows.Forms.ToolStripButton btn_curve_stop;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.TabPage tabPage_history_data;
-        private System.Windows.Forms.SplitContainer splitContainer_child;
-        private System.Windows.Forms.Button btn_curve_next;
-        private System.Windows.Forms.Button btn_curve_prev;
-        private System.Windows.Forms.Button btn_curve_search;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dtp_curve_start;
-        private System.Windows.Forms.DateTimePicker dtp_curve_end;
-        private System.Windows.Forms.Label label2;
-        private ZedGraph.ZedGraphControl zgc_history;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button btn_data_next;
-        private System.Windows.Forms.Button btn_data_prev;
-        private System.Windows.Forms.Button btn_data_search;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dtp_data_start;
-        private System.Windows.Forms.DateTimePicker dtp_data_end;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1_2V2_2V3;
-        private ZedGraph.ZedGraphControl zgc_realtime;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label_info1_title;
-        private System.Windows.Forms.TabPage tabPage_optimal_control;
-        private System.Windows.Forms.Button btn_data_export;
         private System.Windows.Forms.ToolStripMenuItem menu_config_rules;
-        private System.Windows.Forms.SplitContainer splitContainer5;
-        private System.Windows.Forms.DataGridView dgv_data;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dgv_log_history;
+        private System.Windows.Forms.SplitContainer splitContainerH1;
+        private System.Windows.Forms.SplitContainer splitContainerH1_2H2;
+        private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPage_optimal_control;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label_supwater;
+        private System.Windows.Forms.Label label_feedwater;
+        private System.Windows.Forms.Label label_feed;
+        private System.Windows.Forms.Label label_feedtotal;
         private System.Windows.Forms.GroupBox groupBox02;
         private System.Windows.Forms.GroupBox groupBox24;
         private System.Windows.Forms.TextBox tb_oc_233;
@@ -3402,25 +3415,10 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.TextBox tb_oc_111;
         private System.Windows.Forms.Label label111;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.PictureBox pb_status_5;
-        private System.Windows.Forms.PictureBox pb_status_4;
-        private System.Windows.Forms.PictureBox pb_status_3;
-        private System.Windows.Forms.PictureBox pb_status_2;
-        private System.Windows.Forms.PictureBox pb_status_1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.SplitContainer splitContainer6;
-        private System.Windows.Forms.DataGridView dgv_logs_true;
-        private System.Windows.Forms.DataGridView dgv_logs_false;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.Label label_workstatus;
+        private System.Windows.Forms.PictureBox pb_status_enabled;
         private System.Windows.Forms.GroupBox groupBox14;
         private System.Windows.Forms.CheckBox cb_oc_121;
         private System.Windows.Forms.CheckBox cb_oc_111;
@@ -3434,16 +3432,61 @@ namespace OptimalControl.Forms
         private System.Windows.Forms.CheckBox cb_oc_221;
         private System.Windows.Forms.CheckBox cb_oc_211;
         private System.Windows.Forms.CheckBox cb_oc_201;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox pb_status_5;
+        private System.Windows.Forms.PictureBox pb_status_4;
+        private System.Windows.Forms.PictureBox pb_status_3;
+        private System.Windows.Forms.PictureBox pb_status_2;
+        private System.Windows.Forms.PictureBox pb_status_1;
+        private System.Windows.Forms.SplitContainer splitContainer6;
+        private System.Windows.Forms.DataGridView dgv_logs_true;
+        private System.Windows.Forms.DataGridView dgv_logs_false;
+        private System.Windows.Forms.TabPage tabPage_realtime_data;
+        private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1_2V2;
+        private System.Windows.Forms.SplitContainer splitContainerH1_2H2_1V1_2V2_2V3;
+        private ZedGraph.ZedGraphControl zgc_realtime;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label_info1_title;
+        private System.Windows.Forms.TabPage tabPage_history_curve;
+        private System.Windows.Forms.SplitContainer splitContainer_child;
+        private System.Windows.Forms.Button btn_curve_next;
+        private System.Windows.Forms.Button btn_curve_prev;
+        private System.Windows.Forms.Button btn_curve_search;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker dtp_curve_start;
+        private System.Windows.Forms.DateTimePicker dtp_curve_end;
+        private System.Windows.Forms.Label label2;
+        private ZedGraph.ZedGraphControl zgc_history;
+        private System.Windows.Forms.TabPage tabPage_history_data;
+        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox tb_use_rate;
         private System.Windows.Forms.Button btn_use_next;
         private System.Windows.Forms.Button btn_use_prev;
         private System.Windows.Forms.Button btn_use_rate;
-        private System.Windows.Forms.Panel panel_size;
-        private System.Windows.Forms.GroupBox groupBox15;
-        private System.Windows.Forms.GroupBox groupBox16;
-        private System.Windows.Forms.Label label_workstatus;
-        private System.Windows.Forms.PictureBox pb_status_enabled;
-        private System.Windows.Forms.Label label_feed;
+        private System.Windows.Forms.Button btn_data_export;
+        private System.Windows.Forms.Button btn_data_next;
+        private System.Windows.Forms.Button btn_data_prev;
+        private System.Windows.Forms.Button btn_data_search;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DateTimePicker dtp_data_start;
+        private System.Windows.Forms.DateTimePicker dtp_data_end;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.SplitContainer splitContainer5;
+        private System.Windows.Forms.DataGridView dgv_data;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DataGridView dgv_log_history;
+        private DoubleBufferListView listview_parainfo;
+        private System.Windows.Forms.Label label_density;
     }
 }
 

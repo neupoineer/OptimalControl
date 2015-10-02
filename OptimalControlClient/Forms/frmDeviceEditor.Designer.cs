@@ -40,7 +40,7 @@ namespace OptimalControl.Forms
             this.tb_device_ip = new System.Windows.Forms.TextBox();
             this.cb_device_sync = new System.Windows.Forms.CheckBox();
             this.cb_device_state = new System.Windows.Forms.CheckBox();
-            this.ntb_device_port = new NumbericTextbox();
+            this.ntb_device_port = new Utility.NumbericTextbox();
             this.tb_device_name = new System.Windows.Forms.TextBox();
             this.nud_device_unitid = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
@@ -186,13 +186,13 @@ namespace OptimalControl.Forms
             0,
             0});
             // 
-            // frmEditDevice
+            // frmDeviceEditor
             // 
             this.AcceptButton = this.btn_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btn_cancel;
-            this.ClientSize = new System.Drawing.Size(404, 204);
+            this.ClientSize = new System.Drawing.Size(400, 200);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_cancel);
@@ -200,7 +200,7 @@ namespace OptimalControl.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximumSize = new System.Drawing.Size(420, 240);
             this.MinimumSize = new System.Drawing.Size(420, 240);
-            this.Name = "frmEditDevice";
+            this.Name = "frmDeviceEditor";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

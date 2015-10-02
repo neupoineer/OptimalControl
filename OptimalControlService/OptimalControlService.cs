@@ -1040,7 +1040,7 @@ namespace OptimalControlService
 
                     if (rule.IsLogged)
                     {
-                        if (!_isRuleTriggered)
+                        if (((!_isRuleTriggered) || (rule.Priority != 3)) && _execteRulesFlag)
                         {
                             Log addLog = new Log()
                             {
@@ -1082,7 +1082,45 @@ namespace OptimalControlService
                 }
                 if (periods.Count > 0)
                 {
+                    //bool isVariableUpadated = false;
+                    //foreach (Variable variable in _modbusRtuParameters)
+                    //{
+                    //    if (variable.Code == _optimalControlFeedVariable)
+                    //    {
+                    //        if (Math.Abs(variable.RealValue - variable.HistoryValue) > 1E-06)
+                    //        {
+                    //            isVariableUpadated = true;
+                    //            break;
+                    //        }
+                    //        continue;
+                    //    }
+                    //    if (variable.Code == _optimalControlFeedWaterVariable)
+                    //    {
+                    //        if (Math.Abs(variable.RealValue - variable.HistoryValue) > 1E-06)
+                    //        {
+                    //            isVariableUpadated = true;
+                    //            break;
+                    //        }
+                    //        continue;
+                    //    }
+                    //    if (variable.Code == _optimalControlSupWaterVariable)
+                    //    {
+                    //        if (Math.Abs(variable.RealValue - variable.HistoryValue) > 1E-06)
+                    //        {
+                    //            isVariableUpadated = true;
+                    //            break;
+                    //        }
+                    //        continue;
+                    //    }
+                    //}
+
+                    //if (isVariableUpadated)
+                    //{
+                    //    periods.Add(0);
+                    //}
+
                     _timerRuleDelay = new System.Threading.Timer(TimerRuleDelayElapsed, null, periods.Min(), 0);
+
                 }
             }
             catch (Exception ex)

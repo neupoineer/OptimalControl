@@ -541,10 +541,13 @@ namespace Model.Control
                         _trendLowerList.Add(RealValue);
                         _trendHigherList.Clear();
                     }
-                    else
+                    else if (trendValue > (TrendHigherLimit/3))
+                    {
+                        _trendLowerList.Clear();
+                    }
+                    else if (trendValue < (_trendLowerLimit / 3))
                     {
                         _trendHigherList.Clear();
-                        _trendLowerList.Clear();
                     }
 
                     _currentValue = sum2/_trendLength;
@@ -639,20 +642,16 @@ namespace Model.Control
         {
             try
             {
-                if (((_value > _limit.UltimateLowerLimit) || (_limit.UltimateLowerLimit <= 0))
-                    && ((_value < _limit.UltimateHigherLimit) || (_limit.UltimateHigherLimit <= 0)))
-                {
-                    byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
-                    modbusTcpDevice.ModbusTcpMaster.WriteMultipleRegisters(
-                        modbusTcpDevice.UnitID,
-                        (ushort) (_address - 1),
-                        new ushort[]
-                        {
-                            Convert.ToUInt16(tempByte[1]*256 + tempByte[0]),
-                            Convert.ToUInt16(tempByte[3]*256 + tempByte[2])
-                        }
-                        );
-                }
+                byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
+                modbusTcpDevice.ModbusTcpMaster.WriteMultipleRegisters(
+                    modbusTcpDevice.UnitID,
+                    (ushort) (_address - 1),
+                    new ushort[]
+                    {
+                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]),
+                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2])
+                    }
+                    );
                 return true;
             }
             catch (Exception ex)

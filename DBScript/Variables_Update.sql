@@ -43,7 +43,7 @@ UPDATE [dbo].[Variable]
    SET 
      --[UltimateUpperLimit] = 5.8,
      --[UltimateLowerLimit] = 4.3,
-	   [UpperLimit] = 5.4,
+	   [UpperLimit] = 5.6,
        [LowerLimit] = 4.8
  WHERE [Code] = 'CS060100030101'
 GO
@@ -53,7 +53,7 @@ UPDATE [dbo].[Variable]
    SET 
      --[UltimateUpperLimit] = 5.8,
      --[UltimateLowerLimit] = 4.3,
-       [UpperLimit] = 5.3,
+       [UpperLimit] = 5.4,
        [LowerLimit] = 4.8
  WHERE [Code] = 'CS060100030102'
 GO

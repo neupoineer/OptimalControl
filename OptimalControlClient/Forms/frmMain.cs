@@ -56,6 +56,12 @@ namespace OptimalControl.Forms
         public string VariableCode;
     }
 
+    public struct TimePair
+    {
+        public DateTime StartTime;
+        public DateTime EndTime;
+    }
+
     #endregion
 
     /// <summary>
@@ -112,6 +118,7 @@ namespace OptimalControl.Forms
         private bool _updateGraphFlag;
 
         private bool _isFirstRoundFlag = true;
+
         /// <summary>
         /// The MessageFilter
         /// </summary>
@@ -138,8 +145,8 @@ namespace OptimalControl.Forms
 
         private ModbusTcpDevice _modbusTcpDevice;
 
-        private List<Variable> _modbusTcpVariables = new List<Variable>(); 
-        
+        private List<Variable> _modbusTcpVariables = new List<Variable>();
+
         /// <summary>
         /// The devices
         /// </summary>
@@ -154,6 +161,7 @@ namespace OptimalControl.Forms
         /// The DCS name displayed in list
         /// </summary>
         private string _dcsName;
+
         private string _clientName;
 
         /// <summary>
@@ -191,21 +199,21 @@ namespace OptimalControl.Forms
 
         private string[] _displayedParaVariableCode = new string[]
         {
-            "CS010100020101","CS010100020201","CS010100020301","CS060100040201","CS060100050201",
-            "CS040100020101","CS040100020201","CS040100020301","CS060100040202","CS060100050202",
-            "CS040200020101","CS040200020201","CS040200020301","CS060100040203","CS060100050203",
-            "CS040200030103","CS060200030104","CS060200030102",
-            "CS060100030111","CS060100030112","CS060100030113",
-            "CS060100030103","CS060100030105","CS060200030101",
-            "CS020200080111","CS020200070111","CS060200030112",
-            "CS020200080121","CS020200070121","CS060200030122"
+            "CS010100020101", "CS010100020201", "CS010100020301", "CS060100040201", "CS060100050201",
+            "CS040100020101", "CS040100020201", "CS040100020301", "CS060100040202", "CS060100050202",
+            "CS040200020101", "CS040200020201", "CS040200020301", "CS060100040203", "CS060100050203",
+            "CS040200030103", "CS060200030104", "CS060200030102",
+            "CS060100030111", "CS060100030112", "CS060100030113",
+            "CS060100030103", "CS060100030105", "CS060200030101",
+            "CS020200080111", "CS020200070111", "CS060200030112",
+            "CS020200080121", "CS020200070121", "CS060200030122"
         };
 
         private int[] _displayedParaDeviceId = new int[]
         {
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
+            0, 0, 0, 1, 1,
+            0, 0, 0, 1, 1,
+            0, 0, 0, 1, 1,
             0, 3, 0,
             0, 0, 0,
             0, 0, 0,
@@ -215,14 +223,14 @@ namespace OptimalControl.Forms
 
         private int[] _displayedParaTextboxId = new int[]
         {
-            101,102,103,104,105,
-            111,112,113,114,115,
-            121,122,123,124,125,
-            301,302,303,
-            311,312,313,
-            321,322,323,
-            331,332,333,
-            341,342,343
+            101, 102, 103, 104, 105,
+            111, 112, 113, 114, 115,
+            121, 122, 123, 124, 125,
+            301, 302, 303,
+            311, 312, 313,
+            321, 322, 323,
+            331, 332, 333,
+            341, 342, 343
         };
 
         private string[] _displayedStausVariableCode = new string[]
@@ -237,16 +245,17 @@ namespace OptimalControl.Forms
 
         private int[] _displayedStausTextboxId = new int[]
         {
-            201,202,203,204,205,
-            211,212,213,214,215,
-            221,222,223,224,225,
-            231,232,233,234,235
+            201, 202, 203, 204, 205,
+            211, 212, 213, 214, 215,
+            221, 222, 223, 224, 225,
+            231, 232, 233, 234, 235
         };
 
         private string _optimalControlEnabledVariable;
         private string _optimalControlEnabledClientVariable;
         private string _workStatusVariable;
         private string _feedTotalVariable;
+        private string _densityVariable;
 
         #endregion
 
@@ -522,15 +531,20 @@ namespace OptimalControl.Forms
                 }
 
                 _logoffTime = ConfigExeSettings.GetSettingInt("LogoffTime", _logoffTime);
-                _updateVariableTimerInterval = ConfigExeSettings.GetSettingInt("UpdateVariableTime", _updateVariableTimerInterval); //时间间隔
+                _updateVariableTimerInterval = ConfigExeSettings.GetSettingInt("UpdateVariableTime",
+                    _updateVariableTimerInterval); //时间间隔
                 _realTimerInterval = ConfigExeSettings.GetSettingInt("RealTime", _realTimerInterval); //时间间隔
-                
-                _optimalControlEnabledVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
-                _optimalControlEnabledClientVariable = ConfigExeSettings.GetSettingString("OptimalControlEnabledClientVariable", "").Trim();
+
+                _optimalControlEnabledVariable =
+                    ConfigExeSettings.GetSettingString("OptimalControlEnabledVariable", "").Trim();
+                _optimalControlEnabledClientVariable =
+                    ConfigExeSettings.GetSettingString("OptimalControlEnabledClientVariable", "").Trim();
                 _workStatusVariable = ConfigExeSettings.GetSettingString("WorkStatusVariable", "").Trim();
                 _feedTotalVariable = ConfigExeSettings.GetSettingString("FeedTotalVariable", "").Trim();
+                _densityVariable = ConfigExeSettings.GetSettingString("DensityVariable", "").Trim();
 
-                _masterPaneGraphRealtime.Title.Text = ConfigExeSettings.GetSettingString("MasterTitle", "My MasterPane Title");
+                _masterPaneGraphRealtime.Title.Text = ConfigExeSettings.GetSettingString("MasterTitle",
+                    "My MasterPane Title");
                 _masterPaneGraphRealtime.Title.FontSpec.Size = ConfigExeSettings.GetSettingSingle("MasterTitleSize", 12);
 
                 tb_oc_104.Text = ConfigExeSettings.GetSettingString("FeedMax", "");
@@ -752,7 +766,8 @@ namespace OptimalControl.Forms
                                         register[0] =
                                             _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address];
                                         register[1] =
-                                            _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1];
+                                            _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[
+                                                variable.Address + 1];
                                     }
                                     catch (Exception)
                                     {
@@ -768,7 +783,7 @@ namespace OptimalControl.Forms
                                         byteString[2*j + 1] = tempByte[1];
                                     }
                                     float value = BitConverter.ToSingle(byteString, 0); //还原用2个8位寄存器保存的1个浮点数
-                                    variable.Value = value; 
+                                    variable.Value = value;
                                     variable.ProcessValueData();
                                 }
                             }
@@ -927,7 +942,8 @@ namespace OptimalControl.Forms
             //zgc_history.Invalidate();
         }
 
-        private delegate void UpdateGraphDelegate(ref MasterPane masterPane, ref ZedGraphControl zgc, List<Curve> curves);
+        private delegate void UpdateGraphDelegate(ref MasterPane masterPane, ref ZedGraphControl zgc, List<Curve> curves
+            );
 
         /// <summary>
         /// 刷新曲线.
@@ -936,7 +952,7 @@ namespace OptimalControl.Forms
         {
             if (InvokeRequired)
             {
-                Invoke(new UpdateGraphDelegate(UpdateGraph),masterPane,zgc,curves);
+                Invoke(new UpdateGraphDelegate(UpdateGraph), masterPane, zgc, curves);
                 return;
             }
             try
@@ -1202,6 +1218,11 @@ namespace OptimalControl.Forms
             {
                 foreach (DisplayedParameter displayedPara in _displayedParas)
                 {
+                    string[] tmpStrings = new[] {"104", "114", "124", "105", "115", "125"};
+                    if (tmpStrings.Contains(displayedPara.TextboxID.ToString()))
+                    {
+                        continue;
+                    }
                     if (displayedPara.DeviceID == 0)
                     {
                         foreach (Variable parameter in _modbusTcpVariables)
@@ -1447,7 +1468,7 @@ namespace OptimalControl.Forms
                                         controls = this.Controls.Find(string.Format("cb_oc_2{0}1", i), true);
                                         if (controls.Length > 0)
                                         {
-                                            ((CheckBox)controls[0]).Checked = parameter.IsEnabled;
+                                            ((CheckBox) controls[0]).Checked = parameter.IsEnabled;
                                         }
                                         controls = this.Controls.Find(string.Format("pb_oc_2{0}1", i), true);
                                         if (controls.Length > 0)
@@ -1463,7 +1484,7 @@ namespace OptimalControl.Forms
                     }
                 }
 
-                pb_status_1.BackColor = SystemColors.Control;//Color.Red;//
+                pb_status_1.BackColor = SystemColors.Control; //Color.Red;//
                 pb_status_2.BackColor = SystemColors.Control; //Color.Orange;//
                 pb_status_3.BackColor = SystemColors.Control; //Color.Green;//
                 pb_status_4.BackColor = SystemColors.Control; //Color.LightBlue;//
@@ -1473,7 +1494,7 @@ namespace OptimalControl.Forms
                 {
                     if (variable.Code == _workStatusVariable)
                     {
-                        switch ((int)variable.RealValue)
+                        switch ((int) variable.RealValue)
                         {
                             case 2:
                                 pb_status_1.BackColor = Color.Red;
@@ -1485,7 +1506,7 @@ namespace OptimalControl.Forms
                                 pb_status_3.BackColor = Color.Green;
                                 break;
                             case -1:
-                                pb_status_4.BackColor = Color.LightBlue;
+                                pb_status_4.BackColor = Color.RoyalBlue;
                                 break;
                             case -2:
                                 pb_status_5.BackColor = Color.Blue;
@@ -1513,19 +1534,41 @@ namespace OptimalControl.Forms
 
                     if (variable.Code == _feedTotalVariable)
                     {
-                        label_feed.Text = string.Format("{0} t/h",variable.CurrentValue.ToString("F"));
+                        label_feedtotal.Text = string.Format("{0}t/h", variable.CurrentValue.ToString("F"));
+                        continue;
+                    }
+
+                    if (variable.Code == _densityVariable)
+                    {
+                        label_density.Text = variable.CurrentValue.ToString("P1");
+                        continue;
+                    }
+
+                    if (variable.Code == _displayedParaVariableCode[0])
+                    {
+                        label_feed.Text = string.Format("{0}t/h", variable.CurrentValue.ToString("F"));
+                        continue;
+                    }
+                    if (variable.Code == _displayedParaVariableCode[5])
+                    {
+                        label_feedwater.Text = string.Format("{0}t/h", variable.CurrentValue.ToString("F"));
+                        continue;
+                    }
+                    if (variable.Code == _displayedParaVariableCode[10])
+                    {
+                        label_supwater.Text = string.Format("{0}t/h", variable.CurrentValue.ToString("F"));
                         continue;
                     }
 
                     for (int i = 0; i < 3; i++)
                     {
-                        if (variable.Code == _displayedParaVariableCode[2 + 5 * i])
+                        if (variable.Code == _displayedParaVariableCode[2 + 5*i])
                         {
                             Control[] controls =
-                                this.Controls.Find(string.Format("pb_oc_{0}", _displayedParaTextboxId[5 * i]), true);
+                                this.Controls.Find(string.Format("pb_oc_{0}", _displayedParaTextboxId[5*i]), true);
                             if (controls.Length > 0)
                             {
-                                ((CheckBox)controls[0]).Checked = variable.IsOutput;
+                                ((CheckBox) controls[0]).Checked = variable.IsOutput;
                             }
                             break;
                         }
@@ -1552,7 +1595,7 @@ namespace OptimalControl.Forms
                 // 创建权限组管理类实例
                 ILogManager logManager = _bllFactory.BuildLogManager();
                 // 调用实例方法
-                List<Log> logCollectionTrue = logManager.GetLastLogInfos(6, true);
+                List<Log> logCollectionTrue = logManager.GetLastLogInfos(1, true);
 
                 // 如果包含权限组信息
                 if (logCollectionTrue.Count > 0)
@@ -1579,7 +1622,8 @@ namespace OptimalControl.Forms
                     dgv_logs_true.Columns["Type"].FillWeight = 100;
 
                     dgv_logs_true.Columns["Content"].HeaderText = "内容";
-                    dgv_logs_true.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv_logs_true.Columns["Content"].DefaultCellStyle.Alignment =
+                        DataGridViewContentAlignment.MiddleLeft;
                     dgv_logs_true.Columns["Content"].DisplayIndex = 3;
                     dgv_logs_true.Columns["Content"].MinimumWidth = 200;
                     dgv_logs_true.Columns["Content"].FillWeight = 1200;
@@ -1591,7 +1635,7 @@ namespace OptimalControl.Forms
                 }
 
                 // 调用实例方法
-                List<Log> logCollectionFalse = logManager.GetLastLogInfos(6, false);
+                List<Log> logCollectionFalse = logManager.GetLastLogInfos(1, false);
 
                 // 如果包含权限组信息
                 if (logCollectionFalse.Count > 0)
@@ -1618,7 +1662,8 @@ namespace OptimalControl.Forms
                     dgv_logs_false.Columns["Type"].FillWeight = 100;
 
                     dgv_logs_false.Columns["Content"].HeaderText = "内容";
-                    dgv_logs_false.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv_logs_false.Columns["Content"].DefaultCellStyle.Alignment =
+                        DataGridViewContentAlignment.MiddleLeft;
                     dgv_logs_false.Columns["Content"].DisplayIndex = 3;
                     dgv_logs_false.Columns["Content"].MinimumWidth = 200;
                     dgv_logs_false.Columns["Content"].FillWeight = 1200;
@@ -1676,7 +1721,8 @@ namespace OptimalControl.Forms
                     dgv_log_history.Columns["Type"].FillWeight = 100;
 
                     dgv_log_history.Columns["Content"].HeaderText = "内容";
-                    dgv_log_history.Columns["Content"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv_log_history.Columns["Content"].DefaultCellStyle.Alignment =
+                        DataGridViewContentAlignment.MiddleLeft;
                     dgv_log_history.Columns["Content"].DisplayIndex = 3;
                     dgv_log_history.Columns["Content"].MinimumWidth = 200;
                     dgv_log_history.Columns["Content"].FillWeight = 1200;
@@ -1686,12 +1732,13 @@ namespace OptimalControl.Forms
                     dgv_log_history.Columns["State"].MinimumWidth = 50;
                     dgv_log_history.Columns["State"].FillWeight = 100;
                 }
-                }
+            }
             catch (Exception ex)
             {
                 RecordLog.WriteLogFile("UpdateHistoryLogGrid", ex.Message);
             }
         }
+
         /// <summary>
         /// 更新变量列表
         /// </summary>
@@ -1887,25 +1934,7 @@ namespace OptimalControl.Forms
             }
         }
 
-
-        void bw_DoWork(object sender, DoWorkEventArgs e)
-        {
-            // 这里是后台线程， 是在另一个线程上完成的
-            // 这里是真正做事的工作线程
-            // 可以在这里做一些费时的，复杂的操作
-
-            //e.Result = e.Argument + "工作线程完成";
-        }
-
-        void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //这时后台线程已经完成，并返回了主线程，所以可以直接使用UI控件了 
-            //this.label4.Text = e.Result.ToString();
-        }
-
-
-
-        #endregion 
+        #endregion
 
         #region 控件响应
 
@@ -1942,9 +1971,9 @@ namespace OptimalControl.Forms
                                 {
                                     byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
                                 }
                                 continue;
                             }
@@ -1959,9 +1988,9 @@ namespace OptimalControl.Forms
                                 {
                                     byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
                                 }
                                 continue;
                             }
@@ -1976,9 +2005,9 @@ namespace OptimalControl.Forms
                                 {
                                     byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
                                 }
                                 continue;
                             }
@@ -1993,9 +2022,9 @@ namespace OptimalControl.Forms
                                 {
                                     byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
                                 }
                                 continue;
                             }
@@ -2010,9 +2039,9 @@ namespace OptimalControl.Forms
                                 {
                                     byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
                                 }
                                 continue;
                             }
@@ -2027,9 +2056,9 @@ namespace OptimalControl.Forms
                                 {
                                     byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                        Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                        Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
                                     _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                        Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                        Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
                                 }
                                 continue;
                             }
@@ -2334,6 +2363,35 @@ namespace OptimalControl.Forms
                 MessageBoxIcon.Information);
         }
 
+        private void bw_SearchData(object sender, DoWorkEventArgs e)
+        {
+            // 这里是后台线程， 是在另一个线程上完成的
+            // 这里是真正做事的工作线程
+            // 可以在这里做一些费时的，复杂的操作
+            TimePair timePair = (TimePair)e.Argument;
+            DataTable dataTable = LoadHistoryData(timePair.StartTime, timePair.EndTime);
+            _hisoryCurves = LoadHistoryCurves(dataTable);
+            e.Result = dataTable;
+        }
+
+        private void bw_ShowCurve(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //这时后台线程已经完成，并返回了主线程，所以可以直接使用UI控件了 
+            DataTable dataTable = (DataTable)e.Result;
+            dgv_data.DataSource = dataTable;
+            UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
+            status_Label.Text = string.Format("查询到共计{0}行数据！", dataTable.Rows.Count);
+        }
+
+        private void bw_ShowData(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //这时后台线程已经完成，并返回了主线程，所以可以直接使用UI控件了 
+            DataTable dataTable = (DataTable)e.Result;
+            dgv_data.DataSource = dataTable;
+            UpdateHistoryLogGrid(dtp_data_start.Value, dtp_data_end.Value);
+            status_Label.Text = string.Format("查询到共计{0}行数据！", dataTable.Rows.Count);
+        }
+
         /// <summary>
         /// Handles the Click event of the btn_curve_search control.
         /// </summary>
@@ -2345,22 +2403,17 @@ namespace OptimalControl.Forms
             DateTime endTime = dtp_curve_end.Value; //查询截止时间
             if (endTime > startTime)
             {
-
-                //using (BackgroundWorker backgroundWorker = new BackgroundWorker())
-                //{
-                //    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
-                //    backgroundWorker.DoWork += new DoWorkEventHandler(bw_DoWork);
-                //    backgroundWorker.RunWorkerAsync();
-                //} 
-
-                DataTable dataTable = LoadHistoryData(startTime, endTime);
-                dgv_data.DataSource = dataTable;
-                _hisoryCurves = LoadHistoryCurves(dataTable);
-                UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
-                status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                    dataTable.Rows.Count);
+                TimePair timePair = new TimePair()
+                {
+                    StartTime = startTime,
+                    EndTime = endTime,
+                };
+                using (BackgroundWorker backgroundWorker = new BackgroundWorker())
+                {
+                    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_ShowCurve);
+                    backgroundWorker.DoWork += new DoWorkEventHandler(bw_SearchData);
+                    backgroundWorker.RunWorkerAsync(timePair);
+                } 
             }
         }
 
@@ -2375,16 +2428,17 @@ namespace OptimalControl.Forms
             DateTime startTime = dtp_curve_start.Value - (dtp_curve_end.Value - dtp_curve_start.Value); //查询起始时间
             if (endTime > startTime)
             {
-                DataTable dataTable = LoadHistoryData(startTime, endTime);
-                dgv_data.DataSource = dataTable;
-                _hisoryCurves = LoadHistoryCurves(dataTable);
-                UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
-                dtp_curve_start.Value = startTime;
-                dtp_curve_end.Value = endTime;
-                status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                    dataTable.Rows.Count);
+                TimePair timePair = new TimePair()
+                {
+                    StartTime = startTime,
+                    EndTime = endTime,
+                };
+                using (BackgroundWorker backgroundWorker = new BackgroundWorker())
+                {
+                    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_ShowCurve);
+                    backgroundWorker.DoWork += new DoWorkEventHandler(bw_SearchData);
+                    backgroundWorker.RunWorkerAsync(timePair);
+                } 
             }
         }
 
@@ -2399,16 +2453,17 @@ namespace OptimalControl.Forms
             DateTime endTime = dtp_curve_end.Value + (dtp_curve_end.Value - dtp_curve_start.Value); //查询截止时间
             if (endTime > startTime)
             {
-                DataTable dataTable = LoadHistoryData(startTime, endTime);
-                dgv_data.DataSource = dataTable;
-                _hisoryCurves = LoadHistoryCurves(dataTable);
-                UpdateGraph(ref _masterPaneGraphHistory, ref zgc_history, _hisoryCurves);
-                dtp_curve_start.Value = startTime;
-                dtp_curve_end.Value = endTime;
-                status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                    dataTable.Rows.Count);
+                TimePair timePair = new TimePair()
+                {
+                    StartTime = startTime,
+                    EndTime = endTime,
+                };
+                using (BackgroundWorker backgroundWorker = new BackgroundWorker())
+                {
+                    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_ShowCurve);
+                    backgroundWorker.DoWork += new DoWorkEventHandler(bw_SearchData);
+                    backgroundWorker.RunWorkerAsync(timePair);
+                } 
             }
         }
 
@@ -2423,13 +2478,17 @@ namespace OptimalControl.Forms
             DateTime endTime = dtp_data_end.Value; //查询截止时间
             if (endTime > startTime)
             {
-                DataTable dataTable = LoadHistoryData(startTime, endTime);
-                dgv_data.DataSource = dataTable;
-                UpdateHistoryLogGrid(startTime, endTime);
-                status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                    dataTable.Rows.Count);
+                TimePair timePair = new TimePair()
+                {
+                    StartTime = startTime,
+                    EndTime = endTime,
+                };
+                using (BackgroundWorker backgroundWorker = new BackgroundWorker())
+                {
+                    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_ShowData);
+                    backgroundWorker.DoWork += new DoWorkEventHandler(bw_SearchData);
+                    backgroundWorker.RunWorkerAsync(timePair);
+                } 
             }
         }
 
@@ -2444,15 +2503,17 @@ namespace OptimalControl.Forms
             DateTime startTime = dtp_data_start.Value - (dtp_data_end.Value - dtp_data_start.Value); //查询起始时间
             if (endTime > startTime)
             {
-                DataTable dataTable = LoadHistoryData(startTime, endTime);
-                dgv_data.DataSource = dataTable;
-                UpdateHistoryLogGrid(startTime, endTime);
-                dtp_data_start.Value = startTime;
-                dtp_data_end.Value = endTime;
-                status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                    dataTable.Rows.Count);
+                TimePair timePair = new TimePair()
+                {
+                    StartTime = startTime,
+                    EndTime = endTime,
+                };
+                using (BackgroundWorker backgroundWorker = new BackgroundWorker())
+                {
+                    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_ShowData);
+                    backgroundWorker.DoWork += new DoWorkEventHandler(bw_SearchData);
+                    backgroundWorker.RunWorkerAsync(timePair);
+                } 
             }
         }
 
@@ -2467,15 +2528,17 @@ namespace OptimalControl.Forms
             DateTime endTime = dtp_data_end.Value + (dtp_data_end.Value - dtp_data_start.Value); //查询截止时间
             if (endTime > startTime)
             {
-                DataTable dataTable = LoadHistoryData(startTime, endTime);
-                dgv_data.DataSource = dataTable;
-                UpdateHistoryLogGrid(startTime, endTime);
-                dtp_data_start.Value = startTime;
-                dtp_data_end.Value = endTime;
-                status_Label.Text = string.Format("查询到从{0}到{1}共计{2}行数据！",
-                    startTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endTime.AddSeconds(-1).ToString("yyyy-MM-dd HH:mm:ss"),
-                    dataTable.Rows.Count);
+                TimePair timePair = new TimePair()
+                {
+                    StartTime = startTime,
+                    EndTime = endTime,
+                };
+                using (BackgroundWorker backgroundWorker = new BackgroundWorker())
+                {
+                    backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_ShowData);
+                    backgroundWorker.DoWork += new DoWorkEventHandler(bw_SearchData);
+                    backgroundWorker.RunWorkerAsync(timePair);
+                } 
             }
         }
 
@@ -2796,9 +2859,9 @@ namespace OptimalControl.Forms
                             if (_modbusTcpSlaveCreated)
                             {
                                 _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                    Convert.ToUInt16(tempByte[1] * 256 + tempByte[0]);
+                                    Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
                                 _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                    Convert.ToUInt16(tempByte[3] * 256 + tempByte[2]);
+                                    Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
                             }
                             break;
                         }
@@ -2820,7 +2883,7 @@ namespace OptimalControl.Forms
                 {
                     string saveDir = folderBrowserDialog.SelectedPath; //选定存储目录
                     string fileName = string.Format("{0}\\{1}.csv", saveDir, DateTime.Now.ToString("yyyyMMddHHmmss"));
-                    SaveDataToFlie(dgv_data,fileName,",",true);
+                    SaveDataToFlie(dgv_data, fileName, ",", true);
                 }
             }
         }
@@ -2909,78 +2972,44 @@ namespace OptimalControl.Forms
             * */
         }
 
-
-        private void tb_oc_104_Validated(object sender, EventArgs e)
+        private void tb_oc_DoubleClick(object sender, EventArgs e)
         {
-            if (MessageBox.Show(string.Format("{0}{1}{2}", "给矿量优化上限设置为", tb_oc_104.Text,"t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            double[] limitDoubles = new double[6];
+            string[] limitStrings = new[]
             {
-                ConfigExeSettings.SetSettingInt("FeedMax", tb_oc_104.Text.Trim());
+                tb_oc_104.Text.Trim(), tb_oc_105.Text.Trim(),
+                tb_oc_114.Text.Trim(), tb_oc_115.Text.Trim(),
+                tb_oc_124.Text.Trim(), tb_oc_125.Text.Trim()
+            };
+            for (int index = 0; index < limitDoubles.Length; index++)
+            {
+                double tmpDouble = 0;
+                if (double.TryParse(limitStrings[index], out tmpDouble))
+                {
+                    limitDoubles[index] = tmpDouble;
+                }
             }
-            else
+            frmLimitEditor frmLimit = new frmLimitEditor(limitDoubles);
+            if (frmLimit.ShowDialog() == DialogResult.OK)
             {
-                tb_oc_104.Text = ConfigExeSettings.GetSettingString("FeedMax", "");
+                if (frmLimit.LimitDoubles.Length >= 6)
+                {
+                    tb_oc_104.Text = frmLimit.LimitDoubles[0].ToString();
+                    tb_oc_105.Text = frmLimit.LimitDoubles[1].ToString();
+                    tb_oc_114.Text = frmLimit.LimitDoubles[2].ToString();
+                    tb_oc_115.Text = frmLimit.LimitDoubles[3].ToString();
+                    tb_oc_124.Text = frmLimit.LimitDoubles[4].ToString();
+                    tb_oc_125.Text = frmLimit.LimitDoubles[5].ToString();
+                    ConfigExeSettings.SetSettingInt("FeedMax", tb_oc_104.Text.Trim());
+                    ConfigExeSettings.SetSettingInt("FeedMin", tb_oc_105.Text.Trim());
+                    ConfigExeSettings.SetSettingInt("FeedWaterMax", tb_oc_114.Text.Trim());
+                    ConfigExeSettings.SetSettingInt("FeedWaterMin", tb_oc_115.Text.Trim());
+                    ConfigExeSettings.SetSettingInt("SupWaterMax", tb_oc_124.Text.Trim());
+                    ConfigExeSettings.SetSettingInt("SupWaterMin", tb_oc_125.Text.Trim());
+                }
             }
         }
 
-        private void tb_oc_105_Validated(object sender, EventArgs e)
-        {
-            if (MessageBox.Show(string.Format("{0}{1}{2}", "给矿量优化下限设置为", tb_oc_105.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                ConfigExeSettings.SetSettingInt("FeedMin", tb_oc_105.Text.Trim());
-            }
-            else
-            {
-                tb_oc_105.Text = ConfigExeSettings.GetSettingString("FeedMin", "");
-            }
-        }
-
-        private void tb_oc_114_Validated(object sender, EventArgs e)
-        {
-            if (MessageBox.Show(string.Format("{0}{1}{2}", "给水量优化上限设置为", tb_oc_114.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                ConfigExeSettings.SetSettingInt("FeedWaterMax", tb_oc_114.Text.Trim());
-            }
-            else
-            {
-                tb_oc_114.Text = ConfigExeSettings.GetSettingString("FeedWaterMax", "");
-            }
-        }
-
-        private void tb_oc_115_Validated(object sender, EventArgs e)
-        {
-            if (MessageBox.Show(string.Format("{0}{1}{2}", "给水量优化下限设置为", tb_oc_115.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                ConfigExeSettings.SetSettingInt("FeedWaterMin", tb_oc_115.Text.Trim());
-            }
-            else
-            {
-                tb_oc_115.Text = ConfigExeSettings.GetSettingString("FeedWaterMin", "");
-            }
-        }
-
-        private void tb_oc_124_Validated(object sender, EventArgs e)
-        {
-            if (MessageBox.Show(string.Format("{0}{1}{2}", "补加水量优化上限设置为", tb_oc_124.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                ConfigExeSettings.SetSettingInt("SupWaterMax", tb_oc_124.Text.Trim());
-            }
-            else
-            {
-                tb_oc_124.Text = ConfigExeSettings.GetSettingString("SupWaterMax", "");
-            }
-        }
-
-        private void tb_oc_125_Validated(object sender, EventArgs e)
-        {
-            if (MessageBox.Show(string.Format("{0}{1}{2}", "补加水量优化下限设置为", tb_oc_125.Text, "t/h ?"), "警告", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                ConfigExeSettings.SetSettingInt("SupWaterMin", tb_oc_125.Text.Trim());
-            }
-            else
-            {
-                tb_oc_125.Text = ConfigExeSettings.GetSettingString("SupWaterMin", "");
-            }
-        }
         #endregion
     }
 }
