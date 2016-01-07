@@ -10,3 +10,15 @@ E:\Work\OptimalControl\IBLL\bin\Release\Utility.pdb
 E:\Work\OptimalControl\IBLL\obj\Release\IBLL.csprojResolveAssemblyReference.cache
 E:\Work\OptimalControl\IBLL\obj\Release\IBLL.dll
 E:\Work\OptimalControl\IBLL\obj\Release\IBLL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\IBLL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\IBLL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\Model.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\ZedGraph.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\Modbus.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\Utility.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\log4net.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\Model.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\bin\Release\Utility.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\obj\Release\IBLL.csprojResolveAssemblyReference.cache
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\obj\Release\IBLL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IBLL\obj\Release\IBLL.pdb

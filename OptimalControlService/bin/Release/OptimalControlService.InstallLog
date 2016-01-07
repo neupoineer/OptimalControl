@@ -424,3 +424,16 @@ System.ComponentModel.Win32Exception: 指定的服务未安装。
    logtoconsole = 
    logfile = E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.InstallLog
    assemblypath = E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.exe
+正在安装程序集“E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.exe”。
+受影响的参数是:
+   logtoconsole = 
+   logfile = E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.InstallLog
+   assemblypath = E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.exe
+正在安装服务 OptimalControlService...
+已成功安装服务 OptimalControlService。
+正在日志 Application 中创建 EventLog 源 OptimalControlService...
+正在提交程序集“E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.exe”。
+受影响的参数是:
+   logtoconsole = 
+   logfile = E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.InstallLog
+   assemblypath = E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\OptimalControlService\bin\Release\OptimalControlService.exe

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Factory</name>
+    </assembly>
+    <members>
+        <member name="T:BLLFactory.BLLFactory">
+            <summary>
+            业务逻辑层工厂类
+            </summary>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildOperatorManager">
+            <summary>
+            操作员业务逻辑管理类的生产方法
+            </summary>
+            <returns>操作员业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildRightsGroupManager">
+            <summary>
+            权限组业务逻辑管理类的生产方法
+            </summary>
+            <returns>权限组业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildRightsRelationManager">
+            <summary>
+            权限关系业务逻辑管理类的生产方法
+            </summary>
+            <returns>权限关系业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildCurveManager">
+            <summary>
+            曲线业务逻辑管理类的生产方法
+            </summary>
+            <returns>曲线业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildDeviceManager">
+            <summary>
+            设备业务逻辑管理类的生产方法
+            </summary>
+            <returns>设备业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildRuleManager">
+            <summary>
+            规则业务逻辑管理类的生产方法
+            </summary>
+            <returns>规则业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildIVariableManager">
+            <summary>
+            变量业务逻辑管理类的生产方法
+            </summary>
+            <returns>变量业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildLogManager">
+            <summary>
+            日志业务逻辑管理类的生产方法
+            </summary>
+            <returns>日志业务逻辑管理类实例</returns>
+        </member>
+        <member name="M:BLLFactory.BLLFactory.BuildDataManager">
+            <summary>
+            数据业务逻辑管理类的生产方法
+            </summary>
+            <returns>数据业务逻辑管理类实例</returns>
+        </member>
+    </members>
+</doc>

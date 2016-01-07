@@ -4,6 +4,7 @@ Go
 
 INSERT INTO [Variable]([Code] ,[Name] ,[Address] ,[Ratio],[DeviceID],[IsEnabled],[IsRead],[IsOutput],[IsDisplayed],[IsSaved],[IsFiltered],[HistoryListLength],[TrendLength],[TrendInterval],[TrendHigherLimit],[TrendLowerLimit],[TrendListLength])
      VALUES
+	 
 ('CS060100010101','优化软件使能','11','1','0','true','true','true','true','true','false','1','0','0','0','0','0'),
 ('CS060100100101','优化软件心跳','13','1','0','false','true','true','false','true','false','1','0','0','0','0','0'),
 ('CS060100020101','优化软件报警','15','1','0','false','false','true','false','true','false','1','0','0','0','0','0'),
@@ -44,7 +45,7 @@ INSERT INTO [Variable]([Code] ,[Name] ,[Address] ,[Ratio],[DeviceID],[IsEnabled]
 ('CS020200080111','1#旋流器溢流粒度-200','141','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS020200080112','1#旋流器溢流粒度+80','143','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS060200030112','1#旋流器溢流流量','145','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
-('CS020200070111','1#旋流器溢流浓度','147','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
+('CS020200070111','1#旋流器溢流浓度','147','0.01','0','true','true','false','true','true','true','24','6','12','0','0','10'),
 ('CS060200030113','1#旋流器进浆流量','149','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS020200070112','1#旋流器进浆浓度','151','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS060200030221','2#旋流器渣浆泵频率设定值','153','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
@@ -52,7 +53,7 @@ INSERT INTO [Variable]([Code] ,[Name] ,[Address] ,[Ratio],[DeviceID],[IsEnabled]
 ('CS020200080121','2#旋流器溢流粒度-200','157','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS020200080122','2#旋流器溢流粒度+80','159','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS060200030122','2#旋流器溢流流量','161','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
-('CS020200070121','2#旋流器溢流浓度','163','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
+('CS020200070121','2#旋流器溢流浓度','163','0.01','0','true','true','false','true','true','true','24','6','12','0','0','10'),
 ('CS060200030123','2#旋流器进浆流量','165','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS020200070122','2#旋流器进浆浓度','167','0.01','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS060100030105','破碎机启停状态值','169','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
@@ -71,5 +72,11 @@ INSERT INTO [Variable]([Code] ,[Name] ,[Address] ,[Ratio],[DeviceID],[IsEnabled]
 ('CS060200030105','补加水手自动状态','195','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS060600010201','手动启停状态','201','1','0','true','true','false','true','true','false','1','0','0','0','0','0'),
 ('CS060100030104','半自磨负荷','1','1','2','true','true','true','true','true','true','45','15','15','10','-10','18'),
-('CS060200030104','球磨机负荷','3','1','3','false','true','true','true','true','true','24','6','12','0','0','10')
+('CS060200030104','球磨机负荷','3','1','3','false','true','true','true','true','true','24','6','12','0','0','10'),
+('CS100100010101','模型混合填充率','61','1','4','true','true','true','true','true','false','1','0','0','0','0','0'),
+('CS100100010102','模型磨矿浓度','63','1','4','true','true','true','true','true','false','1','0','0','0','0','0'),
+('CS100100010103','模型顽石产生量','65','1','4','true','true','true','true','true','false','1','0','0','0','0','0'),
+('CS100100010104','模型筛下粒度-200','67','1','4','true','true','true','true','true','false','1','0','0','0','0','0'),
+('CS100100010105','模型筛下粒度+80','69','1','4','true','true','true','true','true','false','1','0','0','0','0','0')
+
 GO

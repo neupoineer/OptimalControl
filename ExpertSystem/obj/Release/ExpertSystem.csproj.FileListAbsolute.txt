@@ -2,3 +2,7 @@ E:\Work\OptimalControl\ExpertSystem\bin\Release\ExpertSystem.dll
 E:\Work\OptimalControl\ExpertSystem\bin\Release\ExpertSystem.pdb
 E:\Work\OptimalControl\ExpertSystem\obj\Release\ExpertSystem.dll
 E:\Work\OptimalControl\ExpertSystem\obj\Release\ExpertSystem.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\ExpertSystem\bin\Release\ExpertSystem.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\ExpertSystem\bin\Release\ExpertSystem.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\ExpertSystem\obj\Release\ExpertSystem.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\ExpertSystem\obj\Release\ExpertSystem.pdb

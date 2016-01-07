@@ -1,0 +1,484 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DAL</name>
+    </assembly>
+    <members>
+        <member name="T:DAL.Control.CurveService">
+            <summary>
+            曲线数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.Control.CurveService.GetCurveInfoById(System.Int32)">
+            <summary>
+            根据曲线ID获取曲线实体
+            </summary>
+            <param name="id">曲线ID</param>
+            <returns>曲线实体</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.AddCurve(Model.Control.Curve)">
+            <summary>
+            添加曲线
+            </summary>
+            <param name="addCurve">要添加的曲线实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.DeleteCurveById(System.Int32)">
+            <summary>
+            删除曲线
+            </summary>
+            <param name="id">要删除的曲线 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.ModifyCurve(Model.Control.Curve)">
+            <summary>
+            修改曲线
+            </summary>
+            <param name="currentCurve">要修改的曲线实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.GetAllCurveInfo">
+            <summary>
+            获取所有曲线信息
+            </summary>
+            <returns>曲线实体集合</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.CheckCurveExist(System.String)">
+            <summary>
+            根据曲线名称校验曲线是否存在
+            </summary>
+            <param name="curveName">曲线名称</param>
+            <returns>True:存在/Flase:不存在</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.IsDoubleNull(System.Object)">
+            <summary>
+            Determines whether the specified parameter is null.
+            </summary>
+            <param name="parameter">The parameter.</param>
+            <returns>result(null for -1)</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.IsStringNull(System.Object)">
+            <summary>
+            Determines whether [the specified parameter] [is string null].
+            </summary>
+            <param name="parameter">The parameter.</param>
+            <returns>result(null for "")</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.IsSymbolNull(ZedGraph.SymbolType)">
+            <summary>
+            Determines whether [the specified symbol] [is symbol null].
+            </summary>
+            <param name="symbol">The symbol.</param>
+            <returns>result(DBNull.Value for SymbolType.UserDefined)</returns>
+        </member>
+        <member name="M:DAL.Control.CurveService.IsColorNull(System.Drawing.Color)">
+            <summary>
+            Determines whether [the specified color] [is color null].
+            </summary>
+            <param name="color">The color.</param>
+            <returns>result(DBNull.Value for Color.FromArgb(0))</returns>
+        </member>
+        <member name="T:DAL.Control.DataService">
+            <summary>
+            数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.Control.DataService.GetDataByVariableCode(System.String,System.Int32,System.DateTime,System.DateTime)">
+            <summary>
+            根据变量编码和设备ID获取数据
+            </summary>
+            <param name="variableCode">变量编码</param>
+            <param name="deviceID">设备ID</param>
+            <param name="starTime">起始时间</param>
+            <param name="endTime">截止时间</param>
+            <returns>数据</returns>
+        </member>
+        <member name="M:DAL.Control.DataService.GetLastDataByVariableCode(System.String,System.Int32)">
+            <summary>
+            根据变量编码和设备ID获取最后的数据
+            </summary>
+            <param name="variableCode">变量编码</param>
+            <param name="deviceID">设备ID</param>
+            <returns>数据</returns>
+        </member>
+        <member name="M:DAL.Control.DataService.AddData(System.Collections.Generic.List{Model.Control.Data})">
+            <summary>
+            添加数据
+            </summary>
+            <param name="dataCollection">要添加的数据实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.DataService.GetAllDataInfoByTime(System.DateTime,System.DateTime)">
+            <summary>
+            获得所选时间内的所有数据.
+            </summary>
+            <param name="starTime">起始时间</param>
+            <param name="endTime">截止时间</param>
+            <returns>数据表DataTable</returns>
+        </member>
+        <member name="M:DAL.Control.DataService.GetUseRateByTime(System.String,System.DateTime,System.DateTime)">
+            <summary>
+            统计投用率
+            </summary>
+            <param name="variableCode">使能变量名</param>
+            <param name="startTime">起始时间</param>
+            <param name="endTime">截止时间</param>
+            <returns></returns>
+        </member>
+        <member name="T:DAL.Control.DeviceService">
+            <summary>
+            设备数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.Control.DeviceService.GetDeviceInfoById(System.Int32)">
+            <summary>
+            根据设备ID获取设备实体
+            </summary>
+            <param name="id">设备ID</param>
+            <returns>设备实体</returns>
+        </member>
+        <member name="M:DAL.Control.DeviceService.AddDevice(Model.Modbus.Device)">
+            <summary>
+            添加设备
+            </summary>
+            <param name="addDevice">要添加的设备实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.DeviceService.DeleteDeviceById(System.Int32)">
+            <summary>
+            删除设备
+            </summary>
+            <param name="id">要删除的设备 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.DeviceService.ModifyDevice(Model.Modbus.Device)">
+            <summary>
+            修改设备
+            </summary>
+            <param name="currentDevice">要修改的设备实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.DeviceService.GetAllDeviceInfo">
+            <summary>
+            获取所有设备信息
+            </summary>
+            <returns>设备实体集合</returns>
+        </member>
+        <member name="M:DAL.Control.DeviceService.CheckDeviceExist(System.String)">
+            <summary>
+            根据设备名称校验设备是否存在
+            </summary>
+            <param name="deviceName">设备名称</param>
+            <returns>True:存在/Flase:不存在</returns>
+        </member>
+        <member name="T:DAL.LogService">
+            <summary>
+            曲线数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.LogService.GetLogInfoByTime(System.DateTime,System.DateTime)">
+            <summary>
+            根据日志时间获取日志实体
+            </summary>
+            <param name="startTime">日志开始时间.</param>
+            <param name="endTime">日志结束时间.</param>
+            <returns>
+            日志实体
+            </returns>
+        </member>
+        <member name="M:DAL.LogService.AddLog(Model.Log)">
+            <summary>
+            添加日志
+            </summary>
+            <param name="addLog">要添加的日志实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.LogService.GetAllLogInfo">
+            <summary>
+            获取所有日志信息
+            </summary>
+            <returns>日志实体集合</returns>
+        </member>
+        <member name="M:DAL.LogService.GetLastLogInfos(System.Int32,System.Boolean)">
+            <summary>
+            获取最新的日志信息
+            </summary>
+            <param name="logCount">日志条数.</param>
+            <param name="state">日志类型.</param>
+            <returns>
+            日志实体集合
+            </returns>
+        </member>
+        <member name="T:DAL.OperatorService">
+            <summary>
+            操作员数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.OperatorService.GetOperatorInfoByName(System.String,System.String)">
+            <summary>
+            根据操作员名称和密码获取操作员实体
+            </summary>
+            <param name="name">操作员名称</param>
+            <param name="pwd">操作员密码</param>
+            <returns>操作员实体</returns>
+        </member>
+        <member name="M:DAL.OperatorService.AddOperator(Model.Operator)">
+            <summary>
+            添加操作员
+            </summary>
+            <param name="addOperator">要添加的操作员实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.OperatorService.DeleteOperatorByID(System.Int32)">
+            <summary>
+            删除操作员
+            </summary>
+            <param name="id">要删除的操作员 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.OperatorService.ModifyOperator(Model.Operator)">
+            <summary>
+            修改操作员
+            </summary>
+            <param name="currentOperator">要修改的操作员实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.OperatorService.GetAllOperatorInfo">
+            <summary>
+            获取所有操作员信息
+            </summary>
+            <returns>操作员实体集合</returns>
+        </member>
+        <member name="M:DAL.OperatorService.CheckOperatorExist(System.String)">
+            <summary>
+            根据操作员名称校验操作员是否存在
+            </summary>
+            <param name="operatorName">操作员名称</param>
+            <returns>True:存在/Flase:不存在</returns>
+        </member>
+        <member name="T:DAL.RightsGroupService">
+            <summary>
+            权限组数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.RightsGroupService.GetAllRightsGroupInfo">
+            <summary>
+            获取所有权限组信息
+            </summary>
+            <returns>权限组实体集合</returns>
+        </member>
+        <member name="M:DAL.RightsGroupService.AddRightsGroup(Model.RightsGroup)">
+            <summary>
+            添加权限组
+            </summary>
+            <param name="addRightsGroup">要添加的权限组实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.RightsGroupService.DeleteRightsGroupByID(System.Int32)">
+            <summary>
+            删除权限组
+            </summary>
+            <param name="id">要删除的权限组 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.RightsGroupService.ModifyRightsGroup(Model.RightsGroup)">
+            <summary>
+            修改权限组
+            </summary>
+            <param name="currentRightsGroup">要修改的权限组实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.RightsGroupService.CheckRightsGroupExist(System.String)">
+            <summary>
+            根据权限组名称校验权限组是否已经存在
+            </summary>
+            <param name="rightsGroupName">权限组名称</param>
+            <returns>True:存在/False:不存在</returns>
+        </member>
+        <member name="T:DAL.RightsRelationService">
+            <summary>
+            权限关系数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.RightsRelationService.AddRightsRelation(Model.RightsRelation)">
+            <summary>
+            添加单个权限关系
+            </summary>
+            <param name="rightsRelation">权限关系实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.RightsRelationService.DeleteRightsRelationById(System.Int32)">
+            <summary>
+            根据权限关系 ID 删除权限关系
+            </summary>
+            <param name="id">权限关系 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.RightsRelationService.DeleteRightsRelationByOperatorId(System.Int32)">
+            <summary>
+            根据操作员 ID 删除对应的所有权限关系
+            </summary>
+            <param name="operatorId">操作员 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.RightsRelationService.ModifyRightsRelation(Model.RightsRelation)">
+            <summary>
+            修改单个权限关系
+            </summary>
+            <param name="rightsRelation">权限关系实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.RightsRelationService.GetAllRightsRelation">
+            <summary>
+            获取所有的权限关系集合
+            </summary>
+            <returns>权限关系集合</returns>
+        </member>
+        <member name="M:DAL.RightsRelationService.GetRightsRelationByOperatorId(System.Int32)">
+            <summary>
+            根据操作员 ID 获取对应的所有权限关系
+            </summary>
+            <param name="id">操作员 ID</param>
+            <returns>权限关系集合</returns>
+        </member>
+        <member name="M:DAL.RightsRelationService.GetRightsRelationCountByRightsGroupId(System.Int32)">
+            <summary>
+            根据权限组 ID 获取与此权限组相关的权限关系数量
+            </summary>
+            <param name="id">权限组 ID</param>
+            <returns>权限关系数量</returns>
+        </member>
+        <member name="T:DAL.Control.RuleService">
+            <summary>
+            规则数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.Control.RuleService.GetRuleInfoById(System.Int32)">
+            <summary>
+            根据规则ID获取规则实体
+            </summary>
+            <param name="id">规则ID</param>
+            <returns>规则实体</returns>
+        </member>
+        <member name="M:DAL.Control.RuleService.AddRule(Model.Control.Rule)">
+            <summary>
+            添加规则
+            </summary>
+            <param name="addRule">要添加的规则实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.RuleService.DeleteRuleById(System.Int32)">
+            <summary>
+            删除规则
+            </summary>
+            <param name="id">要删除的规则 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.RuleService.ModifyRule(Model.Control.Rule)">
+            <summary>
+            修改规则
+            </summary>
+            <param name="currentRule">要修改的规则实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.RuleService.GetRuleInfoEnabled">
+            <summary>
+            获取有效的规则实体
+            </summary>
+            <returns>规则实体</returns>
+        </member>
+        <member name="M:DAL.Control.RuleService.GetAllRuleInfo">
+            <summary>
+            获取所有规则信息
+            </summary>
+            <returns>规则实体集合</returns>
+        </member>
+        <member name="M:DAL.Control.RuleService.CheckRuleExist(System.String)">
+            <summary>
+            根据规则名称校验规则是否存在
+            </summary>
+            <param name="ruleName">规则名称</param>
+            <returns>True:存在/Flase:不存在</returns>
+        </member>
+        <member name="M:DAL.Control.RuleService.IsParameterNull(System.Object)">
+            <summary>
+            Determines whether the specified parameter is null.
+            </summary>
+            <param name="parameter">The parameter.</param>
+            <returns>result(null for -1)</returns>
+        </member>
+        <member name="T:DAL.Control.VariableService">
+            <summary>
+            变量数据访问操作类
+            </summary>
+        </member>
+        <member name="M:DAL.Control.VariableService.GetVariableInfoById(System.Int32)">
+            <summary>
+            根据变量ID获取变量实体
+            </summary>
+            <param name="id">变量ID</param>
+            <returns>变量实体</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.GetVariableInfoByCode(System.String)">
+            <summary>
+            根据变量编码获取变量实体
+            </summary>
+            <param name="code">变量编码</param>
+            <returns>变量实体</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.AddVariable(Model.Control.Variable)">
+            <summary>
+            添加变量
+            </summary>
+            <param name="addVariable">要添加的变量实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.DeleteVariableById(System.Int32)">
+            <summary>
+            删除变量
+            </summary>
+            <param name="id">要删除的变量 ID</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.DeleteVariableByDeviceId(System.Int32)">
+            <summary>
+            按照设备号删除变量
+            </summary>
+            <param name="deviceID">要删除的变量的设备号</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.ModifyVariable(Model.Control.Variable)">
+            <summary>
+            修改变量
+            </summary>
+            <param name="currentVariable">要修改的变量实体</param>
+            <returns>True:成功/False:失败</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.GetAllVariableInfo">
+            <summary>
+            获取所有变量信息
+            </summary>
+            <returns>变量实体集合</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.GetVariableByDeviceId(System.Int32)">
+            <summary>
+            获取Device的所有变量信息
+            </summary>
+            <returns>变量实体集合</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.CheckVariableExist(System.String)">
+            <summary>
+            根据变量名称校验变量是否存在
+            </summary>
+            <param name="variableName">变量名称</param>
+            <returns>True:存在/Flase:不存在</returns>
+        </member>
+        <member name="M:DAL.Control.VariableService.IsParameterNull(System.Object)">
+            <summary>
+            Determines whether the specified parameter is null.
+            </summary>
+            <param name="parameter">The parameter.</param>
+            <returns>result(null for -1)</returns>
+        </member>
+    </members>
+</doc>

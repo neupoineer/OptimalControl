@@ -53,12 +53,12 @@ namespace Model.Control
             /// <summary>
             /// 变量上上限
             /// </summary>
-            public double UltimateHigherLimit;
+            public double UltimateHighLimit;
 
             /// <summary>
             /// 变量下下限
             /// </summary>
-            public double UltimateLowerLimit;
+            public double UltimateLowLimit;
         }
 
         #endregion
@@ -379,11 +379,11 @@ namespace Model.Control
                     tmpValue = CurrentValue;
                 }
 
-                if (_limit.UltimateLowerLimit >= 0 && tmpValue < _limit.UltimateLowerLimit)
+                if (_limit.UltimateLowLimit >= 0 && tmpValue < _limit.UltimateLowLimit)
                 {
                     _state = VariableState.LL;
                 }
-                else if (_limit.UltimateHigherLimit > 0 && tmpValue > _limit.UltimateHigherLimit)
+                else if (_limit.UltimateHighLimit > 0 && tmpValue > _limit.UltimateHighLimit)
                 {
                     _state = VariableState.HH;
                 }
@@ -706,8 +706,8 @@ namespace Model.Control
             {
                 if (_isOutput)
                 {
-                    if (((_value > _limit.UltimateLowerLimit) || (_limit.UltimateLowerLimit <= 0))
-                        && ((_value < _limit.UltimateHigherLimit) || (_limit.UltimateHigherLimit <= 0)))
+                    if (((_value > _limit.UltimateLowLimit) || (_limit.UltimateLowLimit <= 0))
+                        && ((_value < _limit.UltimateHighLimit) || (_limit.UltimateHighLimit <= 0)))
                     {
                         byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(_value));
                         modbusSlave.DataStore.HoldingRegisters[_address] = Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);

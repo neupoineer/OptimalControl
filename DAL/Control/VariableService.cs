@@ -58,10 +58,10 @@ namespace DAL.Control
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHighLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
-                            UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
+                            UltimateLowLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateLowerLimit"]), 2)
                                 : -1,
                         };
@@ -140,10 +140,10 @@ namespace DAL.Control
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHighLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
-                            UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
+                            UltimateLowLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateLowerLimit"]), 2)
                                 : -1,
                         };
@@ -199,10 +199,10 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = addVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = addVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = addVariable.Ratio };
-                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateHigherLimit) };
+                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateHighLimit) };
                 SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.HigherLimit) };
                 SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.LowerLimit) };
-                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateLowerLimit) };
+                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(addVariable.Limit.UltimateLowLimit) };
                 SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(addVariable.ControlPeriod) };
                 SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(addVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = addVariable.DeviceID };
@@ -297,10 +297,10 @@ namespace DAL.Control
                 SqlParameter prm1 = new SqlParameter("@Name", SqlDbType.NVarChar, 50) { Value = currentVariable.Name };
                 SqlParameter prm2 = new SqlParameter("@Address", SqlDbType.Int) { Value = currentVariable.Address };
                 SqlParameter prm3 = new SqlParameter("@Ratio", SqlDbType.Real) { Value = currentVariable.Ratio };
-                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateHigherLimit) };
+                SqlParameter prm4 = new SqlParameter("@UltimateUpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateHighLimit) };
                 SqlParameter prm5 = new SqlParameter("@UpperLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.HigherLimit) };
                 SqlParameter prm6 = new SqlParameter("@LowerLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.LowerLimit) };
-                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateLowerLimit) };
+                SqlParameter prm7 = new SqlParameter("@UltimateLowerLimit", SqlDbType.Real) { Value = IsParameterNull(currentVariable.Limit.UltimateLowLimit) };
                 SqlParameter prm8 = new SqlParameter("@ControlPeriod", SqlDbType.Int) { Value = IsParameterNull(currentVariable.ControlPeriod) };
                 SqlParameter prm9 = new SqlParameter("@OperateDelay", SqlDbType.Int) { Value = IsParameterNull(currentVariable.OperateDelay) };
                 SqlParameter prm10 = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = currentVariable.DeviceID };
@@ -375,10 +375,10 @@ namespace DAL.Control
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHighLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
-                            UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
+                            UltimateLowLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateLowerLimit"]), 2)
                                 : -1,
                         };
@@ -455,10 +455,10 @@ namespace DAL.Control
                             LowerLimit = Convert.ToString(myReader["LowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["LowerLimit"]), 2)
                                 : -1,
-                            UltimateHigherLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
+                            UltimateHighLimit = Convert.ToString(myReader["UltimateUpperLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateUpperLimit"]), 2)
                                 : -1,
-                            UltimateLowerLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
+                            UltimateLowLimit = Convert.ToString(myReader["UltimateLowerLimit"]) != ""
                                 ? Math.Round(Convert.ToDouble(myReader["UltimateLowerLimit"]), 2)
                                 : -1,
                         };

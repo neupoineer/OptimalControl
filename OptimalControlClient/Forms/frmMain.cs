@@ -129,9 +129,20 @@ namespace OptimalControl.Forms
         /// </summary>
         private string[] _logoffMenuList =
         {
-            "menu_file_quit", "menu_file_lockscreen", "menu_control_run", "menu_control_stop", "menu_config_config",
-            "menu_config_password", "menu_config_user", "menu_config_devices", "menu_config_parameters",
-            "menu_control_history", "menu_control_clear"
+            "menu_file_quit",
+			"menu_file_lockscreen", 
+			"menu_control_run",
+			"menu_control_stop",
+			"menu_control_update",
+			"menu_control_stopupdate",
+			"menu_control_clear",
+			"menu_config_config",
+			"menu_config_user", 
+            "menu_config_password",
+			"menu_config_devices",
+			"menu_config_parameters",
+			"menu_config_rules",
+            "menu_config_limits"
         };
 
         /// <summary>
@@ -345,6 +356,7 @@ namespace OptimalControl.Forms
                     rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
 
                     menu_control_stop.Enabled = false;
+                    menu_control_stopupdate.Enabled = false;
                     menu_file_login.Enabled = false;
                     menu_file_logoff.Enabled = true;
                     SynchroButton();
@@ -353,6 +365,7 @@ namespace OptimalControl.Forms
                 {
                     LoadMenuRightsItem(msMain, _logoffMenuList);
                     menu_control_stop.Enabled = false;
+                    menu_control_stopupdate.Enabled = false;
                     menu_file_login.Enabled = true;
                     menu_file_logoff.Enabled = false;
                     SynchroButton();
@@ -493,9 +506,19 @@ namespace OptimalControl.Forms
 
             btn_run.Enabled = menu_control_run.Enabled;
             btn_stop.Enabled = menu_control_stop.Enabled;
+            btn_curve_realtime.Enabled = menu_control_update.Enabled;
+            btn_curve_stop.Enabled = menu_control_stopupdate.Enabled;
             btn_config.Enabled = menu_config_config.Enabled;
             btn_info.Enabled = menu_help_about.Enabled;
             btn_quit.Enabled = menu_file_quit.Enabled;
+
+            tb_oc_104.Enabled = menu_config_limits.Enabled;
+            tb_oc_105.Enabled = menu_config_limits.Enabled;
+            tb_oc_114.Enabled = menu_config_limits.Enabled;
+            tb_oc_115.Enabled = menu_config_limits.Enabled;
+            tb_oc_124.Enabled = menu_config_limits.Enabled;
+            tb_oc_125.Enabled = menu_config_limits.Enabled;
+
         }
 
         /// <summary>
@@ -1880,7 +1903,6 @@ namespace OptimalControl.Forms
             }
         }
 
-
         /// <summary>
         /// 将数据导出到文件.
         /// </summary>
@@ -2247,11 +2269,17 @@ namespace OptimalControl.Forms
                     rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
                     menu_control_run.Enabled = false;
                     menu_config_config.Enabled = false;
-                    menu_config_user.Enabled = false;
-                    menu_config_devices.Enabled = false;
                     menu_file_quit.Enabled = false;
                     menu_file_login.Enabled = false;
                     menu_file_logoff.Enabled = true;
+                    if (_updateGraphFlag)
+                    {
+                        menu_control_update.Enabled = false;
+                    }
+                    else
+                    {
+                        menu_control_stopupdate.Enabled = false;
+                    }
                     SynchroButton();
 
                     status_Label.Text = "运行中...";
@@ -2284,6 +2312,14 @@ namespace OptimalControl.Forms
             menu_control_stop.Enabled = false;
             menu_file_login.Enabled = false;
             menu_file_logoff.Enabled = true;
+            if (_updateGraphFlag)
+            {
+                menu_control_update.Enabled = false;
+            }
+            else
+            {
+                menu_control_stopupdate.Enabled = false;
+            }
             SynchroButton();
 
             ClearGraph();
@@ -2303,8 +2339,26 @@ namespace OptimalControl.Forms
         {
             zgc_realtime.Invalidate();
             _updateGraphFlag = true;
-            btn_curve_realtime.Enabled = false;
-            btn_curve_stop.Enabled = true;
+
+            // 加载权限菜单
+            RightsMenuDataManager rmManager = new RightsMenuDataManager();
+            rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
+            menu_control_update.Enabled = false;
+            if (_isRunning)
+            {
+                menu_control_run.Enabled = false;
+                menu_config_config.Enabled = false;
+                menu_file_quit.Enabled = false;
+                menu_config_config.Enabled = false;
+            }
+            else
+            {
+                menu_control_stop.Enabled = false;
+            }
+            menu_file_login.Enabled = false;
+            menu_file_logoff.Enabled = true;
+            SynchroButton();
+
         }
 
         /// <summary>
@@ -2314,6 +2368,25 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_curve_stop_Click(object sender, EventArgs e)
         {
+            // 加载权限菜单
+            RightsMenuDataManager rmManager = new RightsMenuDataManager();
+            rmManager.LoadMenuRightsItem(msMain, _currentOperator.RightsCollection);
+            menu_control_stopupdate.Enabled = false;
+            if (_isRunning)
+            {
+                menu_control_run.Enabled = false;
+                menu_config_config.Enabled = false;
+                menu_file_quit.Enabled = false;
+                menu_config_config.Enabled = false;
+            }
+            else
+            {
+                menu_control_stop.Enabled = false;
+            }
+            menu_file_login.Enabled = false;
+            menu_file_logoff.Enabled = true;
+            SynchroButton();
+
             zgc_realtime.Invalidate();
             _updateGraphFlag = false;
             btn_curve_realtime.Enabled = true;
@@ -2359,7 +2432,7 @@ namespace OptimalControl.Forms
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void btn_info_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("磨机监测系统 V3.0.0.1" + Environment.NewLine + "北京矿冶研究总院", "关于软件", MessageBoxButtons.OK,
+            MessageBox.Show("半自磨优化控制系统 V2.0.0.1" + Environment.NewLine + "北京矿冶研究总院", "关于软件", MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
 
@@ -2542,47 +2615,6 @@ namespace OptimalControl.Forms
             }
         }
 
-
-        private void btn_use_rate_Click(object sender, EventArgs e)
-        {
-            DateTime startTime = dtp_data_start.Value; //查询起始时间
-            DateTime endTime = dtp_data_end.Value; //查询截止时间
-            if (endTime > startTime)
-            {
-                IDataManager dataManager = _bllFactory.BuildDataManager();
-                double useRate = dataManager.GetUseRateByTime(_optimalControlEnabledVariable, startTime, endTime);
-                tb_use_rate.Text = useRate.ToString("P");
-            }
-        }
-
-        private void btn_use_prev_Click(object sender, EventArgs e)
-        {
-            DateTime endTime = dtp_data_start.Value; //查询截止时间
-            DateTime startTime = dtp_data_start.Value - (dtp_data_end.Value - dtp_data_start.Value); //查询起始时间
-            if (endTime > startTime)
-            {
-                IDataManager dataManager = _bllFactory.BuildDataManager();
-                double useRate = dataManager.GetUseRateByTime(_optimalControlEnabledVariable, startTime, endTime);
-                tb_use_rate.Text = useRate.ToString("P");
-                dtp_data_start.Value = startTime;
-                dtp_data_end.Value = endTime;
-            }
-        }
-
-        private void btn_use_next_Click(object sender, EventArgs e)
-        {
-            DateTime startTime = dtp_data_end.Value; //查询起始时间
-            DateTime endTime = dtp_data_end.Value + (dtp_data_end.Value - dtp_data_start.Value); //查询截止时间
-            if (endTime > startTime)
-            {
-                IDataManager dataManager = _bllFactory.BuildDataManager();
-                double useRate = dataManager.GetUseRateByTime(_optimalControlEnabledVariable, startTime, endTime);
-                tb_use_rate.Text = useRate.ToString("P");
-                dtp_data_start.Value = startTime;
-                dtp_data_end.Value = endTime;
-            }
-        }
-
         /// <summary>
         /// Handles the Click event of the menu_file_login control.
         /// </summary>
@@ -2611,6 +2643,14 @@ namespace OptimalControl.Forms
                     else
                     {
                         menu_control_stop.Enabled = false;
+                    }
+                    if (_updateGraphFlag)
+                    {
+                        menu_control_update.Enabled = false;
+                    }
+                    else
+                    {
+                        menu_control_stopupdate.Enabled = false;
                     }
                     menu_file_login.Enabled = false;
                     menu_file_logoff.Enabled = true;
@@ -2732,6 +2772,14 @@ namespace OptimalControl.Forms
                 {
                     menu_control_stop.Enabled = false;
                 }
+                if (_updateGraphFlag)
+                {
+                    menu_control_update.Enabled = false;
+                }
+                else
+                {
+                    menu_control_stopupdate.Enabled = false;
+                }
                 menu_file_login.Enabled = false;
                 menu_file_logoff.Enabled = true;
                 SynchroButton();
@@ -2781,6 +2829,11 @@ namespace OptimalControl.Forms
             rulesForm.ShowDialog();
         }
 
+        private void menu_config_limits_Click(object sender, EventArgs e)
+        {
+            tb_oc_DoubleClick(sender, e);
+        }
+
         /// <summary>
         /// Handles the Click event of the menu_help_about control.
         /// </summary>
@@ -2809,64 +2862,6 @@ namespace OptimalControl.Forms
                 else
                 {
                     e.Value = string.Format("{0:F2}", e.Value);
-                }
-            }
-        }
-
-        private void tsbtn_rule_run_Click(object sender, EventArgs e)
-        {
-            //tsbtn_rule_run.Enabled = false;
-            //tsbtn_rule_stop.Enabled = true;
-            foreach (Device device in _devices)
-            {
-                if (device.Name == _clientName)
-                {
-                    foreach (Variable variable in device.Variables)
-                    {
-                        if (variable.Code == _optimalControlEnabledClientVariable)
-                        {
-                            variable.Value = 1;
-                            byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
-                            if (_modbusTcpSlaveCreated)
-                            {
-                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                    Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
-                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                    Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        private void tsbtn_rule_stop_Click(object sender, EventArgs e)
-        {
-            //tsbtn_rule_run.Enabled = true;
-            //tsbtn_rule_stop.Enabled = false;
-            foreach (Device device in _devices)
-            {
-                if (device.Name == _clientName)
-                {
-                    foreach (Variable variable in device.Variables)
-                    {
-                        if (variable.Code == _optimalControlEnabledClientVariable)
-                        {
-                            variable.Value = 0;
-                            byte[] tempByte = BitConverter.GetBytes(Convert.ToSingle(variable.Value));
-                            if (_modbusTcpSlaveCreated)
-                            {
-                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address] =
-                                    Convert.ToUInt16(tempByte[1]*256 + tempByte[0]);
-                                _modbusTcpDevice.ModbusTcpSlave.DataStore.HoldingRegisters[variable.Address + 1] =
-                                    Convert.ToUInt16(tempByte[3]*256 + tempByte[2]);
-                            }
-                            break;
-                        }
-                    }
-                    break;
                 }
             }
         }
@@ -3011,5 +3006,6 @@ namespace OptimalControl.Forms
         }
 
         #endregion
+
     }
 }

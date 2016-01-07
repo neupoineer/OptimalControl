@@ -34,3 +34,172 @@
 15/08/27 01:18:23 Login: admin Login!
 15/08/27 01:19:13 Login: admin Login!
 15/08/27 01:21:04 Closed: Software Closed!
+15/11/20 10:21:48 Initialization: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: SQL Network Interfaces, error: 26 - 定位指定的服务器/实例时出错)
+15/11/20 17:11:46 Initialization: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: SQL Network Interfaces, error: 26 - 定位指定的服务器/实例时出错)
+15/11/20 17:12:21 LoadSettings: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: SQL Network Interfaces, error: 26 - 定位指定的服务器/实例时出错)
+15/11/20 17:12:21 ModbusCreatTCPListener: 未将对象引用设置到对象的实例。
+15/11/20 17:12:24 LoadSettings: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: SQL Network Interfaces, error: 26 - 定位指定的服务器/实例时出错)
+15/11/20 17:12:24 ModbusCreatTCPListener: 未将对象引用设置到对象的实例。
+15/11/20 17:14:09 Login: administrator Login!
+15/11/20 17:14:10 Start: Software started by administrator!
+15/11/20 17:14:10 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:15 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:20 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:25 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:30 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:35 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:40 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:45 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:50 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:14:56 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:15:00 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:15:05 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:15:10 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:15:15 frmMain_FormClosing: 给定关键字不在字典中。
+15/11/20 17:15:40 Login: administrator Login!
+15/11/20 17:15:43 Start: Software started by administrator!
+15/11/20 17:15:43 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:15:48 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:15:53 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:15:58 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:03 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:08 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:13 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:18 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:23 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:28 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:33 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:38 frmMain_FormClosing: 给定关键字不在字典中。
+15/11/20 17:16:38 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/20 17:16:38 UpdateLogGrid: 无法访问已释放的对象。
+对象名:“DataGridView”。
+15/11/20 17:16:38 UpdateGraph: 无法访问已释放的对象。
+对象名:“ZedGraphControl”。
+15/11/26 10:16:01 Login: administrator Login!
+15/11/26 10:17:10 Logoff: administrator Logoff!
+15/11/26 10:17:34 Login: admin Login!
+15/11/26 10:17:49 Closed: Software Closed!
+15/11/26 10:32:07 Login: admin Login!
+15/11/26 10:32:10 Logoff: admin Logoff!
+15/11/26 10:35:35 Login: admin Login!
+15/11/26 10:35:37 Logoff: admin Logoff!
+15/11/26 10:35:50 Login: admin Login!
+15/11/26 10:57:32 Login: admin Login!
+15/11/26 10:58:23 Logoff: admin Logoff!
+15/11/26 10:58:45 Login: admin Login!
+15/11/26 10:58:57 Start: Software started by admin!
+15/11/26 10:58:57 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 10:59:02 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 10:59:05 Stop: Software stoped by admin!
+15/11/26 10:59:07 Start: Software started by admin!
+15/11/26 10:59:07 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 10:59:11 Stop: Software stoped by admin!
+15/11/26 10:59:12 Start: Software started by admin!
+15/11/26 10:59:12 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 10:59:12 Stop: Software stoped by admin!
+15/11/26 10:59:13 Start: Software started by admin!
+15/11/26 10:59:13 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 10:59:16 Stop: Software stoped by admin!
+15/11/26 10:59:19 Start: Software started by admin!
+15/11/26 10:59:19 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 10:59:20 Stop: Software stoped by admin!
+15/11/26 11:01:21 Login: admin Login!
+15/11/26 11:01:25 Start: Software started by admin!
+15/11/26 11:01:25 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:01:30 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:01:34 Stop: Software stoped by admin!
+15/11/26 11:01:37 Stop: Software stoped by admin!
+15/11/26 11:01:39 Stop: Software stoped by admin!
+15/11/26 11:01:40 Stop: Software stoped by admin!
+15/11/26 11:01:42 Stop: Software stoped by admin!
+15/11/26 11:01:43 Stop: Software stoped by admin!
+15/11/26 11:01:44 Stop: Software stoped by admin!
+15/11/26 11:01:45 Stop: Software stoped by admin!
+15/11/26 11:02:02 Stop: Software stoped by admin!
+15/11/26 11:02:05 Stop: Software stoped by admin!
+15/11/26 11:02:06 Stop: Software stoped by admin!
+15/11/26 11:02:08 Stop: Software stoped by admin!
+15/11/26 11:02:11 Start: Software started by admin!
+15/11/26 11:02:11 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:02:16 Stop: Software stoped by admin!
+15/11/26 11:02:21 Start: Software started by admin!
+15/11/26 11:02:21 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:02:23 Start: Software started by admin!
+15/11/26 11:02:23 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:02:25 Start: Software started by admin!
+15/11/26 11:02:25 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:02:26 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:02:26 Start: Software started by admin!
+15/11/26 11:02:26 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:02:30 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:12 Login: admin Login!
+15/11/26 11:09:14 Start: Software started by admin!
+15/11/26 11:09:14 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:16 Stop: Software stoped by admin!
+15/11/26 11:09:18 Start: Software started by admin!
+15/11/26 11:09:19 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:19 Stop: Software stoped by admin!
+15/11/26 11:09:23 Start: Software started by admin!
+15/11/26 11:09:23 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:23 Stop: Software stoped by admin!
+15/11/26 11:09:24 Start: Software started by admin!
+15/11/26 11:09:24 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:26 Stop: Software stoped by admin!
+15/11/26 11:09:27 Start: Software started by admin!
+15/11/26 11:09:27 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:28 Stop: Software stoped by admin!
+15/11/26 11:09:29 Start: Software started by admin!
+15/11/26 11:09:29 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:33 Stop: Software stoped by admin!
+15/11/26 11:09:36 Start: Software started by admin!
+15/11/26 11:09:36 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:37 Stop: Software stoped by admin!
+15/11/26 11:09:38 Start: Software started by admin!
+15/11/26 11:09:38 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 11:09:38 Stop: Software stoped by admin!
+15/11/26 11:09:53 Logoff: admin Logoff!
+15/11/26 11:10:45 Login: admin Login!
+15/11/26 13:37:57 Login: admin Login!
+15/11/26 13:41:46 Login: admin Login!
+15/11/26 13:43:27 Login: admin Login!
+15/11/26 13:52:02 Login: admin Login!
+15/11/26 13:54:30 Login: admin Login!
+15/11/26 13:56:31 Login: admin Login!
+15/11/26 13:59:12 Login: admin Login!
+15/11/26 14:00:55 Login: admin Login!
+15/11/26 14:02:57 Login: admin Login!
+15/11/26 14:17:55 Login: admin Login!
+15/11/26 14:19:51 Logoff: admin Logoff!
+15/11/26 14:24:57 Login: admin Login!
+15/11/26 14:28:01 Logoff: admin Logoff!
+15/11/26 14:28:06 Login: admin Login!
+15/11/26 14:28:08 Start: Software started by admin!
+15/11/26 14:28:08 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:10 Logoff: admin Logoff!
+15/11/26 14:28:13 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:18 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:23 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:28 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:33 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:34 Login: admin Login!
+15/11/26 14:28:37 Stop: Software stoped by admin!
+15/11/26 14:28:39 Logoff: admin Logoff!
+15/11/26 14:28:44 Login: admin Login!
+15/11/26 14:28:47 Start: Software started by admin!
+15/11/26 14:28:47 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:49 Logoff: admin Logoff!
+15/11/26 14:28:52 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:28:57 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:29:02 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:29:07 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:29:12 UpdateRegisterList: 未将对象引用设置到对象的实例。
+15/11/26 14:51:25 Login: admin Login!
+15/11/26 14:54:32 Login: admin Login!
+15/11/26 14:59:09 Initialization: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: SQL Network Interfaces, error: 26 - 定位指定的服务器/实例时出错)
+15/11/26 15:00:06 Initialization: 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: SQL Network Interfaces, error: 26 - 定位指定的服务器/实例时出错)
+15/11/26 15:02:48 Login: admin Login!
+15/11/26 15:03:57 Login: admin Login!
+15/11/26 15:04:26 Login: admin Login!
+15/11/26 15:05:42 Logoff: admin Logoff!
+15/11/26 15:05:48 Login: admin Login!
+15/11/26 15:06:48 Login: administrator Login!

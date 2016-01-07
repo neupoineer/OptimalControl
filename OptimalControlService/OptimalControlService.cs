@@ -35,8 +35,8 @@ namespace OptimalControlService
             TrendValue = 6,
             HigherLimit = 7,
             LowerLimit = 8,
-            UltimateHigherLimit = 9,
-            UltimateLowerLimit = 10,
+            UltimateHighLimit = 9,
+            UltimateLowLimit = 10,
             IsOutput = 11,
             IsValid = 12,
         }
@@ -975,8 +975,8 @@ namespace OptimalControlService
                                         {
                                             HigherLimit = opVariable.Value,
                                             LowerLimit = parameter.Limit.LowerLimit,
-                                            UltimateHigherLimit = parameter.Limit.UltimateHigherLimit,
-                                            UltimateLowerLimit = parameter.Limit.UltimateLowerLimit,
+                                            UltimateHighLimit = parameter.Limit.UltimateHighLimit,
+                                            UltimateLowLimit = parameter.Limit.UltimateLowLimit,
                                         };
                                         variableManager.ModifyVariable(parameter);
                                         break;
@@ -985,28 +985,28 @@ namespace OptimalControlService
                                         {
                                             HigherLimit = parameter.Limit.HigherLimit,
                                             LowerLimit = opVariable.Value,
-                                            UltimateHigherLimit = parameter.Limit.UltimateHigherLimit,
-                                            UltimateLowerLimit = parameter.Limit.UltimateLowerLimit,
+                                            UltimateHighLimit = parameter.Limit.UltimateHighLimit,
+                                            UltimateLowLimit = parameter.Limit.UltimateLowLimit,
                                         };
                                         variableManager.ModifyVariable(parameter);
                                         break;
-                                    case GetValueType.UltimateHigherLimit:
+                                    case GetValueType.UltimateHighLimit:
                                         parameter.Limit = new Variable.VariableLimit()
                                         {
                                             HigherLimit = parameter.Limit.HigherLimit,
                                             LowerLimit = parameter.Limit.LowerLimit,
-                                            UltimateHigherLimit = opVariable.Value,
-                                            UltimateLowerLimit = parameter.Limit.UltimateLowerLimit,
+                                            UltimateHighLimit = opVariable.Value,
+                                            UltimateLowLimit = parameter.Limit.UltimateLowLimit,
                                         };
                                         variableManager.ModifyVariable(parameter);
                                         break;
-                                    case GetValueType.UltimateLowerLimit:
+                                    case GetValueType.UltimateLowLimit:
                                         parameter.Limit = new Variable.VariableLimit()
                                         {
                                             HigherLimit = parameter.Limit.HigherLimit,
                                             LowerLimit = parameter.Limit.LowerLimit,
-                                            UltimateHigherLimit = parameter.Limit.UltimateHigherLimit,
-                                            UltimateLowerLimit = opVariable.Value,
+                                            UltimateHighLimit = parameter.Limit.UltimateHighLimit,
+                                            UltimateLowLimit = opVariable.Value,
                                         };
                                         variableManager.ModifyVariable(parameter);
                                         break;
@@ -1181,11 +1181,11 @@ namespace OptimalControlService
                             case GetValueType.LowerLimit:
                                 return parameter.Limit.LowerLimit;
                                 break;
-                            case GetValueType.UltimateHigherLimit:
-                                return parameter.Limit.UltimateHigherLimit;
+                            case GetValueType.UltimateHighLimit:
+                                return parameter.Limit.UltimateHighLimit;
                                 break;
-                            case GetValueType.UltimateLowerLimit:
-                                return parameter.Limit.UltimateLowerLimit;
+                            case GetValueType.UltimateLowLimit:
+                                return parameter.Limit.UltimateLowLimit;
                                 break;
                             case GetValueType.IsOutput:
                                 return parameter.IsOutput;
@@ -1251,7 +1251,7 @@ namespace OptimalControlService
         }
 
         /// <summary>
-        /// Gets the value of the variable by name.
+        /// Gets the value of the variable by code.
         /// </summary>
         /// <param name="variableCode">Code of the variable.</param>
         private double GetValueByCode(string variableCode)

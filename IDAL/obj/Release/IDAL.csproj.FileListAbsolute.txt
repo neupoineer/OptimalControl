@@ -10,3 +10,15 @@ E:\Work\OptimalControl\IDAL\bin\Release\Utility.pdb
 E:\Work\OptimalControl\IDAL\obj\Release\IDAL.csprojResolveAssemblyReference.cache
 E:\Work\OptimalControl\IDAL\obj\Release\IDAL.dll
 E:\Work\OptimalControl\IDAL\obj\Release\IDAL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\IDAL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\IDAL.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\Model.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\ZedGraph.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\Modbus.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\Utility.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\log4net.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\Model.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\bin\Release\Utility.pdb
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\obj\Release\IDAL.csprojResolveAssemblyReference.cache
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\obj\Release\IDAL.dll
+E:\Projects\03.半自磨优化\03-01.研发文档\03-01-01.Software\OptimalControl\OptimalControl\IDAL\obj\Release\IDAL.pdb
